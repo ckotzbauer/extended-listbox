@@ -1,7 +1,7 @@
 Listbox.js
 ==========
 
-:Author:   `Christian Kotzbauer <christian.kotzbauer@gmail.com>`_
+:Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
 :Version:  1.0.0
 
@@ -105,7 +105,5 @@ FAQ
 
 
 
-.. _BSD 3-clause: http://raw.github.com/ikalnitsky/oldlistbox.js/master/LICENSE
+.. _BSD 3-clause: https://raw.github.com/code-chris/listbox.js/master/LICENSE
 .. _XSnippet:     http://xsnippet.org/
-
-.. |travis| image:: https://travis-ci.org/ikalnitsky/oldlistbox.js.png?branch=master
