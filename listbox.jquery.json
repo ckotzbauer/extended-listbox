@@ -1,28 +1,30 @@
 {
-    "name": "listbox",
-    "version": "1.0.0",
-
-    "title": "Listbox.js",
-    "description": "Listbox.js is a simple jQuery plugin that provides a more powerful alternative to the standard `select` tag",
-    "keywords": ["listbox", "select", "multiselect", "form", "input", "ui"],
-
-    "author": {
-        "name": "Christian Kotzbauer",
-        "email": "christian.kotzbauer@gmail.com"
-    },
-
-    "licenses": [
-        {
-            "type": "BSD",
-            "url": "https://raw.github.com/code-chris/listbox.js/master/LICENSE"
-        }
-    ],
-
-    "docs": "https://github.com/code-chris/listbox.js",
-    "bugs": "https://github.com/code-chris/listbox.js/issues",
-    "download": "https://github.com/code-chris/listbox.js/archive/master.zip",
-
-    "dependencies": {
-        "jquery": ">=1.8"
+  "name": "listbox",
+  "version": "1.0.0",
+  "title": "Listbox.js",
+  "description": "Listbox.js is a simple jQuery plugin that provides a more powerful alternative to the standard `select` tag",
+  "keywords": [
+    "listbox",
+    "select",
+    "multiselect",
+    "form",
+    "input",
+    "ui"
+  ],
+  "author": {
+    "name": "Christian Kotzbauer",
+    "email": "christian.kotzbauer@gmail.com"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://raw.github.com/code-chris/listbox.js/master/LICENSE"
     }
+  ],
+  "docs": "https://github.com/code-chris/listbox.js",
+  "bugs": "https://github.com/code-chris/listbox.js/issues",
+  "download": "https://github.com/code-chris/listbox.js/archive/master.zip",
+  "dependencies": {
+    "jquery": ">=1.11.3"
+  }
 }

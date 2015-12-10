@@ -1,0 +1,27 @@
+{
+  "name": "listbox.js",
+  "version": "1.0.0",
+  "description": "Listbox.js is a simple jQuery plugin that provides a more powerful alternative to the standard `select` tag",
+  "main": "src/listbox.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-chris/listbox.js.git"
+  },
+  "keywords": [
+    "listbox",
+    "select",
+    "multiselect",
+    "form",
+    "input",
+    "ui"
+  ],
+  "author": "Christian Kotzbauer",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/code-chris/listbox.js/issues"
+  },
+  "homepage": "https://github.com/code-chris/listbox.js#readme",
+  "devDependencies": {
+    "bower": "^1.7.0"
+  }
+}

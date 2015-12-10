@@ -1,0 +1,31 @@
+{
+  "name": "listbox.js",
+  "description": "Listbox.js is a simple jQuery plugin that provides a more powerful alternative to the standard `select` tag",
+  "main": "src/listbox.js",
+  "authors": [
+    "Christian Kotzbauer"
+  ],
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "listbox",
+    "select",
+    "multiselect",
+    "form",
+    "input",
+    "ui"
+  ],
+  "homepage": "https://github.com/code-chris/listbox.js",
+  "moduleType": [
+    "globals"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1.11.3"
+  }
+}
