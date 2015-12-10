@@ -7,8 +7,8 @@
  * runs on top of <select> tag and creates an alternative to the last one
  * based on <div> tags. It opens up great possibilities for customization.
  *
- * @copyright   (c) 2012, Igor Kalnitsky <igor@kalnitsky.org>
- * @version     0.3.0-dev
+ * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
+ * @version     1.0.0
  * @license     BSD
  */
 

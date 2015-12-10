@@ -34,7 +34,7 @@ Link the component and a stylesheet from your page.
 
     <!-- include listbox plugin and default stylesheet -->
     <link href="/path/to/listbox.css" rel="stylesheet">
-    <script src="/path/to/listbox.js"></script>
+    <script src="/path/to/oldlistbox.js"></script>
 
 
 Create Listbox object.
@@ -104,7 +104,7 @@ FAQ
 
 
 
-.. _BSD 3-clause: http://raw.github.com/ikalnitsky/listbox.js/master/LICENSE
+.. _BSD 3-clause: http://raw.github.com/ikalnitsky/oldlistbox.js/master/LICENSE
 .. _XSnippet:     http://xsnippet.org/
 
-.. |travis| image:: https://travis-ci.org/ikalnitsky/listbox.js.png?branch=master
+.. |travis| image:: https://travis-ci.org/ikalnitsky/oldlistbox.js.png?branch=master
