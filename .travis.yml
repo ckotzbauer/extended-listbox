@@ -1,9 +1,0 @@
-language:
-  - "node_js"
-
-node_js:
-  - "0.10"
-
-script:
-  - "wget https://raw.github.com/jquery/qunit/master/addons/phantomjs/runner.js"
-  - "phantomjs runner.js testsuite/index.html"

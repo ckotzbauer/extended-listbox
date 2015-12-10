@@ -1,11 +1,12 @@
 Listbox.js
 ==========
 
-:Author:   `Igor Kalnitsky <igor@kalnitsky.org>`_
+:Author:   `Christian Kotzbauer <christian.kotzbauer@gmail.com>`_
 :License:  `BSD 3-clause`_
-:Version:  0.3.0-dev
-:Tests:    |travis|
+:Version:  1.0.0
 
+Documentation is currently outdated!
+------------------------------------
 
 **Listbox.js** is a simple jQuery plugin that provides a more powerful
 alternative to the standard ``<select>`` tag. The main problem of ``<select``

@@ -3,10 +3,21 @@ Changelog
 
 Here you can see the full list of changes between each Listbox.js release.
 
-Version 0.3.0
+Version 1.0.0
 `````````````
 
 (release date to be announced)
+
+- Forked from https://github.com/ikalnitsky/listbox.js
+- ListBoxes are created now below the given root DOM element. Without an hidden ``<select>`` element.
+- The Watermark in SearchBar is now configurable.
+- Items can be marked as "GroupHeader" to structure multiple items.
+
+
+Version 0.3.0
+`````````````
+
+Unknown.
 
 - Fixed JSHint warnings.
 
