@@ -1,0 +1,265 @@
+<!--
+  - Listbox.js demonstration page.
+  -
+  - @copyright   (c) 2012, Igor Kalnitsky <igor@kalnitsky.org>
+  - @license     BSD
+  -->
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Listbox.js Demo</title>
+
+    <!-- include jQuery -->
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <!-- include oldlistbox.js -->
+    <link href="../src/listbox.css" rel="stylesheet">
+    <script src="../src/listbox.js"></script>
+
+    <style>
+        * {
+            margin:       0px;
+            padding:      0px;
+        }
+
+        html, body {
+            font-size:    12px;
+            font-family:  sans-serif;
+            background:   #f5f5f5;
+        }
+
+        .cover {
+            padding:      20px 30px;
+            border:       1px solid #dedede;
+            border-radius:4px;
+            background:   #f9f9f9;
+            box-shadow:   0px 0px 10px #a8a8a8;
+
+            /* centering */
+            position:     absolute;
+            top:          50%;
+            left:         50%;
+            margin-top:  -180px;
+            margin-left: -222px;
+        }
+
+        .lbjs { float: left; }
+        .lbjs:last-of-type { margin-left: 20px; }
+    </style>
+
+<body>
+
+<script>
+    $(function () {
+        $('div#planets').listbox({
+            getItems: function () {
+                return [
+                    "Alderaan",
+                    "Corellia",
+                    "Endor",
+                    { text: "Kashyyyk", selected : true },
+                    "Mustafar",
+                    "Naboo",
+                    "Nar Shaddaa",
+                    { text: "Tatooine", selected: true },
+                    "Yavin"
+                ];
+            }
+        });
+        $('div#country').listbox({
+            searchBar: true,
+            getItems: function () {
+                return [
+                    "Afghanistan",
+                    { text: "Albania", selected: true },
+                    "Algeria",
+                    "Andorra",
+                    "Angola",
+                    "Argentina",
+                    { text: "Armenia", disabled: true },
+                    "Australia",
+                    "Austria",
+                    "Azerbaijan",
+                    "Bahrain",
+                    "Bangladesh",
+                    "Barbados",
+                    "Belarus",
+                    "Belgium",
+                    "Belize",
+                    "Benin",
+                    "Bhutan",
+                    "Bolivia",
+                    "Botswana",
+                    "Brazil",
+                    "Brunei ",
+                    "Bulgaria",
+                    "Burkina Faso",
+                    "Burma",
+                    "Burundi",
+                    "Cambodia",
+                    "Cameroon",
+                    "Canada",
+                    "Cape Verde",
+                    "Chad",
+                    "Chile",
+                    "China",
+                    "Colombia",
+                    "Comoros ",
+                    "Costa Rica",
+                    "Cote d'Ivoire",
+                    "Croatia",
+                    "Cuba",
+                    "Cyprus",
+                    "Czech Republic",
+                    "Denmark",
+                    "Djibouti",
+                    "Dominica",
+                    "Ecuador",
+                    "Egypt",
+                    "El Salvador",
+                    "Eritrea",
+                    "Estonia",
+                    "Ethiopia",
+                    "Fiji",
+                    "Finland",
+                    "France",
+                    "Gabon",
+                    "Georgia",
+                    "Germany",
+                    "Ghana",
+                    "Greece",
+                    "Grenada",
+                    "Guatemala",
+                    "Guinea",
+                    "Guinea-Bissau",
+                    "Guyana",
+                    "Haiti",
+                    "Holy See",
+                    "Honduras",
+                    "Hong Kong",
+                    "Hungary",
+                    "Iceland",
+                    "India",
+                    "Indonesia",
+                    "Iran",
+                    "Iraq",
+                    "Ireland",
+                    "Israel",
+                    "Italy",
+                    "Jamaica",
+                    "Japan",
+                    "Jordan",
+                    "Kazakhstan",
+                    "Kenya",
+                    "Kiribati",
+                    "Korea, North",
+                    "Korea, South",
+                    "Kosovo",
+                    "Kuwait",
+                    "Kyrgyzstan",
+                    "Laos",
+                    "Latvia",
+                    "Lebanon",
+                    "Lesotho",
+                    "Liberia",
+                    "Libya",
+                    "Liechtenstein",
+                    "Lithuania",
+                    "Luxembourg",
+                    "Macau",
+                    "Macedonia",
+                    "Madagascar",
+                    "Malawi",
+                    "Malaysia",
+                    "Maldives",
+                    "Mali",
+                    "Malta",
+                    "Mauritania",
+                    "Mauritius",
+                    "Mexico",
+                    "Micronesia",
+                    "Moldova",
+                    "Monaco",
+                    "Mongolia",
+                    "Montenegro",
+                    "Morocco",
+                    "Mozambique",
+                    "Namibia",
+                    "Nauru",
+                    "Nepal",
+                    "Netherlands",
+                    "New Zealand",
+                    "Nicaragua",
+                    "Niger",
+                    "Nigeria",
+                    "North Korea",
+                    "Norway",
+                    "Oman",
+                    "Pakistan",
+                    "Palau",
+                    "Panama",
+                    "Paraguay",
+                    "Peru",
+                    "Philippines",
+                    "Poland",
+                    "Portugal",
+                    "Qatar",
+                    "Romania",
+                    "Russia",
+                    "Rwanda",
+                    "Saint Lucia",
+                    "Samoa ",
+                    "San Marino",
+                    "Saudi Arabia",
+                    "Senegal",
+                    "Serbia",
+                    "Seychelles",
+                    "Sierra Leone",
+                    "Singapore",
+                    "Slovakia",
+                    "Slovenia",
+                    "Solomon Islands",
+                    "Somalia",
+                    "South Africa",
+                    "South Korea",
+                    "South Sudan",
+                    "Spain ",
+                    "Sri Lanka",
+                    "Sudan",
+                    "Suriname",
+                    "Swaziland ",
+                    "Sweden",
+                    "Switzerland",
+                    "Syria",
+                    "Taiwan",
+                    "Tajikistan",
+                    "Tanzania",
+                    "Thailand ",
+                    "Timor-Leste",
+                    "Togo",
+                    "Tonga",
+                    "Tunisia",
+                    "Turkey",
+                    "Turkmenistan",
+                    "Tuvalu",
+                    "Uganda",
+                    "Ukraine",
+                    "United Kingdom",
+                    "Uruguay",
+                    "Uzbekistan",
+                    "Vanuatu",
+                    "Venezuela",
+                    "Vietnam",
+                    "Yemen",
+                    "Zambia",
+                    "Zimbabwe"
+                ];
+            }
+        });
+    });
+</script>
+
+<div class="cover">
+    <div id="planets" multiple></div>
+    <div id="country"></div>
+</div><!-- .cover -->
