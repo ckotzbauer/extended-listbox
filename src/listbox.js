@@ -52,8 +52,9 @@
      */
     function Listbox(domelement, options) {
         var settings = $.extend({
-            'class':      null,
-            'searchbar':  false
+            cssClass: null,
+            searchbar: false,
+            searchbarWatermark: 'Search...'
         }, options);
 
         this._parent   = domelement;
@@ -75,12 +76,13 @@
     Listbox.prototype._createListbox = function () {
         this._listbox = $('<div>')
             .addClass(MAIN_CLASS)
-            .addClass(this._settings['class'])
-            .insertAfter(this._parent)
-        ;
+            .addClass(this._settings['cssClass'])
+            .insertAfter(this._parent);
 
-        if (this._settings.searchbar)
+        if (this._settings.searchbar) {
             this._createSearchbar();
+        }
+
         this._createList();
     };
 
@@ -101,7 +103,7 @@
         var searchbar = $('<input>')
             .addClass(SEARCHBAR_CLASS)
             .appendTo(searchbarWrapper)
-            .attr('placeholder', 'search...');
+            .attr('placeholder', this._settings.searchbarWatermark);
 
         // set filter handler
         var self = this;
@@ -178,11 +180,13 @@
                 self.onItemClick($(this));
             });
 
-        if (parentItem.attr('disabled'))
+        if (parentItem.attr('disabled')) {
             item.attr('disabled', '');
+        }
 
-        if (parentItem.attr('selected'))
+        if (parentItem.attr('selected')) {
             this.onItemClick(item);
+        }
     };
 
 
@@ -210,8 +214,9 @@
     Listbox.prototype._resizeListToListbox = function () {
         var listHeight = this._listbox.height();
 
-        if (this._settings.searchbar)
+        if (this._settings.searchbar) {
             listHeight -= this._searchbarWrapper.outerHeight(true);
+        }
 
         this._list.height(listHeight);
     };
@@ -233,9 +238,11 @@
         this.super_.call(this, domelement, options);
 
         // select first item if none selected
-        if (!this._selected)
+        if (!this._selected) {
             this.onItemClick(this._list.children().first());
+        }
     }
+
     inherits(SingleSelectListbox, Listbox);
 
 
@@ -246,11 +253,15 @@
      * @param {object} item a DOM object
      */
     SingleSelectListbox.prototype.onItemClick = function (item) {
-        if (item.attr('disabled')) return;
+        if (item.attr('disabled')) {
+            return;
+        }
 
         // select a fake item
-        if (this._selected)
+        if (this._selected) {
             this._selected.removeAttr('selected');
+        }
+
         this._selected = item.attr('selected', '');
 
         // select a real item
@@ -267,8 +278,9 @@
      * @this {SingleSelectListbox}
      */
     SingleSelectListbox.prototype.onFilterChange = function () {
-        if (!this._selected || !this._selected.is(':visible'))
+        if (!this._selected || !this._selected.is(':visible')) {
             this.onItemClick(this._list.children(':visible').first());
+        }
     };
 
 
@@ -287,6 +299,7 @@
     function MultiSelectListbox(domelement, options) {
         this.super_.call(this, domelement, options);
     }
+
     inherits(MultiSelectListbox, Listbox);
 
 
@@ -299,7 +312,9 @@
      * @param {object} item a DOM object
      */
     MultiSelectListbox.prototype.onItemClick = function (item) {
-        if (item.attr('disabled')) return;
+        if (item.attr('disabled')) {
+            return;
+        }
 
         var parentItem = $(this._parent.children().get(item.index()));
         var parentValue = this._parent.val();
@@ -332,8 +347,10 @@
      */
     $.fn.listbox = function (options) {
         return this.each(function () {
-            if ($(this).attr('multiple'))
+            if ($(this).attr('multiple')) {
                 return !!new MultiSelectListbox($(this), options);
+            }
+
             return !!new SingleSelectListbox($(this), options);
         });
     };
