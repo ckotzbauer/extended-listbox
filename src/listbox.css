@@ -61,10 +61,13 @@
 
 .listbox-root .listbox-searchbar-wrapper {
     margin: 0px;
-    margin-right: 12px;
 }
 
-.listbox-root .listbox-searchbar {
+.listbox-root .listbox-searchbar-wrapper  .listbox-searchbar-button {
+    margin-left: -22px;
+}
+
+.listbox-root .listbox-searchbar-wrapper .listbox-searchbar {
     margin: 0px;
     margin-bottom: 10px;
     width: 100%;

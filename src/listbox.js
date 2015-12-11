@@ -24,6 +24,7 @@
     var LIST_ITEM_CLASS_SELECTED = 'listbox-item-selected';
     var LIST_ITEM_CLASS_GROUP = 'listbox-item-group';
     var SEARCHBAR_CLASS = 'listbox-searchbar';
+    var SEARCHBAR_BUTTON_CLASS = 'listbox-searchbar-button';
 
 
 
@@ -129,14 +130,25 @@
             }
         });
 
-        if (this._settings.searchBarIconClass) {
+        if (this._settings.searchBarButton.visible) {
+            var button = $('<button>')
+                .attr('id', 'searchBarButton')
+                .attr('tabindex', '-1')
+                .addClass(SEARCHBAR_BUTTON_CLASS)
+                .appendTo(searchbarWrapper);
+
+            if (this._settings.searchBarButton.onClick) {
+                button.click(this._settings.searchBarButton.onClick);
+            }
+
             $('<i>')
-                .addClass(this._settings.searchBarIconClass)
-                .appendTo(searchbar);
+                .addClass(this._settings.searchBarButton.icon)
+                .appendTo(button);
         }
 
         // save for using in _resizeListToListbox()
         this._searchbarWrapper = searchbarWrapper;
+        this._searchbar = searchbar;
     };
 
 
@@ -197,6 +209,7 @@
             .appendTo(this._list)
             .text(dataItem.text)
             .attr("id", dataItem.id)
+            .attr("title", dataItem.text)
             .click(function () {
                 self.onItemClick($(this));
             });
@@ -286,6 +299,10 @@
         this._selectedDomItem = domItem;
         this._parent.val(domItem.val());
         this._parent.trigger('change');
+
+        if (this._settings.onValueChanged) {
+            this._settings.onValueChanged(domItem.val());
+        }
     };
 
 
@@ -297,6 +314,10 @@
     SingleSelectListbox.prototype.onFilterChange = function () {
         if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
             this.onItemClick(this._list.children(':visible').first());
+        }
+
+        if (this._settings.onFilterChanged) {
+            this._settings.onFilterChanged(this._searchbar.val());
         }
     };
 
@@ -352,6 +373,10 @@
 
         this._parent.val(parentValues);
         this._parent.trigger('change');
+
+        if (this._settings.onValueChanged) {
+            this._settings.onValueChanged(parentValues);
+        }
     };
 
 
@@ -365,12 +390,13 @@
      */
     $.fn.listbox = function (options) {
         var settings = $.extend({
-            cssClass: null,
             searchBar: false,
-            searchBarIconClass: null,
             searchBarWatermark: 'Search...',
+            searchBarButton: { visible: false, icon: null, onClick: null },
             multiple: false,
-            getItems: null
+            getItems: null,
+            onValueChanged: null,
+            onFilterChanged: null
         }, options);
 
         return this.each(function () {
