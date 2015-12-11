@@ -1,12 +1,12 @@
 /**
  * A default stylesheme for Listbox.js plugin.
  *
- * @copyright   (c) 2012, Igor Kalnitsky <igor@kalnitsky.org>
+ * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * @version     0.3.0-dev
  * @license     BSD
  */
 
-.lbjs {
+.listbox-root {
     margin: 0px;
     width: 170px;
     padding: 5px;
@@ -16,40 +16,55 @@
     height: 300px;
 }
 
-.lbjs .lbjs-list {
+.listbox-root .listbox {
     margin: 0px;
     overflow: auto;
 }
 
 
-.lbjs .lbjs-list .lbjs-item {
+.listbox-root .listbox .listbox-item {
     margin: 0px;
     padding: 5px;
 }
 
-.lbjs .lbjs-list .lbjs-item:not([disabled]) {
+.listbox-root .listbox .listbox-item {
     cursor: pointer;
 }
 
-.lbjs .lbjs-list .lbjs-item:hover:not([disabled]) {
+.listbox-root .listbox .listbox-item:hover {
     background: rgba(112, 147, 216, 0.9);
 }
 
-.lbjs .lbjs-list .lbjs-item[selected] {
+.listbox-root .listbox .listbox-item.listbox-item-selected {
     background: rgba(112, 147, 216, 0.5);
 }
 
-.lbjs .lbjs-list .lbjs-item[disabled] {
+.listbox-root .listbox .listbox-item.listbox-item-disabled {
     color: #999;
     cursor: default;
 }
 
-.lbjs .lbjs-searchbar-wrapper {
+.listbox-root .listbox .listbox-item.listbox-item-disabled:hover {
+    background: #FCFCFC;
+}
+
+.listbox-root .listbox .listbox-item.listbox-item-group {
+    color: black;
+    font-weight: bold;
+    padding-left: 0;
+    cursor: default;
+}
+
+.listbox-root .listbox .listbox-item.listbox-item-group:hover {
+    background: #FCFCFC;
+}
+
+.listbox-root .listbox-searchbar-wrapper {
     margin: 0px;
     margin-right: 12px;
 }
 
-.lbjs .lbjs-searchbar {
+.listbox-root .listbox-searchbar {
     margin: 0px;
     margin-bottom: 10px;
     width: 100%;

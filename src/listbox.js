@@ -17,10 +17,13 @@
 
 
     // CSS classes used by Listbox.js
-    var MAIN_CLASS      = 'lbjs';
-    var LIST_CLASS      = 'lbjs-list';
-    var LIST_ITEM_CLASS = 'lbjs-item';
-    var SEARCHBAR_CLASS = 'lbjs-searchbar';
+    var MAIN_CLASS = 'listbox-root';
+    var LIST_CLASS = 'listbox';
+    var LIST_ITEM_CLASS = 'listbox-item';
+    var LIST_ITEM_CLASS_DISABLED = 'listbox-item-disabled';
+    var LIST_ITEM_CLASS_SELECTED = 'listbox-item-selected';
+    var LIST_ITEM_CLASS_GROUP = 'listbox-item-group';
+    var SEARCHBAR_CLASS = 'listbox-searchbar';
 
 
 
@@ -51,15 +54,8 @@
      * @param {object} options an object with Listbox settings
      */
     function Listbox(domelement, options) {
-        var settings = $.extend({
-            cssClass: null,
-            searchBar: false,
-            searchBarWatermark: 'Search...',
-            getItems: null
-        }, options);
-
         this._parent   = domelement;
-        this._settings = settings;
+        this._settings = options;
 
         this._createListbox();                // create a fake listbox
         //this._parent.css('display', 'none');  // hide a parent element
@@ -133,6 +129,12 @@
             }
         });
 
+        if (this._settings.searchBarIconClass) {
+            $('<i>')
+                .addClass(this._settings.searchBarIconClass)
+                .appendTo(searchbar);
+        }
+
         // save for using in _resizeListToListbox()
         this._searchbarWrapper = searchbarWrapper;
     };
@@ -200,7 +202,11 @@
             });
 
         if (dataItem.disabled) {
-            item.attr('disabled', '');
+            item.addClass(LIST_ITEM_CLASS_DISABLED);
+        }
+
+        if (dataItem.groupHeader) {
+            item.addClass(LIST_ITEM_CLASS_GROUP);
         }
 
         if (dataItem.selected) {
@@ -255,11 +261,7 @@
      */
     function SingleSelectListbox(domelement, options) {
         this.super_.call(this, domelement, options);
-
-        // select first item if none selected
-        if (!this._selected) {
-            this.onItemClick(this._list.children().first());
-        }
+        this._selectedDomItem = null;
     }
 
     inherits(SingleSelectListbox, Listbox);
@@ -269,24 +271,20 @@
      * Reset all items and select a given one.
      *
      * @this {SingleSelectListbox}
-     * @param {object} item a DOM object
+     * @param {object} domItem a DOM object
      */
-    SingleSelectListbox.prototype.onItemClick = function (item) {
-        if (item.attr('disabled') || item.attr('groupHeader')) {
+    SingleSelectListbox.prototype.onItemClick = function (domItem) {
+        if (domItem.hasClass(LIST_ITEM_CLASS_DISABLED) || domItem.hasClass(LIST_ITEM_CLASS_GROUP)) {
             return;
         }
 
-        // select a fake item
-        if (this._selected) {
-            this._selected.removeAttr('selected');
-        }
+        // Remove selected class from all other items
+        this._list.children().removeClass(LIST_ITEM_CLASS_SELECTED);
+        this._selectedDomItem = null;
 
-        this._selected = item.attr('selected', '');
-
-        // select a real item
-        var itemToSelect = $(this._parent.children().get(item.index()));
-        this._parent.val(itemToSelect.val());
-
+        domItem.toggleClass(LIST_ITEM_CLASS_SELECTED);
+        this._selectedDomItem = domItem;
+        this._parent.val(domItem.val());
         this._parent.trigger('change');
     };
 
@@ -297,7 +295,7 @@
      * @this {SingleSelectListbox}
      */
     SingleSelectListbox.prototype.onFilterChange = function () {
-        if (!this._selected || !this._selected.is(':visible')) {
+        if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
             this.onItemClick(this._list.children(':visible').first());
         }
     };
@@ -328,32 +326,31 @@
      * Toggle item status.
      *
      * @this {MultiSelectListbox}
-     * @param {object} item a DOM object
+     * @param {object} domItem a DOM object
      */
-    MultiSelectListbox.prototype.onItemClick = function (item) {
-        if (item.attr('disabled') || item.attr('groupHeader')) {
+    MultiSelectListbox.prototype.onItemClick = function (domItem) {
+        if (domItem.hasClass(LIST_ITEM_CLASS_DISABLED) || domItem.hasClass(LIST_ITEM_CLASS_GROUP)) {
             return;
         }
 
-        var parentItem = $(this._parent.children().get(item.index()));
-        var parentValue = this._parent.val();
+        var parentValues = this._parent.val();
 
-        if (item.attr('selected')) {
-            item.removeAttr('selected');
+        if (domItem.hasClass(LIST_ITEM_CLASS_SELECTED)) {
+            domItem.removeClass(LIST_ITEM_CLASS_SELECTED);
 
-            var removeIndex = parentValue.indexOf(parentItem.val());
-            parentValue.splice(removeIndex, 1);
+            var removeIndex = parentValues.indexOf(domItem.val());
+            parentValues.splice(removeIndex, 1);
         } else {
-            item.attr('selected', '');
+            domItem.addClass(LIST_ITEM_CLASS_SELECTED);
 
-            if (!parentValue) {
-                parentValue = [];
+            if (!parentValues) {
+                parentValues = [];
             }
 
-            parentValue.push(parentItem.val());
+            parentValues.push(domItem.val());
         }
 
-        this._parent.val(parentValue);
+        this._parent.val(parentValues);
         this._parent.trigger('change');
     };
 
@@ -367,12 +364,21 @@
      * @param {object} options an object with Listbox settings
      */
     $.fn.listbox = function (options) {
+        var settings = $.extend({
+            cssClass: null,
+            searchBar: false,
+            searchBarIconClass: null,
+            searchBarWatermark: 'Search...',
+            multiple: false,
+            getItems: null
+        }, options);
+
         return this.each(function () {
-            if ($(this).attr('multiple')) {
-                return !!new MultiSelectListbox($(this), options);
+            if (settings.multiple) {
+                return !!new MultiSelectListbox($(this), settings);
             }
 
-            return !!new SingleSelectListbox($(this), options);
+            return !!new SingleSelectListbox($(this), settings);
         });
     };
 })(jQuery);

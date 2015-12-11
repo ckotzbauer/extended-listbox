@@ -1,7 +1,7 @@
 <!--
   - Listbox.js demonstration page.
   -
-  - @copyright   (c) 2012, Igor Kalnitsky <igor@kalnitsky.org>
+  - @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
   - @license     BSD
   -->
 <!DOCTYPE html>
@@ -12,9 +12,12 @@
     <!-- include jQuery -->
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
-    <!-- include oldlistbox.js -->
+    <!-- include listbox.js -->
     <link href="../src/listbox.css" rel="stylesheet">
     <script src="../src/listbox.js"></script>
+
+    <!-- For Glyphicons -->
+    <!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">-->
 
     <style>
         * {
@@ -43,8 +46,8 @@
             margin-left: -222px;
         }
 
-        .lbjs { float: left; }
-        .lbjs:last-of-type { margin-left: 20px; }
+        .listbox-root { float: left; }
+        .listbox-root:last-of-type { margin-left: 20px; }
     </style>
 
 <body>
@@ -52,6 +55,7 @@
 <script>
     $(function () {
         $('div#planets').listbox({
+            multiple: true,
             getItems: function () {
                 return [
                     "Alderaan",
@@ -82,7 +86,7 @@
                     "Azerbaijan",
                     "Bahrain",
                     "Bangladesh",
-                    "Barbados",
+                    { text: "Barbados", groupHeader: true },
                     "Belarus",
                     "Belgium",
                     "Belize",
@@ -260,6 +264,6 @@
 </script>
 
 <div class="cover">
-    <div id="planets" multiple></div>
+    <div id="planets"></div>
     <div id="country"></div>
 </div><!-- .cover -->
