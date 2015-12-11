@@ -12,8 +12,10 @@ Version 1.0.0
 - ListBoxes are created now below the given root DOM element. Without an hidden ``<select>`` element.
 - The Watermark in SearchBar is now configurable.
 - Items can be marked as "GroupHeader" to structure multiple items.
-- Custom Icon in SearchBar is possible
+- Custom Button in SearchBar with custom Icon is possible
 - Removed configuration with HTML-Attributes
+- Added some delegates for event handling
+- Added Tooltips for long items
 
 
 Version 0.3.0

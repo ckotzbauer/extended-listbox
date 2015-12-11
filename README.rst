@@ -3,7 +3,7 @@ ListboxJS
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
-:Version:  1.0.0-beta.1
+:Version:  1.0.0-beta.2
 
 Documentation is currently outdated!
 ------------------------------------
