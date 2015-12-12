@@ -1,0 +1,9 @@
+language:
+  - "node_js"
+
+node_js:
+  - "5.2"
+
+script:
+  - "wget https://raw.githubusercontent.com/jonkemp/qunit-phantomjs-runner/master/runner.js"
+  - "phantomjs runner.js testsuite/index.html"
