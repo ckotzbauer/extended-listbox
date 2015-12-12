@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/code-chris/listbox.js.svg?branch=master
+:target: https://travis-ci.org/code-chris/listbox.js
+
 ListboxJS
 =========
 
