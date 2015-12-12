@@ -5,22 +5,16 @@ ListboxJS
 :License:  `BSD 3-clause`_
 :Version:  1.0.0-beta.2
 
-Documentation is currently outdated!
-------------------------------------
 
-**Listbox.js** is a simple jQuery plugin that provides a more powerful
+**ListboxJS** is a simple jQuery plugin that provides a more powerful
 alternative to the standard ``<select>`` tag. The main problem of ``<select``
-tag is that last one isn't flexible for customization with *CSS*. Listbox.js
-solves this problem. This component runs on top of ``<select>`` tag and
-creates an alternative to the last one based on ``<div>`` tags. It opens up
+tag is that last one isn't flexible for customization with *CSS*. ListboxJS
+solves this problem. This component creates a list structure based on ``<div>``
+tags. The configuration is completely in JavaScript. It opens up
 great possibilities for customization.
 
-In addition, this component provides the search bar which would be useful in
-lists with a lot of items.
-
-This component was born special for XSnippet_ project.
-
-    **NOTE:** This is my first JavaScript code. So don't judge strictly.
+In addition, this component provides other useful features like a search bar
+or group items.
 
 
 Usage
@@ -35,25 +29,27 @@ Link the component and a stylesheet from your page.
 
     <!-- include listbox plugin and default stylesheet -->
     <link href="/path/to/listbox.css" rel="stylesheet">
-    <script src="/path/to/oldlistbox.js"></script>
+    <script src="/path/to/listbox.js"></script>
 
 
-Create Listbox object.
+Create simple Listbox.
 
 .. code:: html
 
-    <select>
-      <option>Item #1</option>
-      <option>Item #2</option>
-      <option>Item #3</option>
-      <option>Item #4</option>
-    </select>
+    <div id="myListBox"></div>
 
     <script>
         $(function() {
-            $('select').listbox({
-                'class':      'myOwnClass',
-                'searchbar':  true
+            $('#myListBox').listbox({
+                searchBar:  true,
+                getItems: function() {
+                    return [
+                        "Item #1",
+                        "Item #2",
+                        "Item #3",
+                        "Item #4"
+                    ];
+                }
             });
         });
     </script>
@@ -62,48 +58,74 @@ Create Listbox object.
 Customization
 -------------
 
-Listbox.js uses following ``CSS`` classes.
+ListboxJS uses following ``CSS`` classes.
 
 .. code:: css
 
-    .lbjs {}                        /* <div>: component container */
-    .lbjs-list {}                   /* <div>: container for list items */
-    .lbjs-item {}                   /* <div>: list item */
-    .lbjs-item:not([disabled]) {}   /* <div>: enabled list item */
-    .lbjs-item[disabled] {}         /* <div>: disabled list item */
-    .lbjs-item[selected] {}         /* <div>: selected list item */
-    .lbjs-searchbar {}              /* <input>: search query input */
+    .listbox-root {}                        /* <div>: root element, you declared in the DOM */
+    .listbox {}                             /* <div>: container for list items */
+    .listbox-item {}                        /* <div>: list item (enabled by default) */
+    .listbox-item.listbox-item-selected {}  /* <div>: selected list item */
+    .listbox-item.listbox-item-disabled {}  /* <div>: disabled list item */
+    .listbox-item.listbox-item-group {}     /* <div>: group item */
+    .listbox-searchbar {}                   /* <input>: search query input */
+    .listbox-searchbar-button {}            /* <button> button in search input field */
+
+
+You can configure ListboxJS with following JS-Parameters (this shows the defaults):
+
+.. code:: js
+
+    {
+        searchBar: false,                   /* If the searchBar is visible */
+        searchBarWatermark: 'Search...',    /* Watermark text for search input */
+        searchBarButton: {                  /* Button configuration */
+            visible: false,                 /* If Button is visible */
+            icon: null,                     /* CSS class for button icon (``<i>`` tag) */
+            onClick: null                   /* Delegate for button click */
+        },
+        multiple: false,                    /* If multi selection is enabled */
+        getItems: null,                     /* Function which should return a array of items (see below) */
+        onValueChanged: null,               /* Delegate which is called on selection changes */
+        onFilterChanged: null               /* Delegate which is called on search query changes */
+    }
+
+
+Specification for item objects returned by getItems:
+
+.. code:: js
+
+    {
+        text: "Item #1",
+        id: null,
+        disabled: false,
+        selected: false,
+        groupHeader: false
+    }
+
+You can return simple strings or numbers too. They will be converted to the above object.
 
 
 FAQ
 ---
 
-- **How to bind event handler to the `click` list item event?**
-
-  Because of Listbox.js dynamically changes DOM you should use jQuery's
-  ``live()`` method:
-
-  .. code:: js
-
-      $('.myListboxClass .lbjs-item').live('click', function() {
-          alert($(this).html());
-      });
-
 - **How to make disabled item?**
 
-  The process is similar to making disabled items in the ``<select>``-tag.
-  All you need is to set the ``disabled`` attribute.
+  You have to set the ``disabled`` Property from the item to true.
 
   .. code:: js
 
-      $('.myOwnClass .lbjs-item').each(function () {
-          var value = $(this).html();
-
-          if (['PHP', 'JavaScript'].indexOf(value) != -1)
-              $(this).attr('disabled', '');
-      });
+    $('#myListBox').listbox({
+        getItems: function() {
+            return [
+                "Item #1",
+                { text: "Item #2", disabled: true },
+                "Item #3",
+                { text: "Item #4", disabled: true }
+            ];
+        }
+    });
 
 
 
 .. _BSD 3-clause: https://raw.github.com/code-chris/listbox.js/master/LICENSE
-.. _XSnippet:     http://xsnippet.org/

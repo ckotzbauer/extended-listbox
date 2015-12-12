@@ -16,6 +16,7 @@ Version 1.0.0
 - Removed configuration with HTML-Attributes
 - Added some delegates for event handling
 - Added Tooltips for long items
+- Updated documentation
 
 
 Version 0.3.0
