@@ -46,9 +46,9 @@
 
 
     /**
-     * Create an instance of Listbox. The constructor makes div-based
-     * listbox alternative for the sandard's `<select>` tag, hide parent
-     * element and place the alternative on the parent place.
+     * Create an instance of Listbox. The constructor creates div-based
+     * listbox under the given root domelement. It applies the given
+     * configuration.
      *
      * @constructor
      * @this {Listbox}
@@ -59,8 +59,7 @@
         this._parent   = domelement;
         this._settings = options;
 
-        this._createListbox();                // create a fake listbox
-        //this._parent.css('display', 'none');  // hide a parent element
+        this._createListbox();
     }
 
 
@@ -91,7 +90,7 @@
      */
     Listbox.prototype._createSearchbar = function () {
         // searchbar wrapper is needed for properly stretch
-        // the seacrhbar over the listbox width
+        // the searchbar over the listbox width
         var searchbarWrapper = $('<div>')
             .addClass(SEARCHBAR_CLASS + '-wrapper')
             .appendTo(this._parent);
@@ -132,6 +131,7 @@
         });
 
         if (this._settings.searchBarButton.visible) {
+            // create button in search field
             var button = $('<button>')
                 .attr('id', 'searchBarButton')
                 .attr('tabindex', '-1')
@@ -142,6 +142,7 @@
                 button.click(this._settings.searchBarButton.onClick);
             }
 
+            // icon for search button
             $('<i>')
                 .addClass(this._settings.searchBarButton.icon)
                 .appendTo(button);
@@ -179,6 +180,13 @@
         }
     };
 
+    /**
+     * Prepares the dataobject for one item.
+     *
+     * @private
+     * @this {Listbox}
+     * @param {object} dataItem object returned from getItems
+     */
     Listbox.prototype.prepareDataItem = function (dataItem) {
         var prepared = {
             text: null,
