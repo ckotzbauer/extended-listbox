@@ -297,11 +297,11 @@
 
         domItem.toggleClass(LIST_ITEM_CLASS_SELECTED);
         this._selectedDomItem = domItem;
-        this._parent.val(domItem.val());
+        this._parent.val(domItem.text());
         this._parent.trigger('change');
 
         if (this._settings.onValueChanged) {
-            this._settings.onValueChanged(domItem.val());
+            this._settings.onValueChanged(domItem.text());
         }
     };
 
@@ -359,7 +359,7 @@
         if (domItem.hasClass(LIST_ITEM_CLASS_SELECTED)) {
             domItem.removeClass(LIST_ITEM_CLASS_SELECTED);
 
-            var removeIndex = parentValues.indexOf(domItem.val());
+            var removeIndex = parentValues.indexOf(domItem.text());
             parentValues.splice(removeIndex, 1);
         } else {
             domItem.addClass(LIST_ITEM_CLASS_SELECTED);
@@ -368,7 +368,7 @@
                 parentValues = [];
             }
 
-            parentValues.push(domItem.val());
+            parentValues.push(domItem.text());
         }
 
         this._parent.val(parentValues);

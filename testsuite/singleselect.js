@@ -1,51 +1,70 @@
 /**
  * Listbox.js, SingleSelect Listbox tests.
  *
- * @copyright   (c) 2012, Igor Kalnitsky <igor@kalnitsky.org>
+ * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * @license     BSD
  */
 
 module('SingleSelectListbox');
 
 
+function child(element, index) {
+    if (!index) {
+        index = 0;
+    }
+
+    return $(element.children()[index]);
+}
+
+function generateSingleList(options, items) {
+    options = $.extend({
+        getItems: function () {
+            return items;
+        }
+    }, options);
+
+    return $('#test').listbox(options);
+}
+
+
 test('construct default', function () {
-    var select = $('#test').listbox();
+    var root = generateSingleList();
 
-    var listbox = select.next();
-    equal(listbox.attr('class'), 'lbjs');
+    equal(root.attr('class'), 'listbox-root');
 
-    var searchbar = listbox.find('.lbjs-searchbar');
-    notEqual(searchbar.attr('class'), 'lbjs-searchbar');
+    var listbox = child(root);
+    equal(listbox.attr('class'), 'listbox');
 
-    var list = listbox.find('.lbjs-list');
-    equal(list.attr('class'), 'lbjs-list');
+    var searchbar = listbox.find('.listbox-searchbar');
+    notEqual(searchbar.attr('class'), 'listbox-searchbar');
 });
 
 
 test('construct with searchbar', function () {
-    var select = $('#test').listbox({'searchbar': true});
-    var listbox = select.next();
+    var root = generateSingleList({ searchBar: true });
 
-    var searchbar = listbox.find('.lbjs-searchbar');
-    equal(searchbar.attr('class'), 'lbjs-searchbar');
+    var searchbar = child(root);
+    equal(searchbar.attr('class'), 'listbox-searchbar-wrapper');
+    equal(child(searchbar).attr('placeholder'), 'Search...');
+
+    var listbox = child(root, 1);
+    equal(listbox.attr('class'), 'listbox');
 });
 
+test('construct with searchbar watermark', function () {
+    var root = generateSingleList({ searchBar: true, searchBarWatermark: "Suche..." });
 
-test('construct with class', function () {
-    var select = $('#test').listbox({'class': 'testClass'});
-    var listbox = select.next();
-
-    equal(listbox.attr('class'), 'lbjs testClass');
+    var searchbar = child(root);
+    equal(child(searchbar).attr('placeholder'), 'Suche...');
 });
 
-
-test('implicit default value', function () {
+// TODO implement implicit default value
+/*test('implicit default value', function () {
     var select = $('#test')
         .append('<option>A</option>')
         .append('<option>B</option>')
         .append('<option>C</option>')
-        .listbox()
-    ;
+        .listbox();
 
     var list = select.next().find('.lbjs-list');
     var selectedItems = list.children('[selected]');
@@ -53,36 +72,34 @@ test('implicit default value', function () {
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'A');
     equal(selectedItems.text(), select.val());
-});
+});*/
 
 
 test('explicit default value', function () {
-    var select = $('#test')
-        .append('<option         >A</option>')
-        .append('<option selected>B</option>')
-        .append('<option         >C</option>')
-        .listbox()
-    ;
+    var select = generateSingleList({}, [
+        "A",
+        "B",
+        { text: "C", selected: true },
+        "D"
+    ]);
 
-    var list = select.next().find('.lbjs-list');
-    var selectedItems = list.children('[selected]');
+    var selectedItems = select.find(".listbox-item-selected");
 
     equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'B');
+    equal(selectedItems.text(), 'C');
     equal(selectedItems.text(), select.val());
 });
 
 
 test('two explicit default values', function () {
-    var select = $('#test')
-        .append('<option         >A</option>')
-        .append('<option selected>B</option>')
-        .append('<option selected>C</option>')
-        .listbox()
-    ;
+    var select = generateSingleList({}, [
+        "A",
+        { text: "B", selected: true },
+        { text: "C", selected: true },
+        "D"
+    ]);
 
-    var list = select.next().find('.lbjs-list');
-    var selectedItems = list.children('[selected]');
+    var selectedItems = select.find(".listbox-item-selected");
 
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
@@ -91,19 +108,18 @@ test('two explicit default values', function () {
 
 
 test('one click', function () {
-    var select = $('#test')
-        .append('<option>A</option>')
-        .append('<option>B</option>')
-        .append('<option>C</option>')
-        .listbox()
-    ;
+    var select = generateSingleList({}, [
+        "A",
+        "B",
+        "C",
+        "D"
+    ]);
 
-    var list = select.next().find('.lbjs-list');
-    var items = list.children();
+    var items = select.find(".listbox-item");
 
     $(items[1]).click();     // click on 'B'
 
-    var selectedItems = list.children('[selected]');
+    var selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
     equal(selectedItems.text(), select.val());
@@ -111,54 +127,53 @@ test('one click', function () {
 
 
 test('multiple clicks', function () {
-    var select = $('#test')
-        .append('<option>A</option>')
-        .append('<option>B</option>')
-        .append('<option>C</option>')
-        .listbox()
-    ;
+    var select = generateSingleList({}, [
+        "A",
+        "B",
+        "C",
+        "D"
+    ]);
 
-    var list = select.next().find('.lbjs-list');
-    var items = list.children();
+    var items = select.find(".listbox-item");
 
     $(items[1]).click();     // click on 'B'
 
-    var selectedItems = list.children('[selected]');
+    var selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
     equal(selectedItems.text(), select.val());
 
     $(items[2]).click();     // click on 'C'
 
-    var selectedItems = list.children('[selected]');
+    selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
     equal(selectedItems.text(), select.val());
 
     $(items[0]).click();     // click on 'A'
 
-    var selectedItems = list.children('[selected]');
+    selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'A');
     equal(selectedItems.text(), select.val());
 
-    $(items[0]).click();     // click on 'A'
+    $(items[3]).click();     // click on 'D'
 
-    var selectedItems = list.children('[selected]');
+    selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'A');
+    equal(selectedItems.text(), 'D');
     equal(selectedItems.text(), select.val());
 
     $(items[1]).click();     // click on 'B'
 
-    var selectedItems = list.children('[selected]');
+    selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
     equal(selectedItems.text(), select.val());
 
     $(items[2]).click();     // click on 'C'
 
-    var selectedItems = list.children('[selected]');
+    selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
     equal(selectedItems.text(), select.val());
@@ -166,20 +181,19 @@ test('multiple clicks', function () {
 
 
 test('change event', function () {
-    var select = $('#test')
-        .append('<option>A</option>')
-        .append('<option>B</option>')
-        .append('<option>C</option>')
-        .listbox()
-    ;
+    var select = generateSingleList({}, [
+        "A",
+        "B",
+        "C",
+        "D"
+    ]);
 
     var receiveCounter = 0;
     select.on('change', function() {
         receiveCounter++;
     });
 
-    var list = select.next().find('.lbjs-list');
-    var items = list.children();
+    var items = select.find(".listbox-item");
 
     $(items[0]).click();
     equal(receiveCounter, 1);
@@ -188,4 +202,32 @@ test('change event', function () {
     $(items[2]).click();
 
     equal(receiveCounter, 3);
+});
+
+test('onValueChanged callback', function () {
+    var receiveCounter = 0;
+    var lastValue = null;
+    var callback = function(newValue) {
+        receiveCounter++;
+        lastValue = newValue;
+    };
+
+    var select = generateSingleList({ onValueChanged: callback }, [
+        "A",
+        "B",
+        "C",
+        "D"
+    ]);
+
+    var items = select.find(".listbox-item");
+
+    $(items[0]).click();
+    equal(receiveCounter, 1);
+    equal(lastValue, "A");
+
+    $(items[1]).click();
+    $(items[2]).click();
+
+    equal(receiveCounter, 3);
+    equal(lastValue, "C");
 });
