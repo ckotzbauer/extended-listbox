@@ -65,6 +65,8 @@
 
 .listbox-root .listbox-searchbar-wrapper  .listbox-searchbar-button {
     margin-left: -22px;
+    border: none;
+    background: none;
 }
 
 .listbox-root .listbox-searchbar-wrapper .listbox-searchbar {
