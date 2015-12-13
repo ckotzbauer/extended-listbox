@@ -1,7 +1,7 @@
 ListboxJS
 =========
 .. image:: https://travis-ci.org/code-chris/listbox.js.svg?branch=master
-:target: https://travis-ci.org/code-chris/listbox.js
+   :target: https://travis-ci.org/code-chris/listbox.js
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
