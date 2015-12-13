@@ -174,7 +174,7 @@
             if (items) {
                 var index;
                 for (index in items) {
-                    this.addItem(this.prepareDataItem(items[index]));
+                    this.addItem(this._prepareDataItem(items[index]));
                 }
             }
         }
@@ -187,7 +187,7 @@
      * @this {Listbox}
      * @param {object} dataItem object returned from getItems
      */
-    Listbox.prototype.prepareDataItem = function (dataItem) {
+    Listbox.prototype._prepareDataItem = function (dataItem) {
         var prepared = {
             text: null,
             id: null,
@@ -211,7 +211,7 @@
      * @this {Listbox}
      * @param {object} dataItem display data for item
      */
-    Listbox.prototype.addItem = function (dataItem) {
+    Listbox.prototype._addItem = function (dataItem) {
         var self = this;
         var item = $('<div>')
             .addClass(LIST_ITEM_CLASS)
@@ -236,6 +236,16 @@
         }
     };
 
+    /**
+     * Add item to the listbox.
+     *
+     * @this {Listbox}
+     * @param {object} dataItem display data for item
+     */
+    Listbox.prototype.addItem = function (dataItem) {
+        this._addItem(this._prepareDataItem(dataItem));
+    };
+
 
 
 
@@ -247,6 +257,19 @@
      */
     Listbox.prototype.removeItem = function (parentItem) {
         // @todo: implement
+    };
+
+
+
+
+    /**
+     * Reverts all changes on the DOM
+     *
+     * @this {Listbox}
+     */
+    Listbox.prototype.destroy = function () {
+        this._parent.children().remove();
+        this._parent.removeClass(MAIN_CLASS);
     };
 
 
@@ -391,13 +414,7 @@
 
 
 
-    /**
-     * jQuery plugin definition. Please note, that jQuery's `each()` method
-     * returns `false` to stop iteration; otherwise it should return `true`.
-     *
-     * @param {object} options an object with Listbox settings
-     */
-    $.fn.listbox = function (options) {
+    function initializeListBoxFromOptions(options) {
         var settings = $.extend({
             searchBar: false,
             searchBarWatermark: 'Search...',
@@ -409,11 +426,63 @@
         }, options);
 
         return this.each(function () {
+            var instance;
+
             if (settings.multiple) {
-                return !!new MultiSelectListbox($(this), settings);
+                instance = new MultiSelectListbox($(this), settings);
+            } else {
+                instance = new SingleSelectListbox($(this), settings);
             }
 
-            return !!new SingleSelectListbox($(this), settings);
+            $(this).data('listbox', instance);
+
+            return !!instance;
         });
+    }
+
+    function callApiFunction(functionName, callArgs) {
+        var publicFunctions = ["addItem", "removeItem", "destroy"];
+        var ret = null;
+
+        this.each(function () {
+            var instance = $(this).data('listbox');
+
+            if (instance == null && window.console && console.error) {
+                console.error(
+                    'The listbox(\'' + functionName + '\') method was called on an ' +
+                    'element that is not using ListBox.'
+                );
+                return;
+            }
+
+            if ($.inArray(functionName, publicFunctions) === -1) {
+                console.error(
+                    '' + functionName + ' is no public API function.'
+                );
+                return;
+            }
+
+            var args = Array.prototype.slice.call(callArgs, 1);
+
+            ret = instance[functionName].apply(instance, args);
+        });
+
+        return ret;
+    }
+
+
+
+    /**
+     * jQuery plugin definition. Please note, that jQuery's `each()` method
+     * returns `false` to stop iteration; otherwise it should return `true`.
+     *
+     * @param {object} options an object with Listbox settings
+     */
+    $.fn.listbox = function (options) {
+        if (typeof options === 'object') {
+            return initializeListBoxFromOptions.call(this, options);
+        } else if (typeof options === 'string') {
+            return callApiFunction.call(this, options, arguments);
+        }
     };
 })(jQuery);
