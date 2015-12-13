@@ -9,7 +9,7 @@ ListboxJS
 
 
 **ListboxJS** is a simple jQuery plugin that provides a more powerful
-alternative to the standard ``<select>`` tag. The main problem of ``<select``
+alternative to the standard ``<select>`` tag. The main problem of ``<select>``
 tag is that last one isn't flexible for customization with *CSS*. ListboxJS
 solves this problem. This component creates a list structure based on ``<div>``
 tags. The configuration is completely in JavaScript. It opens up

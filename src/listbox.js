@@ -2,10 +2,11 @@
  * Listbox.js is a simple jQuery plugin that provides a more powerful
  * alternative to the standard `<select>` tag.
  *
- * The main problem of <select> tag is that last one isn't flexible for
- * customization with CSS. Listbox.js solves this problem. This component
- * runs on top of <select> tag and creates an alternative to the last one
- * based on <div> tags. It opens up great possibilities for customization.
+ * The main problem of <select> tag is that last one isn't flexible
+ * for customization with *CSS*. ListboxJS solves this problem.
+ * This component creates a list structure based on <div> tags.
+ * The configuration is completely in JavaScript. It opens up great
+ * possibilities for customization.
  *
  * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * @version     1.0.0-beta.2
