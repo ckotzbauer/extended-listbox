@@ -181,6 +181,17 @@
     };
 
     /**
+     * Generates a new ID for a item.
+     *
+     * @private
+     * @this {Listbox}
+     */
+    Listbox.prototype._generateItemId = function () {
+        var num = parseInt(Math.random() * 10000000, 10);
+        return "listboxitem" + num;
+    };
+
+    /**
      * Prepares the dataobject for one item.
      *
      * @private
@@ -190,7 +201,7 @@
     Listbox.prototype._prepareDataItem = function (dataItem) {
         var prepared = {
             text: null,
-            id: null,
+            id: this._generateItemId(),
             disabled: false,
             selected: false,
             groupHeader: false
