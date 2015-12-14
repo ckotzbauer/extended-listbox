@@ -5,7 +5,7 @@ ListboxJS
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
-:Version:  1.0.0-beta.2
+:Version:  1.0.0-beta.3
 
 
 **ListboxJS** is a simple jQuery plugin that provides a more powerful
@@ -53,6 +53,37 @@ Create simple Listbox.
                     ];
                 }
             });
+        });
+    </script>
+
+
+
+Add or remove Item manually after initialization.
+
+.. code:: html
+
+    <div id="myListBox"></div>
+
+    <script>
+        $(function() {
+            $('#myListBox').listbox("addItem", "New Item");
+            $('#myListBox').listbox("addItem", { text: "My Item", disabled: true });
+
+            $('#myListBox').listbox("removeItem", "Item #2");
+        });
+    </script>
+
+
+
+Destroy listbox (reverts all changes on the DOM).
+
+.. code:: html
+
+    <div id="myListBox"></div>
+
+    <script>
+        $(function() {
+            $('#myListBox').listbox("destroy");
         });
     </script>
 

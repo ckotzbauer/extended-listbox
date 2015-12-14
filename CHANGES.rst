@@ -17,6 +17,9 @@ Version 1.0.0
 - Added some delegates for event handling
 - Added Tooltips for long items
 - Updated documentation
+- Public function ``addItem`` to add an item manually
+- Public function ``removeItem`` to remove an item manually
+- Public function ``destroy`` to revert all changes from the DOM
 
 
 Version 0.3.0
