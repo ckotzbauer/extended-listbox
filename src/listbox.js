@@ -24,6 +24,7 @@
     var LIST_ITEM_CLASS_DISABLED = 'listbox-item-disabled';
     var LIST_ITEM_CLASS_SELECTED = 'listbox-item-selected';
     var LIST_ITEM_CLASS_GROUP = 'listbox-item-group';
+    var LIST_ITEM_CLASS_CHILD = 'listbox-item-child';
     var SEARCHBAR_CLASS = 'listbox-searchbar';
     var SEARCHBAR_BUTTON_CLASS = 'listbox-searchbar-button';
 
@@ -107,7 +108,7 @@
 
             if (searchQuery !== '') {
                 // hide list items which are not matched search query
-                self._list.children().each(function (index) {
+                self._list.find("." + LIST_ITEM_CLASS).each(function () {
                     var text = $(this).text().toLowerCase();
 
                     if (text.search('^' + searchQuery) != -1) {
@@ -118,7 +119,7 @@
                 });
             } else {
                 // make visible all list items
-                self._list.children().each(function () {
+                self._list.find("." + LIST_ITEM_CLASS).each(function () {
                     $(this).css('display', 'block');
                 });
             }
@@ -174,7 +175,7 @@
             if (items) {
                 var index;
                 for (index in items) {
-                    this.addItem(this._prepareDataItem(items[index]));
+                    this.addItem(this._prepareDataItem(items[index]), true);
                 }
             }
         }
@@ -202,6 +203,8 @@
         var prepared = {
             text: null,
             id: this._generateItemId(),
+            parentGroupId: null,
+            index: null,
             disabled: false,
             selected: false,
             groupHeader: false
@@ -221,12 +224,12 @@
      *
      * @this {Listbox}
      * @param {object} dataItem display data for item
+     * @param {object} internal: true if this function is not called directly as api function.
      */
-    Listbox.prototype._addItem = function (dataItem) {
+    Listbox.prototype._addItem = function (dataItem, internal) {
         var self = this;
         var item = $('<div>')
             .addClass(LIST_ITEM_CLASS)
-            .appendTo(this._list)
             .text(dataItem.text)
             .attr("id", dataItem.id)
             .attr("title", dataItem.text)
@@ -243,9 +246,34 @@
             item.addClass(LIST_ITEM_CLASS_GROUP);
         }
 
+        var $parent = null;
+        if (dataItem.parentGroupId) {
+            $parent = $("#" + dataItem.parentGroupId, this._list);
+            if ($parent.length > 0) {
+                item.addClass(LIST_ITEM_CLASS_CHILD);
+            } else {
+                // TODO: remove this temp fix
+                $parent = $('div[title="' + dataItem.parentGroupId + '"]');
+                if ($parent.length > 0) {
+                    item.addClass(LIST_ITEM_CLASS_CHILD);
+                }
+            }
+        }
+
         if (dataItem.selected) {
             this.onItemClick(item);
         }
+
+        var $target = $parent && $parent.length > 0 ? $parent : this._list;
+        if (dataItem.index !== undefined && dataItem.index !== null && !internal) {
+            $target = $target.children().eq(dataItem.index);
+            item.insertBefore($target);
+        } else {
+            item.appendTo($target);
+        }
+
+
+        return dataItem.id;
     };
 
     /**
@@ -254,8 +282,8 @@
      * @this {Listbox}
      * @param {object} dataItem display data for item
      */
-    Listbox.prototype.addItem = function (dataItem) {
-        this._addItem(this._prepareDataItem(dataItem));
+    Listbox.prototype.addItem = function (dataItem, internal) {
+        return this._addItem(this._prepareDataItem(dataItem), internal);
     };
 
 

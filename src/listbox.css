@@ -51,8 +51,12 @@
 .listbox-root .listbox .listbox-item.listbox-item-group {
     color: black;
     font-weight: bold;
-    padding-left: 0;
     cursor: default;
+}
+
+.listbox-root .listbox .listbox-item.listbox-item-child {
+    padding-left: 15px;
+    font-weight: normal;
 }
 
 .listbox-root .listbox .listbox-item.listbox-item-group:hover {
