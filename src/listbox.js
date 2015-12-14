@@ -249,14 +249,13 @@
         var $parent = null;
         if (dataItem.parentGroupId) {
             $parent = $("#" + dataItem.parentGroupId, this._list);
-            if ($parent.length > 0) {
-                item.addClass(LIST_ITEM_CLASS_CHILD);
-            } else {
+            if ($parent.length === 0) {
                 // TODO: remove this temp fix
                 $parent = $('div[title="' + dataItem.parentGroupId + '"]');
-                if ($parent.length > 0) {
-                    item.addClass(LIST_ITEM_CLASS_CHILD);
-                }
+            }
+
+            if ($parent.length > 0) {
+                item.addClass(LIST_ITEM_CLASS_CHILD);
             }
         }
 
@@ -338,6 +337,71 @@
         }
 
         this._list.height(listHeight);
+    };
+
+    /**
+     * Returns the dataItem for a given id or text.
+     *
+     * @private
+     * @param {object} id unique id or text from listItem
+     */
+    Listbox.prototype.getItem = function(id) {
+        var data = null;
+
+        var $item = $("#" + id, this._list);
+        if ($item.length === 0) {
+            $item = $('div[title="' + id + '"]');
+        }
+
+        if ($item.length > 0) {
+            data = $item.data("dataItem");
+        }
+
+        return data;
+    };
+
+    /**
+     * Decreases the index of the item by one.
+     *
+     * @private
+     * @param {object} id unique id or text from listItem
+     */
+    Listbox.prototype.moveItemUp = function(id) {
+        var newIndex = null;
+
+        var $item = $("#" + id, this._list);
+        if ($item.length === 0) {
+            $item = $('div[title="' + id + '"]');
+        }
+
+        if ($item.length > 0) {
+            $item.insertBefore($item.prev());
+            newIndex = $item.index();
+        }
+
+        return newIndex;
+    };
+
+    /**
+     * Increases the index of the item by one.
+     *
+     * @private
+     * @param {object} id unique id or text from listItem
+     */
+    Listbox.prototype.moveItemDown = function(id) {
+        var newIndex = null;
+
+        var $item = $("#" + id, this._list);
+        if ($item.length === 0) {
+            $item = $('div[title="' + id + '"]');
+        }
+
+        if ($item.length > 0) {
+            $item.insertAfter($item.next());
+            newIndex = $item.index();
+        }
+
+        return newIndex;
     };
 
 
@@ -499,7 +563,7 @@
     }
 
     function callApiFunction(functionName, callArgs) {
-        var publicFunctions = ["addItem", "removeItem", "destroy"];
+        var publicFunctions = ["addItem", "removeItem", "destroy", "getItem", "moveItemUp", "moveItemDown"];
         var ret = null;
 
         this.each(function () {
