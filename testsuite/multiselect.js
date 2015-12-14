@@ -34,7 +34,19 @@ function itemsToVal(items) {
           result += ',';
       }
 
-      result += $(items[i]).text();
+      result += $(items[i]).data("dataItem").text;
+    }
+    return result;
+}
+
+function jsonToVal(items) {
+    var result = '';
+    for (var i = 0; i < items.length; ++i) {
+        if (i != 0) {
+            result += ',';
+        }
+
+        result += JSON.parse(items[i]).text;
     }
     return result;
 }
@@ -46,7 +58,7 @@ function arrayToVal(items) {
             result += ',';
         }
 
-        result += items[i];
+        result += JSON.parse(items[i]).text;
     }
     return result;
 }
@@ -112,7 +124,7 @@ test('explicit default value', function () {
 
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem").text, jsonToVal(select.val()));
 });
 
 
@@ -128,7 +140,7 @@ test('two explicit default values', function () {
 
     equal(selectedItems.length, 2);
     equal(itemsToVal(selectedItems), 'B,C');
-    equal(itemsToVal(selectedItems), select.val());
+    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
 });
 
 
@@ -147,7 +159,7 @@ test('one click', function () {
     var selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem").text, jsonToVal(select.val()));
 });
 
 
@@ -186,7 +198,7 @@ test('two clicks on different items', function () {
     var selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 2);
     equal(itemsToVal(selectedItems), 'A,C');
-    equal(itemsToVal(selectedItems), select.val());
+    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
 });
 
 
@@ -205,28 +217,28 @@ test('multiple clicks', function () {
     var selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(itemsToVal(selectedItems), 'A');
-    equal(itemsToVal(selectedItems), select.val());
+    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
 
     $(items[1]).click();     // click on 'B'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 2);
     equal(itemsToVal(selectedItems), 'A,B');
-    equal(itemsToVal(selectedItems), select.val());
+    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
 
     $(items[0]).click();     // click on 'A'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(itemsToVal(selectedItems), 'B');
-    equal(itemsToVal(selectedItems), select.val());
+    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
 
     $(items[2]).click();     // click on 'C'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 2);
     equal(itemsToVal(selectedItems), 'B,C');
-    equal(itemsToVal(selectedItems), select.val());
+    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
 
     $(items[0]).click();     // click on 'A'
 
@@ -247,7 +259,7 @@ test('multiple clicks', function () {
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(itemsToVal(selectedItems), 'C');
-    equal(itemsToVal(selectedItems), select.val());
+    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
 
     $(items[1]).click();     // click on 'B'
 
@@ -261,7 +273,7 @@ test('multiple clicks', function () {
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(itemsToVal(selectedItems), 'B');
-    equal(itemsToVal(selectedItems), select.val());
+    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
 });
 
 

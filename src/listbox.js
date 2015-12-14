@@ -219,6 +219,7 @@
             .text(dataItem.text)
             .attr("id", dataItem.id)
             .attr("title", dataItem.text)
+            .data("dataItem", dataItem)
             .click(function () {
                 self.onItemClick($(this));
             });
@@ -334,15 +335,21 @@
 
         // Remove selected class from all other items
         this._list.children().removeClass(LIST_ITEM_CLASS_SELECTED);
+        var index;
+        for (index = 0; index < this._list.children().length; index++) {
+            $(this._list.children()[index]).data("dataItem").selected = false;
+        }
+
         this._selectedDomItem = null;
 
         domItem.toggleClass(LIST_ITEM_CLASS_SELECTED);
         this._selectedDomItem = domItem;
-        this._parent.val(domItem.text());
+        domItem.data("dataItem").selected = true;
+        this._parent.val(domItem.data("dataItem"));
         this._parent.trigger('change');
 
         if (this._settings.onValueChanged) {
-            this._settings.onValueChanged(domItem.text());
+            this._settings.onValueChanged(domItem.data("dataItem"));
         }
     };
 
@@ -400,16 +407,19 @@
         if (domItem.hasClass(LIST_ITEM_CLASS_SELECTED)) {
             domItem.removeClass(LIST_ITEM_CLASS_SELECTED);
 
-            var removeIndex = parentValues.indexOf(domItem.text());
+            var removeIndex = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
             parentValues.splice(removeIndex, 1);
+
+            domItem.data("dataItem").selected = false;
         } else {
             domItem.addClass(LIST_ITEM_CLASS_SELECTED);
+            domItem.data("dataItem").selected = true;
 
             if (!parentValues) {
                 parentValues = [];
             }
 
-            parentValues.push(domItem.text());
+            parentValues.push(JSON.stringify(domItem.data("dataItem")));
         }
 
         this._parent.val(parentValues);

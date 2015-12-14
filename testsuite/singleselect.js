@@ -87,7 +87,7 @@ test('explicit default value', function () {
 
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 });
 
 
@@ -103,7 +103,7 @@ test('two explicit default values', function () {
 
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 });
 
 
@@ -122,7 +122,7 @@ test('one click', function () {
     var selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 });
 
 
@@ -141,42 +141,42 @@ test('multiple clicks', function () {
     var selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 
     $(items[2]).click();     // click on 'C'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 
     $(items[0]).click();     // click on 'A'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'A');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 
     $(items[3]).click();     // click on 'D'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'D');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 
     $(items[1]).click();     // click on 'B'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 
     $(items[2]).click();     // click on 'C'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.text(), select.val());
+    equal(selectedItems.data("dataItem"), select.val());
 });
 
 
@@ -209,7 +209,7 @@ test('onValueChanged callback', function () {
     var lastValue = null;
     var callback = function(newValue) {
         receiveCounter++;
-        lastValue = newValue;
+        lastValue = newValue.text;
     };
 
     var select = generateSingleList({ onValueChanged: callback }, [
