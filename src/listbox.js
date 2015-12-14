@@ -250,13 +250,22 @@
 
 
     /**
-     * Remove item from the listbox.
+     * Remove first matching item from the listbox.
      *
      * @this {Listbox}
-     * @param {object} parentItem DOM element of the parent options
+     * @param {string} item: display text or id from item to remove
      */
-    Listbox.prototype.removeItem = function (parentItem) {
-        // @todo: implement
+    Listbox.prototype.removeItem = function (item) {
+        var items = this._list.find("." + LIST_ITEM_CLASS);
+        var index;
+
+        for (index in items) {
+            var uiItem = $(items[index]);
+            if (uiItem.text() === item || uiItem.attr("id") === item) {
+                uiItem.remove();
+                return;
+            }
+        }
     };
 
 
