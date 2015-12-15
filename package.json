@@ -1,7 +1,7 @@
 {
-  "name": "listboxjs",
-  "version": "1.0.0-beta.6",
-  "description": "Listbox.js is a simple jQuery plugin that provides a more powerful alternative to the standard `select` tag",
+  "name": "extended-listbox",
+  "version": "1.0.0",
+  "description": "Extended-Listbox is a simple jQuery plugin that provides a more powerful alternative to the standard `select` tag",
   "main": "src/listbox.js",
   "repository": {
     "type": "git",

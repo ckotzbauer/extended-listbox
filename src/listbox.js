@@ -1,5 +1,5 @@
 /**
- * Listbox.js is a simple jQuery plugin that provides a more powerful
+ * Extended-Listbox is a simple jQuery plugin that provides a more powerful
  * alternative to the standard `<select>` tag.
  *
  * The main problem of <select> tag is that last one isn't flexible
@@ -9,7 +9,7 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.0-beta.6
+ * @version     1.0.0
  * @license     BSD
  */
 
@@ -17,7 +17,7 @@
     'use strict';
 
 
-    // CSS classes used by Listbox.js
+    // CSS classes used by Extended-Listbox
     var MAIN_CLASS = 'listbox-root';
     var LIST_CLASS = 'listbox';
     var LIST_ITEM_CLASS = 'listbox-item';

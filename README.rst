@@ -1,14 +1,14 @@
-ListboxJS
-=========
+Extended Listbox
+================
 .. image:: https://travis-ci.org/code-chris/listbox.js.svg?branch=master
    :target: https://travis-ci.org/code-chris/listbox.js
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
-:Version:  1.0.0-beta.6
+:Version:  1.0.0
 
 
-**ListboxJS** is a simple jQuery plugin that provides a more powerful
+**Extended Listbox** is a simple jQuery plugin that provides a more powerful
 alternative to the standard ``<select>`` tag. The main problem of ``<select>``
 tag is that last one isn't flexible for customization with *CSS*. ListboxJS
 solves this problem. This component creates a list structure based on ``<div>``

@@ -6,7 +6,7 @@ Here you can see the full list of changes between each Listbox.js release.
 Version 1.0.0
 `````````````
 
-(release date to be announced)
+Released on December 15, 2015.
 
 - Forked from https://github.com/ikalnitsky/listbox.js
 - ListBoxes are created now below the given root DOM element. Without an hidden ``<select>`` element.
@@ -25,6 +25,7 @@ Version 1.0.0
 - Public function ``moveItemUp`` to decrease the index base position of an item by one.
 - Public function ``moveItemDown`` to increase the index base position of an item by one.
 - Public function ``clearSelection`` to remove all selections in the list.
+- Published as bower package.
 
 
 Version 0.3.0
