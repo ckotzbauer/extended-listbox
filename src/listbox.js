@@ -325,6 +325,10 @@
      * @param {object} internal: true if this function is not called directly as api function.
      */
     Listbox.prototype.addItem = function (dataItem, internal) {
+        if (!internal && !this._settings.multiple && dataItem.selected) {
+            this.clearSelection();
+        }
+
         return this._addItem(this._prepareDataItem(dataItem), internal);
     };
 
@@ -344,6 +348,8 @@
         for (index in items) {
             var uiItem = $(items[index]);
             if (uiItem.text() === item || uiItem.attr("id") === item) {
+                this._clearItemSelection(uiItem);
+
                 uiItem.remove();
                 return;
             }
@@ -381,6 +387,56 @@
 
         this._list.height(listHeight);
     };
+
+
+    /**
+     * Clears all selected items.
+     *
+     * @private
+     */
+    Listbox.prototype.clearSelection = function() {
+        // Remove selected class from all other items
+        var allItems = this._list.find("." + LIST_ITEM_CLASS);
+
+        allItems.removeClass(LIST_ITEM_CLASS_SELECTED);
+        var index;
+        for (index = 0; index < allItems.length; index++) {
+            $(allItems[index]).data("dataItem").selected = false;
+        }
+
+        if (this._settings.multiple) {
+            this._parent.val([]);
+        } else {
+            this._parent.val(null);
+        }
+
+        this._parent.trigger('change');
+    };
+
+
+    /**
+     * Clears selection of given items.
+     *
+     * @private
+     * @param {object} domItem DOM item
+     */
+    Listbox.prototype._clearItemSelection = function(domItem) {
+        domItem.removeClass(LIST_ITEM_CLASS_SELECTED);
+        domItem.data("dataItem").selected = false;
+
+        if (this._settings.multiple) {
+            var parentValues = this._parent.val();
+            var removeIndex = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
+            parentValues.splice(removeIndex, 1);
+            this._parent.val(parentValues);
+        } else {
+            this._parent.val(null);
+        }
+
+        this._parent.trigger('change');
+    };
+
+
 
     /**
      * Returns the dataItem for a given id or text.
@@ -479,12 +535,7 @@
             return;
         }
 
-        // Remove selected class from all other items
-        this._list.children().removeClass(LIST_ITEM_CLASS_SELECTED);
-        var index;
-        for (index = 0; index < this._list.children().length; index++) {
-            $(this._list.children()[index]).data("dataItem").selected = false;
-        }
+        this.clearSelection();
 
         this._selectedDomItem = null;
 
