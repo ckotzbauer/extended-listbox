@@ -5,7 +5,7 @@ ListboxJS
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
-:Version:  1.0.0-beta.5
+:Version:  1.0.0-beta.6
 
 
 **ListboxJS** is a simple jQuery plugin that provides a more powerful
@@ -180,7 +180,8 @@ You can configure ListboxJS with following JS-Parameters (this shows the default
         multiple: false,                    /* If multi selection is enabled */
         getItems: null,                     /* Function which should return a array of items (see below) */
         onValueChanged: null,               /* Delegate which is called on selection changes */
-        onFilterChanged: null               /* Delegate which is called on search query changes */
+        onFilterChanged: null,              /* Delegate which is called on search query changes */
+        onItemsChanged: null                /* Called if items where added, removed or their position changed */
     }
 
 
