@@ -297,6 +297,7 @@
      *
      * @this {Listbox}
      * @param {object} dataItem display data for item
+     * @param {object} internal: true if this function is not called directly as api function.
      */
     Listbox.prototype.addItem = function (dataItem, internal) {
         return this._addItem(this._prepareDataItem(dataItem), internal);
