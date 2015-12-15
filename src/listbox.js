@@ -224,6 +224,7 @@
             disabled: false,
             selected: false,
             groupHeader: false,
+            parentGroupId: null,
             childItems: []
         };
 
@@ -275,6 +276,17 @@
 
         if (dataItem.selected) {
             this.onItemClick(item);
+        }
+
+        if (dataItem.parentGroupId) {
+            var $possibleParent = $("#" + dataItem.parentGroupId, this._list);
+            if ($possibleParent.length === 0) {
+                $possibleParent = $('div[title="' + dataItem.parentGroupId + '"]');
+            }
+
+            if ($possibleParent.length > 0) {
+                $parent = $possibleParent;
+            }
         }
 
         if ($parent) {
