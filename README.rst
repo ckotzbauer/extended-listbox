@@ -5,7 +5,7 @@ ListboxJS
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
-:Version:  1.0.0-beta.3
+:Version:  1.0.0-beta.4
 
 
 **ListboxJS** is a simple jQuery plugin that provides a more powerful
@@ -68,8 +68,53 @@ Add or remove Item manually after initialization.
         $(function() {
             $('#myListBox').listbox("addItem", "New Item");
             $('#myListBox').listbox("addItem", { text: "My Item", disabled: true });
+            $('#myListBox').listbox("addItem", { text: "My Item", parentGroupId: "My Parent" });
 
             $('#myListBox').listbox("removeItem", "Item #2");
+        });
+    </script>
+
+
+
+Change position of item inside the list by one.
+
+.. code:: html
+
+    <div id="myListBox"></div>
+
+    <script>
+        $(function() {
+            $('#myListBox').listbox("moveItemUp", "My Item"); // Decreases the index based position by one.
+            $('#myListBox').listbox("moveItemDown", "My Item"); // Increases the index based position by one.
+        });
+    </script>
+
+
+
+Get the dataItem object for one element.
+
+.. code:: html
+
+    <div id="myListBox"></div>
+
+    <script>
+        $(function() {
+            $('#myListBox').listbox("getItem", "My Item");
+        });
+    </script>
+
+
+
+Get current selected items. Returns the complex data item for single selection and a array of their
+JSON representation for multi selection.
+
+.. code:: html
+
+    <div id="myListBox"></div>
+
+    <script>
+        $(function() {
+            $('#myListBox').val();
         });
     </script>
 
@@ -101,6 +146,7 @@ ListboxJS uses following ``CSS`` classes.
     .listbox-item.listbox-item-selected {}  /* <div>: selected list item */
     .listbox-item.listbox-item-disabled {}  /* <div>: disabled list item */
     .listbox-item.listbox-item-group {}     /* <div>: group item */
+    .listbox-item.listbox-item-child {}     /* <div>: item under a group item */
     .listbox-searchbar {}                   /* <input>: search query input */
     .listbox-searchbar-button {}            /* <button> button in search input field */
 
@@ -124,16 +170,19 @@ You can configure ListboxJS with following JS-Parameters (this shows the default
     }
 
 
-Specification for item objects returned by getItems:
+Specification for item objects returned by ``getItems``:
 
 .. code:: js
 
     {
-        text: "Item #1",
-        id: null,
-        disabled: false,
-        selected: false,
-        groupHeader: false
+        text: "Item #1",            /* Displayable item text */
+        id: [generated],            /* Unique element id, if no set it will be generated like ``listboxitem8294854`` */
+        index: null,                /* Index position of item in the list; only used for manual ``addItem`` calls. */
+        disabled: false,            /* ``true`` if the item should not be selectable */
+        selected: false,            /* ``true`` if the item is selected */
+        groupHeader: false,         /* ``true`` if the item has childs */
+        parentGroupId: null,        /* ID or display text for parent item to use; only used for manual ``addItem`` calls.  */
+        childItems: []              /* list of child items */
     }
 
 You can return simple strings or numbers too. They will be converted to the above object.

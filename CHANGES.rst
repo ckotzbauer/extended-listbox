@@ -20,6 +20,9 @@ Version 1.0.0
 - Public function ``addItem`` to add an item manually
 - Public function ``removeItem`` to remove an item manually
 - Public function ``destroy`` to revert all changes from the DOM
+- Public function ``getItem`` to get the complex data item
+- Public function ``moveItemUp`` to decrease the index base position of an item by one.
+- Public function ``moveItemDown`` to increase the index base position of an item by one.
 
 
 Version 0.3.0
