@@ -108,6 +108,11 @@
         var currentSelection = $("div#dest").val();
         $("div#dest").listbox("moveItemDown", currentSelection.id);
     }
+
+    function getItems() {
+        var items = $("div#dest").listbox("getItems");
+        console.log(items);
+    }
 </script>
 
 <div class="cover">
@@ -117,4 +122,5 @@
     <button onclick="unassign()">Unassign</button>
     <button onclick="up()">Up</button>
     <button onclick="down()">Down</button>
+    <button onclick="getItems()">GetItems</button>
 </div><!-- .cover -->
