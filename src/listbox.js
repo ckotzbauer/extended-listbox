@@ -217,21 +217,30 @@
      * @param {object} dataItem object returned from getItems
      */
     Listbox.prototype._prepareDataItem = function (dataItem) {
-        var prepared = {
+        var defaults = {
             text: null,
             id: this._generateItemId(),
-            parentGroupId: null,
             index: null,
             disabled: false,
             selected: false,
-            groupHeader: false
+            groupHeader: false,
+            childItems: []
         };
 
         if (typeof dataItem === "string" || typeof dataItem === "number") {
-            prepared.text = dataItem;
-            return prepared;
+            defaults.text = dataItem;
+            return defaults;
         } else {
-            return $.extend(prepared, dataItem);
+            var item = $.extend(defaults, dataItem);
+
+            var childs = [];
+            var index;
+            for (index = 0; index < item.childItems.length; index++) {
+                childs.push(this._prepareDataItem(item.childItems[index]));
+            }
+
+            item.childItems = childs;
+            return item;
         }
     };
 
@@ -242,8 +251,9 @@
      * @this {Listbox}
      * @param {object} dataItem display data for item
      * @param {object} internal: true if this function is not called directly as api function.
+     * * @param {object} $parent: the DOM parent element
      */
-    Listbox.prototype._addItem = function (dataItem, internal) {
+    Listbox.prototype._addItem = function (dataItem, internal, $parent) {
         var self = this;
         var item = $('<div>')
             .addClass(LIST_ITEM_CLASS)
@@ -263,29 +273,32 @@
             item.addClass(LIST_ITEM_CLASS_GROUP);
         }
 
-        var $parent = null;
-        if (dataItem.parentGroupId) {
-            $parent = $("#" + dataItem.parentGroupId, this._list);
-            if ($parent.length === 0) {
-                // TODO: remove this temp fix
-                $parent = $('div[title="' + dataItem.parentGroupId + '"]');
-            }
-
-            if ($parent.length > 0) {
-                item.addClass(LIST_ITEM_CLASS_CHILD);
-            }
-        }
-
         if (dataItem.selected) {
             this.onItemClick(item);
         }
 
-        var $target = $parent && $parent.length > 0 ? $parent : this._list;
+        if ($parent) {
+            item.addClass(LIST_ITEM_CLASS_CHILD);
+        }
+
+        var $target = $parent ? $parent : this._list;
         if (dataItem.index !== undefined && dataItem.index !== null && !internal) {
             $target = $target.children().eq(dataItem.index);
             item.insertBefore($target);
         } else {
             item.appendTo($target);
+        }
+
+        if (dataItem.childItems && dataItem.childItems.length > 0) {
+            if (!item.hasClass(LIST_ITEM_CLASS_GROUP)) {
+                item.addClass(LIST_ITEM_CLASS_GROUP);
+            }
+
+            var index;
+            for (index = 0; index < dataItem.childItems.length; index++) {
+                var child = dataItem.childItems[index];
+                this._addItem(child, internal, item);
+            }
         }
 
 
