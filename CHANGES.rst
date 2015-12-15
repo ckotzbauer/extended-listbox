@@ -23,6 +23,7 @@ Version 1.0.0
 - Public function ``getItem`` to get the complex data item
 - Public function ``moveItemUp`` to decrease the index base position of an item by one.
 - Public function ``moveItemDown`` to increase the index base position of an item by one.
+- Public function ``clearSelection`` to remove all selections in the list.
 
 
 Version 0.3.0

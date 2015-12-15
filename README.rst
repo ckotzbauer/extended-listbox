@@ -5,7 +5,7 @@ ListboxJS
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
-:Version:  1.0.0-beta.4
+:Version:  1.0.0-beta.5
 
 
 **ListboxJS** is a simple jQuery plugin that provides a more powerful
@@ -105,6 +105,20 @@ Get the dataItem object for one element.
 
 
 
+Clear all selections.
+
+.. code:: html
+
+    <div id="myListBox"></div>
+
+    <script>
+        $(function() {
+            $('#myListBox').listbox("clearSelection");
+        });
+    </script>
+
+
+
 Get current selected items. Returns the complex data item for single selection and a array of their
 JSON representation for multi selection.
 
@@ -160,7 +174,7 @@ You can configure ListboxJS with following JS-Parameters (this shows the default
         searchBarWatermark: 'Search...',    /* Watermark text for search input */
         searchBarButton: {                  /* Button configuration */
             visible: false,                 /* If Button is visible */
-            icon: null,                     /* CSS class for button icon (``<i>`` tag) */
+            icon: null,                     /* CSS class for button icon (<i> tag) */
             onClick: null                   /* Delegate for button click */
         },
         multiple: false,                    /* If multi selection is enabled */
@@ -176,12 +190,12 @@ Specification for item objects returned by ``getItems``:
 
     {
         text: "Item #1",            /* Displayable item text */
-        id: [generated],            /* Unique element id, if no set it will be generated like ``listboxitem8294854`` */
-        index: null,                /* Index position of item in the list; only used for manual ``addItem`` calls. */
-        disabled: false,            /* ``true`` if the item should not be selectable */
-        selected: false,            /* ``true`` if the item is selected */
-        groupHeader: false,         /* ``true`` if the item has childs */
-        parentGroupId: null,        /* ID or display text for parent item to use; only used for manual ``addItem`` calls.  */
+        id: [generated],            /* Unique element id, if no set it will be generated like listboxitem8294854 */
+        index: null,                /* Index position of item in the list; only used for manual addItem calls. */
+        disabled: false,            /* true if the item should not be selectable */
+        selected: false,            /* true if the item is selected */
+        groupHeader: false,         /* true if the item has childs */
+        parentGroupId: null,        /* ID or display text for parent item to use; only used for manual addItem calls.  */
         childItems: []              /* list of child items */
     }
 

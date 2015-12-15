@@ -9,7 +9,7 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.0-beta.4
+ * @version     1.0.0-beta.5
  * @license     BSD
  */
 
@@ -657,7 +657,7 @@
     }
 
     function callApiFunction(functionName, callArgs) {
-        var publicFunctions = ["addItem", "removeItem", "destroy", "getItem", "moveItemUp", "moveItemDown"];
+        var publicFunctions = ["addItem", "removeItem", "destroy", "getItem", "moveItemUp", "moveItemDown", "clearSelection"];
         var ret = null;
 
         this.each(function () {
