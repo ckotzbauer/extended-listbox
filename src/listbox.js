@@ -329,7 +329,15 @@
             this.clearSelection();
         }
 
-        return this._addItem(this._prepareDataItem(dataItem), internal);
+        var id = this._addItem(this._prepareDataItem(dataItem), internal);
+
+        if (!internal) {
+            if (this._settings.onItemsChanged) {
+                this._settings.onItemsChanged(this.getItems());
+            }
+        }
+
+        return id;
     };
 
 
@@ -351,6 +359,11 @@
                 this._clearItemSelection(uiItem);
 
                 uiItem.remove();
+
+                if (this._settings.onItemsChanged) {
+                    this._settings.onItemsChanged(this.getItems());
+                }
+
                 return;
             }
         }
@@ -459,6 +472,26 @@
         return data;
     };
 
+
+    /**
+     * Returns all dataItems.
+     *
+     * @private
+     */
+    Listbox.prototype.getItems = function() {
+        var dataItems = [];
+
+        var childs = this._list.children();
+        var index;
+        for (index = 0; index < childs.length; index++) {
+            dataItems.push($(childs[index]).data("dataItem"));
+        }
+
+        return dataItems;
+    };
+
+
+
     /**
      * Decreases the index of the item by one.
      *
@@ -476,6 +509,11 @@
         if ($item.length > 0) {
             $item.insertBefore($item.prev());
             newIndex = $item.index();
+            $item.data("dataItem").index = newIndex;
+        }
+
+        if (this._settings.onItemsChanged) {
+            this._settings.onItemsChanged(this.getItems());
         }
 
         return newIndex;
@@ -498,6 +536,11 @@
         if ($item.length > 0) {
             $item.insertAfter($item.next());
             newIndex = $item.index();
+            $item.data("dataItem").index = newIndex;
+        }
+
+        if (this._settings.onItemsChanged) {
+            this._settings.onItemsChanged(this.getItems());
         }
 
         return newIndex;
@@ -638,7 +681,8 @@
             multiple: false,
             getItems: null,
             onValueChanged: null,
-            onFilterChanged: null
+            onFilterChanged: null,
+            onItemsChanged: null
         }, options);
 
         return this.each(function () {
@@ -657,7 +701,10 @@
     }
 
     function callApiFunction(functionName, callArgs) {
-        var publicFunctions = ["addItem", "removeItem", "destroy", "getItem", "moveItemUp", "moveItemDown", "clearSelection"];
+        var publicFunctions = ["addItem", "removeItem", "destroy", "getItem", "getItems",
+            "moveItemUp", "moveItemDown", "clearSelection"];
+
+
         var ret = null;
 
         this.each(function () {
