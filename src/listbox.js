@@ -326,7 +326,7 @@
      */
     Listbox.prototype.addItem = function (dataItem, internal) {
         if (!internal && !this._settings.multiple && dataItem.selected) {
-            this.clearSelection();
+            this.clearSelection(internal);
         }
 
         var id = this._addItem(this._prepareDataItem(dataItem), internal);
@@ -407,7 +407,7 @@
      *
      * @private
      */
-    Listbox.prototype.clearSelection = function() {
+    Listbox.prototype.clearSelection = function(internal) {
         // Remove selected class from all other items
         var allItems = this._list.find("." + LIST_ITEM_CLASS);
 
@@ -423,7 +423,9 @@
             this._parent.val(null);
         }
 
-        this._parent.trigger('change');
+        if (!internal) {
+            this._parent.trigger('change');
+        }
     };
 
 
@@ -578,9 +580,10 @@
             return;
         }
 
-        this.clearSelection();
-
-        this._selectedDomItem = null;
+        if (this._selectedDomItem) {
+            this.clearSelection(true);
+            this._selectedDomItem = null;
+        }
 
         domItem.toggleClass(LIST_ITEM_CLASS_SELECTED);
         this._selectedDomItem = domItem;
