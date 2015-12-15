@@ -109,12 +109,29 @@
             if (searchQuery !== '') {
                 // hide list items which are not matched search query
                 self._list.find("." + LIST_ITEM_CLASS).each(function () {
-                    var text = $(this).text().toLowerCase();
+                    var $this = $(this);
+
+                    if ($this.hasClass(LIST_ITEM_CLASS_GROUP)) {
+                        return;
+                    }
+
+                    var text = $this.text().toLowerCase();
 
                     if (text.search('^' + searchQuery) != -1) {
-                        $(this).css('display', 'block');
+                        $this.css('display', 'block');
+                        $this.parent().css('display', 'block');
                     } else {
-                        $(this).css('display', 'none');
+                        $this.css('display', 'none');
+                    }
+                });
+
+                // hide group item only, if all childs are hidden
+                self._list.find("." + LIST_ITEM_CLASS_GROUP).each(function () {
+                    var $this = $(this);
+                    if ($this.children(':visible').length === 0) {
+                        $this.css('display', 'none');
+                    } else {
+                        $this.css('display', 'block');
                     }
                 });
             } else {
