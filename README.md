@@ -186,7 +186,7 @@ FAQ
 
   You have to set the ``disabled`` Property from the item to true.
 
-    $('#myListBox').listbox({
+	$('#myListBox').listbox({
         getItems: function() {
             return [
                 "Item #1",
