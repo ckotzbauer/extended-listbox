@@ -1,6 +1,6 @@
 {
   "name": "extended-listbox",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "title": "Extended-Listbox",
   "description": "Extended-Listbox is a simple jQuery plugin that provides a more powerful alternative to the standard `select` tag",
   "keywords": [
@@ -18,7 +18,7 @@
   "licenses": [
     {
       "type": "BSD",
-      "url": "https://raw.github.com/extended-listbox/listbox.js/master/LICENSE"
+      "url": "https://raw.githubusercontent.com/code-chris/extended-listbox/master/LICENSE"
     }
   ],
   "docs": "https://github.com/code-chris/extended-listbox",

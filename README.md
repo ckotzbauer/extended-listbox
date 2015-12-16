@@ -7,7 +7,7 @@ Extended Listbox
 
 - **Author**:	Christian Kotzbauer
 - **License**:	BSD 3-clause
-- **Version**:	1.0.1
+- **Version**:	1.0.2
 
 
 

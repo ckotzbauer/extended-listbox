@@ -9,7 +9,7 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.1
+ * @version     1.0.2
  * @license     BSD
  */
 

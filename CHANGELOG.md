@@ -6,6 +6,15 @@ Changelog
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+Version 1.0.2
+-------------
+
+Released on December 16, 2015.
+
+-   Moved repository to <https://github.com/code-chris/extended-listbox>
+-   Replaced rst-files with markdown files
+
+
 Version 1.0.1
 -------------
 
