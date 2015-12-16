@@ -1,7 +1,7 @@
 Extended Listbox
 ================
-.. image:: https://travis-ci.org/code-chris/listbox.js.svg?branch=master
-   :target: https://travis-ci.org/code-chris/listbox.js
+.. image:: https://travis-ci.org/code-chris/extended-listbox.svg?branch=master
+   :target: https://travis-ci.org/code-chris/extended-listbox
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_

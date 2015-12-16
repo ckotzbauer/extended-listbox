@@ -5,7 +5,7 @@
   "main": "src/listbox.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/code-chris/listbox.js.git"
+    "url": "git+https://github.com/code-chris/extended-listbox.git"
   },
   "keywords": [
     "listbox",
@@ -18,9 +18,9 @@
   "author": "Christian Kotzbauer",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/code-chris/listbox.js/issues"
+    "url": "https://github.com/code-chris/extended-listbox/issues"
   },
-  "homepage": "https://github.com/code-chris/listbox.js#readme",
+  "homepage": "https://github.com/code-chris/extended-listbox#readme",
   "devDependencies": {
     "bower": "^1.7.0"
   }

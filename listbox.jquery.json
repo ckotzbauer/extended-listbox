@@ -18,12 +18,12 @@
   "licenses": [
     {
       "type": "BSD",
-      "url": "https://raw.github.com/code-chris/listbox.js/master/LICENSE"
+      "url": "https://raw.github.com/extended-listbox/listbox.js/master/LICENSE"
     }
   ],
-  "docs": "https://github.com/code-chris/listbox.js",
-  "bugs": "https://github.com/code-chris/listbox.js/issues",
-  "download": "https://github.com/code-chris/listbox.js/archive/master.zip",
+  "docs": "https://github.com/code-chris/extended-listbox",
+  "bugs": "https://github.com/code-chris/extended-listbox/issues",
+  "download": "https://github.com/code-chris/extended-listbox/archive/master.zip",
   "dependencies": {
     "jquery": ">=1.11.3"
   }
