@@ -2,22 +2,14 @@ Extended Listbox
 ================
 ----------
 
-
-![image]
-
+[![](https://travis-ci.org/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox)
 
 
-Author
+- **Author**:	Christian Kotzbauer
+- **License**:	BSD 3-clause
+- **Version**:	1.0.1
 
-:   Christian Kotzbauer
 
-License
-
-:   BSD 3-clause\_
-
-Version
-
-:   1.0.1
 
 **Extended Listbox** is a simple jQuery plugin that provides a more
 powerful alternative to the standard `<select>` tag. The main problem of
@@ -204,6 +196,3 @@ FAQ
             ];
         }
     });
-
-  [image]: https://travis-ci.org/code-chris/extended-listbox.svg?branch=master
-  [![image]]: https://travis-ci.org/code-chris/extended-listbox
