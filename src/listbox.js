@@ -9,7 +9,7 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.0
+ * @version     1.0.1
  * @license     BSD
  */
 
@@ -604,7 +604,10 @@
      */
     SingleSelectListbox.prototype.onFilterChange = function () {
         if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
-            this.onItemClick(this._list.children(':visible').first());
+            var element = this._list.children(':visible').first();
+            if (element && element.length > 0) {
+                this.onItemClick(element);
+            }
         }
 
         if (this._settings.onFilterChanged) {

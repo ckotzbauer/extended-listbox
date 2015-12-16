@@ -5,7 +5,7 @@ Extended Listbox
 
 :Author:   Christian Kotzbauer
 :License:  `BSD 3-clause`_
-:Version:  1.0.0
+:Version:  1.0.1
 
 
 **Extended Listbox** is a simple jQuery plugin that provides a more powerful

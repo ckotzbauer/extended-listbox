@@ -3,6 +3,15 @@ Changelog
 
 Here you can see the full list of changes between each Listbox.js release.
 
+
+Version 1.0.1
+`````````````
+
+Released on December 16, 2015.
+
+- Fixed: JavaScript error occurs, if no items where found for given search query.
+
+
 Version 1.0.0
 `````````````
 
