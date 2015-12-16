@@ -184,7 +184,7 @@ FAQ
 
 - **How to make disabled item?**
 
-  You have to set the ``disabled`` Property from the item to true.
+You have to set the ``disabled`` Property from the item to true.
 
 	$('#myListBox').listbox({
 		getItems: function() {
