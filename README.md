@@ -21,6 +21,14 @@ JavaScript. It opens up great possibilities for customization.
 In addition, this component provides other useful features like a search
 bar or group items.
 
+Installation
+-----
+
+Install with bower:
+
+	bower install extended-listbox
+
+
 Usage
 -----
 
