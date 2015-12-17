@@ -1,0 +1,78 @@
+/**
+ * A default stylesheme for Extended-Listbox plugin.
+ *
+ * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
+ * @version     1.0.2
+ * @license     BSD
+ */
+
+.listbox-root {
+  margin: 0px;
+  width: 170px;
+  padding: 5px;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  background: #FCFCFC;
+  height: 300px;
+
+  .listbox {
+    margin: 0px;
+    overflow: auto;
+
+    .listbox-item {
+      margin: 0px;
+      padding: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(112, 147, 216, 0.9);
+      }
+
+      &.listbox-item-selected {
+        background: rgba(112, 147, 216, 0.5);
+      }
+
+      &.listbox-item-disabled {
+        color: #999;
+        cursor: default;
+
+        &:hover {
+          background: #FCFCFC;
+        }
+      }
+
+      &.listbox-item-group {
+        color: black;
+        font-weight: bold;
+        cursor: default;
+
+        &:hover {
+          background: #FCFCFC;
+        }
+      }
+
+      &.listbox-item-child {
+        padding-left: 15px;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .listbox-searchbar-wrapper {
+    margin: 0px;
+
+    .listbox-searchbar-button {
+      margin-left: -22px;
+      border: none;
+      background: none;
+    }
+
+    .listbox-searchbar {
+      margin: 0px;
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 3px 5px;
+      border: 1px solid #ccc;
+    }
+  }
+}
