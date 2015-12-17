@@ -22,6 +22,13 @@
   },
   "homepage": "https://github.com/code-chris/extended-listbox#readme",
   "devDependencies": {
-    "bower": "^1.7.0"
+    "bower": "^1.7.1",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-bump": "^1.0.0",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.5",
+    "vinyl-paths": "^2.1.0",
+    "yargs": "^3.31.0"
   }
 }
