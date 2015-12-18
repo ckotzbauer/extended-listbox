@@ -13,7 +13,9 @@
     "multiselect",
     "form",
     "input",
-    "ui"
+    "ui",
+    "jquery-plugin",
+    "ecosystem:jquery"
   ],
   "author": "Christian Kotzbauer",
   "license": "BSD-3-Clause",
