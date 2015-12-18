@@ -30,37 +30,36 @@ bower install extended-listbox
 ## Usage
 
 Link the component and a stylesheet from your page.
-```javascript
+```html
+<!-- make sure that jQuery is already included -->
+<script src="/path/to/jquery.js"></script>
 
-    <!-- make sure that jQuery is already included -->
-    <script src="/path/to/jquery.js"></script>
-    
-    <!-- include listbox plugin and default stylesheet -->
-    <link href="/path/to/listbox.css" rel="stylesheet">
-    <script src="/path/to/listbox.js"></script>
+<!-- include listbox plugin and default stylesheet -->
+<link href="/path/to/listbox.css" rel="stylesheet">
+<script src="/path/to/listbox.js"></script>
 ```
 
 Create simple Listbox.
 
+```html
+<div id="myListBox"></div>
 
-    <div id="myListBox"></div>
-    
-    <script>
-    	$(function() {
-    		$('#myListBox').listbox({
-    			searchBar:  true,
-    			getItems: function() {
-    				return [
-    					"Item #1",
-    					"Item #2",
-    					"Item #3",
-    					"Item #4"
-    				];
-    			}
-    		});
-    	});
-    </script>
-
+<script>
+	$(function() {
+		$('#myListBox').listbox({
+			searchBar:  true,
+			getItems: function() {
+				return [
+					"Item #1",
+					"Item #2",
+					"Item #3",
+					"Item #4"
+				];
+			}
+		});
+	});
+</script>
+```
 
 Add or remove Item manually after initialization.
 
