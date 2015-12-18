@@ -6,4 +6,4 @@ node_js:
 
 script:
   - "wget https://raw.githubusercontent.com/jonkemp/qunit-phantomjs-runner/master/runner.js"
-  - "phantomjs runner.js testsuite/index.html"
+  - "phantomjs runner.js test/index.html"
