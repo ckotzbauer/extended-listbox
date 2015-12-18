@@ -23,14 +23,14 @@ bar or group items.
 ## Installation
 
 Install with bower:
-
-	bower install extended-listbox
-
+```
+bower install extended-listbox
+```
 
 ## Usage
 
 Link the component and a stylesheet from your page.
-
+```javascript
 
     <!-- make sure that jQuery is already included -->
     <script src="/path/to/jquery.js"></script>
@@ -38,7 +38,7 @@ Link the component and a stylesheet from your page.
     <!-- include listbox plugin and default stylesheet -->
     <link href="/path/to/listbox.css" rel="stylesheet">
     <script src="/path/to/listbox.js"></script>
-
+```
 
 Create simple Listbox.
 
