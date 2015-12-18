@@ -25,11 +25,13 @@
   "homepage": "https://github.com/code-chris/extended-listbox#readme",
   "devDependencies": {
     "bower": "^1.7.1",
+    "dateformat": "^1.0.12",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-eslint": "^1.1.1",
     "gulp-less": "^3.0.5",
+    "gulp-replace": "^0.5.4",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
     "vinyl-paths": "^2.1.0",

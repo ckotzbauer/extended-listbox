@@ -1,13 +1,14 @@
 var yargs = require('yargs');
+var dateFormat = require('dateformat');
+var fs = require('fs');
 
-var argv = yargs.argv,
-    validBumpTypes = "major|minor|patch".split("|"),
-    bump = (argv.bump || 'patch').toLowerCase();
-
-if (validBumpTypes.indexOf(bump) === -1) {
-    throw new Error('Unrecognized bump "' + bump + '".');
-}
+var argv = yargs.argv;
+var version = argv.version || 'build-' + dateFormat(new Date(), "isoDateTime");
+var year = dateFormat(new Date(), "yyyy");
+var license = JSON.parse(fs.readFileSync('./package.json', 'utf-8')).license;
 
 module.exports = {
-    bump: bump
+    version: version,
+    year: year,
+    license: license
 };

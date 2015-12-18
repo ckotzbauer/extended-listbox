@@ -8,9 +8,9 @@
  * The configuration is completely in JavaScript. It opens up great
  * possibilities for customization.
  *
- * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.2
- * @license     BSD
+ * @copyright   (c) [YEAR], Christian Kotzbauer <christian.kotzbauer@gmail.com>
+ * @version     [VERSION]
+ * @license     [LICENSE]
  */
 
 (function ($) {
