@@ -1,6 +1,5 @@
-Extended Listbox
-================
-----------
+# Extended Listbox
+
 
 [![](https://travis-ci.org/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox)
 
@@ -21,16 +20,14 @@ JavaScript. It opens up great possibilities for customization.
 In addition, this component provides other useful features like a search
 bar or group items.
 
-Installation
------
+## Installation
 
 Install with bower:
 
 	bower install extended-listbox
 
 
-Usage
------
+## Usage
 
 Link the component and a stylesheet from your page.
 
@@ -136,8 +133,7 @@ Destroy listbox (reverts all changes on the DOM).
 	</script>
 
 
-Customization
--------------
+## Customization
 
 
 Extended Listbox uses following `CSS` classes.
@@ -187,8 +183,7 @@ Specification for item objects returned by ``getItems``:
 You can return simple strings or numbers too. They will be converted to the above object.
 
 
-FAQ
----
+## FAQ
 
 - **How to make disabled item?**
 
