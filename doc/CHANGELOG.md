@@ -1,13 +1,10 @@
-Changelog
-=========
-----------
+# Changelog
 
 
 Here you can see the full list of changes between each Extended Listbox
 release.
 
-Version 1.0.3
--------------
+## Version 1.0.3
 
 Not yet released.
 
@@ -17,8 +14,7 @@ Not yet released.
 -   Replaced JavaScript with TypeScript internally
 
 
-Version 1.0.2
--------------
+## Version 1.0.2
 
 Released on December 16, 2015.
 
@@ -26,8 +22,7 @@ Released on December 16, 2015.
 -   Replaced rst-files with markdown files
 
 
-Version 1.0.1
--------------
+## Version 1.0.1
 
 Released on December 16, 2015.
 
@@ -35,8 +30,7 @@ Released on December 16, 2015.
     search query.
 
 	
-Version 1.0.0
--------------
+## Version 1.0.0
 
 Released on December 15, 2015.
 
@@ -64,8 +58,7 @@ Released on December 15, 2015.
 -   Published as bower package.
 
 
-Version 0.2.0
--------------
+## Version 0.2.0
 
 Released on October 13, 2013.
 
@@ -80,8 +73,7 @@ Released on October 13, 2013.
 -   Added unit tests.
 
 
-Version 0.1.3
--------------
+## Version 0.1.3
 
 Released on August 4, 2013.
 
@@ -91,8 +83,7 @@ Released on August 4, 2013.
 -   Added new tip to FAQ.
 
 
-Version 0.1.2
--------------
+## Version 0.1.2
 
 Released on January 29, 2013.
 
@@ -102,16 +93,14 @@ Released on January 29, 2013.
 -   Fixed path to the LICENSE file.
 
 
-Version 0.1.1
--------------
+## Version 0.1.1
 
 Released on January 18, 2013.
 
 -   «jQuery Listbox» got renamed to «Listbox.js».
 
 
-Version 0.1.0
--------------
+## Version 0.1.0
 
 Released on January 17, 2013.
 
