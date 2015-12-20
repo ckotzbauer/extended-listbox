@@ -4,6 +4,11 @@ language:
 node_js:
   - "5.2"
 
+before_install:
+  - npm install -g typescript@1.7.5
+
 script:
+  - "tsc test/SingleSelectListboxTest.ts --module amd"
+  - "tsc test/MultiSelectListboxTest.ts --module amd"
   - "wget https://raw.githubusercontent.com/jonkemp/qunit-phantomjs-runner/master/runner.js"
   - "phantomjs runner.js test/index.html"

@@ -14,7 +14,7 @@ interface ListBoxOptions {
 interface JQuery {
     listbox(): JQuery;
 
-    listbox(method: 'addItem', item: any): any;
+    /*listbox(method: 'addItem', item: any): any;
 
     listbox(method: 'removeItem', value: any): any;
 
@@ -28,8 +28,8 @@ interface JQuery {
 
     listbox(method: 'moveItemDown', value: any): any;
 
-    listbox(method: 'clearSelection'): any;
+    listbox(method: 'clearSelection'): any;*/
 
-    //listbox(method: string): any;
+    listbox(method: string): any;
     listbox(options: ListBoxOptions): JQuery;
 }
