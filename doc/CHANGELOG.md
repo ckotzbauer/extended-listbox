@@ -6,12 +6,13 @@ release.
 
 ## Version 1.0.3
 
-Not yet released.
+Released on December 20, 2015.
 
 -   Applied new folder structure
 -   Added build infrastructure (gulp)
 -   Replaced CSS with LESS internally
 -   Replaced JavaScript with TypeScript internally
+-   Added minified distribution files (JavaScript and CSS)
 
 
 ## Version 1.0.2
