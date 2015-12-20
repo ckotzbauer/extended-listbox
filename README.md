@@ -216,7 +216,9 @@ $('#myListBox').listbox({
 });
 ```
 
-[License](https://raw.githubusercontent.com/code-chris/extended-listbox/master/LICENSE)
+[License](https://github.com/code-chris/extended-listbox/blob/master/LICENSE)
 --------
 [Changelog](https://github.com/code-chris/extended-listbox/blob/master/doc/CHANGELOG.md)
 ----------
+[Roadmap](https://github.com/code-chris/extended-listbox/blob/master/doc/ROADMAP.md)
+--------
