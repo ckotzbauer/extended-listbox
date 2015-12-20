@@ -216,6 +216,7 @@ $('#myListBox').listbox({
 });
 ```
 
-## License
-
-[BSD-3-Clause](https://raw.githubusercontent.com/code-chris/extended-listbox/master/LICENSE)
+[License](https://raw.githubusercontent.com/code-chris/extended-listbox/master/LICENSE)
+--------
+[Changelog](https://github.com/code-chris/extended-listbox/blob/master/doc/CHANGELOG.md)
+----------
