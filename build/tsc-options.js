@@ -6,6 +6,5 @@ module.exports = {
     module: "amd",
     emitDecoratorMetadata: true,
     experimentalDecorators: true,
-    outFile: "extended-listbox.js",
-    declaration: true
+    outFile: "extended-listbox.js"
 };
