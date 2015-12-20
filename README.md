@@ -6,8 +6,8 @@
 [![npm version](https://badge.fury.io/js/extended-listbox.svg)](https://badge.fury.io/js/extended-listbox)
 
 
-**Extended Listbox** is a simple jQuery plugin that provides a more
-powerful alternative to the standard `<select>` tag. The main problem of
+**Extended Listbox** is a simple to use jQuery plugin as powerful
+alternative to the HTML `<select>` tag. The main problem of
 `<select>` tag is that last one isn’t flexible for customization with
 *CSS*. Extended Listbox solves this problem. This component creates a list
 structure based on `<div>` tags. The configuration is completely in

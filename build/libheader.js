@@ -1,6 +1,6 @@
 /**
- * Extended-Listbox is a simple jQuery plugin that provides a more powerful
- * alternative to the standard `<select>` tag.
+ * Extended Listbox is a simple to use jQuery plugin as powerful
+ * alternative to the HTML `<select>` tag.
  *
  * The main problem of <select> tag is that last one isn't flexible
  * for customization with *CSS*. Extended-Listbox solves this problem.

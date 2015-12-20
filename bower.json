@@ -1,7 +1,7 @@
 {
   "name": "extended-listbox",
   "version": "1.0.3",
-  "description": "Extended-Listbox is a simple jQuery plugin that provides a more powerful alternative to the standard `select` tag",
+  "description": "A simple to use jQuery plugin as powerful alternative to the HTML <select> tag",
   "main": "dist/js/extended-listbox.js",
   "authors": [
     "Christian Kotzbauer"
