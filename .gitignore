@@ -3,3 +3,5 @@ node_modules
 bower_components
 src/ts/*.js
 src/ts/*.map
+test/*.map
+test/*.js
