@@ -18,4 +18,4 @@ Here you can see the planned list of features.
 
 ## Version 1.2.0
 
--   Drag & Drop between to Extended Listbox instances
+-   Drag & Drop between two Extended Listbox instances
