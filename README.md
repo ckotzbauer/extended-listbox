@@ -2,12 +2,8 @@
 
 
 [![](https://travis-ci.org/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox)
-
-
-- **Author**:	Christian Kotzbauer
-- **License**:	BSD 3-clause
-- **Version**:	1.0.2
-
+[![Bower version](https://badge.fury.io/bo/extended-listbox.svg)](https://badge.fury.io/bo/extended-listbox)
+[![npm version](https://badge.fury.io/js/extended-listbox.svg)](https://badge.fury.io/js/extended-listbox)
 
 
 **Extended Listbox** is a simple jQuery plugin that provides a more
@@ -26,6 +22,11 @@ Install with bower:
 ```
 bower install extended-listbox
 ```
+Install with NPM:
+```
+npm install extended-listbox
+```
+
 
 ## Usage
 
@@ -214,3 +215,7 @@ $('#myListBox').listbox({
 	}
 });
 ```
+
+## License
+
+[BSD-3-Clause](https://raw.githubusercontent.com/code-chris/extended-listbox/master/LICENSE)
