@@ -29,7 +29,7 @@ module ExtendedListbox {
          * configuration.
          *
          * @constructor
-         * @this {Listbox}
+         * @this {BaseListBox}
          * @param {object} domelement DOM element to be converted to the Listbox
          * @param {object} options an object with Listbox settings
          */
@@ -41,7 +41,19 @@ module ExtendedListbox {
         }
 
 
+        /**
+         * Click handling and triggering from other delegates and events.
+         *
+         * @this {BaseListBox}
+         * @param {object} domItem a DOM object
+         */
         abstract onItemClick(domItem: JQuery): void;
+
+        /**
+         * Select first visible item if none selected.
+         *
+        * @this {BaseListBox}
+        */
         abstract onFilterChange(): void;
 
 
@@ -50,7 +62,7 @@ module ExtendedListbox {
          * container, listbox itself and searchbar as an optional element.
          *
          * @private
-         * @this {Listbox}
+         * @this {BaseListBox}
          */
         private _createListbox() {
             this._parent.addClass(BaseListBox.MAIN_CLASS);
@@ -66,7 +78,7 @@ module ExtendedListbox {
          * Creates a Listbox's searchbar.
          *
          * @private
-         * @this {Listbox}
+         * @this {BaseListBox}
          * @TODO: critical to rewrite this piece of shit
          */
         private _createSearchbar() {
@@ -156,7 +168,7 @@ module ExtendedListbox {
          * Creates a listbox itself.
          *
          * @private
-         * @this {Listbox}
+         * @this {BaseListBox}
          */
         private _createList() {
             // create container
@@ -181,8 +193,7 @@ module ExtendedListbox {
         /**
          * Generates a new ID for a item.
          *
-         * @private
-         * @this {Listbox}
+         * @this {BaseListBox}
          */
         protected _generateItemId() {
             var num = parseInt("" + (Math.random() * 10000000), 10);
@@ -192,8 +203,7 @@ module ExtendedListbox {
         /**
          * Prepares the dataobject for one item.
          *
-         * @private
-         * @this {Listbox}
+         * @this {BaseListBox}
          * @param {object} dataItem object returned from getItems
          */
         protected _prepareDataItem(dataItem) {
@@ -229,7 +239,7 @@ module ExtendedListbox {
         /**
          * Add item to the listbox.
          *
-         * @this {Listbox}
+         * @this {BaseListBox}
          * @param {object} dataItem display data for item
          * @param {object} internal: true if this function is not called directly as api function.
          * * @param {object} $parent: the DOM parent element
@@ -300,7 +310,7 @@ module ExtendedListbox {
         /**
          * Add item to the listbox.
          *
-         * @this {Listbox}
+         * @this {BaseListBox}
          * @param {object} dataItem display data for item
          * @param {object} internal: true if this function is not called directly as api function.
          */
@@ -324,7 +334,7 @@ module ExtendedListbox {
         /**
          * Remove first matching item from the listbox.
          *
-         * @this {Listbox}
+         * @this {BaseListBox}
          * @param {string} item: display text or id from item to remove
          */
         protected removeItem(item) {
@@ -351,7 +361,7 @@ module ExtendedListbox {
         /**
          * Reverts all changes on the DOM
          *
-         * @this {Listbox}
+         * @this {BaseListBox}
          */
         protected destroy() {
             this._parent.children().remove();
@@ -362,8 +372,6 @@ module ExtendedListbox {
         /**
          * Resize list to listbox. It's a small hack since I can't
          * do it with CSS.
-         *
-         * @private
          */
         protected _resizeListToListbox() {
             var listHeight = this._parent.height();
@@ -378,8 +386,6 @@ module ExtendedListbox {
 
         /**
          * Clears all selected items.
-         *
-         * @private
          */
         protected clearSelection(internal) {
             // Remove selected class from all other items
@@ -406,7 +412,6 @@ module ExtendedListbox {
         /**
          * Clears selection of given items.
          *
-         * @private
          * @param {object} domItem DOM item
          */
         protected _clearItemSelection(domItem) {
@@ -429,7 +434,6 @@ module ExtendedListbox {
         /**
          * Returns the dataItem for a given id or text.
          *
-         * @private
          * @param {object} id unique id or text from listItem
          */
         protected getItem(id) {
@@ -450,8 +454,6 @@ module ExtendedListbox {
 
         /**
          * Returns all dataItems.
-         *
-         * @private
          */
         protected getItems() {
             var dataItems = [];
@@ -469,7 +471,6 @@ module ExtendedListbox {
         /**
          * Decreases the index of the item by one.
          *
-         * @private
          * @param {object} id unique id or text from listItem
          */
         protected moveItemUp(id) {
@@ -496,7 +497,6 @@ module ExtendedListbox {
         /**
          * Increases the index of the item by one.
          *
-         * @private
          * @param {object} id unique id or text from listItem
          */
         protected moveItemDown(id) {
