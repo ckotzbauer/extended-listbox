@@ -1,7 +1,7 @@
-/* Extended Listbox 1.0.3; (c) 2015 Christian Kotzbauer; BSD-3-Clause License */ 
+/* Extended Listbox 1.0.4; (c) 2015 Christian Kotzbauer; BSD-3-Clause License */ 
 /**
- * Extended-Listbox is a simple jQuery plugin that provides a more powerful
- * alternative to the standard `<select>` tag.
+ * Extended Listbox is a simple to use jQuery plugin as powerful
+ * alternative to the HTML `<select>` tag.
  *
  * The main problem of <select> tag is that last one isn't flexible
  * for customization with *CSS*. Extended-Listbox solves this problem.
@@ -10,12 +10,13 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.3
+ * @version     1.0.4
  * @license     BSD-3-Clause
  */
 
 var ExtendedListbox;
 (function (ExtendedListbox) {
+    "use strict";
     var ListboxSettings = (function () {
         function ListboxSettings() {
             this.searchBar = false;
@@ -44,6 +45,7 @@ var ExtendedListbox;
 /// <reference path="./ListboxSettings.ts" />
 var ExtendedListbox;
 (function (ExtendedListbox) {
+    "use strict";
     var BaseListBox = (function () {
         /**
          * Create an instance of Listbox. The constructor creates div-based
@@ -103,7 +105,7 @@ var ExtendedListbox;
                             return;
                         }
                         var text = $this.text().toLowerCase();
-                        if (text.search('^' + searchQuery) != -1) {
+                        if (text.search('^' + searchQuery) !== -1) {
                             $this.css('display', 'block');
                             $this.parent().css('display', 'block');
                         }
@@ -447,7 +449,21 @@ var ExtendedListbox;
             }
             return newIndex;
         };
+        /**
+         * Enables or disables the whole component.
+         *
+         * @param {boolean} enable: new enable value.
+         */
+        BaseListBox.prototype.enable = function (enable) {
+            if (enable) {
+                this._parent.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
+            }
+            else if (!this._parent.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
+                this._parent.addClass(BaseListBox.MAIN_DISABLED_CLASS);
+            }
+        };
         BaseListBox.MAIN_CLASS = 'listbox-root';
+        BaseListBox.MAIN_DISABLED_CLASS = 'listbox-disabled';
         BaseListBox.LIST_CLASS = 'listbox';
         BaseListBox.LIST_ITEM_CLASS = 'listbox-item';
         BaseListBox.LIST_ITEM_CLASS_DISABLED = 'listbox-item-disabled';
@@ -469,6 +485,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var ExtendedListbox;
 (function (ExtendedListbox) {
+    "use strict";
     var MultiSelectListbox = (function (_super) {
         __extends(MultiSelectListbox, _super);
         /**
@@ -517,6 +534,7 @@ var ExtendedListbox;
             }
         };
         MultiSelectListbox.prototype.onFilterChange = function () {
+            return undefined;
         };
         return MultiSelectListbox;
     })(ExtendedListbox.BaseListBox);
@@ -526,6 +544,7 @@ var ExtendedListbox;
 /// <reference path="./BaseListBox.ts" />
 var ExtendedListbox;
 (function (ExtendedListbox) {
+    "use strict";
     var SingleSelectListbox = (function (_super) {
         __extends(SingleSelectListbox, _super);
         /**
@@ -591,6 +610,7 @@ var ExtendedListbox;
 /// <reference path="./SingleSelectListbox.ts" />
 var ExtendedListbox;
 (function (ExtendedListbox) {
+    "use strict";
     function initializeListBoxFromOptions(options) {
         var settings = $.extend({
             searchBar: false,
@@ -616,7 +636,7 @@ var ExtendedListbox;
     }
     function callApiFunction(functionName, callArgs) {
         var publicFunctions = ["addItem", "removeItem", "destroy", "getItem", "getItems",
-            "moveItemUp", "moveItemDown", "clearSelection"];
+            "moveItemUp", "moveItemDown", "clearSelection", "enable"];
         var ret = null;
         this.each(function () {
             var instance = $(this).data('listbox');

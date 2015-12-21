@@ -2,7 +2,7 @@
  * A default stylesheme for Extended-Listbox plugin.
  *
  * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.3
+ * @version     1.0.4
  * @license     BSD-3-Clause
  */
 .listbox-root {
@@ -13,6 +13,13 @@
   border-radius: 5px;
   background: #FCFCFC;
   height: 300px;
+}
+.listbox-root.listbox-disabled .listbox-searchbar-wrapper,
+.listbox-root.listbox-disabled .listbox-item {
+  pointer-events: none;
+}
+.listbox-root.listbox-disabled .listbox-searchbar-wrapper .listbox-searchbar {
+  background: #f5f5f5;
 }
 .listbox-root .listbox {
   margin: 0px;

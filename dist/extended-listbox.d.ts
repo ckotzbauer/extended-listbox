@@ -36,6 +36,7 @@ interface JQuery {
     listbox(methodName: 'moveItemUp'): number;
     listbox(methodName: 'moveItemDown'): number;
     listbox(methodName: 'clearSelection'): void;
+    listbox(methodName: 'enable'): void;
     listbox(methodName: string): any;
     listbox(methodName: string, methodParameter: any): any;
     listbox(options: ListBoxOptions): JQuery;
