@@ -3,20 +3,24 @@
 /// <reference path="./SingleSelectListbox.ts" />
 
 module ExtendedListbox {
-    function initializeListBoxFromOptions(options) {
-        var settings = $.extend({
-            searchBar: false,
-            searchBarWatermark: 'Search...',
-            searchBarButton: { visible: false, icon: null, onClick: null },
-            multiple: false,
-            getItems: null,
-            onValueChanged: null,
-            onFilterChanged: null,
-            onItemsChanged: null
-        }, options);
+"use strict";
 
-        return this.each(function () {
-            var instance;
+    function initializeListBoxFromOptions(options: any): JQuery {
+        var settings: any = $.extend(
+            {
+                searchBar: false,
+                searchBarWatermark: 'Search...',
+                searchBarButton: { visible: false, icon: null, onClick: null },
+                multiple: false,
+                getItems: null,
+                onValueChanged: null,
+                onFilterChanged: null,
+                onItemsChanged: null
+            },
+            options);
+
+        return this.each(function (): boolean {
+            var instance: BaseListBox;
 
             if (settings.multiple) {
                 instance = new MultiSelectListbox($(this), settings);
@@ -30,15 +34,15 @@ module ExtendedListbox {
         });
     }
 
-    function callApiFunction(functionName, callArgs) {
-        var publicFunctions = ["addItem", "removeItem", "destroy", "getItem", "getItems",
-            "moveItemUp", "moveItemDown", "clearSelection"];
+    function callApiFunction(functionName: string, callArgs: any): any {
+        var publicFunctions: string[] = ["addItem", "removeItem", "destroy", "getItem", "getItems",
+            "moveItemUp", "moveItemDown", "clearSelection", "enable"];
 
 
-        var ret = null;
+        var ret: any = null;
 
-        this.each(function () {
-            var instance = $(this).data('listbox');
+        this.each(function (): void {
+            var instance: BaseListBox = $(this).data('listbox');
 
             if (instance == null && window.console && console.error) {
                 console.error(
@@ -55,7 +59,7 @@ module ExtendedListbox {
                 return;
             }
 
-            var args = Array.prototype.slice.call(callArgs, 1);
+            var args: any = Array.prototype.slice.call(callArgs, 1);
 
             ret = instance[functionName].apply(instance, args);
         });
@@ -70,7 +74,7 @@ module ExtendedListbox {
      *
      * @param {object} options an object with Listbox settings
      */
-    $.fn.listbox = function (options) {
+    $.fn.listbox = function (options: any): any {
         if (typeof options === 'object') {
             return initializeListBoxFromOptions.call(this, options);
         } else if (typeof options === 'string') {

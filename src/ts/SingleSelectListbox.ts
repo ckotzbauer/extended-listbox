@@ -2,6 +2,7 @@
 /// <reference path="./BaseListBox.ts" />
 
 module ExtendedListbox {
+"use strict";
 
     export class SingleSelectListbox extends BaseListBox {
 
@@ -17,7 +18,7 @@ module ExtendedListbox {
          * @param {object} domelement DOM element to be converted to the Listbox
          * @param {object} options an object with Listbox settings
          */
-        constructor(domelement, options) {
+        constructor(domelement: JQuery, options: ListboxSettings) {
             super(domelement, options);
             this._selectedDomItem = null;
         }
@@ -28,7 +29,7 @@ module ExtendedListbox {
          * @this {SingleSelectListbox}
          * @param {object} domItem a DOM object
          */
-        public onItemClick(domItem) {
+        public onItemClick(domItem: JQuery): void {
             if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
                 domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
                 return;
@@ -56,9 +57,9 @@ module ExtendedListbox {
          *
          * @this {SingleSelectListbox}
          */
-        public onFilterChange() {
+        public onFilterChange(): void {
             if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
-                var element = this._list.children(':visible').first();
+                var element: JQuery = this._list.children(':visible').first();
                 if (element && element.length > 0) {
                     this.onItemClick(element);
                 }

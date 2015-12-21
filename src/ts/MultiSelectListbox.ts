@@ -2,6 +2,7 @@
 /// <reference path="./BaseListBox.ts" />
 
 module ExtendedListbox {
+"use strict";
 
     export class MultiSelectListbox extends BaseListBox {
 
@@ -15,7 +16,7 @@ module ExtendedListbox {
          * @param {object} domelement DOM element to be converted to the Listbox
          * @param {object} options an object with Listbox settings
          */
-        constructor(domelement, options) {
+        constructor(domelement: JQuery, options: ListboxSettings) {
             super(domelement, options);
         }
 
@@ -25,18 +26,18 @@ module ExtendedListbox {
          * @this {MultiSelectListbox}
          * @param {object} domItem a DOM object
          */
-        public onItemClick(domItem) {
+        public onItemClick(domItem: JQuery): void {
             if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
                 domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
                 return;
             }
 
-            var parentValues = this._parent.val();
+            var parentValues: any[] = this._parent.val();
 
             if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
                 domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
 
-                var removeIndex = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
+                var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
                 parentValues.splice(removeIndex, 1);
 
                 domItem.data("dataItem").selected = false;
@@ -60,6 +61,7 @@ module ExtendedListbox {
         }
 
         public onFilterChange(): void {
+            return undefined;
         }
     }
 }
