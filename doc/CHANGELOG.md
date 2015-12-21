@@ -4,6 +4,14 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 1.0.4
+
+Not yet released.
+
+-   Fixed TSLint errors
+-   Added TypeScript Definition file
+
+
 ## Version 1.0.3
 
 Released on December 20, 2015.
