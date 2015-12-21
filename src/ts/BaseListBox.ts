@@ -7,6 +7,7 @@ module ExtendedListbox {
     export abstract class BaseListBox {
 
         protected static MAIN_CLASS: string = 'listbox-root';
+        protected static MAIN_DISABLED_CLASS: string = 'listbox-disabled';
         protected static LIST_CLASS: string = 'listbox';
         protected static LIST_ITEM_CLASS: string = 'listbox-item';
         protected static LIST_ITEM_CLASS_DISABLED: string = 'listbox-item-disabled';
@@ -519,6 +520,20 @@ module ExtendedListbox {
             }
 
             return newIndex;
+        }
+
+
+        /**
+         * Enables or disables the whole component.
+         *
+         * @param {boolean} enable: new enable value.
+         */
+        protected enable(enable: boolean): void {
+            if (enable) {
+                this._parent.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
+            } else if (!this._parent.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
+                this._parent.addClass(BaseListBox.MAIN_DISABLED_CLASS);
+            }
         }
     }
 }

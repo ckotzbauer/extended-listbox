@@ -36,7 +36,7 @@ module ExtendedListbox {
 
     function callApiFunction(functionName: string, callArgs: any): any {
         var publicFunctions: string[] = ["addItem", "removeItem", "destroy", "getItem", "getItems",
-            "moveItemUp", "moveItemDown", "clearSelection"];
+            "moveItemUp", "moveItemDown", "clearSelection", "enable"];
 
 
         var ret: any = null;
