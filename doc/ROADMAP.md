@@ -3,10 +3,6 @@
 
 Here you can see the planned list of features.
 
-## Version 1.0.x
-
--   Provide TypeScript Definition file.
-
 
 ## Version 1.1.0
 

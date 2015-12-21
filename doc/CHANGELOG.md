@@ -6,10 +6,11 @@ release.
 
 ## Version 1.0.4
 
-Not yet released.
+Released on December 21, 2015.
 
 -   Fixed TSLint errors
 -   Added TypeScript Definition file
+-   New public API function `enable` to enable and disable the complete component
 
 
 ## Version 1.0.3
