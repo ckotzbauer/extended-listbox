@@ -1,4 +1,5 @@
 module ExtendedListbox {
+"use strict";
 
     export class ListboxSettings {
         public searchBar: boolean = false;
@@ -8,7 +9,7 @@ module ExtendedListbox {
         public getItems: Function = null;
         public onValueChanged: Function = null;
         public onFilterChanged: Function = null;
-        public onItemsChanged: Function = null
+        public onItemsChanged: Function = null;
     }
 
     export class ListBoxSearchButtonSettings {
