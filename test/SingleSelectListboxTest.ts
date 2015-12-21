@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-/// <reference path="./extended-listbox.d.ts" />
+/// <reference path="../dist/extended-listbox.d.ts" />
 
 function child(element, index = null) {
     if (!index) {
@@ -9,7 +9,7 @@ function child(element, index = null) {
     return $(element.children()[index]);
 }
 
-function generateSingleList(options = null, items = null) {
+function generateSingleList(options: ListBoxOptions = null, items = null): JQuery {
     options = $.extend({
         getItems: function () {
             return items;
