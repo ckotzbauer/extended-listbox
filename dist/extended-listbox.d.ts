@@ -1,4 +1,7 @@
-/// <reference path="../typings/jquery/jquery.d.ts"/>
+// Type definitions for extended-listbox 1.0.5
+// Project: https://github.com/code-chris/extended-listbox
+// Definitions by: Christian Kotzbauer <https://github.com/code-chris>
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 interface ListBoxOptions {
     /** determines if the searchBar is visible */
