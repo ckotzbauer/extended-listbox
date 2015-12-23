@@ -4,6 +4,15 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+
+## Version 1.0.5
+
+Released on December 23, 2015.
+
+-   Added missing jquery dependency to `package.json`
+-   Removed wrong jquery reference from `extended-listbox.d.ts` file.
+
+
 ## Version 1.0.4
 
 Released on December 21, 2015.

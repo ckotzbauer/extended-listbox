@@ -1,6 +1,6 @@
 {
   "name": "extended-listbox",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A simple to use jQuery plugin as powerful alternative to the HTML <select> tag",
   "main": "dist/js/extended-listbox.js",
   "repository": {
@@ -44,5 +44,8 @@
     "typescript": "^1.7.5",
     "vinyl-paths": "^2.1.0",
     "yargs": "^3.31.0"
+  },
+  "dependencies": {
+    "jquery": "^1.11.3"
   }
 }
