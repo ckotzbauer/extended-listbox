@@ -5,7 +5,11 @@
     <title>Extended Listbox Documentation</title>
 
     <!-- include jQuery -->
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="./scripts/jquery.js"></script>
+
+    <!-- include requirejs -->
+    <script src="./scripts/requirejs.js"></script>
+    <script src="./scripts/requirejs-text.js"></script>
 
     <!-- include extended-listbox.js -->
     <link href="../../dist/css/extended-listbox.css" rel="stylesheet">
@@ -15,77 +19,13 @@
     <link href="./styles/androidstudio.css" rel="stylesheet">
     <script src="./scripts/highlight.pack.js"></script>
 
-    <style>
-        .snippetCode script {
-            display: block;
-        }
-
-        .snippet .snippetPreview {
-            display: inline-block;
-        }
-
-        .snippet pre {
-            display: inline-block;
-        }
-
-        .snippet pre code {
-            border-radius: 5px;
-            min-width: 720px;
-        }
-    </style>
+    <!-- include own styles and scripts -->
+    <link href="./styles/documentation.css" rel="stylesheet">
+    <script src="./documentation.js"></script>
 </head>
 <body>
-
     <div>Documentation</div>
 
-    <div class="sourceSnippets">
-        <div class="snippet">
-            <h3>Simple example</h3>
-            <span>First steps</span>
-            <div class="snippetPreview">
-                <div id="snippet1"></div>
-                <script src="snippets/snippet1/snippet1.js"></script>
-
-                <!--<div id="snippet1"></div>
-                <script>
-                    $('div#snippet1').listbox({
-                        multiple: true,
-                        getItems: function () {
-                            return [
-                                "Alderaan",
-                                "Corellia",
-                                "Endor",
-                                { text: "Kashyyyk", selected : true },
-                                "Mustafar",
-                                { text: "Naboo", disabled: true },
-                                "Nar Shaddaa",
-                                { text: "Tatooine", selected: true },
-                                "Yavin"
-                            ];
-                        }
-                    });
-                </script>-->
-            </div>
-            <pre>
-                <code class="snippetCode"></code>
-            </pre>
-        </div>
-    </div>
-
-    <script>
-        hljs.initHighlightingOnLoad();
-        $(function () {
-            $(".snippet").each(function (index, snippet) {
-                var $snippet = $(snippet);
-                var $preview = $(".snippetPreview", $snippet);
-                var $script = $("script", $preview);
-                var $code = $(".snippetCode", $snippet);
-
-                $.get($script.attr("src"), function (content) {
-                    $code.html(content);
-                });
-            });
-        });
-    </script>
+    <div class="sourceSnippets" id="sourceSnippets"></div>
 </body>
 </html>
