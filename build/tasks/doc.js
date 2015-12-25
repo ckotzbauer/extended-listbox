@@ -29,7 +29,7 @@ gulp.task('publish-docs', function () {
         // Checkout gh-pages
         checkout("gh-pages", function () {
             // Copy files from temp dir to new location
-            copyFiles("_doctemp/" + args.version + "/**/*", 'documentation', function () {
+            copyFiles("_doctemp/" + args.version + "/**/*", 'documentation/' + args.version, function () {
                 console.log("Another job well done!");
             });
         });
