@@ -30,8 +30,7 @@ gulp.task('publish-docs', function () {
         checkout("gh-pages", function () {
             // Copy files from temp dir to new location
             copyFiles("_doctemp/" + args.version, 'documentation', function () {
-                // Remove temp files
-                fs.unlinkSync("_doctemp");
+                console.log("Another job well done!");
             });
         });
     });
