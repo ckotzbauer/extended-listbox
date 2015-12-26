@@ -1,0 +1,101 @@
+.main-content pre > code.javascript {
+    color: #a9b7c6;
+    background: #282b2e;
+}
+
+.main-content pre {
+    background: #282b2e;
+    border: none;
+}
+
+
+.sourceSnippets {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.15;
+}
+
+.snippet .heading {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.snippet .heading .alert {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.snippet .heading .alert.info {
+    color: #6897BB;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.snippet .heading .alert.warning {
+    color: #cc7832;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.snippet .heading .alert.danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.snippet .snippetWrapper {
+    border: 1px solid grey;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.snippet .snippetWrapper .snippetPreview {
+     padding-top: 10px;
+     padding-left: 10px;
+     padding-right: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+ }
+
+.snippet .snippetWrapper .snippetPreview .listbox-root {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.snippet .snippetWrapper .buttonContainer {
+    display: inline;
+    float: right;
+    margin-bottom: -34px;
+}
+
+.snippet .snippetWrapper .buttonContainer .copyButton {
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-bottom: 8px;
+    padding-top: 4px;
+    border-bottom: 1px solid white;
+    border-left: 1px solid white;
+    border-bottom-left-radius: 5px;
+    font-size: 13px;
+    color: white;
+}
+
+.snippet .snippetWrapper .buttonContainer .copyButton:hover {
+    background-color: #cc7832;
+    cursor: pointer;
+}
+
+.snippet .snippetWrapper pre {
+    margin-bottom: 0px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.snippet .snippetWrapper pre code {
+    min-width: 720px;
+
+    font-size: 13px;
+    display: block;
+}
