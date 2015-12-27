@@ -5,9 +5,19 @@ define("snippets", function () {
 
         this.snippets.push({
             snippetId: "snippet1",
-            title: "Snippet #1",
-            subtitle: "Small Test"
-            //alert: { text: "<strong>Deprecated: </strong> This function will be removed in release 2.0.0", type: "danger" }
+            title: "Simple list of items"
+        });
+
+        this.snippets.push({
+            snippetId: "snippet2",
+            title: "Searchable list",
+            subtitle: "List with preselection and a searchBar."
+        });
+
+        this.snippets.push({
+            snippetId: "snippet3",
+            title: "Grouped list items",
+            subtitle: "Multiple item groups and disabled items."
         });
     };
 
