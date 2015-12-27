@@ -14,9 +14,14 @@
     <!-- include jQuery -->
     <script src="../scripts/jquery.js"></script>
 
+    <!-- include knockout -->
+    <script src="../scripts/knockout.js"></script>
+
     <!-- include requirejs -->
     <script src="../scripts/requirejs.js"></script>
     <script src="../scripts/requirejs-text.js"></script>
+
+
 
     <!-- include extended-listbox.js -->
     <link href="dist/css/extended-listbox.css" rel="stylesheet">
@@ -28,7 +33,7 @@
 
     <!-- include own styles and scripts -->
     <link href="../styles/documentation.css" rel="stylesheet">
-    <script src="../index.js"></script>
+    <!--<script src="../domManipulator.js"></script>-->
 </head>
 <body>
     <section class="page-header">
@@ -40,9 +45,51 @@
     </section>
 
     <section class="main-content">
+        <h1>Code Snippets</h1>
+
+        <!-- ko component: { name: 'snippet1' } -->
+        <!-- /ko -->
+
         <div class="sourceSnippets" id="sourceSnippets"></div>
     </section>
 
+    <section class="main-content">
+        <h1>API Reference</h1>
+        <div class="apiReference" id="apiReference">
+            <h3>Functions</h3>
+            <div class="api">
+                <div>
+                    <pre>
+                        <code>$('#snippet5').listbox(options: ListboxOptions): void</code>
+                    </pre>
+                </div>
+                <div class="description">
+                    <span>Create a new Listbox on the given DOM element.</span>
+                    <div class="parameters">
+                        <span><strong>Parameters:</strong></span>
+                        <ul>
+                            <li><strong>options: </strong> An instance from ListboxOptions to configure the listbox.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        require.config({
+            baseUrl: '.'
+        });
+
+        require(["./index"], function (Index) {
+            ko.applyBindings(new Index());
+        });
+
+
+        /*$(function () {
+            hljs.highlightBlock($(".api").find("code")[0]);
+        });*/
+    </script>
 
 </body>
 </html>

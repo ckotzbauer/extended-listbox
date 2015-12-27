@@ -99,7 +99,35 @@
 
 .snippet .snippetWrapper pre code {
     min-width: 720px;
-
     font-size: 13px;
     display: block;
 }
+
+
+.apiReference .api {
+    border: 1px solid grey;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.apiReference .api pre {
+    margin-bottom: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 45px;
+    overflow: hidden;
+}
+
+.apiReference .api pre code {
+    min-width: 720px;
+    font-size: 13px;
+    display: block;
+    margin-top: -20px;
+}
+
+.apiReference .api .description {
+    padding: 0.8rem;
+}
+
