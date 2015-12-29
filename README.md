@@ -1,5 +1,7 @@
 # Extended Listbox
 
+[![Join the chat at https://gitter.im/code-chris/extended-listbox](https://badges.gitter.im/code-chris/extended-listbox.svg)](https://gitter.im/code-chris/extended-listbox?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 [![Travis](https://img.shields.io/travis/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
