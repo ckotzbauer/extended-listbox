@@ -27,7 +27,9 @@ function generateTestMain() {
 
     // creating a stream through which each file will pass
     var stream = through.obj(function(file, enc, cb) {
-        files.push(file.path.substr(file.path.lastIndexOf("\\") + 1));
+        var path = file.path.replace(/\\/g, " ").replace(/\//g, " ");
+        var splitted = path.split(" ");
+        files.push(splitted[splitted.length - 1]);
 
         // make sure the file goes through the next gulp plugin
         this.push(file);
