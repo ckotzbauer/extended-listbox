@@ -17,6 +17,7 @@ function writeTestMain(files) {
     var template = 'var tests = [FILES]; require(tests);';
     var list = '"' + files.join('", "') + '"';
     template = template.replace("FILES", list);
+    console.log("Generated: " + template);
 
     fs.writeFileSync("test/TestMain.js", template);
 }
@@ -45,6 +46,6 @@ gulp.task('generate-testmain', function () {
         .pipe(generateTestMain());
 });
 
-gulp.task('prepare-tests', function () {
-    return runSequence('clean-tests', 'build-tests', 'generate-testmain');
+gulp.task('prepare-tests', function (callback) {
+    return runSequence('clean-tests', 'build-tests', 'generate-testmain', callback);
 });
