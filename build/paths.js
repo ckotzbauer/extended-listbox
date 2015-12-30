@@ -8,6 +8,7 @@ module.exports = {
     source: appRoot + 'ts/**/*.ts',
     style: appRoot + 'less/extended-listbox.less',
     output: 'dist/',
-    latestDocs: 'doc/pages/documentation/',
-    packageName: pkg.name
+    packageName: pkg.name,
+    testSource: "test/",
+    testOutput: "test/"
 };

@@ -1,78 +1,14 @@
 /// <reference path="../typings/tsd.d.ts" />
 /// <reference path="../dist/extended-listbox.d.ts" />
 
-function child(element: JQuery, index: number = null): JQuery {
-    "use strict";
-
-    if (!index) {
-        index = 0;
-    }
-
-    return $(element.children()[index]);
-}
-
-function generateMultipleList(options: ListBoxOptions = null, items: any[] = null): JQuery {
-    "use strict";
-
-    options = $.extend({
-        multiple: true,
-        getItems: function (): any[] {
-            return items;
-        }
-    }, options);
-
-    return $('#test').listbox(options);
-}
-
-function itemsToVal(items: JQuery): string {
-    "use strict";
-
-    var result: string = '';
-    for (var i: number = 0; i < items.length; ++i) {
-        if (i !== 0) {
-            result += ',';
-        }
-
-        result += $(items[i]).data("dataItem").text;
-    }
-    return result;
-}
-
-function jsonToVal(items: any[]): string {
-    "use strict";
-
-    var result: string = '';
-    for (var i: number = 0; i < items.length; ++i) {
-        if (i !== 0) {
-            result += ',';
-        }
-
-        result += JSON.parse(items[i]).text;
-    }
-    return result;
-}
-
-function arrayToVal(items: any[]): string {
-    "use strict";
-
-    var result: string = '';
-    for (var i: number = 0; i < items.length; ++i) {
-        if (i !== 0) {
-            result += ',';
-        }
-
-        result += JSON.parse(items[i]).text;
-    }
-    return result;
-}
-
+import {TestHelper} from "./TestHelper";
 
 test('construct default', function (): void {
-    var root: JQuery = generateMultipleList();
+    var root: JQuery = TestHelper.generateMultipleList();
 
     equal(root.attr('class'), 'listbox-root');
 
-    var listbox: JQuery = child(root);
+    var listbox: JQuery = TestHelper.child(root);
     equal(listbox.attr('class'), 'listbox');
 
     var searchbar: JQuery = listbox.find('.listbox-searchbar');
@@ -81,21 +17,21 @@ test('construct default', function (): void {
 
 
 test('construct with searchbar', function (): void {
-    var root: JQuery = generateMultipleList({ searchBar: true });
+    var root: JQuery = TestHelper.generateMultipleList({ searchBar: true });
 
-    var searchbar: JQuery = child(root);
+    var searchbar: JQuery = TestHelper.child(root);
     equal(searchbar.attr('class'), 'listbox-searchbar-wrapper');
-    equal(child(searchbar).attr('placeholder'), 'Search...');
+    equal(TestHelper.child(searchbar).attr('placeholder'), 'Search...');
 
-    var listbox: JQuery = child(root, 1);
+    var listbox: JQuery = TestHelper.child(root, 1);
     equal(listbox.attr('class'), 'listbox');
 });
 
 test('construct with searchbar watermark', function (): void {
-    var root: JQuery = generateMultipleList({ searchBar: true, searchBarWatermark: "Suche..." });
+    var root: JQuery = TestHelper.generateMultipleList({ searchBar: true, searchBarWatermark: "Suche..." });
 
-    var searchbar: JQuery = child(root);
-    equal(child(searchbar).attr('placeholder'), 'Suche...');
+    var searchbar: JQuery = TestHelper.child(root);
+    equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
 });
 
 // TODO implement implicit default value
@@ -116,7 +52,7 @@ test('construct with searchbar watermark', function (): void {
 
 
 test('explicit default value', function (): void {
-    var select: JQuery = generateMultipleList({}, [
+    var select: JQuery = TestHelper.generateMultipleList({}, [
         "A",
         "B",
         { text: "C", selected: true },
@@ -127,12 +63,12 @@ test('explicit default value', function (): void {
 
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem").text, jsonToVal(select.val()));
+    equal(selectedItems.data("dataItem").text, TestHelper.jsonToVal(select.val()));
 });
 
 
 test('two explicit default values', function (): void {
-    var select: JQuery = generateMultipleList({}, [
+    var select: JQuery = TestHelper.generateMultipleList({}, [
         "A",
         { text: "B", selected: true },
         { text: "C", selected: true },
@@ -142,13 +78,13 @@ test('two explicit default values', function (): void {
     var selectedItems: JQuery = select.find(".listbox-item-selected");
 
     equal(selectedItems.length, 2);
-    equal(itemsToVal(selectedItems), 'B,C');
-    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
+    equal(TestHelper.itemsToVal(selectedItems), 'B,C');
+    equal(TestHelper.itemsToVal(selectedItems), TestHelper.jsonToVal(select.val()));
 });
 
 
 test('one click', function (): void {
-    var select: JQuery = generateMultipleList({}, [
+    var select: JQuery = TestHelper.generateMultipleList({}, [
         "A",
         "B",
         "C",
@@ -162,12 +98,12 @@ test('one click', function (): void {
     var selectedItems: JQuery = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
-    equal(selectedItems.data("dataItem").text, jsonToVal(select.val()));
+    equal(selectedItems.data("dataItem").text, TestHelper.jsonToVal(select.val()));
 });
 
 
 test('two clicks', function (): void {
-    var select: JQuery = generateMultipleList({}, [
+    var select: JQuery = TestHelper.generateMultipleList({}, [
         "A",
         "B",
         "C",
@@ -186,7 +122,7 @@ test('two clicks', function (): void {
 
 
 test('two clicks on different items', function (): void {
-    var select: JQuery = generateMultipleList({}, [
+    var select: JQuery = TestHelper.generateMultipleList({}, [
         "A",
         "B",
         "C",
@@ -200,13 +136,13 @@ test('two clicks on different items', function (): void {
 
     var selectedItems: JQuery = select.find(".listbox-item-selected");
     equal(selectedItems.length, 2);
-    equal(itemsToVal(selectedItems), 'A,C');
-    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
+    equal(TestHelper.itemsToVal(selectedItems), 'A,C');
+    equal(TestHelper.itemsToVal(selectedItems), TestHelper.jsonToVal(select.val()));
 });
 
 
 test('multiple clicks', function (): void {
-    var select: JQuery = generateMultipleList({}, [
+    var select: JQuery = TestHelper.generateMultipleList({}, [
         "A",
         "B",
         "C",
@@ -219,69 +155,69 @@ test('multiple clicks', function (): void {
 
     var selectedItems: JQuery = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
-    equal(itemsToVal(selectedItems), 'A');
-    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
+    equal(TestHelper.itemsToVal(selectedItems), 'A');
+    equal(TestHelper.itemsToVal(selectedItems), TestHelper.jsonToVal(select.val()));
 
     $(items[1]).click();     // click on 'B'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 2);
-    equal(itemsToVal(selectedItems), 'A,B');
-    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
+    equal(TestHelper.itemsToVal(selectedItems), 'A,B');
+    equal(TestHelper.itemsToVal(selectedItems), TestHelper.jsonToVal(select.val()));
 
     $(items[0]).click();     // click on 'A'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
-    equal(itemsToVal(selectedItems), 'B');
-    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
+    equal(TestHelper.itemsToVal(selectedItems), 'B');
+    equal(TestHelper.itemsToVal(selectedItems), TestHelper.jsonToVal(select.val()));
 
     $(items[2]).click();     // click on 'C'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 2);
-    equal(itemsToVal(selectedItems), 'B,C');
-    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
+    equal(TestHelper.itemsToVal(selectedItems), 'B,C');
+    equal(TestHelper.itemsToVal(selectedItems), TestHelper.jsonToVal(select.val()));
 
     $(items[0]).click();     // click on 'A'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 3);
-    equal(itemsToVal(selectedItems), 'A,B,C');
-    //equal(itemsToVal(selectedItems), arrayToVal(select.val())); TODO fix sorting
+    equal(TestHelper.itemsToVal(selectedItems), 'A,B,C');
+    //equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[1]).click();     // click on 'B'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 2);
-    equal(itemsToVal(selectedItems), 'A,C');
-    //equal(itemsToVal(selectedItems), arrayToVal(select.val())); TODO fix sorting
+    equal(TestHelper.itemsToVal(selectedItems), 'A,C');
+    //equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[0]).click();     // click on 'A'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
-    equal(itemsToVal(selectedItems), 'C');
-    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
+    equal(TestHelper.itemsToVal(selectedItems), 'C');
+    equal(TestHelper.itemsToVal(selectedItems), TestHelper.jsonToVal(select.val()));
 
     $(items[1]).click();     // click on 'B'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 2);
-    equal(itemsToVal(selectedItems), 'B,C');
-    //equal(itemsToVal(selectedItems), arrayToVal(select.val())); TODO fix sorting
+    equal(TestHelper.itemsToVal(selectedItems), 'B,C');
+    //equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[2]).click();     // click on 'C'
 
     selectedItems = select.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
-    equal(itemsToVal(selectedItems), 'B');
-    equal(itemsToVal(selectedItems), jsonToVal(select.val()));
+    equal(TestHelper.itemsToVal(selectedItems), 'B');
+    equal(TestHelper.itemsToVal(selectedItems), TestHelper.jsonToVal(select.val()));
 });
 
 
 test('change event', function (): void {
-    var select: JQuery = generateMultipleList({}, [
+    var select: JQuery = TestHelper.generateMultipleList({}, [
         "A",
         "B",
         "C",
@@ -314,7 +250,7 @@ test('onValueChanged callback', function (): void {
         lastValue = newValue;
     };
 
-    var select: JQuery = generateMultipleList(options, [
+    var select: JQuery = TestHelper.generateMultipleList(options, [
         "A",
         "B",
         "C",
@@ -325,11 +261,11 @@ test('onValueChanged callback', function (): void {
 
     $(items[0]).click();
     equal(receiveCounter, 1);
-    equal(arrayToVal(lastValue), "A");
+    equal(TestHelper.jsonToVal(lastValue), "A");
 
     $(items[1]).click();
     $(items[2]).click();
 
     equal(receiveCounter, 3);
-    equal(arrayToVal(lastValue), ["A", "B", "C"]);
+    equal(TestHelper.jsonToVal(lastValue), ["A", "B", "C"]);
 });

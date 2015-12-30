@@ -1,35 +1,14 @@
 /// <reference path="../typings/tsd.d.ts" />
 /// <reference path="../dist/extended-listbox.d.ts" />
 
-function child(element: JQuery, index: number = null): JQuery {
-    "use strict";
-
-    if (!index) {
-        index = 0;
-    }
-
-    return $(element.children()[index]);
-}
-
-function generateSingleList(options: ListBoxOptions = null, items: any[] = null): JQuery {
-    "use strict";
-
-    options = $.extend({
-        getItems: function (): any[] {
-            return items;
-        }
-    }, options);
-
-    return $('#test').listbox(options);
-}
-
+import {TestHelper} from "./TestHelper";
 
 test('construct default', function (): void {
-    var root: JQuery = generateSingleList();
+    var root: JQuery = TestHelper.generateSingleList();
 
     equal(root.attr('class'), 'listbox-root');
 
-    var listbox: JQuery = child(root);
+    var listbox: JQuery = TestHelper.child(root);
     equal(listbox.attr('class'), 'listbox');
 
     var searchbar: JQuery = listbox.find('.listbox-searchbar');
@@ -38,21 +17,21 @@ test('construct default', function (): void {
 
 
 test('construct with searchbar', function (): void {
-    var root: JQuery = generateSingleList({ searchBar: true });
+    var root: JQuery = TestHelper.generateSingleList({ searchBar: true });
 
-    var searchbar: JQuery = child(root);
+    var searchbar: JQuery = TestHelper.child(root);
     equal(searchbar.attr('class'), 'listbox-searchbar-wrapper');
-    equal(child(searchbar).attr('placeholder'), 'Search...');
+    equal(TestHelper.child(searchbar).attr('placeholder'), 'Search...');
 
-    var listbox: JQuery = child(root, 1);
+    var listbox: JQuery = TestHelper.child(root, 1);
     equal(listbox.attr('class'), 'listbox');
 });
 
 test('construct with searchbar watermark', function (): void {
-    var root: JQuery = generateSingleList({ searchBar: true, searchBarWatermark: "Suche..." });
+    var root: JQuery = TestHelper.generateSingleList({ searchBar: true, searchBarWatermark: "Suche..." });
 
-    var searchbar: JQuery = child(root);
-    equal(child(searchbar).attr('placeholder'), 'Suche...');
+    var searchbar: JQuery = TestHelper.child(root);
+    equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
 });
 
 // TODO implement implicit default value
@@ -73,7 +52,7 @@ test('construct with searchbar watermark', function (): void {
 
 
 test('explicit default value', function (): void {
-    var select: JQuery = generateSingleList({}, [
+    var select: JQuery = TestHelper.generateSingleList({}, [
         "A",
         "B",
         { text: "C", selected: true },
@@ -89,7 +68,7 @@ test('explicit default value', function (): void {
 
 
 test('two explicit default values', function (): void {
-    var select: JQuery = generateSingleList({}, [
+    var select: JQuery = TestHelper.generateSingleList({}, [
         "A",
         { text: "B", selected: true },
         { text: "C", selected: true },
@@ -105,7 +84,7 @@ test('two explicit default values', function (): void {
 
 
 test('one click', function (): void {
-    var select: JQuery = generateSingleList({}, [
+    var select: JQuery = TestHelper.generateSingleList({}, [
         "A",
         "B",
         "C",
@@ -124,7 +103,7 @@ test('one click', function (): void {
 
 
 test('multiple clicks', function (): void {
-    var select: JQuery = generateSingleList({}, [
+    var select: JQuery = TestHelper.generateSingleList({}, [
         "A",
         "B",
         "C",
@@ -178,7 +157,7 @@ test('multiple clicks', function (): void {
 
 
 test('change event', function (): void {
-    var select: JQuery = generateSingleList({}, [
+    var select: JQuery = TestHelper.generateSingleList({}, [
         "A",
         "B",
         "C",
@@ -211,7 +190,7 @@ test('onValueChanged callback', function (): void {
         lastValue = newValue.text;
     };
 
-    var select: JQuery = generateSingleList(options, [
+    var select: JQuery = TestHelper.generateSingleList(options, [
         "A",
         "B",
         "C",
