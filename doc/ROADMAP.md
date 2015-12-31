@@ -17,3 +17,9 @@ Here you can see the planned list of features.
 
 -   Drag & Drop between two Extended Listbox instances
 -   Drag & Drop to change item order
+
+
+## Version 2.0.0
+
+-   General refactoring
+-   Removal of old APIs
