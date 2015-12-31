@@ -19,7 +19,16 @@ function writeTestMain(files) {
     template = template.replace("FILES", list);
     console.log("Generated: " + template);
 
+    resolve(paths.testOutput + "index.html");
+    resolve("test/TestMain.js");
     fs.writeFileSync("test/TestMain.js", template);
+}
+
+function resolve(path) {
+    fs.realpath(path, function (err, resolvedPath) {
+        if (err) throw err;
+        console.log("Resolved: " + resolvedPath);
+    });
 }
 
 function generateTestMain() {
@@ -27,6 +36,7 @@ function generateTestMain() {
 
     // creating a stream through which each file will pass
     var stream = through.obj(function(file, enc, cb) {
+        console.log("Resolved: " + file.path);
         var path = file.path.replace(/\\/g, " ").replace(/\//g, " ");
         var splitted = path.split(" ");
         files.push(splitted[splitted.length - 1]);
