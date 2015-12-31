@@ -4,6 +4,7 @@ var ts = require('gulp-typescript');
 var compilerOptions = require('../tsc-options');
 var through = require('through2');
 var fs = require('fs');
+var path = require('path');
 var runSequence = require('run-sequence');
 var open = require('gulp-open');
 
@@ -15,7 +16,12 @@ gulp.task('build-tests', function () {
 
 function writeTestMain(files) {
     var template = 'var tests = [FILES]; require(tests);';
-    var list = '"' + files.join('", "') + '"';
+
+    var relatives = files.map(function(f) {
+        return path.relative(paths.testOutput, f);
+    });
+
+    var list = '"' + relatives.join('", "') + '"';
     template = template.replace("FILES", list);
     console.log("Generated: " + template);
 
@@ -37,9 +43,7 @@ function generateTestMain() {
     // creating a stream through which each file will pass
     var stream = through.obj(function(file, enc, cb) {
         console.log("Resolved: " + file.path);
-        var path = file.path.replace(/\\/g, " ").replace(/\//g, " ");
-        var splitted = path.split(" ");
-        files.push(splitted[splitted.length - 1]);
+        files.push(file.path);
 
         // make sure the file goes through the next gulp plugin
         this.push(file);
