@@ -6,7 +6,7 @@ module.exports = function(config) {
     basePath: '.',
     frameworks: ['qunit'],
     files: [
-      'bower_components/jquery/dist/jquery.js',
+      'node_modules/jquery/dist/jquery.js',
       'node_modules/requirejs/require.js',
       {pattern: 'src/ts/**/*.ts', included: false},
       {pattern: 'test/**/*Test.ts', included: false},
