@@ -65,4 +65,8 @@ export class TestHelper {
         }
         return result;
     }
+
+    public static startsWith(s: string, check: string): boolean {
+        return s.indexOf(check) === 0;
+    }
 }

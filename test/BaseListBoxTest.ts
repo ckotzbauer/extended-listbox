@@ -99,7 +99,7 @@ test("check simple items", function (): void {
         equal(element.attr("class"), "listbox-item");
         equal(element.text(), item);
         equal(element.attr("title"), item);
-        ok(element.attr("id").startsWith("listboxitem"));
+        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
     }
 });
 
@@ -120,7 +120,7 @@ test("check disabled items", function (): void {
         equal(element.attr("class"), "listbox-item listbox-item-disabled");
         equal(element.text(), item.text);
         equal(element.attr("title"), item.text);
-        ok(element.attr("id").startsWith("listboxitem"));
+        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
     }
 });
 
@@ -140,7 +140,7 @@ test("check selected item", function (): void {
         equal(element.attr("class"), "listbox-item listbox-item-selected");
         equal(element.text(), item.text);
         equal(element.attr("title"), item.text);
-        ok(element.attr("id").startsWith("listboxitem"));
+        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
     }
 });
 
@@ -160,7 +160,7 @@ test("check header item", function (): void {
         equal(element.attr("class"), "listbox-item listbox-item-group");
         equal(element.text(), item.text);
         equal(element.attr("title"), item.text);
-        ok(element.attr("id").startsWith("listboxitem"));
+        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
     }
 });
 
@@ -196,7 +196,7 @@ test("check item with childs", function (): void {
 
         equal(element.attr("class"), "listbox-item listbox-item-group");
         equal(element.attr("title"), item.text);
-        ok(element.attr("id").startsWith("listboxitem"));
+        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
 
         var childElements: JQuery[] = TestHelper.children(element);
         equal(childElements.length, 2);
@@ -207,7 +207,7 @@ test("check item with childs", function (): void {
             equal(childElement.attr("class"), "listbox-item listbox-item-child");
             equal(childElement.text(), childItem);
             equal(childElement.attr("title"), childItem);
-            ok(childElement.attr("id").startsWith("listboxitem"));
+            ok(TestHelper.startsWith(childElement.attr("id"), "listboxitem"));
         }
     }
 });
