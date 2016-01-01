@@ -5,6 +5,10 @@ module.exports = function(config) {
   config.set({
     basePath: '.',
     frameworks: ['qunit'],
+    exclude: [
+        "node_modules",
+        "bower_components"
+    ],
     files: [
       'node_modules/jquery/dist/jquery.js',
       'node_modules/requirejs/require.js',
@@ -12,10 +16,9 @@ module.exports = function(config) {
       {pattern: 'test/**/*Test.ts', included: false},
       'dist/js/extended-listbox.js',
 
-      'test/infrastructure/*.js',
-      'test/**/*Test.js',
-
-      'test/TestMain.js'
+      '**/test/infrastructure/*.js',
+      '**/test/**/*Test.js',
+      '**/test/TestMain.js'
     ],
     reporters: ['dots', 'coverage'],
     preprocessors: {
