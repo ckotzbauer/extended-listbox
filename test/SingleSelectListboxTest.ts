@@ -1,6 +1,16 @@
 /// <reference path="./test-typings.d.ts" />
+/// <amd-module name="SingleSelectListboxTest"/>
 
 import {TestHelper} from "./infrastructure/TestHelper";
+
+QUnit.module( "SingleSelectListboxTest", {
+    beforeEach: function(): void {
+        TestHelper.beforeEach();
+    },
+    afterEach: function(): void {
+        TestHelper.afterEach();
+    }
+});
 
 test('construct default', function (): void {
     var root: JQuery = TestHelper.generateSingleList();
