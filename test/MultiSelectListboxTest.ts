@@ -1,7 +1,6 @@
-/// <reference path="../typings/tsd.d.ts" />
-/// <reference path="../dist/extended-listbox.d.ts" />
+/// <reference path="./test-typings.d.ts" />
 
-import {TestHelper} from "./TestHelper";
+import {TestHelper} from "./infrastructure/TestHelper";
 
 test('construct default', function (): void {
     var root: JQuery = TestHelper.generateMultipleList();

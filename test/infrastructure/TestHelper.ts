@@ -1,5 +1,4 @@
-/// <reference path="../typings/tsd.d.ts" />
-/// <reference path="../dist/extended-listbox.d.ts" />
+/// <reference path="../test-typings.d.ts" />
 
 export class TestHelper {
 
@@ -9,6 +8,17 @@ export class TestHelper {
         }
 
         return $(element.children()[index]);
+    }
+
+    public static children(element: JQuery): JQuery[] {
+        var childs: JQuery[] = [];
+
+        for (var i: number = 0; i < element.children().length; i++) {
+            var c: any = element.children()[i];
+            childs.push($(c));
+        }
+
+        return childs;
     }
 
     public static generateSingleList(options: ListBoxOptions = null, items: any[] = null): JQuery {

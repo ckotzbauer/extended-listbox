@@ -9,7 +9,7 @@ var runSequence = require('run-sequence');
 var open = require('gulp-open');
 
 gulp.task('build-tests', function () {
-    return gulp.src(paths.testSource + "**/*.ts")
+    return gulp.src(paths.testSource + "**/*Test.ts")
         .pipe(ts(compilerOptions))
         .pipe(gulp.dest(paths.testOutput));
 });
