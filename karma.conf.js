@@ -17,7 +17,7 @@ module.exports = function(config) {
       'dist/js/extended-listbox.js',
 
       '**/test/infrastructure/*.js',
-      '**/test/**/*Test.js',
+      '**/test/*Test.js',
       '**/test/TestMain.js'
     ],
     reporters: ['dots', 'coverage'],
