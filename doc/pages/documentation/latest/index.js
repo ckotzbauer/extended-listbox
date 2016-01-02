@@ -19,9 +19,9 @@ define([
 
             templateEngine.processTemplates(apiTemplate, snippets.apiFunctionSnippets,
                 { loops: [{ template: "parameters", data: "apiParameters" }] },
-                function (element) {
+                function (element, dao) {
                     $(element).appendTo($(".apiFunctionWrapper"));
-                    snippetUtil.postprocessApiSnippet(element);
+                    snippetUtil.postprocessApiSnippet(element, dao);
                 });
         };
 

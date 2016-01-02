@@ -117,7 +117,7 @@ define([], function () {
         dataObjects.forEach(function (dao) {
             var htmlSnippet = this.processSingleTemplate(template, dao, options);
             if (callback) {
-                callback(htmlSnippet);
+                callback(htmlSnippet, dao);
             }
         }.bind(this));
     };

@@ -19,10 +19,18 @@ define([], function () {
         }.bind(this));
     };
 
-    SnippetUtil.prototype.postprocessApiSnippet = function (element) {
+    SnippetUtil.prototype.postprocessApiSnippet = function (element, dao) {
         var $snippet = $(element);
         var $code = $snippet.find("code");
         hljs.highlightBlock($code[0]);
+
+        if (!dao.apiParameters || dao.apiParameters.length === 0) {
+            $snippet.find("div.parameters").remove();
+        }
+
+        if (!dao.apiReturnValue) {
+            $snippet.find("div.returnValue").remove();
+        }
     };
 
     function copyToClipboard(content) {
