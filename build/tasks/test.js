@@ -73,3 +73,7 @@ gulp.task('coveralls', function () {
     return gulp.src('build/**/lcov.info')
         .pipe(coveralls());
 });
+
+gulp.task('prepare-tests', function (callback) {
+    return runSequence('clean-tests', 'build-tests', 'generate-testmain', callback);
+});
