@@ -60,11 +60,11 @@
 
         var copySnippetFunc = null;
 
-        require(["./index"], function (Index) {
-            var i = new Index();
-            i.init();
+        require(["../infrastructure/docUtil", "./snippets"], function (DocUtil, snippets) {
+            var util = new DocUtil(snippets);
+            util.init();
 
-            copySnippetFunc = i.copySnippet;
+            copySnippetFunc = util.copySnippet;
         });
 
         function copySnippet(snippetId) {
