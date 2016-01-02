@@ -13,7 +13,8 @@ var coveralls = require('gulp-coveralls');
 var files = [];
 
 gulp.task('build-tests', function () {
-    return gulp.src([paths.testSource + "**/*Test.ts", paths.testSource + "infrastructure/**/*.ts"])
+    return gulp.src([paths.testSource + "**/*Test.ts",
+        paths.testSource + "infrastructure/**/*.ts"], { base: path.resolve(paths.testSource) })
         .pipe(ts(compilerOptions))
         .pipe(gulp.dest(paths.testOutput));
 });
