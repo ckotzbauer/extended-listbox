@@ -6,7 +6,6 @@ var through = require('through2');
 var fs = require('fs');
 var path = require('path');
 var runSequence = require('run-sequence');
-var open = require('gulp-open');
 
 gulp.task('build-tests', function () {
     return gulp.src(paths.testSource + "**/*Test.ts")
