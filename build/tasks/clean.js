@@ -7,3 +7,8 @@ gulp.task('clean', function() {
     return gulp.src([paths.output + 'js', paths.output + 'css'])
         .pipe(vinylPaths(del));
 });
+
+gulp.task('clean-tests', function() {
+    return gulp.src([paths.testOutput + '**/*.js', paths.testOutput + '**/*.js.map'])
+        .pipe(vinylPaths(del));
+});

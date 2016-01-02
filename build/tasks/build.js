@@ -7,10 +7,10 @@ var replace = require('gulp-replace');
 var sourceMaps = require('gulp-sourcemaps');
 var ts = require('gulp-typescript');
 var compilerOptions = require('../tsc-options');
-var insert = require('gulp-insert');
+var header = require('gulp-header');
 var fs = require('fs');
 var minify = require('gulp-minify');
-var minifyCss = require('gulp-minify-css');
+var cssnano = require('gulp-cssnano');
 var rename = require('gulp-rename');
 
 function minimalistHeader() {
@@ -24,7 +24,7 @@ gulp.task('build-js', function () {
     return gulp.src(paths.source)
         .pipe(sourceMaps.init())
         .pipe(ts(compilerOptions))
-        .pipe(insert.prepend(fileComment))
+        .pipe(header(fileComment))
         .pipe(replace('[VERSION]', args.version))
         .pipe(replace('[YEAR]', args.year))
         .pipe(replace('[LICENSE]', args.license))
@@ -44,14 +44,14 @@ gulp.task('build-less', function () {
 gulp.task('minify-js', function () {
     return gulp.src(paths.output + 'js/extended-listbox.js')
         .pipe(minify())
-        .pipe(insert.prepend(minimalistHeader()))
+        .pipe(header(minimalistHeader()))
         .pipe(gulp.dest(paths.output + 'js'));
 });
 
 gulp.task('minify-css', function () {
     return gulp.src(paths.output + 'css/extended-listbox.css')
-        .pipe(minifyCss())
-        .pipe(insert.prepend(minimalistHeader()))
+        .pipe(cssnano())
+        .pipe(header(minimalistHeader()))
         .pipe(rename('extended-listbox-min.css'))
         .pipe(gulp.dest(paths.output + 'css'));
 });
