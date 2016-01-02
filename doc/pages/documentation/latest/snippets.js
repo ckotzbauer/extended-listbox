@@ -36,6 +36,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet1",
+            title: "Construction",
             apiSignature: "$('#apiSnippet1').listbox(options: ListboxOptions): JQuery",
             apiDescription: "Create a new Listbox on the given DOM element.",
             apiParameters: [
@@ -46,6 +47,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet2",
+            title: "addItem",
             apiSignature: "$('#apiSnippet2').listbox('addItem', item: string|ListboxItem): number",
             apiDescription: "Adds the given item to the list.",
             apiParameters: [
@@ -56,6 +58,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet3",
+            title: "removeItem",
             apiSignature: "$('#apiSnippet3').listbox('removeItem', item: string): void",
             apiDescription: "Removes the item where the given string matches the display name or the id.",
             apiParameters: [
@@ -65,6 +68,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet4",
+            title: "destroy",
             apiSignature: "$('#apiSnippet4').listbox('destroy'): void",
             apiDescription: "Reverts all changes on the DOM.",
             apiParameters: []
@@ -72,6 +76,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet5",
+            title: "getItem",
             apiSignature: "$('#apiSnippet5').listbox('getItem', item: string): ListboxItem",
             apiDescription: "Returns the ListboxItem for which the given string matches the display name or the id.",
             apiParameters: [
@@ -82,6 +87,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet6",
+            title: "getItems",
             apiSignature: "$('#apiSnippet6').listbox('getItems'): ListboxItem[]",
             apiDescription: "Returns all ListboxItem objects.",
             apiParameters: [],
@@ -90,6 +96,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet7",
+            title: "moveItemUp",
             apiSignature: "$('#apiSnippet7').listbox('moveItemUp', item: string): number",
             apiDescription: "Decreases the index of the matching ListboxItem by one.",
             apiParameters: [
@@ -100,6 +107,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet8",
+            title: "moveItemDown",
             apiSignature: "$('#apiSnippet8').listbox('moveItemDown', item: string): number",
             apiDescription: "Increases the index of the matching ListboxItem by one.",
             apiParameters: [
@@ -110,6 +118,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet9",
+            title: "clearSelection",
             apiSignature: "$('#apiSnippet9').listbox('clearSelection'): void",
             apiDescription: "Resets the selection state of all items.",
             apiParameters: []
@@ -117,6 +126,7 @@ define("snippets", function () {
 
         this.apiFunctionSnippets.push({
             snippetId: "apiSnippet10",
+            title: "enable",
             apiSignature: "$('#apiSnippet10').listbox('enable', state: boolean): void",
             apiDescription: "Enables or disables the complete component.",
             apiParameters: [

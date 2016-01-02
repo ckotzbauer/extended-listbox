@@ -8,6 +8,35 @@
     border: none;
 }
 
+.heading {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.heading .alert {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.heading .alert.info {
+    color: #6897BB;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.heading .alert.warning {
+    color: #cc7832;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.heading .alert.danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
 
 .sourceSnippets {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -16,35 +45,6 @@
 
 .snippet {
     margin-bottom: 30px;
-}
-
-.snippet .heading {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.snippet .heading .alert {
-    border: 1px solid transparent;
-    border-radius: 4px;
-    padding: 15px;
-    margin-top: 10px;
-}
-
-.snippet .heading .alert.info {
-    color: #6897BB;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-
-.snippet .heading .alert.warning {
-    color: #cc7832;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
-}
-
-.snippet .heading .alert.danger {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
 }
 
 .snippet .snippetWrapper {
@@ -104,13 +104,18 @@
 }
 
 
+
 .apiReference .api {
+    margin-bottom: 30px;
+}
+
+.apiReference .api .apiWrapper {
     border: 1px solid grey;
     border-radius: 5px;
     margin-top: 10px;
 }
 
-.apiReference .api pre {
+.apiReference .api .apiWrapper pre {
     margin-bottom: 0px;
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
@@ -120,14 +125,23 @@
     overflow: hidden;
 }
 
-.apiReference .api pre code {
+.apiReference .api .apiWrapper pre code {
     min-width: 720px;
     font-size: 13px;
     display: block;
     margin-top: -20px;
 }
 
-.apiReference .api .description {
+.apiReference .api .apiWrapper .description {
     padding: 0.8rem;
+}
+
+.apiReference .api .apiWrapper .description .parameters {
+    margin-top: 10px;
+}
+
+.apiReference .api .apiWrapper .description .returnValue .desc {
+    margin-left: 20px;
+    display: block;
 }
 
