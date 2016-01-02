@@ -22,7 +22,10 @@ function writeTestMain(files) {
     var template = 'var tests = [FILES]; require(tests);';
 
     var relatives = files.map(function(f) {
-        return path.relative(paths.testOutput, f);
+        var rel = path.relative(paths.testOutput, f);
+        console.log("Absolute: " + f);
+        console.log("Relative: " + rel);
+        return rel;
     });
 
     var list = '"' + relatives.join('", "') + '"';
