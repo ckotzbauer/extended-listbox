@@ -8,5 +8,6 @@ before_install:
   - npm install
 
 script:
-  - "gulp test"
-  - "gulp coveralls"
+  - "wget https://raw.githubusercontent.com/jonkemp/qunit-phantomjs-runner/master/runner.js"
+  - "gulp prepare-tests"
+  - "phantomjs runner.js test/index.html"
