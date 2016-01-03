@@ -198,9 +198,10 @@ var ExtendedListbox;
             if (this._settings.getItems) {
                 var items = this._settings.getItems();
                 if (items) {
-                    items.forEach(function (i) {
-                        this.addItem(this._prepareDataItem(i), true);
-                    }.bind(this));
+                    var index;
+                    for (index in items) {
+                        this.addItem(this._prepareDataItem(items[index]), true);
+                    }
                 }
             }
         };
@@ -231,9 +232,10 @@ var ExtendedListbox;
             else {
                 item = $.extend(item, dataItem);
                 var childs = [];
-                item.childItems.forEach(function (i) {
-                    childs.push(this._prepareDataItem(i));
-                }.bind(this));
+                var index;
+                for (index in item.childItems) {
+                    childs.push(this._prepareDataItem(item.childItems[index]));
+                }
                 item.childItems = childs;
                 return item;
             }
