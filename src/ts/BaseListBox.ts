@@ -1,5 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./ListboxSettings.ts" />
+/// <reference path="./ListboxItem.ts" />
 
 module ExtendedListbox {
 "use strict";
@@ -184,10 +185,9 @@ module ExtendedListbox {
             if (this._settings.getItems) {
                 var items: any[] = this._settings.getItems();
                 if (items) {
-                    var index: any;
-                    for (index in items) {
-                        this.addItem(this._prepareDataItem(items[index]), true);
-                    }
+                    items.forEach(function (i: any): void {
+                        this.addItem(this._prepareDataItem(i), true);
+                    }.bind(this));
                 }
             }
         }
@@ -208,29 +208,24 @@ module ExtendedListbox {
          * @this {BaseListBox}
          * @param {object} dataItem object returned from getItems
          */
-        protected _prepareDataItem(dataItem: any): any {
-            var defaults: any = {
-                text: null,
-                id: this._generateItemId(),
-                index: null,
-                disabled: false,
-                selected: false,
-                groupHeader: false,
-                parentGroupId: null,
-                childItems: []
-            };
+        protected _prepareDataItem(dataItem: any): ListboxItem {
+            var item: ListboxItem = new ListboxItem();
+
+            if (!dataItem.id) {
+                item.id = this._generateItemId();
+            }
 
             if (typeof dataItem === "string" || typeof dataItem === "number") {
-                defaults.text = dataItem;
-                return defaults;
+                item.text = <string> dataItem;
+                return item;
             } else {
-                var item: any = $.extend(defaults, dataItem);
+                item = $.extend(item, dataItem);
 
-                var childs: any[] = [];
-                var index: number;
-                for (index = 0; index < item.childItems.length; index++) {
-                    childs.push(this._prepareDataItem(item.childItems[index]));
-                }
+                var childs: ListboxItem[] = [];
+
+                item.childItems.forEach(function (i: any): void {
+                    childs.push(this._prepareDataItem(i));
+                }.bind(this));
 
                 item.childItems = childs;
                 return item;
@@ -246,7 +241,7 @@ module ExtendedListbox {
          * @param {object} internal: true if this function is not called directly as api function.
          * * @param {object} $parent: the DOM parent element
          */
-        protected _addItem(dataItem: any, internal: boolean, $parent: JQuery): string {
+        protected _addItem(dataItem: ListboxItem, internal: boolean, $parent: JQuery): string {
             var self: BaseListBox = this;
             var item: JQuery = $('<div>')
                 .addClass(BaseListBox.LIST_ITEM_CLASS)
@@ -300,7 +295,7 @@ module ExtendedListbox {
 
                 var index: number;
                 for (index = 0; index < dataItem.childItems.length; index++) {
-                    var child: any = dataItem.childItems[index];
+                    var child: ListboxItem = dataItem.childItems[index];
                     this._addItem(child, internal, item);
                 }
             }
@@ -438,8 +433,8 @@ module ExtendedListbox {
          *
          * @param {object} id unique id or text from listItem
          */
-        protected getItem(id: string): void {
-            var data: any = null;
+        protected getItem(id: string): ListboxItem {
+            var data: ListboxItem = null;
 
             var $item: JQuery = $("#" + id, this._list);
             if ($item.length === 0) {
@@ -457,8 +452,8 @@ module ExtendedListbox {
         /**
          * Returns all dataItems.
          */
-        protected getItems(): any[] {
-            var dataItems: any[] = [];
+        protected getItems(): ListboxItem[] {
+            var dataItems: ListboxItem[] = [];
 
             var childs: JQuery = this._list.children();
             var index: number;

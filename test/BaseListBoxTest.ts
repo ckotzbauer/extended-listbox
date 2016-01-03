@@ -71,12 +71,17 @@ test("check existent searchbar button with icon", function (): void {
 
 test("check searchbar button callback", function (): void {
     var count: number = 0;
-    var callback: Function = function(): void {
+    var callback: () => void = function(): void {
         count++;
     };
 
-    var root: JQuery = TestHelper.generateSingleList({ searchBar: true,
-        searchBarButton: { visible: true, onClick: callback } });
+    var options: ListBoxOptions = <ListBoxOptions> {};
+    options.searchBar = true;
+    options.searchBarButton = <ListboxSearchBarButtonOptions> {};
+    options.searchBarButton.visible = true;
+    options.searchBarButton.onClick = callback;
+
+    var root: JQuery = TestHelper.generateSingleList(options);
     var button: JQuery = root.find('.listbox-searchbar-button');
     button.click();
 

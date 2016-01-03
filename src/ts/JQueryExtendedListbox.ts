@@ -1,23 +1,14 @@
 /// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./MultiSelectListbox.ts" />
 /// <reference path="./SingleSelectListbox.ts" />
+/// <reference path="./ListboxSettings.ts" />
 
 module ExtendedListbox {
 "use strict";
 
-    function initializeListBoxFromOptions(options: any): JQuery {
-        var settings: any = $.extend(
-            {
-                searchBar: false,
-                searchBarWatermark: 'Search...',
-                searchBarButton: { visible: false, icon: null, onClick: null },
-                multiple: false,
-                getItems: null,
-                onValueChanged: null,
-                onFilterChanged: null,
-                onItemsChanged: null
-            },
-            options);
+    function initializeListBoxFromOptions(options: ListboxSettings): JQuery {
+        var settings: ListboxSettings = new ListboxSettings();
+        settings = $.extend(settings, options);
 
         return this.each(function (): boolean {
             var instance: BaseListBox;
