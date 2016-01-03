@@ -144,6 +144,18 @@ define("snippets", function () {
             title: "ListboxOptions",
             apiDescription: "This shows the properties of ListboxOptions with its default values."
         });
+
+        this.apiClassSnippets.push({
+            snippetId: "classSnippet2",
+            title: "ListboxSearchBarOptions",
+            apiDescription: "This shows the properties of ListboxSearchBarOptions with its default values."
+        });
+
+        this.apiClassSnippets.push({
+            snippetId: "classSnippet3",
+            title: "ListboxItem",
+            apiDescription: "This shows the properties of ListboxItem with its default values."
+        });
     };
 
     return new Snippets();
