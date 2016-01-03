@@ -13,6 +13,8 @@ Released on January 03, 2016.
 -   Published new documentation site
 -	Removed old demo sites
 -	Updated devDependencies
+-   Internal refactorings
+-   Added missing classes to definition file
 
 
 ## Version 1.0.5
