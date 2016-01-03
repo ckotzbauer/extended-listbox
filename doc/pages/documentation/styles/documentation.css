@@ -8,6 +8,29 @@
     border: none;
 }
 
+.tocButton {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #155799;
+    background-color: white;
+    border: 1px solid #155799;
+    border-radius: 0.3rem;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    padding: 0.75rem 1rem;
+}
+
+.tocButton:hover {
+    color: white;
+    background-color: #155799;
+    text-decoration: none;
+}
+
+.tocButton.topButton {
+    position: fixed;
+    bottom: 5px;
+    right: 15px;
+}
+
 .heading {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -82,6 +105,7 @@
     border-bottom-left-radius: 5px;
     font-size: 13px;
     color: white;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 
 .snippet .snippetWrapper .buttonContainer .copyButton:hover {
@@ -145,3 +169,6 @@
     display: block;
 }
 
+.apiReference .apiClassWrapper .api .apiWrapper pre {
+    height: 200px;
+}

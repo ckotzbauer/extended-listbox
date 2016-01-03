@@ -42,6 +42,10 @@ define([], function () {
     }
 
     function processLoops(template, element, dao, options) {
+        if (!options) {
+            return;
+        }
+
         var loops = element.getElementsByTagName("foreach");
 
         for (var i = 0; i < loops.length; i++) {

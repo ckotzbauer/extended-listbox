@@ -19,7 +19,7 @@ define([], function () {
         }.bind(this));
     };
 
-    SnippetUtil.prototype.postprocessApiSnippet = function (element, dao) {
+    SnippetUtil.prototype.postprocessApiFunctionSnippet = function (element, dao) {
         var $snippet = $(element);
         var $code = $snippet.find("code");
         hljs.highlightBlock($code[0]);
@@ -31,6 +31,19 @@ define([], function () {
         if (!dao.apiReturnValue) {
             $snippet.find("div.returnValue").remove();
         }
+    };
+
+    SnippetUtil.prototype.postprocessApiClassSnippet = function (element) {
+        var $snippet = $(element);
+        var $code = $("code", $snippet);
+
+        var snippetId = element.id.substr(0, element.id.indexOf("-"));
+        var moduleId = "text!./snippets/" + snippetId + ".ts";
+
+        require([moduleId], function (content) {
+            $code.html(content);
+            hljs.highlightBlock($code[0]);
+        }.bind(this));
     };
 
     function copyToClipboard(content) {
