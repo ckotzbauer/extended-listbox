@@ -46,6 +46,19 @@ define([], function () {
         }.bind(this));
     };
 
+    SnippetUtil.prototype.postprocessCssSnippet = function (element) {
+        var $snippet = $(element);
+        var $code = $("code", $snippet);
+
+        var snippetId = element.id.substr(0, element.id.indexOf("-"));
+        var moduleId = "text!./snippets/" + snippetId + ".css";
+
+        require([moduleId], function (content) {
+            $code.html(content);
+            hljs.highlightBlock($code[0]);
+        }.bind(this));
+    };
+
     function copyToClipboard(content) {
         var el = document.createElement('textarea');
         el.value = content;

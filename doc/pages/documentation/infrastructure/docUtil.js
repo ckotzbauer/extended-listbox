@@ -3,8 +3,9 @@ define([
     "./snippetUtil",
     "text!./snippetTemplate.html",
     "text!./apiFunctionTemplate.html",
-        "text!./apiClassTemplate.html"],
-    function (templateEngine, snippetUtil, snippetTemplate, apiFunctionTemplate, apiClassTemplate) {
+    "text!./apiClassTemplate.html",
+    "text!./cssTemplate.html"],
+    function (templateEngine, snippetUtil, snippetTemplate, apiFunctionTemplate, apiClassTemplate, cssTemplate) {
 
         var DocUtil = function (snippets) {
             this.snippets = snippets;
@@ -27,9 +28,16 @@ define([
 
             templateEngine.processTemplates(apiClassTemplate, this.snippets.apiClassSnippets,
                 { header: true },
-                function (element, dao) {
+                function (element) {
                     $(element).appendTo($(".apiClassWrapper"));
-                    snippetUtil.postprocessApiClassSnippet(element, dao);
+                    snippetUtil.postprocessApiClassSnippet(element);
+                });
+
+            templateEngine.processTemplates(cssTemplate, this.snippets.cssSnippets,
+                { header: false },
+                function (element) {
+                    $(element).appendTo($(".cssWrapper"));
+                    snippetUtil.postprocessCssSnippet(element);
                 });
         };
 

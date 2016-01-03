@@ -4,6 +4,7 @@ define("snippets", function () {
         this.exampleSnippets = [];
         this.apiFunctionSnippets = [];
         this.apiClassSnippets = [];
+        this.cssSnippets = [];
 
 
         ////  EXAMPLES  ////
@@ -155,6 +156,14 @@ define("snippets", function () {
             snippetId: "classSnippet3",
             title: "ListboxItem",
             apiDescription: "This shows the properties of ListboxItem with its default values."
+        });
+
+
+
+        ////  CSS CLASSES  ////
+
+        this.cssSnippets.push({
+            snippetId: "cssSnippet1"
         });
     };
 

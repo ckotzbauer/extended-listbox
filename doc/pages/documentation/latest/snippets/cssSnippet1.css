@@ -1,0 +1,10 @@
+
+.listbox-root                         /* `div`: root element, you declared in the DOM */
+.listbox                              /* `div`: container for list items */
+.listbox-item                         /* `div`: list item (enabled by default) */
+.listbox-item.listbox-item-selected   /* `div`: selected list item */
+.listbox-item.listbox-item-disabled   /* `div`: disabled list item */
+.listbox-item.listbox-item-group      /* `div`: group item */
+.listbox-item.listbox-item-child      /* `div`: item under a group item */
+.listbox-searchbar                    /* `input`: search query input */
+.listbox-searchbar-button             /* `button` button in search input field */
