@@ -148,8 +148,8 @@ define("snippets", function () {
 
         this.apiClassSnippets.push({
             snippetId: "classSnippet2",
-            title: "ListboxSearchBarOptions",
-            apiDescription: "This shows the properties of ListboxSearchBarOptions with its default values."
+            title: "ListboxSearchBarButtonOptions",
+            apiDescription: "This shows the properties of ListboxSearchBarButtonOptions with its default values."
         });
 
         this.apiClassSnippets.push({
