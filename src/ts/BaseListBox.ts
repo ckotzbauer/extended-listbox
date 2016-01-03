@@ -185,9 +185,10 @@ module ExtendedListbox {
             if (this._settings.getItems) {
                 var items: any[] = this._settings.getItems();
                 if (items) {
-                    items.forEach(function (i: any): void {
-                        this.addItem(this._prepareDataItem(i), true);
-                    }.bind(this));
+                    var index: any;
+                    for (index in items) {
+                        this.addItem(this._prepareDataItem(items[index]), true);
+                    }
                 }
             }
         }
@@ -223,9 +224,10 @@ module ExtendedListbox {
 
                 var childs: ListboxItem[] = [];
 
-                item.childItems.forEach(function (i: any): void {
-                    childs.push(this._prepareDataItem(i));
-                }.bind(this));
+                var index: any;
+                for (index in item.childItems) {
+                    childs.push(this._prepareDataItem(item.childItems[index]));
+                }
 
                 item.childItems = childs;
                 return item;
