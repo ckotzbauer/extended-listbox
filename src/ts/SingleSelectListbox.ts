@@ -42,12 +42,10 @@ export class SingleSelectListbox extends BaseListBox {
         domItem.toggleClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
         this._selectedDomItem = domItem;
         domItem.data("dataItem").selected = true;
-        this._parent.val(domItem.data("dataItem"));
-        this._parent.trigger('change');
+        this._target.val(domItem.data("dataItem"));
+        this._target.trigger('change');
 
-        if (this._settings.onValueChanged) {
-            this._settings.onValueChanged(domItem.data("dataItem"));
-        }
+        this.eventHandler.fireValueChangedEvent(domItem.data("dataItem"));
     }
 
 
@@ -64,8 +62,6 @@ export class SingleSelectListbox extends BaseListBox {
             }
         }
 
-        if (this._settings.onFilterChanged) {
-            this._settings.onFilterChanged(this._searchbar.val());
-        }
+        this.eventHandler.fireFilterChangedEvent(this._searchbar.val());
     }
 }

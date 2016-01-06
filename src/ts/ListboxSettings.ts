@@ -2,6 +2,7 @@
 
 import {ListboxItem} from "./ListboxItem";
 import {ListboxSearchBarButtonOptions} from "./ListboxSearchBarButtonOptions";
+import {ListboxEvent} from "./event/ListboxEvent";
 
 export class ListboxSettings {
     public searchBar: boolean = false;
@@ -9,7 +10,7 @@ export class ListboxSettings {
     public searchBarButton: ListboxSearchBarButtonOptions = new ListboxSearchBarButtonOptions();
     public multiple: boolean = false;
     public getItems: () => any[] = null;
-    public onValueChanged: (value: ListboxItem|ListboxItem[]) => void = null;
-    public onFilterChanged: (value: string) => void = null;
-    public onItemsChanged: (values: ListboxItem[]) => void = null;
+    public onValueChanged: (value: ListboxEvent) => void = null;
+    public onFilterChanged: (value: ListboxEvent) => void = null;
+    public onItemsChanged: (values: ListboxEvent) => void = null;
 }

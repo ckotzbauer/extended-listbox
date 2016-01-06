@@ -31,7 +31,7 @@ export class MultiSelectListbox extends BaseListBox {
             return;
         }
 
-        var parentValues: any[] = this._parent.val();
+        var parentValues: any[] = this._target.val();
 
         if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
             domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
@@ -51,12 +51,10 @@ export class MultiSelectListbox extends BaseListBox {
             parentValues.push(JSON.stringify(domItem.data("dataItem")));
         }
 
-        this._parent.val(parentValues);
-        this._parent.trigger('change');
+        this._target.val(parentValues);
+        this._target.trigger('change');
 
-        if (this._settings.onValueChanged) {
-            this._settings.onValueChanged(parentValues);
-        }
+        this.eventHandler.fireValueChangedEvent(parentValues);
     }
 
     public onFilterChange(): void {

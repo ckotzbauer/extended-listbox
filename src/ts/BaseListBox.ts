@@ -2,6 +2,7 @@
 
 import {ListboxItem} from "./ListboxItem";
 import {ListboxSettings} from "./ListboxSettings";
+import {ListboxEventHandler} from "./event/ListboxEventHandler";
 
 export abstract class BaseListBox {
 
@@ -16,12 +17,13 @@ export abstract class BaseListBox {
     protected static SEARCHBAR_CLASS: string = 'listbox-searchbar';
     protected static SEARCHBAR_BUTTON_CLASS: string = 'listbox-searchbar-button';
 
-    protected _parent: JQuery;
+    public _target: JQuery;
     protected _list: JQuery;
     private _searchbarWrapper: JQuery;
     protected _searchbar: JQuery;
 
-    protected _settings: ListboxSettings;
+    public _settings: ListboxSettings;
+    protected eventHandler: ListboxEventHandler;
 
 
     /**
@@ -35,8 +37,10 @@ export abstract class BaseListBox {
      * @param {object} options an object with Listbox settings
      */
     constructor(domelement: JQuery, options: ListboxSettings) {
-        this._parent = domelement;
+        this._target = domelement;
         this._settings = options;
+
+        this.eventHandler = new ListboxEventHandler(this);
 
         this._createListbox();
     }
@@ -66,7 +70,7 @@ export abstract class BaseListBox {
      * @this {BaseListBox}
      */
     private _createListbox(): void {
-        this._parent.addClass(BaseListBox.MAIN_CLASS);
+        this._target.addClass(BaseListBox.MAIN_CLASS);
 
         if (this._settings.searchBar) {
             this._createSearchbar();
@@ -87,7 +91,7 @@ export abstract class BaseListBox {
         // the searchbar over the listbox width
         var searchbarWrapper: JQuery = $('<div>')
             .addClass(BaseListBox.SEARCHBAR_CLASS + '-wrapper')
-            .appendTo(this._parent);
+            .appendTo(this._target);
 
         var searchbar: JQuery = $('<input>')
             .addClass(BaseListBox.SEARCHBAR_CLASS)
@@ -175,7 +179,7 @@ export abstract class BaseListBox {
         // create container
         this._list = $('<div>')
             .addClass(BaseListBox.LIST_CLASS)
-            .appendTo(this._parent);
+            .appendTo(this._target);
 
         this._resizeListToListbox();
 
@@ -311,7 +315,7 @@ export abstract class BaseListBox {
      * @param {object} dataItem display data for item
      * @param {object} internal: true if this function is not called directly as api function.
      */
-    protected addItem(dataItem: any, internal: boolean): string {
+    public addItem(dataItem: any, internal: boolean): string {
         if (!internal && !this._settings.multiple && dataItem.selected) {
             this.clearSelection(internal);
         }
@@ -319,9 +323,7 @@ export abstract class BaseListBox {
         var id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
 
         if (!internal) {
-            if (this._settings.onItemsChanged) {
-                this._settings.onItemsChanged(this.getItems());
-            }
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
         }
 
         return id;
@@ -334,7 +336,7 @@ export abstract class BaseListBox {
      * @this {BaseListBox}
      * @param {string} item: display text or id from item to remove
      */
-    protected removeItem(item: string): void {
+    public removeItem(item: string): void {
         var items: JQuery = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
         var index: any;
 
@@ -345,9 +347,7 @@ export abstract class BaseListBox {
 
                 uiItem.remove();
 
-                if (this._settings.onItemsChanged) {
-                    this._settings.onItemsChanged(this.getItems());
-                }
+                this.eventHandler.fireItemsChangedEvent(this.getItems());
 
                 return;
             }
@@ -360,9 +360,9 @@ export abstract class BaseListBox {
      *
      * @this {BaseListBox}
      */
-    protected destroy(): void {
-        this._parent.children().remove();
-        this._parent.removeClass(BaseListBox.MAIN_CLASS);
+    public destroy(): void {
+        this._target.children().remove();
+        this._target.removeClass(BaseListBox.MAIN_CLASS);
     }
 
 
@@ -371,7 +371,7 @@ export abstract class BaseListBox {
      * do it with CSS.
      */
     protected _resizeListToListbox(): void {
-        var listHeight: number = this._parent.height();
+        var listHeight: number = this._target.height();
 
         if (this._settings.searchBar) {
             listHeight -= this._searchbarWrapper.outerHeight(true);
@@ -384,7 +384,7 @@ export abstract class BaseListBox {
     /**
      * Clears all selected items.
      */
-    protected clearSelection(internal: boolean): void {
+    public clearSelection(internal: boolean): void {
         // Remove selected class from all other items
         var allItems: JQuery = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
 
@@ -395,13 +395,13 @@ export abstract class BaseListBox {
         }
 
         if (this._settings.multiple) {
-            this._parent.val([]);
+            this._target.val([]);
         } else {
-            this._parent.val(null);
+            this._target.val(null);
         }
 
         if (!internal) {
-            this._parent.trigger('change');
+            this._target.trigger('change');
         }
     }
 
@@ -416,15 +416,15 @@ export abstract class BaseListBox {
         domItem.data("dataItem").selected = false;
 
         if (this._settings.multiple) {
-            var parentValues: any[] = this._parent.val();
+            var parentValues: any[] = this._target.val();
             var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
             parentValues.splice(removeIndex, 1);
-            this._parent.val(parentValues);
+            this._target.val(parentValues);
         } else {
-            this._parent.val(null);
+            this._target.val(null);
         }
 
-        this._parent.trigger('change');
+        this._target.trigger('change');
     }
 
 
@@ -433,7 +433,7 @@ export abstract class BaseListBox {
      *
      * @param {object} id unique id or text from listItem
      */
-    protected getItem(id: string): ListboxItem {
+    public getItem(id: string): ListboxItem {
         var data: ListboxItem = null;
 
         var $item: JQuery = $("#" + id, this._list);
@@ -452,7 +452,7 @@ export abstract class BaseListBox {
     /**
      * Returns all dataItems.
      */
-    protected getItems(): ListboxItem[] {
+    public getItems(): ListboxItem[] {
         var dataItems: ListboxItem[] = [];
 
         var childs: JQuery = this._list.children();
@@ -470,7 +470,7 @@ export abstract class BaseListBox {
      *
      * @param {object} id unique id or text from listItem
      */
-    protected moveItemUp(id: string): number {
+    public moveItemUp(id: string): number {
         var newIndex: number = null;
 
         var $item: JQuery = $("#" + id, this._list);
@@ -484,9 +484,7 @@ export abstract class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        if (this._settings.onItemsChanged) {
-            this._settings.onItemsChanged(this.getItems());
-        }
+        this.eventHandler.fireItemsChangedEvent(this.getItems());
 
         return newIndex;
     }
@@ -496,7 +494,7 @@ export abstract class BaseListBox {
      *
      * @param {object} id unique id or text from listItem
      */
-    protected moveItemDown(id: string): number {
+    public moveItemDown(id: string): number {
         var newIndex: number = null;
 
         var $item: JQuery = $("#" + id, this._list);
@@ -510,9 +508,7 @@ export abstract class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        if (this._settings.onItemsChanged) {
-            this._settings.onItemsChanged(this.getItems());
-        }
+        this.eventHandler.fireItemsChangedEvent(this.getItems());
 
         return newIndex;
     }
@@ -523,11 +519,11 @@ export abstract class BaseListBox {
      *
      * @param {boolean} enable: new enable value.
      */
-    protected enable(enable: boolean): void {
+    public enable(enable: boolean): void {
         if (enable) {
-            this._parent.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
-        } else if (!this._parent.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
-            this._parent.addClass(BaseListBox.MAIN_DISABLED_CLASS);
+            this._target.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
+        } else if (!this._target.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
+            this._target.addClass(BaseListBox.MAIN_DISABLED_CLASS);
         }
     }
 }

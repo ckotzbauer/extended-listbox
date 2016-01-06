@@ -4,27 +4,43 @@ import {MultiSelectListbox} from "./MultiSelectListbox";
 import {SingleSelectListbox} from "./SingleSelectListbox";
 import {BaseListBox} from "./BaseListBox";
 import {ListboxSettings} from "./ListboxSettings";
+import {ExtendedListboxInstance} from "./ExtendedListboxInstance";
 
-function initializeListBoxFromOptions(options: ListboxSettings): JQuery {
+function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListboxInstance|ExtendedListboxInstance[] {
+    "use strict";
     var settings: ListboxSettings = new ListboxSettings();
     settings = $.extend(settings, options);
 
-    return this.each(function (): boolean {
-        var instance: BaseListBox;
+    var multipleInstances: ExtendedListboxInstance[] = [];
+    var singleInstance: ExtendedListboxInstance = null;
+    var multipleElements: boolean = this.length > 1;
+
+    this.each(function (): void {
+        var listbox: BaseListBox;
+        var instance: ExtendedListboxInstance;
+        var $this: JQuery = $(this);
 
         if (settings.multiple) {
-            instance = new MultiSelectListbox($(this), settings);
+            listbox = new MultiSelectListbox($this, settings);
         } else {
-            instance = new SingleSelectListbox($(this), settings);
+            listbox = new SingleSelectListbox($this, settings);
         }
 
-        $(this).data('listbox', instance);
+        $this.data('listbox', listbox);
 
-        return !!instance;
+        instance = ExtendedListboxInstance.createFrom(listbox, $this);
+        if (multipleElements) {
+            multipleInstances.push(instance);
+        } else {
+            singleInstance = instance;
+        }
     });
+
+    return multipleElements ? multipleInstances : singleInstance;
 }
 
 function callApiFunction(functionName: string, callArgs: any): any {
+    "use strict";
     var publicFunctions: string[] = ["addItem", "removeItem", "destroy", "getItem", "getItems",
         "moveItemUp", "moveItemDown", "clearSelection", "enable"];
 
