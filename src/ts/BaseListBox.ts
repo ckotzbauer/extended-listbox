@@ -270,12 +270,9 @@ export abstract class BaseListBox {
         }
 
         if (dataItem.parentGroupId) {
-            var $possibleParent: JQuery = $("#" + dataItem.parentGroupId, this._list);
-            if ($possibleParent.length === 0) {
-                $possibleParent = $('div[title="' + dataItem.parentGroupId + '"]');
-            }
+            var $possibleParent: JQuery = this.locateItem(dataItem.parentGroupId);
 
-            if ($possibleParent.length > 0) {
+            if ($possibleParent) {
                 $parent = $possibleParent;
             }
         }
@@ -436,12 +433,9 @@ export abstract class BaseListBox {
     public getItem(id: string): ListboxItem {
         var data: ListboxItem = null;
 
-        var $item: JQuery = $("#" + id, this._list);
-        if ($item.length === 0) {
-            $item = $('div[title="' + id + '"]');
-        }
+        var $item: JQuery = this.locateItem(id);
 
-        if ($item.length > 0) {
+        if ($item) {
             data = $item.data("dataItem");
         }
 
@@ -473,12 +467,9 @@ export abstract class BaseListBox {
     public moveItemUp(id: string): number {
         var newIndex: number = null;
 
-        var $item: JQuery = $("#" + id, this._list);
-        if ($item.length === 0) {
-            $item = $('div[title="' + id + '"]');
-        }
+        var $item: JQuery = this.locateItem(id);
 
-        if ($item.length > 0) {
+        if ($item) {
             $item.insertBefore($item.prev());
             newIndex = $item.index();
             $item.data("dataItem").index = newIndex;
@@ -497,12 +488,9 @@ export abstract class BaseListBox {
     public moveItemDown(id: string): number {
         var newIndex: number = null;
 
-        var $item: JQuery = $("#" + id, this._list);
-        if ($item.length === 0) {
-            $item = $('div[title="' + id + '"]');
-        }
+        var $item: JQuery = this.locateItem(id);
 
-        if ($item.length > 0) {
+        if ($item) {
             $item.insertAfter($item.next());
             newIndex = $item.index();
             $item.data("dataItem").index = newIndex;
@@ -525,5 +513,18 @@ export abstract class BaseListBox {
         } else if (!this._target.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
             this._target.addClass(BaseListBox.MAIN_DISABLED_CLASS);
         }
+    }
+
+    protected locateItem(id: string): JQuery {
+        var $item: JQuery = $("#" + id, this._list);
+        if ($item.length === 0) {
+            $item = $('div[title="' + id + '"]');
+        }
+
+        if ($item.length === 0) {
+            $item = null;
+        }
+
+        return $item;
     }
 }
