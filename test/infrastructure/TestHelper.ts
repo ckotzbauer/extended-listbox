@@ -1,4 +1,5 @@
 /// <reference path="../test-typings.d.ts" />
+/// <amd-module name="infrastructure/TestHelper"/>
 
 export class TestHelper {
 
@@ -68,5 +69,13 @@ export class TestHelper {
 
     public static startsWith(s: string, check: string): boolean {
         return s.indexOf(check) === 0;
+    }
+
+    public static beforeEach(): void {
+        $('body').append('<div id="qunit-fixture"><div id="test"></div></div>');
+    }
+
+    public static afterEach(): void {
+        $('#qunit-fixture').remove();
     }
 }

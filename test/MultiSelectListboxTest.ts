@@ -1,6 +1,16 @@
 /// <reference path="./test-typings.d.ts" />
+/// <amd-module name="MultiSelectListboxTest"/>
 
 import {TestHelper} from "./infrastructure/TestHelper";
+
+QUnit.module( "MultiSelectListboxTest", {
+    beforeEach: function(): void {
+        TestHelper.beforeEach();
+    },
+    afterEach: function(): void {
+        TestHelper.afterEach();
+    }
+});
 
 test('construct default', function (): void {
     var root: JQuery = TestHelper.generateMultipleList();

@@ -1,6 +1,16 @@
 /// <reference path="./test-typings.d.ts" />
+/// <amd-module name="BaseListBoxTest"/>
 
 import {TestHelper} from "./infrastructure/TestHelper";
+
+QUnit.module( "BaseListBoxTest", {
+    beforeEach: function(): void {
+        TestHelper.beforeEach();
+    },
+    afterEach: function(): void {
+        TestHelper.afterEach();
+    }
+});
 
 test("check root css class", function (): void {
     var root: JQuery = TestHelper.generateSingleList();
