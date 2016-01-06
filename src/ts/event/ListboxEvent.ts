@@ -1,18 +1,22 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
-export class ListboxEvent {
+module EL {
+    "use strict";
 
-    public static VALUE_CHANGED: string = "valueChanged";
-    public static FILTER_CHANGED: string = "filterChanged";
-    public static ITEMS_CHANGED: string = "itemsChanged";
+    export class ListboxEvent {
 
-    public eventName: string;
-    public target: JQuery;
-    public args: any;
+        public static VALUE_CHANGED: string = "valueChanged";
+        public static FILTER_CHANGED: string = "filterChanged";
+        public static ITEMS_CHANGED: string = "itemsChanged";
 
-    constructor(eventName: string, target: JQuery, args: any) {
-        this.eventName = eventName;
-        this.target = target;
-        this.args = args;
+        public eventName: string;
+        public target: JQuery;
+        public args: any;
+
+        constructor(eventName: string, target: JQuery, args: any) {
+            this.eventName = eventName;
+            this.target = target;
+            this.args = args;
+        }
     }
 }

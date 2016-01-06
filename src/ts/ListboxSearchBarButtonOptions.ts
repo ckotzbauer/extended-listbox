@@ -1,6 +1,10 @@
 
-export class ListboxSearchBarButtonOptions {
-    public visible: boolean = false;
-    public icon: string = null;
-    public onClick: Function = null;
+module EL {
+    "use strict";
+
+    export class ListboxSearchBarButtonOptions {
+        public visible: boolean = false;
+        public icon: string = null;
+        public onClick: Function = null;
+    }
 }

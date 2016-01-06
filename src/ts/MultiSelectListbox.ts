@@ -1,63 +1,67 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import {BaseListBox} from "./BaseListBox";
-import {ListboxSettings} from "./ListboxSettings";
+/// <reference path="./BaseListBox.ts" />
+/// <reference path="./ListboxSettings.ts" />
 
-export class MultiSelectListbox extends BaseListBox {
+module EL {
+    "use strict";
 
-    /**
-     * Create an instance of MultiSelectListbox.
-     *
-     * Inherit a {Listbox} class.
-     *
-     * @constructor
-     * @this {MultiSelectListbox}
-     * @param {object} domelement DOM element to be converted to the Listbox
-     * @param {object} options an object with Listbox settings
-     */
-    constructor(domelement: JQuery, options: ListboxSettings) {
-        super(domelement, options);
-    }
+    export class MultiSelectListbox extends BaseListBox {
 
-    /**
-     * Toggle item status.
-     *
-     * @this {MultiSelectListbox}
-     * @param {object} domItem a DOM object
-     */
-    public onItemClick(domItem: JQuery): void {
-        if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-            domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-            return;
+        /**
+         * Create an instance of MultiSelectListbox.
+         *
+         * Inherit a {Listbox} class.
+         *
+         * @constructor
+         * @this {MultiSelectListbox}
+         * @param {object} domelement DOM element to be converted to the Listbox
+         * @param {object} options an object with Listbox settings
+         */
+        constructor(domelement: JQuery, options: ListboxSettings) {
+            super(domelement, options);
         }
 
-        var parentValues: any[] = this._target.val();
-
-        if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
-            domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-
-            var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
-            parentValues.splice(removeIndex, 1);
-
-            domItem.data("dataItem").selected = false;
-        } else {
-            domItem.addClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-            domItem.data("dataItem").selected = true;
-
-            if (!parentValues) {
-                parentValues = [];
+        /**
+         * Toggle item status.
+         *
+         * @this {MultiSelectListbox}
+         * @param {object} domItem a DOM object
+         */
+        public onItemClick(domItem: JQuery): void {
+            if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+                domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                return;
             }
 
-            parentValues.push(JSON.stringify(domItem.data("dataItem")));
+            var parentValues: any[] = this._target.val();
+
+            if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
+                domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+
+                var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
+                parentValues.splice(removeIndex, 1);
+
+                domItem.data("dataItem").selected = false;
+            } else {
+                domItem.addClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+                domItem.data("dataItem").selected = true;
+
+                if (!parentValues) {
+                    parentValues = [];
+                }
+
+                parentValues.push(JSON.stringify(domItem.data("dataItem")));
+            }
+
+            this._target.val(parentValues);
+            this._target.trigger('change');
+
+            this.eventHandler.fireValueChangedEvent(parentValues);
         }
 
-        this._target.val(parentValues);
-        this._target.trigger('change');
-
-        this.eventHandler.fireValueChangedEvent(parentValues);
-    }
-
-    public onFilterChange(): void {
-        return undefined;
+        public onFilterChange(): void {
+            return undefined;
+        }
     }
 }

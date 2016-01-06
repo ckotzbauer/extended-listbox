@@ -1,73 +1,77 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import {ListboxItem} from "./ListboxItem";
-import {ListboxEvent} from "./event/ListboxEvent";
-import {BaseListBox} from "./BaseListBox";
+/// <reference path="./BaseListBox.ts" />
+/// <reference path="./ListboxItem.ts" />
+/// <reference path="./event/ListboxEvent.ts" />
 
-export class ExtendedListboxInstance {
+module EL {
+    "use strict";
 
-    private listbox: BaseListBox;
-    public target: JQuery;
+    export class ExtendedListboxInstance {
 
-    public static createFrom(listbox: BaseListBox, target: JQuery): ExtendedListboxInstance {
-        var instance: ExtendedListboxInstance = new ExtendedListboxInstance();
-        instance.listbox = listbox;
-        instance.target = target;
-        return instance;
-    }
+        private listbox: BaseListBox;
+        public target: JQuery;
 
-    public addItem(item: string|ListboxItem): string {
-        return this.listbox.addItem(item, false);
-    }
+        public static createFrom(listbox: BaseListBox, target: JQuery): ExtendedListboxInstance {
+            var instance: ExtendedListboxInstance = new ExtendedListboxInstance();
+            instance.listbox = listbox;
+            instance.target = target;
+            return instance;
+        }
 
-    public removeItem(identifier: string): void {
-        this.listbox.removeItem(identifier);
-    }
+        public addItem(item: string|ListboxItem): string {
+            return this.listbox.addItem(item, false);
+        }
 
-    public destroy(): void {
-        this.listbox.destroy();
-    }
+        public removeItem(identifier: string): void {
+            this.listbox.removeItem(identifier);
+        }
 
-    public clearSelection(): void {
-        this.listbox.clearSelection(false);
-    }
+        public destroy(): void {
+            this.listbox.destroy();
+        }
 
-    public getItem(identifier: string): ListboxItem {
-        return this.listbox.getItem(identifier);
-    }
+        public clearSelection(): void {
+            this.listbox.clearSelection(false);
+        }
 
-    public getItems(): ListboxItem[] {
-        return this.listbox.getItems();
-    }
+        public getItem(identifier: string): ListboxItem {
+            return this.listbox.getItem(identifier);
+        }
 
-    public getSelection(): ListboxItem|ListboxItem[] {
-        // TODO
-        return null;
-    }
+        public getItems(): ListboxItem[] {
+            return this.listbox.getItems();
+        }
 
-    public moveItemUp(identifier: string): number {
-        return this.listbox.moveItemUp(identifier);
-    }
+        public getSelection(): ListboxItem|ListboxItem[] {
+            // TODO
+            return null;
+        }
 
-    public moveItemDown(identifier: string): number {
-        return this.listbox.moveItemDown(identifier);
-    }
+        public moveItemUp(identifier: string): number {
+            return this.listbox.moveItemUp(identifier);
+        }
 
-    public moveItemToTop(identifier: string): number {
-        // TODO
-        return null;
-    }
+        public moveItemDown(identifier: string): number {
+            return this.listbox.moveItemDown(identifier);
+        }
 
-    public moveItemToBottom(identifier: string): number {
-        // TODO
-        return null;
-    }
+        public moveItemToTop(identifier: string): number {
+            // TODO
+            return null;
+        }
 
-    public enable(state: boolean): void {
-        this.listbox.enable(state);
-    }
+        public moveItemToBottom(identifier: string): number {
+            // TODO
+            return null;
+        }
 
-    public onValueChanged(callback: (event: ListboxEvent) => void): void {
-        this.listbox._settings.onValueChanged = callback;
+        public enable(state: boolean): void {
+            this.listbox.enable(state);
+        }
+
+        public onValueChanged(callback: (event: ListboxEvent) => void): void {
+            this.listbox._settings.onValueChanged = callback;
+        }
     }
 }
