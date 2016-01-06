@@ -1,4 +1,4 @@
-/* Extended Listbox 1.0.5; (c) 2015 Christian Kotzbauer; BSD-3-Clause License */ 
+/* Extended Listbox 1.0.6; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
 /**
  * Extended Listbox is a simple to use jQuery plugin as powerful
  * alternative to the HTML `<select>` tag.
@@ -9,11 +9,46 @@
  * The configuration is completely in JavaScript. It opens up great
  * possibilities for customization.
  *
- * @copyright   (c) 2015, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.5
+ * @copyright   (c) 2016, Christian Kotzbauer <christian.kotzbauer@gmail.com>
+ * @version     1.0.6
  * @license     BSD-3-Clause
  */
 
+var ExtendedListbox;
+(function (ExtendedListbox) {
+    "use strict";
+    var ListboxSearchBarButtonOptions = (function () {
+        function ListboxSearchBarButtonOptions() {
+            this.visible = false;
+            this.icon = null;
+            this.onClick = null;
+        }
+        return ListboxSearchBarButtonOptions;
+    })();
+    ExtendedListbox.ListboxSearchBarButtonOptions = ListboxSearchBarButtonOptions;
+})(ExtendedListbox || (ExtendedListbox = {}));
+/// <reference path="../../typings/tsd.d.ts" />
+var ExtendedListbox;
+(function (ExtendedListbox) {
+    "use strict";
+    var ListboxItem = (function () {
+        function ListboxItem() {
+            this.text = null;
+            this.id = null;
+            this.index = null;
+            this.disabled = false;
+            this.selected = false;
+            this.groupHeader = false;
+            this.parentGroupId = null;
+            this.childItems = [];
+        }
+        return ListboxItem;
+    })();
+    ExtendedListbox.ListboxItem = ListboxItem;
+})(ExtendedListbox || (ExtendedListbox = {}));
+/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="./ListboxSearchBarButtonOptions.ts" />
+/// <reference path="./ListboxItem.ts" />
 var ExtendedListbox;
 (function (ExtendedListbox) {
     "use strict";
@@ -21,7 +56,7 @@ var ExtendedListbox;
         function ListboxSettings() {
             this.searchBar = false;
             this.searchBarWatermark = 'Search...';
-            this.searchBarButton = new ListBoxSearchButtonSettings();
+            this.searchBarButton = new ExtendedListbox.ListboxSearchBarButtonOptions();
             this.multiple = false;
             this.getItems = null;
             this.onValueChanged = null;
@@ -31,18 +66,10 @@ var ExtendedListbox;
         return ListboxSettings;
     })();
     ExtendedListbox.ListboxSettings = ListboxSettings;
-    var ListBoxSearchButtonSettings = (function () {
-        function ListBoxSearchButtonSettings() {
-            this.visible = false;
-            this.icon = null;
-            this.onClick = null;
-        }
-        return ListBoxSearchButtonSettings;
-    })();
-    ExtendedListbox.ListBoxSearchButtonSettings = ListBoxSearchButtonSettings;
 })(ExtendedListbox || (ExtendedListbox = {}));
 /// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./ListboxSettings.ts" />
+/// <reference path="./ListboxItem.ts" />
 var ExtendedListbox;
 (function (ExtendedListbox) {
     "use strict";
@@ -194,25 +221,19 @@ var ExtendedListbox;
          * @param {object} dataItem object returned from getItems
          */
         BaseListBox.prototype._prepareDataItem = function (dataItem) {
-            var defaults = {
-                text: null,
-                id: this._generateItemId(),
-                index: null,
-                disabled: false,
-                selected: false,
-                groupHeader: false,
-                parentGroupId: null,
-                childItems: []
-            };
+            var item = new ExtendedListbox.ListboxItem();
+            if (!dataItem.id) {
+                item.id = this._generateItemId();
+            }
             if (typeof dataItem === "string" || typeof dataItem === "number") {
-                defaults.text = dataItem;
-                return defaults;
+                item.text = dataItem;
+                return item;
             }
             else {
-                var item = $.extend(defaults, dataItem);
+                item = $.extend(item, dataItem);
                 var childs = [];
                 var index;
-                for (index = 0; index < item.childItems.length; index++) {
+                for (index in item.childItems) {
                     childs.push(this._prepareDataItem(item.childItems[index]));
                 }
                 item.childItems = childs;
@@ -608,20 +629,13 @@ var ExtendedListbox;
 /// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./MultiSelectListbox.ts" />
 /// <reference path="./SingleSelectListbox.ts" />
+/// <reference path="./ListboxSettings.ts" />
 var ExtendedListbox;
 (function (ExtendedListbox) {
     "use strict";
     function initializeListBoxFromOptions(options) {
-        var settings = $.extend({
-            searchBar: false,
-            searchBarWatermark: 'Search...',
-            searchBarButton: { visible: false, icon: null, onClick: null },
-            multiple: false,
-            getItems: null,
-            onValueChanged: null,
-            onFilterChanged: null,
-            onItemsChanged: null
-        }, options);
+        var settings = new ExtendedListbox.ListboxSettings();
+        settings = $.extend(settings, options);
         return this.each(function () {
             var instance;
             if (settings.multiple) {
@@ -668,6 +682,20 @@ var ExtendedListbox;
             return callApiFunction.call(this, options, arguments);
         }
     };
+})(ExtendedListbox || (ExtendedListbox = {}));
+/// <reference path="../../typings/tsd.d.ts" />
+var ExtendedListbox;
+(function (ExtendedListbox) {
+    "use strict";
+    var Util = (function () {
+        function Util() {
+        }
+        Util.warning = function (message) {
+            console.warn(message);
+        };
+        return Util;
+    })();
+    ExtendedListbox.Util = Util;
 })(ExtendedListbox || (ExtendedListbox = {}));
 
 //# sourceMappingURL=extended-listbox.js.map

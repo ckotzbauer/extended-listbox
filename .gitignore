@@ -2,7 +2,9 @@
 node_modules
 bower_components
 build/**/lcov.info
-src/ts/*.js
-src/ts/*.map
+src/ts/**/*.js
+src/ts/**/*.map
 test/**/*.map
 test/**/*.js
+doc/pages/documentation/**/snippets/*.map
+doc/pages/documentation/**/snippets/classSnippet*.js

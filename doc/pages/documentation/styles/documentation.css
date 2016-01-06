@@ -8,6 +8,58 @@
     border: none;
 }
 
+.tocButton {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #155799;
+    background-color: white;
+    border: 1px solid #155799;
+    border-radius: 0.3rem;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    padding: 0.75rem 1rem;
+}
+
+.tocButton:hover {
+    color: white;
+    background-color: #155799;
+    text-decoration: none;
+}
+
+.tocButton.topButton {
+    position: fixed;
+    bottom: 5px;
+    right: 15px;
+}
+
+.heading {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.heading .alert {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.heading .alert.info {
+    color: #6897BB;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.heading .alert.warning {
+    color: #cc7832;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.heading .alert.danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
 
 .sourceSnippets {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -16,35 +68,6 @@
 
 .snippet {
     margin-bottom: 30px;
-}
-
-.snippet .heading {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.snippet .heading .alert {
-    border: 1px solid transparent;
-    border-radius: 4px;
-    padding: 15px;
-    margin-top: 10px;
-}
-
-.snippet .heading .alert.info {
-    color: #6897BB;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-
-.snippet .heading .alert.warning {
-    color: #cc7832;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
-}
-
-.snippet .heading .alert.danger {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
 }
 
 .snippet .snippetWrapper {
@@ -82,6 +105,7 @@
     border-bottom-left-radius: 5px;
     font-size: 13px;
     color: white;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 
 .snippet .snippetWrapper .buttonContainer .copyButton:hover {
@@ -99,7 +123,52 @@
 
 .snippet .snippetWrapper pre code {
     min-width: 720px;
-
     font-size: 13px;
     display: block;
+}
+
+
+
+.apiReference .api {
+    margin-bottom: 30px;
+}
+
+.apiReference .api .apiWrapper {
+    border: 1px solid grey;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.apiReference .api .apiWrapper pre {
+    margin-bottom: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 45px;
+    overflow: hidden;
+}
+
+.apiReference .api .apiWrapper pre code {
+    min-width: 720px;
+    font-size: 13px;
+    display: block;
+    margin-top: -20px;
+}
+
+.apiReference .api .apiWrapper .description {
+    padding: 0.8rem;
+}
+
+.apiReference .api .apiWrapper .description .parameters {
+    margin-top: 10px;
+}
+
+.apiReference .api .apiWrapper .description .returnValue .desc {
+    margin-left: 20px;
+    display: block;
+}
+
+.apiReference .apiClassWrapper .api .apiWrapper pre {
+    height: 100%;
 }

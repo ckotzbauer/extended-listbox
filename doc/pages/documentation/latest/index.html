@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Extended Listbox Documentation</title>
+    <title>Extended Listbox Documentation 1.0.6</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,6 +13,7 @@
 
     <!-- include jQuery -->
     <script src="../scripts/jquery.js"></script>
+    <script src="../scripts/jquery.scrollTo.js"></script>
 
     <!-- include requirejs -->
     <script src="../scripts/requirejs.js"></script>
@@ -26,23 +27,93 @@
     <link href="../styles/androidstudio.css" rel="stylesheet">
     <script src="../scripts/highlight.pack.js"></script>
 
+    <!-- include font awesome -->
+    <link href="../styles/font-awesome.css" rel="stylesheet">
+
     <!-- include own styles and scripts -->
     <link href="../styles/documentation.css" rel="stylesheet">
-    <script src="../index.js"></script>
 </head>
 <body>
+    <a href="#" class="tocButton topButton fa fa-arrow-up"></a>
+
     <section class="page-header">
-        <h1 class="project-name">Documentation 1.0.5</h1>
+        <h1 class="project-name">Documentation 1.0.6</h1>
         <h2 class="project-tagline">A simple to use jQuery plugin as powerful alternative to the HTML &lt;select&gt; tag</h2>
         <a href="https://github.com/code-chris/extended-listbox" class="btn">View on GitHub</a>
-        <a href="https://github.com/code-chris/extended-listbox/zipball/1.0.5" class="btn">Download .zip</a>
-        <a href="https://github.com/code-chris/extended-listbox/tarball/1.0.5" class="btn">Download .tar.gz</a>
+        <a href="https://github.com/code-chris/extended-listbox/zipball/1.0.6" class="btn">Download .zip</a>
+        <a href="https://github.com/code-chris/extended-listbox/tarball/1.0.6" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
+        <h1>Table of Contents</h1>
+
+        <a href="#exampleHeadline" class="tocButton">Examples</a>
+        <a href="#apiFunctionsHeadline" class="tocButton">API Reference - Functions</a>
+        <a href="#apiClassesHeadline" class="tocButton">API Reference - Classes</a>
+        <a href="#cssHeadline" class="tocButton">CSS Reference</a>
+    </section>
+
+    <section class="main-content">
+        <h1 id="exampleHeadline">Examples</h1>
+
         <div class="sourceSnippets" id="sourceSnippets"></div>
     </section>
 
+    <section class="main-content">
+        <h1>API Reference</h1>
+
+        <div class="apiReference" id="apiReference">
+            <h2 id="apiFunctionsHeadline"><strong>Functions</strong></h2>
+            <div id="apiFunctionWrapper" class="apiFunctionWrapper"></div>
+
+            <h2 id="apiClassesHeadline"><strong>Classes</strong></h2>
+            <div id="apiClassWrapper" class="apiClassWrapper"></div>
+        </div>
+    </section>
+
+    <section class="main-content">
+        <h1 id="cssHeadline">CSS Reference</h1>
+
+        <div class="cssWrapper" id="cssWrapper"></div>
+    </section>
+
+    <section class="main-content">
+        <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/code-chris/extended-listbox">Extended Listbox</a> is maintained by <a
+                href="https://github.com/code-chris">code-chris</a>.</span>
+        </footer>
+    </section>
+
+    <script>
+        require.config({
+            baseUrl: '.'
+        });
+
+        var copySnippetFunc = null;
+
+        require(["../infrastructure/docUtil", "./snippets"], function (DocUtil, snippets) {
+            var util = new DocUtil(snippets);
+            util.init();
+
+            copySnippetFunc = util.copySnippet;
+        });
+
+        function copySnippet(snippetId) {
+            copySnippetFunc(snippetId);
+        }
+
+        $(".tocButton").click(function (event) {
+            var target = event.target.href.substr(event.target.href.indexOf("#"));
+
+            if (target === "#") {
+                $.scrollTo($("html"), 800);
+            } else {
+                $.scrollTo($(target), 800);
+            }
+
+            event.preventDefault();
+        });
+    </script>
 
 </body>
 </html>

@@ -5,6 +5,18 @@ Here you can see the full list of changes between each Extended Listbox
 release.
 
 
+## Version 1.0.6
+
+Released on January 03, 2016.
+
+-   Refactored unit tests
+-   Published new documentation site
+-	Removed old demo sites
+-	Updated devDependencies
+-   Internal refactorings
+-   Added missing classes to definition file
+
+
 ## Version 1.0.5
 
 Released on December 23, 2015.

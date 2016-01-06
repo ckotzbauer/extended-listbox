@@ -1,4 +1,4 @@
-$('#snippet1').listbox({
+$('#exampleSnippet1').listbox({
     getItems: function() {
         return [
             "Item #1",
