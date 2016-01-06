@@ -9,12 +9,18 @@ var runSequence = require('run-sequence');
 var karma = require('karma');
 var karmaParseConfig = require('karma/lib/config').parseConfig;
 var coveralls = require('gulp-coveralls');
+var debug = require('gulp-debug');
 
 var files = [];
 
 gulp.task('build-tests', function () {
+    compilerOptions.outFile = null;
+    compilerOptions.outDir = ".";
+
     return gulp.src(paths.testSource + "**/*Test.ts")
+        .pipe(debug())
         .pipe(ts(compilerOptions))
+        .pipe(debug())
         .pipe(gulp.dest("."));
 });
 
