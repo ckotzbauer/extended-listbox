@@ -1,6 +1,5 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import {ListboxItem} from "./ListboxItem";
 import {ListboxSearchBarButtonOptions} from "./ListboxSearchBarButtonOptions";
 import {ListboxEvent} from "./event/ListboxEvent";
 
