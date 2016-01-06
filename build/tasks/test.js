@@ -15,7 +15,7 @@ var files = [];
 gulp.task('build-tests', function () {
     return gulp.src(paths.testSource + "**/*Test.ts")
         .pipe(ts(compilerOptions))
-        .pipe(gulp.dest(paths.testOutput));
+        .pipe(gulp.dest("."));
 });
 
 function writeTestMain(files) {
