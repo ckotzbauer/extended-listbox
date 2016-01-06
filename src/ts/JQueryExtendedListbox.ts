@@ -5,6 +5,7 @@ import {SingleSelectListbox} from "./SingleSelectListbox";
 import {BaseListBox} from "./BaseListBox";
 import {ListboxSettings} from "./ListboxSettings";
 import {ExtendedListboxInstance} from "./ExtendedListboxInstance";
+import {Util} from "./Util";
 
 function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListboxInstance|ExtendedListboxInstance[] {
     "use strict";
@@ -39,6 +40,13 @@ function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListbox
     return multipleElements ? multipleInstances : singleInstance;
 }
 
+/**
+ * @deprecated: This method will be removed in 2.0.0
+ *
+ * @param functionName
+ * @param callArgs
+ * @returns {any}
+ */
 function callApiFunction(functionName: string, callArgs: any): any {
     "use strict";
     var publicFunctions: string[] = ["addItem", "removeItem", "destroy", "getItem", "getItems",
@@ -49,6 +57,8 @@ function callApiFunction(functionName: string, callArgs: any): any {
 
     this.each(function (): void {
         var instance: BaseListBox = $(this).data('listbox');
+
+        Util.deprecatedMethod(functionName, "2.0.0", "corresponding method in class ExtendedListboxInstance");
 
         if (instance == null && window.console && console.error) {
             console.error(
