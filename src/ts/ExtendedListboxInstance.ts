@@ -73,5 +73,13 @@ module EL {
         public onValueChanged(callback: (event: ListboxEvent) => void): void {
             this.listbox._settings.onValueChanged = callback;
         }
+
+        public onItemsChanged(callback: (event: ListboxEvent) => void): void {
+            this.listbox._settings.onItemsChanged = callback;
+        }
+
+        public onFilterChanged(callback: (event: ListboxEvent) => void): void {
+            this.listbox._settings.onFilterChanged = callback;
+        }
     }
 }

@@ -66,8 +66,29 @@ interface ListBoxOptions {
     onItemsChanged?: (value: ListboxItem[]) => void;
 }
 
+interface ListboxEvent {
+    eventName: string;
+    target: JQuery;
+    args: any;
+}
+
+interface ExtendedListboxInstance {
+    addItem(item: string|ListboxItem): string;
+    removeItem(identifier: string): void;
+    destroy(): void;
+    clearSelection(): void;
+    getItem(identifier: string): ListboxItem;
+    getItems(): ListboxItem[];
+    moveItemUp(identifier: string): number;
+    moveItemDown(identifier: string): number;
+    enable(state: boolean): void;
+    onValueChanged(callback: (event: ListboxEvent) => void): void;
+    onItemsChanged(callback: (event: ListboxEvent) => void): void;
+    onFilterChanged(callback: (event: ListboxEvent) => void): void;
+}
+
 interface JQuery {
-    listbox(): JQuery;
+    listbox(): ExtendedListboxInstance|ExtendedListboxInstance[];
     listbox(methodName: 'addItem'): string;
     listbox(methodName: 'removeItem'): void;
     listbox(methodName: 'destroy'): void;
@@ -79,5 +100,5 @@ interface JQuery {
     listbox(methodName: 'enable'): void;
     listbox(methodName: string): any;
     listbox(methodName: string, methodParameter: any): any;
-    listbox(options: ListBoxOptions): JQuery;
+    listbox(options: ListBoxOptions): ExtendedListboxInstance|ExtendedListboxInstance[];
 }
