@@ -2,7 +2,7 @@
 node_modules
 bower_components
 build/out/**
-build/**/lcov.info
+build/coverage/**
 src/ts/**/*.js
 src/ts/**/*.map
 test/**/*.map

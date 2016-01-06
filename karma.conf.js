@@ -27,8 +27,10 @@ module.exports = function(config) {
     singleRun: true,
     browsers: ['PhantomJS'],
     coverageReporter: {
-      type: 'lcovonly',
-      dir: "build/"
+      dir: "build/",
+      reporters: [
+        { type: 'lcov', subdir: 'coverage' }
+      ]
     }
   });
 };

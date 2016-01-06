@@ -10,6 +10,7 @@ var karma = require('karma');
 var karmaParseConfig = require('karma/lib/config').parseConfig;
 var coveralls = require('gulp-coveralls');
 var debug = require('gulp-debug');
+var coverPercentage = require('coverage-percentage');
 
 var files = [];
 
@@ -72,6 +73,17 @@ gulp.task('test', function (callback) {
 });
 
 gulp.task('coveralls', function () {
-    return gulp.src('build/**/lcov.info')
+    return gulp.src('build/coverage/lcov.info')
         .pipe(coveralls());
+});
+
+gulp.task('print-coverage', function () {
+    var f = path.resolve('build/coverage/lcov.info');
+    coverPercentage(f, 'lcov', function (err, coverage) {
+        if (err) {
+            throw err;
+        } else {
+            console.log("Coverage: " + coverage.toFixed(2) + " %");
+        }
+    });
 });
