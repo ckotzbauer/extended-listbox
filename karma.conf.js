@@ -10,7 +10,7 @@ module.exports = function(config) {
       'node_modules/requirejs/require.js',
       {pattern: 'src/ts/**/*.ts', included: false},
       {pattern: 'test/**/*Test.ts', included: false},
-      'dist/js/extended-listbox.js',
+      'build/out/js/extended-listbox.js',
 
       'test/**/infrastructure/*.js',
       'test/**/*Test.js',
@@ -18,7 +18,7 @@ module.exports = function(config) {
     ],
     reporters: ['dots', 'coverage'],
     preprocessors: {
-      'dist/js/extended-listbox.js': ['coverage']
+      'build/out/js/extended-listbox.js': ['coverage']
     },
     port: 9876,
     colors: true,

@@ -28,10 +28,7 @@ function writeTestMain(files) {
     var template = 'var tests = [FILES]; require(tests);';
 
     var relatives = files.map(function(f) {
-        var rel = "./" + path.relative(paths.testOutput, f);
-        console.log("Absolute: " + f);
-        console.log("Relative: " + rel);
-        return rel;
+        return "./" + path.relative(paths.testOutput, f);
     });
 
     var list = '"' + relatives.join('", "') + '"';
@@ -71,7 +68,7 @@ gulp.task('execute-tests', function (callback) {
 });
 
 gulp.task('test', function (callback) {
-    return runSequence("clean-tests", "build-tests", "generate-testmain", "execute-tests", callback)
+    return runSequence("build", "clean-tests", "build-tests", "generate-testmain", "execute-tests", callback)
 });
 
 gulp.task('coveralls', function () {
