@@ -13,11 +13,11 @@ QUnit.module( "SingleSelectListboxTest", {
 });
 
 test('construct default', function (): void {
-    var root: JQuery = TestHelper.generateSingleList();
+    var root: ExtendedListboxInstance = TestHelper.generateSingleList();
 
-    equal(root.attr('class'), 'listbox-root');
+    equal(root.target.attr('class'), 'listbox-root');
 
-    var listbox: JQuery = TestHelper.child(root);
+    var listbox: JQuery = TestHelper.child(root.target);
     equal(listbox.attr('class'), 'listbox');
 
     var searchbar: JQuery = listbox.find('.listbox-searchbar');
@@ -26,20 +26,21 @@ test('construct default', function (): void {
 
 
 test('construct with searchbar', function (): void {
-    var root: JQuery = TestHelper.generateSingleList({ searchBar: true });
+    var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
 
-    var searchbar: JQuery = TestHelper.child(root);
+    var searchbar: JQuery = TestHelper.child(root.target);
     equal(searchbar.attr('class'), 'listbox-searchbar-wrapper');
     equal(TestHelper.child(searchbar).attr('placeholder'), 'Search...');
 
-    var listbox: JQuery = TestHelper.child(root, 1);
+    var listbox: JQuery = TestHelper.child(root.target, 1);
     equal(listbox.attr('class'), 'listbox');
 });
 
 test('construct with searchbar watermark', function (): void {
-    var root: JQuery = TestHelper.generateSingleList({ searchBar: true, searchBarWatermark: "Suche..." });
+    var root: ExtendedListboxInstance = TestHelper.generateSingleList(
+        { searchBar: true, searchBarWatermark: "Suche..." });
 
-    var searchbar: JQuery = TestHelper.child(root);
+    var searchbar: JQuery = TestHelper.child(root.target);
     equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
 });
 
@@ -61,112 +62,112 @@ test('construct with searchbar watermark', function (): void {
 
 
 test('explicit default value', function (): void {
-    var select: JQuery = TestHelper.generateSingleList({}, [
+    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
         { text: "C", selected: true },
         "D"
     ]);
 
-    var selectedItems: JQuery = select.find(".listbox-item-selected");
+    var selectedItems: JQuery = select.target.find(".listbox-item-selected");
 
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 });
 
 
 test('two explicit default values', function (): void {
-    var select: JQuery = TestHelper.generateSingleList({}, [
+    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         { text: "B", selected: true },
         { text: "C", selected: true },
         "D"
     ]);
 
-    var selectedItems: JQuery = select.find(".listbox-item-selected");
+    var selectedItems: JQuery = select.target.find(".listbox-item-selected");
 
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 });
 
 
 test('one click', function (): void {
-    var select: JQuery = TestHelper.generateSingleList({}, [
+    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
         "C",
         "D"
     ]);
 
-    var items: JQuery = select.find(".listbox-item");
+    var items: JQuery = select.target.find(".listbox-item");
 
     $(items[1]).click();     // click on 'B'
 
-    var selectedItems: JQuery = select.find(".listbox-item-selected");
+    var selectedItems: JQuery = select.target.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 });
 
 
 test('multiple clicks', function (): void {
-    var select: JQuery = TestHelper.generateSingleList({}, [
+    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
         "C",
         "D"
     ]);
 
-    var items: JQuery = select.find(".listbox-item");
+    var items: JQuery = select.target.find(".listbox-item");
 
     $(items[1]).click();     // click on 'B'
 
-    var selectedItems: JQuery = select.find(".listbox-item-selected");
+    var selectedItems: JQuery = select.target.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[2]).click();     // click on 'C'
 
-    selectedItems = select.find(".listbox-item-selected");
+    selectedItems = select.target.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[0]).click();     // click on 'A'
 
-    selectedItems = select.find(".listbox-item-selected");
+    selectedItems = select.target.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'A');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[3]).click();     // click on 'D'
 
-    selectedItems = select.find(".listbox-item-selected");
+    selectedItems = select.target.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'D');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[1]).click();     // click on 'B'
 
-    selectedItems = select.find(".listbox-item-selected");
+    selectedItems = select.target.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'B');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[2]).click();     // click on 'C'
 
-    selectedItems = select.find(".listbox-item-selected");
+    selectedItems = select.target.find(".listbox-item-selected");
     equal(selectedItems.length, 1);
     equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem"), select.val());
+    equal(selectedItems.data("dataItem"), select.target.val());
 });
 
 
 test('change event', function (): void {
-    var select: JQuery = TestHelper.generateSingleList({}, [
+    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
         "C",
@@ -174,11 +175,11 @@ test('change event', function (): void {
     ]);
 
     var receiveCounter: number = 0;
-    select.on('change', function(): void {
+    select.target.on('change', function(): void {
         receiveCounter++;
     });
 
-    var items: JQuery = select.find(".listbox-item");
+    var items: JQuery = select.target.find(".listbox-item");
 
     $(items[0]).click();
     equal(receiveCounter, 1);
@@ -194,19 +195,19 @@ test('onValueChanged callback', function (): void {
     var lastValue: any = null;
 
     var options: ListBoxOptions = <ListBoxOptions> {};
-    options.onValueChanged = function(newValue: any): void {
+    options.onValueChanged = function(newValue: ListboxEvent): void {
         receiveCounter++;
-        lastValue = newValue.text;
+        lastValue = newValue.args.text;
     };
 
-    var select: JQuery = TestHelper.generateSingleList(options, [
+    var select: ExtendedListboxInstance = TestHelper.generateSingleList(options, [
         "A",
         "B",
         "C",
         "D"
     ]);
 
-    var items: JQuery = select.find(".listbox-item");
+    var items: JQuery = select.target.find(".listbox-item");
 
     $(items[0]).click();
     equal(receiveCounter, 1);

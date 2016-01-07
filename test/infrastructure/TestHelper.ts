@@ -22,17 +22,17 @@ export class TestHelper {
         return childs;
     }
 
-    public static generateSingleList(options: ListBoxOptions = null, items: any[] = null): JQuery {
+    public static generateSingleList(options: ListBoxOptions = null, items: any[] = null): ExtendedListboxInstance {
         options = $.extend({
             getItems: function (): any[] {
                 return items;
             }
         }, options);
 
-        return $('#test').listbox(options);
+        return <ExtendedListboxInstance>$('#test').listbox(options);
     }
 
-    public static generateMultipleList(options: ListBoxOptions = null, items: any[] = null): JQuery {
+    public static generateMultipleList(options: ListBoxOptions = null, items: any[] = null): ExtendedListboxInstance {
         options = $.extend({
             multiple: true,
             getItems: function (): any[] {
@@ -40,7 +40,7 @@ export class TestHelper {
             }
         }, options);
 
-        return $('#test').listbox(options);
+        return <ExtendedListboxInstance>$('#test').listbox(options);
     }
 
     public static itemsToVal(items: JQuery): string {
