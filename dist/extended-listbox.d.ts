@@ -73,6 +73,7 @@ interface ListboxEvent {
 }
 
 interface ExtendedListboxInstance {
+    target: JQuery;
     addItem(item: string|ListboxItem): string;
     removeItem(identifier: string): void;
     destroy(): void;
