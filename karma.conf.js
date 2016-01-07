@@ -12,8 +12,8 @@ module.exports = function(config) {
       {pattern: 'test/**/*Test.ts', included: false},
       'build/out/js/extended-listbox.js',
 
-      'test/**/infrastructure/*.js',
-      'test/**/*Test.js',
+      'build/out/test/**/infrastructure/*.js',
+      'build/out/test/**/*Test.js',
       'test/**/TestMain.js'
     ],
     reporters: ['dots', 'coverage'],

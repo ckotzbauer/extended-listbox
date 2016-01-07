@@ -11,6 +11,7 @@ var karmaParseConfig = require('karma/lib/config').parseConfig;
 var coveralls = require('gulp-coveralls');
 var debug = require('gulp-debug');
 var coverPercentage = require('coverage-percentage');
+var filter = require('gulp-filter');
 
 var files = [];
 
@@ -18,11 +19,14 @@ gulp.task('build-tests', function () {
     compilerOptions.outFile = null;
     compilerOptions.outDir = ".";
 
+    var testFiles = filter("test/test/**");
+
     return gulp.src(paths.testSource + "**/*Test.ts")
         .pipe(debug())
         .pipe(ts(compilerOptions))
+        .pipe(testFiles)
         .pipe(debug())
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest("build/out/"));
 });
 
 function writeTestMain(files) {
