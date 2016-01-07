@@ -417,9 +417,11 @@ module EL {
 
             if (this._settings.multiple) {
                 var parentValues: any[] = this._target.val();
-                var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
-                parentValues.splice(removeIndex, 1);
-                this._target.val(parentValues);
+                if (parentValues) {
+                    var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
+                    parentValues.splice(removeIndex, 1);
+                    this._target.val(parentValues);
+                }
             } else {
                 this._target.val(null);
             }
