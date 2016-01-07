@@ -61,8 +61,8 @@ gulp.task('execute-tests', function (callback) {
 
     var server = new karma.Server(config, function(exitCode) {
         console.log('Karma has exited with ' + exitCode);
+        printCoverage();
         callback();
-        process.exit(exitCode);
     });
 
     server.start();
@@ -77,7 +77,7 @@ gulp.task('coveralls', function () {
         .pipe(coveralls());
 });
 
-gulp.task('print-coverage', function () {
+function printCoverage() {
     var f = path.resolve('build/coverage/lcov.info');
     coverPercentage(f, 'lcov', function (err, coverage) {
         if (err) {
@@ -86,4 +86,4 @@ gulp.task('print-coverage', function () {
             console.log("Coverage: " + coverage.toFixed(2) + " %");
         }
     });
-});
+}
