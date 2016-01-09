@@ -6,7 +6,7 @@ Here you can see the planned list of features.
 
 ## Version 1.1.0
 
--   Improve event handling (programmatically)
+-   Improve public api
 -   Add support for cursor keys
 -   Bind event to double click
 -   Bind event on enter
