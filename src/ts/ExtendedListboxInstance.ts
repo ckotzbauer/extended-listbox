@@ -57,13 +57,11 @@ module EL {
         }
 
         public moveItemToTop(identifier: string): number {
-            // TODO
-            return null;
+            return this.listbox.moveItemToTop(identifier);
         }
 
         public moveItemToBottom(identifier: string): number {
-            // TODO
-            return null;
+            return this.listbox.moveItemToBottom(identifier);
         }
 
         public enable(state: boolean): void {

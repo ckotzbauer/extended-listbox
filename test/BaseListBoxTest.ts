@@ -425,4 +425,28 @@ module EL {
 
         equal(root.target.attr("class"), "listbox-root listbox-disabled");
     });
+
+    test("check moveItemToBottom", function (): void {
+        var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+
+        var originalIndex: number = root.getItem("id01").index;
+        var newIndex: number = root.moveItemToBottom("id01");
+
+        notEqual(originalIndex, newIndex);
+        equal(newIndex, 2);
+    });
+
+    test("check moveItemToTop", function (): void {
+        var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+
+        var originalIndex: number = root.getItem("id02").index;
+        var newIndex: number = root.moveItemToTop("id02");
+
+        notEqual(originalIndex, newIndex);
+        equal(newIndex, 0);
+    });
 }

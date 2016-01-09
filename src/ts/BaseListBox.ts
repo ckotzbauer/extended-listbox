@@ -506,6 +506,48 @@ module EL {
             return newIndex;
         }
 
+        /**
+         * Sets the index of the item to zero.
+         *
+         * @param {object} id unique id or text from listItem
+         */
+        public moveItemToTop(id: string): number {
+            var newIndex: number = null;
+
+            var $item: JQuery = this.locateItem(id);
+
+            if ($item) {
+                $item.parent().prepend($item);
+                newIndex = $item.index();
+                $item.data("dataItem").index = newIndex;
+            }
+
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
+
+            return newIndex;
+        }
+
+        /**
+         * Sets the index of the matching item to the highest.
+         *
+         * @param {object} id unique id or text from listItem
+         */
+        public moveItemToBottom(id: string): number {
+            var newIndex: number = null;
+
+            var $item: JQuery = this.locateItem(id);
+
+            if ($item) {
+                $item.parent().append($item);
+                newIndex = $item.index();
+                $item.data("dataItem").index = newIndex;
+            }
+
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
+
+            return newIndex;
+        }
+
 
         /**
          * Enables or disables the whole component.
