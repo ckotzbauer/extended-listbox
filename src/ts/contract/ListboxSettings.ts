@@ -1,7 +1,7 @@
-/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../../../typings/tsd.d.ts" />
 
 /// <reference path="./ListboxSearchBarButtonOptions.ts" />
-/// <reference path="./event/ListboxEvent.ts" />
+/// <reference path="../event/ListboxEvent.ts" />
 
 module EL {
     "use strict";

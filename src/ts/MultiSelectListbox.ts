@@ -1,7 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 /// <reference path="./BaseListBox.ts" />
-/// <reference path="./ListboxSettings.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
 
 module EL {
     "use strict";

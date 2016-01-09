@@ -1,7 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-/// <reference path="./ListboxItem.ts" />
-/// <reference path="./ListboxSettings.ts" />
+/// <reference path="./contract/ListboxItem.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
 /// <reference path="./event/ListboxEventHandler.ts" />
 
 module EL {

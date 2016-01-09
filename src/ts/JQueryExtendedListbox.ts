@@ -4,8 +4,8 @@
 /// <reference path="./BaseListBox.ts" />
 /// <reference path="./MultiSelectListbox.ts" />
 /// <reference path="./SingleSelectListbox.ts" />
-/// <reference path="./ListboxSettings.ts" />
-/// <reference path="./Util.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
+/// <reference path="./infrastructure/Util.ts" />
 
 module EL {
     "use strict";
