@@ -79,5 +79,9 @@ module EL {
         public onFilterChanged(callback: (event: ListboxEvent) => void): void {
             this.listbox._settings.onFilterChanged = callback;
         }
+
+        public onItemEnterPressed(callback: (event: ListboxEvent) => void): void {
+            this.listbox._settings.onItemEnterPressed = callback;
+        }
     }
 }

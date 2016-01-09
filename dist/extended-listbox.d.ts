@@ -57,13 +57,16 @@ interface ListBoxOptions {
     getItems?: () => any;
 
     /** callback for selection changes */
-    onValueChanged?: (value: ListboxItem|ListboxItem[]) => void;
+    onValueChanged?: (event: ListboxEvent) => void;
 
     /** callback for searchBar text changes */
-    onFilterChanged?: (value: string) => void;
+    onFilterChanged?: (event: ListboxEvent) => void;
 
     /** callback for item changes (item added, item removed, item order) */
-    onItemsChanged?: (value: ListboxItem[]) => void;
+    onItemsChanged?: (event: ListboxEvent) => void;
+
+    /** callback for item enter keyPress event on an item */
+    onItemEnterPressed?: (event: ListboxEvent) => void;
 }
 
 interface ListboxEvent {
@@ -86,6 +89,7 @@ interface ExtendedListboxInstance {
     onValueChanged(callback: (event: ListboxEvent) => void): void;
     onItemsChanged(callback: (event: ListboxEvent) => void): void;
     onFilterChanged(callback: (event: ListboxEvent) => void): void;
+    onItemEnterPressed(callback: (event: ListboxEvent) => void): void;
 }
 
 interface JQuery {

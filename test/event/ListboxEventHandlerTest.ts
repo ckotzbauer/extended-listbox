@@ -63,4 +63,21 @@ module EL {
 
         handler.fireFilterChangedEvent("mySpecialValue");
     });
+
+    test("check itemEnterPressed event", function (): void {
+        var target: JQuery = null;
+
+        var delegate: any = (event: ListboxEvent) => {
+            equal(event.eventName, ListboxEvent.ITEM_ENTER_PRESSED);
+            equal(event.target, target);
+            equal(event.args, "mySpecialValue");
+        };
+
+        var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onItemEnterPressed: delegate });
+        target = listbox.target;
+
+        var handler: ListboxEventHandler = new ListboxEventHandler(listbox["listbox"]);
+
+        handler.fireItemEnterPressedEvent("mySpecialValue");
+    });
 }

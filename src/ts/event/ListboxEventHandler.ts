@@ -37,5 +37,13 @@ module EL {
                 delegate(event);
             }
         }
+
+        public fireItemEnterPressedEvent(args: any): void {
+            var delegate: Function = this.listBox._settings.onItemEnterPressed;
+            if (delegate) {
+                var event: ListboxEvent = new ListboxEvent(ListboxEvent.ITEM_ENTER_PRESSED, this.listBox._target, args);
+                delegate(event);
+            }
+        }
     }
 }

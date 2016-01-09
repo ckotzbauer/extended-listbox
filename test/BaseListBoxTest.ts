@@ -449,4 +449,25 @@ module EL {
         notEqual(originalIndex, newIndex);
         equal(newIndex, 0);
     });
+
+    test("check itemEnterPressed event", function (): void {
+        var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+
+        var count: number = 0;
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+        root.onItemEnterPressed(function (): void {
+            count++;
+        });
+
+        var listbox: JQuery = TestHelper.child(root.target);
+        var item: JQuery = TestHelper.child(listbox, 1); // id02
+
+        var e: JQueryEventObject = jQuery.Event("keypress");
+        e.which = 13;
+        e.keyCode = 13;
+        item.trigger(e);
+
+        equal(count, 1);
+    });
 }

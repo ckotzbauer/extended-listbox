@@ -15,5 +15,6 @@ module EL {
         public onValueChanged: (value: ListboxEvent) => void = null;
         public onFilterChanged: (value: ListboxEvent) => void = null;
         public onItemsChanged: (values: ListboxEvent) => void = null;
+        public onItemEnterPressed: (values: ListboxEvent) => void = null;
     }
 }

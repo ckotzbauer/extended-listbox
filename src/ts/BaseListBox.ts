@@ -258,6 +258,11 @@ module EL {
                 .data("dataItem", dataItem)
                 .click(function (): void {
                     self.onItemClick($(this));
+                })
+                .keypress(function (e: JQueryKeyEventObject): void {
+                    if (e.which === 13) {
+                        self.onItemEnterPressed($(this));
+                    }
                 });
 
             if (dataItem.disabled) {
@@ -573,6 +578,15 @@ module EL {
             }
 
             return $item;
+        }
+
+        /**
+         * Called for a keyPressed event with the enter key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        protected onItemEnterPressed(domItem: JQuery): void {
+            this.eventHandler.fireItemEnterPressedEvent(domItem.data("dataItem"));
         }
     }
 }
