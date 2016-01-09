@@ -470,4 +470,22 @@ module EL {
 
         equal(count, 1);
     });
+
+    test("check itemDoubleClicked event", function (): void {
+        var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+
+        var count: number = 0;
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+        root.onItemDoubleClicked(function (): void {
+            count++;
+        });
+
+        var listbox: JQuery = TestHelper.child(root.target);
+        var item: JQuery = TestHelper.child(listbox, 1); // id02
+
+        item.dblclick();
+
+        equal(count, 1);
+    });
 }

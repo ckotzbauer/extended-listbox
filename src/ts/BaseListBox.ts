@@ -263,6 +263,9 @@ module EL {
                     if (e.which === 13) {
                         self.onItemEnterPressed($(this));
                     }
+                })
+                .dblclick(function (): void {
+                    self.onItemDoubleClicked($(this));
                 });
 
             if (dataItem.disabled) {
@@ -587,6 +590,15 @@ module EL {
          */
         protected onItemEnterPressed(domItem: JQuery): void {
             this.eventHandler.fireItemEnterPressedEvent(domItem.data("dataItem"));
+        }
+
+        /**
+         * Called for a doubleClick on a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        protected onItemDoubleClicked(domItem: JQuery): void {
+            this.eventHandler.fireItemDoubleClickedEvent(domItem.data("dataItem"));
         }
     }
 }

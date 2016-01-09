@@ -65,8 +65,11 @@ interface ListBoxOptions {
     /** callback for item changes (item added, item removed, item order) */
     onItemsChanged?: (event: ListboxEvent) => void;
 
-    /** callback for item enter keyPress event on an item */
+    /** callback for enter keyPress event on an item */
     onItemEnterPressed?: (event: ListboxEvent) => void;
+
+    /** callback for doubleClick event on an item */
+    onItemDoubleClicked?: (event: ListboxEvent) => void;
 }
 
 interface ListboxEvent {
@@ -90,6 +93,7 @@ interface ExtendedListboxInstance {
     onItemsChanged(callback: (event: ListboxEvent) => void): void;
     onFilterChanged(callback: (event: ListboxEvent) => void): void;
     onItemEnterPressed(callback: (event: ListboxEvent) => void): void;
+    onItemDoubleClicked(callback: (event: ListboxEvent) => void): void;
 }
 
 interface JQuery {

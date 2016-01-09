@@ -80,4 +80,21 @@ module EL {
 
         handler.fireItemEnterPressedEvent("mySpecialValue");
     });
+
+    test("check itemDoubleClicked event", function (): void {
+        var target: JQuery = null;
+
+        var delegate: any = (event: ListboxEvent) => {
+            equal(event.eventName, ListboxEvent.ITEM_DOUBLE_CLICKED);
+            equal(event.target, target);
+            equal(event.args, "mySpecialValue");
+        };
+
+        var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onItemDoubleClicked: delegate });
+        target = listbox.target;
+
+        var handler: ListboxEventHandler = new ListboxEventHandler(listbox["listbox"]);
+
+        handler.fireItemDoubleClickedEvent("mySpecialValue");
+    });
 }

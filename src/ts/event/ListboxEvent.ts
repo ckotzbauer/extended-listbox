@@ -9,6 +9,7 @@ module EL {
         public static FILTER_CHANGED: string = "filterChanged";
         public static ITEMS_CHANGED: string = "itemsChanged";
         public static ITEM_ENTER_PRESSED: string = "itemEnterPressed";
+        public static ITEM_DOUBLE_CLICKED: string = "itemDoubleClicked";
 
         public eventName: string;
         public target: JQuery;

@@ -83,5 +83,9 @@ module EL {
         public onItemEnterPressed(callback: (event: ListboxEvent) => void): void {
             this.listbox._settings.onItemEnterPressed = callback;
         }
+
+        public onItemDoubleClicked(callback: (event: ListboxEvent) => void): void {
+            this.listbox._settings.onItemDoubleClicked = callback;
+        }
     }
 }

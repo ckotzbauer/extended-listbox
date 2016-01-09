@@ -36,5 +36,9 @@ module EL {
         public fireItemEnterPressedEvent(args: any): void {
             this.fire(ListboxEvent.ITEM_ENTER_PRESSED, this.listBox._settings.onItemEnterPressed, args);
         }
+
+        public fireItemDoubleClickedEvent(args: any): void {
+            this.fire(ListboxEvent.ITEM_DOUBLE_CLICKED, this.listBox._settings.onItemDoubleClicked, args);
+        }
     }
 }
