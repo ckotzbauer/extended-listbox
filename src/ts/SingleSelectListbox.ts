@@ -43,6 +43,7 @@ module EL {
             }
 
             domItem.toggleClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            domItem.focus();
             this._selectedDomItem = domItem;
             domItem.data("dataItem").selected = true;
             this._target.val(domItem.data("dataItem"));

@@ -255,17 +255,31 @@ module EL {
                 .text(dataItem.text)
                 .attr("id", dataItem.id)
                 .attr("title", dataItem.text)
+                .attr("tabindex", "1")
                 .data("dataItem", dataItem)
+                .keyup(function (e: JQueryKeyEventObject): void {
+                    var $target: JQuery = $(e.target);
+                    if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
+                        if (e.which === 13) {
+                            // Enter
+                            self.onItemEnterPressed($target);
+                        } else if (e.which === 38) {
+                            // Arrow up
+                            self.onItemArrowUp($target);
+                        } else if (e.which === 40) {
+                            // Arrow down
+                            self.onItemArrowDown($target);
+                        }
+                    }
+                })
                 .click(function (): void {
                     self.onItemClick($(this));
                 })
-                .keypress(function (e: JQueryKeyEventObject): void {
-                    if (e.which === 13) {
-                        self.onItemEnterPressed($(this));
-                    }
-                })
                 .dblclick(function (): void {
-                    self.onItemDoubleClicked($(this));
+                    var $target: JQuery = $(this);
+                    if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                        self.onItemDoubleClicked($target);
+                    }
                 });
 
             if (dataItem.disabled) {
@@ -345,20 +359,12 @@ module EL {
          * @param {string} item: display text or id from item to remove
          */
         public removeItem(item: string): void {
-            var items: JQuery = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
-            var index: any;
+            var uiItem: JQuery = this.locateItem(item);
+            if (uiItem) {
+                this._clearItemSelection(uiItem);
+                uiItem.remove();
 
-            for (index in items) {
-                var uiItem: JQuery = $(items[index]);
-                if (uiItem.text() === item || uiItem.attr("id") === item) {
-                    this._clearItemSelection(uiItem);
-
-                    uiItem.remove();
-
-                    this.eventHandler.fireItemsChangedEvent(this.getItems());
-
-                    return;
-                }
+                this.eventHandler.fireItemsChangedEvent(this.getItems());
             }
         }
 
@@ -599,6 +605,34 @@ module EL {
          */
         protected onItemDoubleClicked(domItem: JQuery): void {
             this.eventHandler.fireItemDoubleClickedEvent(domItem.data("dataItem"));
+        }
+
+        /**
+         * Called for a keyPressed event with the arrow up key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        protected onItemArrowUp(domItem: JQuery): void {
+            var prev: JQuery = domItem.prev();
+
+            if (prev.length > 0) {
+                this._clearItemSelection(domItem);
+                this.onItemClick(prev);
+            }
+        }
+
+        /**
+         * Called for a keyPressed event with the arrow down key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        protected onItemArrowDown(domItem: JQuery): void {
+            var next: JQuery = domItem.next();
+
+            if (next.length > 0) {
+                this._clearItemSelection(domItem);
+                this.onItemClick(next);
+            }
         }
     }
 }
