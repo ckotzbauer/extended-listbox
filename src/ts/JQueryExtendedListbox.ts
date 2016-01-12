@@ -20,10 +20,23 @@ module EL {
         var singleInstance: ExtendedListboxInstance = null;
         var multipleElements: boolean = this.length > 1;
 
+        var setInstance: Function = function (instance: ExtendedListboxInstance): void {
+            if (multipleElements) {
+                multipleInstances.push(instance);
+            } else {
+                singleInstance = instance;
+            }
+        };
+
         this.each(function (): void {
             var listbox: BaseListBox;
             var instance: ExtendedListboxInstance;
             var $this: JQuery = $(this);
+
+            if ($this.data('listbox-instance')) {
+                setInstance($this.data('listbox-instance'));
+                return;
+            }
 
             if (settings.multiple) {
                 listbox = new MultiSelectListbox($this, settings);
@@ -31,14 +44,12 @@ module EL {
                 listbox = new SingleSelectListbox($this, settings);
             }
 
-            $this.data('listbox', listbox);
-
             instance = ExtendedListboxInstance.createFrom(listbox, $this);
-            if (multipleElements) {
-                multipleInstances.push(instance);
-            } else {
-                singleInstance = instance;
-            }
+
+            $this.data('listbox', listbox);
+            $this.data('listbox-instance', instance);
+
+            setInstance(instance);
         });
 
         return multipleElements ? multipleInstances : singleInstance;
@@ -96,7 +107,7 @@ module EL {
      * @param {object} options an object with Listbox settings
      */
     $.fn.listbox = function (options: any): any {
-        if (typeof options === 'object') {
+        if (typeof options === 'object' || !options) {
             return initializeListBoxFromOptions.call(this, options);
         } else if (typeof options === 'string') {
             return callApiFunction.call(this, options, arguments);
