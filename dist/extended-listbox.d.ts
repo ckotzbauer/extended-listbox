@@ -88,6 +88,8 @@ interface ExtendedListboxInstance {
     getItems(): ListboxItem[];
     moveItemUp(identifier: string): number;
     moveItemDown(identifier: string): number;
+    moveItemToBottom(identifier: string): number;
+    moveItemToTop(identifier: string): number;
     enable(state: boolean): void;
     onValueChanged(callback: (event: ListboxEvent) => void): void;
     onItemsChanged(callback: (event: ListboxEvent) => void): void;
