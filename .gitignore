@@ -9,3 +9,4 @@ test/**/*.map
 test/**/*.js
 doc/pages/documentation/**/snippets/*.map
 doc/pages/documentation/**/snippets/classSnippet*.js
+doc/demo/**
