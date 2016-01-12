@@ -5,6 +5,31 @@ Here you can see the full list of changes between each Extended Listbox
 release.
 
 
+## Version 1.1.0
+
+Not yet released.
+
+### Features
+-   Added new public API interface (`ExtendedListboxInstance`)
+-   Public function `moveItemToTop` to move item to the top of the list
+-   Public function `moveItemToBottom` to move item to the bottom of the list
+-   New callback: `onItemEnterPressed` to notify enter events on items
+-   New callback: `onItemDoubleClicked` to notify double click events on items
+-   Change selection of item with cursor keys (up and down)
+-   Return existing `ExtendedListboxInstance` if `listbox()` function is called without any arguments
+-   Internal refactoring
+-	Updated devDependencies
+-   Use Karma as unit test runner
+-   Added code coverage
+-   Added unit tests
+
+### Bugfixes
+-   Prevent multiple listbox creations on one DOM item.
+
+### Potentially breaking changes
+-   Constructor function `listbox()` returns now a instance of class `ExtendedListboxInstance` (Access `target` variable on returned instance to get JQuery object as in 1.0.x)
+
+
 ## Version 1.0.6
 
 Released on January 03, 2016.
