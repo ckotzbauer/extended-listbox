@@ -1,5 +1,10 @@
 class ListboxSearchBarButtonOptions {
-    visible: boolean = false;   /* If Button is visible */
-    icon: string = null;        /* CSS class for button icon (`i` tag) */
-    onClick: Function = null;   /* Delegate for button click */
+    /* If Button is visible */
+    visible: boolean = false;
+
+    /* CSS class for button icon (`i` tag) */
+    icon: string = null;
+
+    /* Delegate for button click */
+    onClick: Function = null;
 }

@@ -23,6 +23,7 @@ define([], function () {
         var $snippet = $(element);
         var $code = $snippet.find("code");
         hljs.highlightBlock($code[0]);
+        $code.addClass("javascript");
 
         if (!dao.apiParameters || dao.apiParameters.length === 0) {
             $snippet.find("div.parameters").remove();
