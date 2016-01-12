@@ -15,6 +15,13 @@ module EL {
         }
     });
 
+    test("check multiple creations", function (): void {
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList();
+        var instance: ExtendedListboxInstance = <ExtendedListboxInstance>root.target.listbox();
+
+        equal(root, instance);
+    });
+
     test("check root css class", function (): void {
         var root: ExtendedListboxInstance = TestHelper.generateSingleList();
 
@@ -100,6 +107,20 @@ module EL {
         button.click();
 
         equal(count, 1);
+    });
+
+    test("check legacy addItem", function (): void {
+        var items: any[] = ["Item#1", "Item#2", "Item#3"];
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+        var listbox: JQuery = TestHelper.child(root.target);
+
+        var id: string = root.target.listbox("addItem", { text: "Item#4", id: "myId" });
+
+        var itemElements: JQuery[] = TestHelper.children(listbox);
+
+        equal(itemElements.length, 4);
+        equal(id, "myId");
     });
 
     test("check simple items", function (): void {
@@ -277,19 +298,18 @@ module EL {
         equal(found, false);
     });
 
-// TODO: enable test after fix
-    /*test("check parent item removal", function (): void {
-     var items: any[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
+    test("check parent item removal", function ():void {
+        var items: any[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
 
-     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
 
-     root.removeItem("Item#1");
+        root.removeItem("Item#1");
 
-     var listbox: JQuery = TestHelper.child(root.target);
-     var itemElements: JQuery[] = TestHelper.children(listbox);
+        var listbox: JQuery = TestHelper.child(root.target);
+        var itemElements: JQuery[] = TestHelper.children(listbox);
 
-     equal(itemElements.length, 0);
-     });*/
+        equal(itemElements.length, 0);
+    });
 
     test("check destroy", function (): void {
         var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
@@ -463,9 +483,9 @@ module EL {
         var listbox: JQuery = TestHelper.child(root.target);
         var item: JQuery = TestHelper.child(listbox, 1); // id02
 
-        var e: JQueryEventObject = jQuery.Event("keypress");
+        var e: JQueryEventObject = jQuery.Event("keyup");
         e.which = 13;
-        e.keyCode = 13;
+        e.eventPhase = 2;
         item.trigger(e);
 
         equal(count, 1);
@@ -487,5 +507,60 @@ module EL {
         item.dblclick();
 
         equal(count, 1);
+    });
+
+    test("check itemArrowUp event", function (): void {
+        var items: any[] = [{ text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+
+        var listbox: JQuery = TestHelper.child(root.target);
+        var item: JQuery = TestHelper.child(listbox, 1); // id02
+
+        equal(root.getItem("id01").selected, false);
+        equal(root.getItem("id02").selected, true);
+
+        var e: JQueryEventObject = jQuery.Event("keyup");
+        e.which = 38;
+        e.eventPhase = 2;
+        item.trigger(e);
+
+        equal(root.getItem("id01").selected, true);
+        equal(root.getItem("id02").selected, false);
+    });
+
+    test("check itemArrowDown event", function (): void {
+        var items: any[] = [{ text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+
+        var listbox: JQuery = TestHelper.child(root.target);
+        var item: JQuery = TestHelper.child(listbox, 1); // id02
+
+        equal(root.getItem("id02").selected, true);
+        equal(root.getItem("id03").selected, false);
+
+        var e: JQueryEventObject = jQuery.Event("keyup");
+        e.which = 40;
+        e.eventPhase = 2;
+        item.trigger(e);
+
+        equal(root.getItem("id02").selected, false);
+        equal(root.getItem("id03").selected, true);
+    });
+
+    test("check illegal legacy api method", function (): void {
+        var items: any[] = ["Item#1", "Item#2", "Item#3"];
+
+        var logError = (message: any) => {
+            equal(message, 'blub is no public API function.');
+        };
+
+        console.error = logError;
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+        root.target.listbox("blub");
     });
 }
