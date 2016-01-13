@@ -154,6 +154,15 @@ define("snippets", function () {
         });
 
         this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet11",
+            title: "getSelection",
+            apiSignature: "listboxInstance.getSelection(): ListboxItem[]",
+            apiDescription: "Returns all ListboxItem's which are selected.",
+            apiParameters: [],
+            apiReturnValue: "A array of ListboxItem's"
+        });
+
+        this.apiFunctionSnippets.push({
             snippetId: "functionSnippet7",
             title: "moveItemUp",
             apiSignature: "$('#functionSnippet7').listbox('moveItemUp', item: string): number",
