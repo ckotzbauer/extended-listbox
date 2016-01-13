@@ -1,9 +1,11 @@
 /// <reference path="../../typings/tsd.d.ts" />
-/// <reference path="./ListboxSettings.ts" />
-/// <reference path="./ListboxItem.ts" />
 
-module ExtendedListbox {
-"use strict";
+/// <reference path="./contract/ListboxItem.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
+/// <reference path="./event/ListboxEventHandler.ts" />
+
+module EL {
+    "use strict";
 
     export abstract class BaseListBox {
 
@@ -18,12 +20,13 @@ module ExtendedListbox {
         protected static SEARCHBAR_CLASS: string = 'listbox-searchbar';
         protected static SEARCHBAR_BUTTON_CLASS: string = 'listbox-searchbar-button';
 
-        protected _parent: JQuery;
+        public _target: JQuery;
         protected _list: JQuery;
         private _searchbarWrapper: JQuery;
         protected _searchbar: JQuery;
 
-        protected _settings: ListboxSettings;
+        public _settings: ListboxSettings;
+        protected eventHandler: ListboxEventHandler;
 
 
         /**
@@ -37,8 +40,10 @@ module ExtendedListbox {
          * @param {object} options an object with Listbox settings
          */
         constructor(domelement: JQuery, options: ListboxSettings) {
-            this._parent = domelement;
+            this._target = domelement;
             this._settings = options;
+
+            this.eventHandler = new ListboxEventHandler(this);
 
             this._createListbox();
         }
@@ -68,7 +73,7 @@ module ExtendedListbox {
          * @this {BaseListBox}
          */
         private _createListbox(): void {
-            this._parent.addClass(BaseListBox.MAIN_CLASS);
+            this._target.addClass(BaseListBox.MAIN_CLASS);
 
             if (this._settings.searchBar) {
                 this._createSearchbar();
@@ -89,7 +94,7 @@ module ExtendedListbox {
             // the searchbar over the listbox width
             var searchbarWrapper: JQuery = $('<div>')
                 .addClass(BaseListBox.SEARCHBAR_CLASS + '-wrapper')
-                .appendTo(this._parent);
+                .appendTo(this._target);
 
             var searchbar: JQuery = $('<input>')
                 .addClass(BaseListBox.SEARCHBAR_CLASS)
@@ -177,7 +182,7 @@ module ExtendedListbox {
             // create container
             this._list = $('<div>')
                 .addClass(BaseListBox.LIST_CLASS)
-                .appendTo(this._parent);
+                .appendTo(this._target);
 
             this._resizeListToListbox();
 
@@ -250,9 +255,31 @@ module ExtendedListbox {
                 .text(dataItem.text)
                 .attr("id", dataItem.id)
                 .attr("title", dataItem.text)
+                .attr("tabindex", "1")
                 .data("dataItem", dataItem)
+                .keyup(function (e: JQueryKeyEventObject): void {
+                    var $target: JQuery = $(e.target);
+                    if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
+                        if (e.which === 13) {
+                            // Enter
+                            self.onItemEnterPressed($target);
+                        } else if (e.which === 38) {
+                            // Arrow up
+                            self.onItemArrowUp($target);
+                        } else if (e.which === 40) {
+                            // Arrow down
+                            self.onItemArrowDown($target);
+                        }
+                    }
+                })
                 .click(function (): void {
                     self.onItemClick($(this));
+                })
+                .dblclick(function (): void {
+                    var $target: JQuery = $(this);
+                    if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                        self.onItemDoubleClicked($target);
+                    }
                 });
 
             if (dataItem.disabled) {
@@ -268,12 +295,9 @@ module ExtendedListbox {
             }
 
             if (dataItem.parentGroupId) {
-                var $possibleParent: JQuery = $("#" + dataItem.parentGroupId, this._list);
-                if ($possibleParent.length === 0) {
-                    $possibleParent = $('div[title="' + dataItem.parentGroupId + '"]');
-                }
+                var $possibleParent: JQuery = this.locateItem(dataItem.parentGroupId);
 
-                if ($possibleParent.length > 0) {
+                if ($possibleParent) {
                     $parent = $possibleParent;
                 }
             }
@@ -313,7 +337,7 @@ module ExtendedListbox {
          * @param {object} dataItem display data for item
          * @param {object} internal: true if this function is not called directly as api function.
          */
-        protected addItem(dataItem: any, internal: boolean): string {
+        public addItem(dataItem: any, internal: boolean): string {
             if (!internal && !this._settings.multiple && dataItem.selected) {
                 this.clearSelection(internal);
             }
@@ -321,9 +345,7 @@ module ExtendedListbox {
             var id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
 
             if (!internal) {
-                if (this._settings.onItemsChanged) {
-                    this._settings.onItemsChanged(this.getItems());
-                }
+                this.eventHandler.fireItemsChangedEvent(this.getItems());
             }
 
             return id;
@@ -336,23 +358,13 @@ module ExtendedListbox {
          * @this {BaseListBox}
          * @param {string} item: display text or id from item to remove
          */
-        protected removeItem(item: string): void {
-            var items: JQuery = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
-            var index: any;
+        public removeItem(item: string): void {
+            var uiItem: JQuery = this.locateItem(item);
+            if (uiItem) {
+                this._clearItemSelection(uiItem);
+                uiItem.remove();
 
-            for (index in items) {
-                var uiItem: JQuery = $(items[index]);
-                if (uiItem.text() === item || uiItem.attr("id") === item) {
-                    this._clearItemSelection(uiItem);
-
-                    uiItem.remove();
-
-                    if (this._settings.onItemsChanged) {
-                        this._settings.onItemsChanged(this.getItems());
-                    }
-
-                    return;
-                }
+                this.eventHandler.fireItemsChangedEvent(this.getItems());
             }
         }
 
@@ -362,9 +374,9 @@ module ExtendedListbox {
          *
          * @this {BaseListBox}
          */
-        protected destroy(): void {
-            this._parent.children().remove();
-            this._parent.removeClass(BaseListBox.MAIN_CLASS);
+        public destroy(): void {
+            this._target.children().remove();
+            this._target.removeClass(BaseListBox.MAIN_CLASS);
         }
 
 
@@ -373,7 +385,7 @@ module ExtendedListbox {
          * do it with CSS.
          */
         protected _resizeListToListbox(): void {
-            var listHeight: number = this._parent.height();
+            var listHeight: number = this._target.height();
 
             if (this._settings.searchBar) {
                 listHeight -= this._searchbarWrapper.outerHeight(true);
@@ -386,7 +398,7 @@ module ExtendedListbox {
         /**
          * Clears all selected items.
          */
-        protected clearSelection(internal: boolean): void {
+        public clearSelection(internal: boolean): void {
             // Remove selected class from all other items
             var allItems: JQuery = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
 
@@ -397,13 +409,13 @@ module ExtendedListbox {
             }
 
             if (this._settings.multiple) {
-                this._parent.val([]);
+                this._target.val([]);
             } else {
-                this._parent.val(null);
+                this._target.val(null);
             }
 
             if (!internal) {
-                this._parent.trigger('change');
+                this._target.trigger('change');
             }
         }
 
@@ -418,15 +430,17 @@ module ExtendedListbox {
             domItem.data("dataItem").selected = false;
 
             if (this._settings.multiple) {
-                var parentValues: any[] = this._parent.val();
-                var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
-                parentValues.splice(removeIndex, 1);
-                this._parent.val(parentValues);
+                var parentValues: any[] = this._target.val();
+                if (parentValues) {
+                    var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
+                    parentValues.splice(removeIndex, 1);
+                    this._target.val(parentValues);
+                }
             } else {
-                this._parent.val(null);
+                this._target.val(null);
             }
 
-            this._parent.trigger('change');
+            this._target.trigger('change');
         }
 
 
@@ -435,15 +449,12 @@ module ExtendedListbox {
          *
          * @param {object} id unique id or text from listItem
          */
-        protected getItem(id: string): ListboxItem {
+        public getItem(id: string): ListboxItem {
             var data: ListboxItem = null;
 
-            var $item: JQuery = $("#" + id, this._list);
-            if ($item.length === 0) {
-                $item = $('div[title="' + id + '"]');
-            }
+            var $item: JQuery = this.locateItem(id);
 
-            if ($item.length > 0) {
+            if ($item) {
                 data = $item.data("dataItem");
             }
 
@@ -454,7 +465,7 @@ module ExtendedListbox {
         /**
          * Returns all dataItems.
          */
-        protected getItems(): ListboxItem[] {
+        public getItems(): ListboxItem[] {
             var dataItems: ListboxItem[] = [];
 
             var childs: JQuery = this._list.children();
@@ -472,23 +483,18 @@ module ExtendedListbox {
          *
          * @param {object} id unique id or text from listItem
          */
-        protected moveItemUp(id: string): number {
+        public moveItemUp(id: string): number {
             var newIndex: number = null;
 
-            var $item: JQuery = $("#" + id, this._list);
-            if ($item.length === 0) {
-                $item = $('div[title="' + id + '"]');
-            }
+            var $item: JQuery = this.locateItem(id);
 
-            if ($item.length > 0) {
+            if ($item) {
                 $item.insertBefore($item.prev());
                 newIndex = $item.index();
                 $item.data("dataItem").index = newIndex;
             }
 
-            if (this._settings.onItemsChanged) {
-                this._settings.onItemsChanged(this.getItems());
-            }
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
 
             return newIndex;
         }
@@ -498,23 +504,60 @@ module ExtendedListbox {
          *
          * @param {object} id unique id or text from listItem
          */
-        protected moveItemDown(id: string): number {
+        public moveItemDown(id: string): number {
             var newIndex: number = null;
 
-            var $item: JQuery = $("#" + id, this._list);
-            if ($item.length === 0) {
-                $item = $('div[title="' + id + '"]');
-            }
+            var $item: JQuery = this.locateItem(id);
 
-            if ($item.length > 0) {
+            if ($item) {
                 $item.insertAfter($item.next());
                 newIndex = $item.index();
                 $item.data("dataItem").index = newIndex;
             }
 
-            if (this._settings.onItemsChanged) {
-                this._settings.onItemsChanged(this.getItems());
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
+
+            return newIndex;
+        }
+
+        /**
+         * Sets the index of the item to zero.
+         *
+         * @param {object} id unique id or text from listItem
+         */
+        public moveItemToTop(id: string): number {
+            var newIndex: number = null;
+
+            var $item: JQuery = this.locateItem(id);
+
+            if ($item) {
+                $item.parent().prepend($item);
+                newIndex = $item.index();
+                $item.data("dataItem").index = newIndex;
             }
+
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
+
+            return newIndex;
+        }
+
+        /**
+         * Sets the index of the matching item to the highest.
+         *
+         * @param {object} id unique id or text from listItem
+         */
+        public moveItemToBottom(id: string): number {
+            var newIndex: number = null;
+
+            var $item: JQuery = this.locateItem(id);
+
+            if ($item) {
+                $item.parent().append($item);
+                newIndex = $item.index();
+                $item.data("dataItem").index = newIndex;
+            }
+
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
 
             return newIndex;
         }
@@ -525,14 +568,79 @@ module ExtendedListbox {
          *
          * @param {boolean} enable: new enable value.
          */
-        protected enable(enable: boolean): void {
+        public enable(enable: boolean): void {
             if (enable) {
-                this._parent.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
-            } else if (!this._parent.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
-                this._parent.addClass(BaseListBox.MAIN_DISABLED_CLASS);
+                this._target.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
+            } else if (!this._target.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
+                this._target.addClass(BaseListBox.MAIN_DISABLED_CLASS);
             }
+        }
+
+        protected locateItem(id: string): JQuery {
+            var $item: JQuery = $("#" + id, this._list);
+            if ($item.length === 0) {
+                $item = $('div[title="' + id + '"]');
+            }
+
+            if ($item.length === 0) {
+                $item = null;
+            }
+
+            return $item;
+        }
+
+        /**
+         * Called for a keyPressed event with the enter key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        protected onItemEnterPressed(domItem: JQuery): void {
+            this.eventHandler.fireItemEnterPressedEvent(domItem.data("dataItem"));
+        }
+
+        /**
+         * Called for a doubleClick on a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        protected onItemDoubleClicked(domItem: JQuery): void {
+            this.eventHandler.fireItemDoubleClickedEvent(domItem.data("dataItem"));
+        }
+
+        /**
+         * Called for a keyPressed event with the arrow up key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        protected onItemArrowUp(domItem: JQuery): void {
+            var prev: JQuery = domItem.prev();
+
+            if (prev.length > 0) {
+                this._clearItemSelection(domItem);
+                this.onItemClick(prev);
+            }
+        }
+
+        /**
+         * Called for a keyPressed event with the arrow down key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        protected onItemArrowDown(domItem: JQuery): void {
+            var next: JQuery = domItem.next();
+
+            if (next.length > 0) {
+                this._clearItemSelection(domItem);
+                this.onItemClick(next);
+            }
+        }
+
+        /**
+         * Returns all dataItems which are selected.
+         */
+        public getSelection(): ListboxItem[] {
+            var items: ListboxItem[] = this.getItems();
+            return items.filter((item: ListboxItem) => item.selected);
         }
     }
 }
-
-

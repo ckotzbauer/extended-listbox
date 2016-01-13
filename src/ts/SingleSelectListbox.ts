@@ -1,8 +1,10 @@
 /// <reference path="../../typings/tsd.d.ts" />
-/// <reference path="./BaseListBox.ts" />
 
-module ExtendedListbox {
-"use strict";
+/// <reference path="./BaseListBox.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
+
+module EL {
+    "use strict";
 
     export class SingleSelectListbox extends BaseListBox {
 
@@ -41,14 +43,13 @@ module ExtendedListbox {
             }
 
             domItem.toggleClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            domItem.focus();
             this._selectedDomItem = domItem;
             domItem.data("dataItem").selected = true;
-            this._parent.val(domItem.data("dataItem"));
-            this._parent.trigger('change');
+            this._target.val(domItem.data("dataItem"));
+            this._target.trigger('change');
 
-            if (this._settings.onValueChanged) {
-                this._settings.onValueChanged(domItem.data("dataItem"));
-            }
+            this.eventHandler.fireValueChangedEvent(domItem.data("dataItem"));
         }
 
 
@@ -65,9 +66,7 @@ module ExtendedListbox {
                 }
             }
 
-            if (this._settings.onFilterChanged) {
-                this._settings.onFilterChanged(this._searchbar.val());
-            }
+            this.eventHandler.fireFilterChangedEvent(this._searchbar.val());
         }
     }
 }

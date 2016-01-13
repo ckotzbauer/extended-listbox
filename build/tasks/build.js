@@ -12,6 +12,7 @@ var fs = require('fs');
 var minify = require('gulp-minify');
 var cssnano = require('gulp-cssnano');
 var rename = require('gulp-rename');
+var debug = require('gulp-debug');
 
 function minimalistHeader() {
     return "/* Extended Listbox " + args.version + "; (c) " + args.year +
@@ -21,15 +22,19 @@ function minimalistHeader() {
 gulp.task('build-js', function () {
     var fileComment = fs.readFileSync("build/libheader.js", "utf8") + "\n\n";
 
-    return gulp.src(paths.source)
+    compilerOptions.outDir = ".";
+
+    return gulp.src(paths.source, { base: "js" })
+        .pipe(debug())
         .pipe(sourceMaps.init())
         .pipe(ts(compilerOptions))
+        .pipe(debug())
         .pipe(header(fileComment))
         .pipe(replace('[VERSION]', args.version))
         .pipe(replace('[YEAR]', args.year))
         .pipe(replace('[LICENSE]', args.license))
         .pipe(sourceMaps.write('.'))
-        .pipe(gulp.dest(paths.output + 'js'));
+        .pipe(gulp.dest(paths.output));
 });
 
 gulp.task('build-less', function () {

@@ -1,6 +1,6 @@
-/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../../../typings/tsd.d.ts" />
 
-module ExtendedListbox {
+module EL {
     "use strict";
 
     export class ListboxItem {
@@ -14,6 +14,3 @@ module ExtendedListbox {
         public childItems: ListboxItem[] = [];
     }
 }
-
-
-

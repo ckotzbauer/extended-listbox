@@ -1,31 +1,70 @@
 /// <reference path="../../typings/tsd.d.ts" />
+
+/// <reference path="./ExtendedListboxInstance.ts" />
+/// <reference path="./BaseListBox.ts" />
 /// <reference path="./MultiSelectListbox.ts" />
 /// <reference path="./SingleSelectListbox.ts" />
-/// <reference path="./ListboxSettings.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
+/// <reference path="./infrastructure/Util.ts" />
 
-module ExtendedListbox {
-"use strict";
+module EL {
+    "use strict";
 
-    function initializeListBoxFromOptions(options: ListboxSettings): JQuery {
+    function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListboxInstance|ExtendedListboxInstance[] {
+        "use strict";
+
         var settings: ListboxSettings = new ListboxSettings();
         settings = $.extend(settings, options);
 
-        return this.each(function (): boolean {
-            var instance: BaseListBox;
+        var multipleInstances: ExtendedListboxInstance[] = [];
+        var singleInstance: ExtendedListboxInstance = null;
+        var multipleElements: boolean = this.length > 1;
 
-            if (settings.multiple) {
-                instance = new MultiSelectListbox($(this), settings);
+        var setInstance: Function = function (instance: ExtendedListboxInstance): void {
+            if (multipleElements) {
+                multipleInstances.push(instance);
             } else {
-                instance = new SingleSelectListbox($(this), settings);
+                singleInstance = instance;
+            }
+        };
+
+        this.each(function (): void {
+            var listbox: BaseListBox;
+            var instance: ExtendedListboxInstance;
+            var $this: JQuery = $(this);
+
+            if ($this.data('listbox-instance')) {
+                setInstance($this.data('listbox-instance'));
+                return;
             }
 
-            $(this).data('listbox', instance);
+            if (settings.multiple) {
+                listbox = new MultiSelectListbox($this, settings);
+            } else {
+                listbox = new SingleSelectListbox($this, settings);
+            }
 
-            return !!instance;
+            instance = ExtendedListboxInstance.createFrom(listbox, $this);
+
+            $this.data('listbox', listbox);
+            $this.data('listbox-instance', instance);
+
+            setInstance(instance);
         });
+
+        return multipleElements ? multipleInstances : singleInstance;
     }
 
+    /**
+     * @deprecated: This method will be removed in 2.0.0
+     *
+     * @param functionName
+     * @param callArgs
+     * @returns {any}
+     */
     function callApiFunction(functionName: string, callArgs: any): any {
+        "use strict";
+
         var publicFunctions: string[] = ["addItem", "removeItem", "destroy", "getItem", "getItems",
             "moveItemUp", "moveItemDown", "clearSelection", "enable"];
 
@@ -34,6 +73,8 @@ module ExtendedListbox {
 
         this.each(function (): void {
             var instance: BaseListBox = $(this).data('listbox');
+
+            Util.deprecatedMethod(functionName, "2.0.0", "corresponding method in class ExtendedListboxInstance");
 
             if (instance == null && window.console && console.error) {
                 console.error(
@@ -66,7 +107,7 @@ module ExtendedListbox {
      * @param {object} options an object with Listbox settings
      */
     $.fn.listbox = function (options: any): any {
-        if (typeof options === 'object') {
+        if (typeof options === 'object' || !options) {
             return initializeListBoxFromOptions.call(this, options);
         } else if (typeof options === 'string') {
             return callApiFunction.call(this, options, arguments);

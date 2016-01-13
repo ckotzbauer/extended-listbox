@@ -36,21 +36,36 @@ define("snippets", function () {
 
         ////  API FUNCTIONS  ////
 
+        var deprecationAlert = { type: "warning", text: "<b>Deprecated:</b> This method is replaced with " +
+            "corresponding method in ExtendedListboxInstance and will be removed in 2.0.0" };
+
         this.apiFunctionSnippets.push({
             snippetId: "functionSnippet1",
             title: "Construction",
-            apiSignature: "$('#functionSnippet1').listbox(options: ListboxOptions): JQuery",
+            apiSignature: "$('#functionSnippet1').listbox(options: ListboxOptions): ExtendedListboxInstance|ExtendedListboxInstance[]",
             apiDescription: "Create a new Listbox on the given DOM element.",
             apiParameters: [
                 { key: "options", value: "An instance from ListboxOptions to configure the listbox." }
             ],
-            apiReturnValue: "A JQuery Object."
+            apiReturnValue: "One or more instances from ExtendedListboxInstance"
         });
 
         this.apiFunctionSnippets.push({
             snippetId: "functionSnippet2",
             title: "addItem",
             apiSignature: "$('#functionSnippet2').listbox('addItem', item: string|ListboxItem): number",
+            apiDescription: "Adds the given item to the list.",
+            apiParameters: [
+                { key: "item", value: "A string (display name) or an instance from ListboxItem." }
+            ],
+            apiReturnValue: "The id of the added element.",
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet2.1",
+            title: "addItem",
+            apiSignature: "listboxInstance.addItem(item: string|ListboxItem): number",
             apiDescription: "Adds the given item to the list.",
             apiParameters: [
                 { key: "item", value: "A string (display name) or an instance from ListboxItem." }
@@ -65,6 +80,17 @@ define("snippets", function () {
             apiDescription: "Removes the item where the given string matches the display name or the id.",
             apiParameters: [
                 { key: "item", value: "A string to identify the item." }
+            ],
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet3.1",
+            title: "removeItem",
+            apiSignature: "listboxInstance.removeItem(item: string): void",
+            apiDescription: "Removes the item where the given string matches the display name or the id.",
+            apiParameters: [
+                { key: "item", value: "A string to identify the item." }
             ]
         });
 
@@ -73,6 +99,15 @@ define("snippets", function () {
             title: "destroy",
             apiSignature: "$('#functionSnippet4').listbox('destroy'): void",
             apiDescription: "Reverts all changes on the DOM.",
+            apiParameters: [],
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet4.1",
+            title: "destroy",
+            apiSignature: "listboxInstance.destroy(): void",
+            apiDescription: "Reverts all changes on the DOM.",
             apiParameters: []
         });
 
@@ -80,6 +115,18 @@ define("snippets", function () {
             snippetId: "functionSnippet5",
             title: "getItem",
             apiSignature: "$('#functionSnippet5').listbox('getItem', item: string): ListboxItem",
+            apiDescription: "Returns the ListboxItem for which the given string matches the display name or the id.",
+            apiParameters: [
+                { key: "item", value: "A string to identify the item." }
+            ],
+            apiReturnValue: "An instance of ListboxItem.",
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet5.1",
+            title: "getItem",
+            apiSignature: "listboxInstance.getItem(item: string): ListboxItem",
             apiDescription: "Returns the ListboxItem for which the given string matches the display name or the id.",
             apiParameters: [
                 { key: "item", value: "A string to identify the item." }
@@ -93,6 +140,25 @@ define("snippets", function () {
             apiSignature: "$('#functionSnippet6').listbox('getItems'): ListboxItem[]",
             apiDescription: "Returns all ListboxItem objects.",
             apiParameters: [],
+            apiReturnValue: "A array of ListboxItem's",
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet6.1",
+            title: "getItems",
+            apiSignature: "listboxInstance.getItems(): ListboxItem[]",
+            apiDescription: "Returns all ListboxItem objects.",
+            apiParameters: [],
+            apiReturnValue: "A array of ListboxItem's"
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet11",
+            title: "getSelection",
+            apiSignature: "listboxInstance.getSelection(): ListboxItem[]",
+            apiDescription: "Returns all ListboxItem's which are selected.",
+            apiParameters: [],
             apiReturnValue: "A array of ListboxItem's"
         });
 
@@ -100,6 +166,18 @@ define("snippets", function () {
             snippetId: "functionSnippet7",
             title: "moveItemUp",
             apiSignature: "$('#functionSnippet7').listbox('moveItemUp', item: string): number",
+            apiDescription: "Decreases the index of the matching ListboxItem by one.",
+            apiParameters: [
+                { key: "item", value: "A string to identify the item." }
+            ],
+            apiReturnValue: "The new index of the item.",
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet7.1",
+            title: "moveItemUp",
+            apiSignature: "listboxInstance.moveItemUp(item: string): number",
             apiDescription: "Decreases the index of the matching ListboxItem by one.",
             apiParameters: [
                 { key: "item", value: "A string to identify the item." }
@@ -115,6 +193,18 @@ define("snippets", function () {
             apiParameters: [
                 { key: "item", value: "A string to identify the item." }
             ],
+            apiReturnValue: "The new index of the item.",
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet8.1",
+            title: "moveItemDown",
+            apiSignature: "listboxInstance.moveItemDown(item: string): number",
+            apiDescription: "Increases the index of the matching ListboxItem by one.",
+            apiParameters: [
+                { key: "item", value: "A string to identify the item." }
+            ],
             apiReturnValue: "The new index of the item."
         });
 
@@ -122,6 +212,15 @@ define("snippets", function () {
             snippetId: "functionSnippet9",
             title: "clearSelection",
             apiSignature: "$('#functionSnippet9').listbox('clearSelection'): void",
+            apiDescription: "Resets the selection state of all items.",
+            apiParameters: [],
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet9.1",
+            title: "clearSelection",
+            apiSignature: "listboxInstance.clearSelection(): void",
             apiDescription: "Resets the selection state of all items.",
             apiParameters: []
         });
@@ -133,12 +232,29 @@ define("snippets", function () {
             apiDescription: "Enables or disables the complete component.",
             apiParameters: [
                 { key: "state", value: "Boolean to indicate the new component state." }
+            ],
+            alert: deprecationAlert
+        });
+
+        this.apiFunctionSnippets.push({
+            snippetId: "functionSnippet10.1",
+            title: "enable",
+            apiSignature: "listboxInstance.enable(state: boolean): void",
+            apiDescription: "Enables or disables the complete component.",
+            apiParameters: [
+                { key: "state", value: "Boolean to indicate the new component state." }
             ]
         });
 
 
 
         ////  API CLASSES  ////
+
+        this.apiClassSnippets.push({
+            snippetId: "classSnippet4",
+            title: "ExtendedListboxInstance",
+            apiDescription: "This shows the methods of ExtendedListboxInstance."
+        });
 
         this.apiClassSnippets.push({
             snippetId: "classSnippet1",
@@ -156,6 +272,12 @@ define("snippets", function () {
             snippetId: "classSnippet3",
             title: "ListboxItem",
             apiDescription: "This shows the properties of ListboxItem with its default values."
+        });
+
+        this.apiClassSnippets.push({
+            snippetId: "classSnippet5",
+            title: "ListboxEvent",
+            apiDescription: "This shows the properties of ListboxEvent."
         });
 
 

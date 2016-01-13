@@ -1,8 +1,10 @@
 /// <reference path="../../typings/tsd.d.ts" />
-/// <reference path="./BaseListBox.ts" />
 
-module ExtendedListbox {
-"use strict";
+/// <reference path="./BaseListBox.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
+
+module EL {
+    "use strict";
 
     export class MultiSelectListbox extends BaseListBox {
 
@@ -32,7 +34,7 @@ module ExtendedListbox {
                 return;
             }
 
-            var parentValues: any[] = this._parent.val();
+            var parentValues: any[] = this._target.val();
 
             if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
                 domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
@@ -52,12 +54,10 @@ module ExtendedListbox {
                 parentValues.push(JSON.stringify(domItem.data("dataItem")));
             }
 
-            this._parent.val(parentValues);
-            this._parent.trigger('change');
+            this._target.val(parentValues);
+            this._target.trigger('change');
 
-            if (this._settings.onValueChanged) {
-                this._settings.onValueChanged(parentValues);
-            }
+            this.eventHandler.fireValueChangedEvent(parentValues);
         }
 
         public onFilterChange(): void {
@@ -65,4 +65,3 @@ module ExtendedListbox {
         }
     }
 }
-
