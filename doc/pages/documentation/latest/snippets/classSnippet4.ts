@@ -20,6 +20,9 @@ class ExtendedListboxInstance {
     /* Returns all item objects */
     getItems(): ListboxItem[];
 
+    /* Returns all ListboxItem's which are selected */
+    getSelection(): ListboxItem[];
+
     /* Decreases the index of the matching item by one */
     moveItemUp(identifier: string): number;
 
