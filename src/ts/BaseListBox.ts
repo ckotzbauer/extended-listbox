@@ -634,5 +634,13 @@ module EL {
                 this.onItemClick(next);
             }
         }
+
+        /**
+         * Returns all dataItems which are selected.
+         */
+        public getSelection(): ListboxItem[] {
+            var items: ListboxItem[] = this.getItems();
+            return items.filter((item: ListboxItem) => item.selected);
+        }
     }
 }

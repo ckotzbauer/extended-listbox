@@ -91,6 +91,7 @@ interface ExtendedListboxInstance {
     clearSelection(): void;
     getItem(identifier: string): ListboxItem;
     getItems(): ListboxItem[];
+    getSelection(): ListboxItem[];
     moveItemUp(identifier: string): number;
     moveItemDown(identifier: string): number;
     moveItemToBottom(identifier: string): number;

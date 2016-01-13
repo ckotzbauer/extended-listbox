@@ -43,9 +43,8 @@ module EL {
             return this.listbox.getItems();
         }
 
-        public getSelection(): ListboxItem|ListboxItem[] {
-            // TODO
-            return null;
+        public getSelection(): ListboxItem[] {
+            return this.listbox.getSelection();
         }
 
         public moveItemUp(identifier: string): number {

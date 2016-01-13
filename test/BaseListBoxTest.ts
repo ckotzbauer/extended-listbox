@@ -298,7 +298,7 @@ module EL {
         equal(found, false);
     });
 
-    test("check parent item removal", function ():void {
+    test("check parent item removal", function (): void {
         var items: any[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
 
         var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
@@ -562,5 +562,17 @@ module EL {
 
         var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
         root.target.listbox("blub");
+    });
+
+    test("check getSelection", function (): void {
+        var items: any[] = [{ text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
+
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+
+        var selection: ListboxItem[] = root.getSelection();
+
+        equal(selection.length, 1);
+        equal(selection[0].id, "id02");
     });
 }
