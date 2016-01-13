@@ -13,6 +13,7 @@ Not yet released.
 -   Added new public API interface (`ExtendedListboxInstance`)
 -   Public function `moveItemToTop` to move item to the top of the list
 -   Public function `moveItemToBottom` to move item to the bottom of the list
+-   Public function `getSelection` that returns a array of currently selected items.
 -   New callback: `onItemEnterPressed` to notify enter events on items
 -   New callback: `onItemDoubleClicked` to notify double click events on items
 -   Change selection of item with cursor keys (up and down)
