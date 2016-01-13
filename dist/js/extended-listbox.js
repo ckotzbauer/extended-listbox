@@ -1,4 +1,4 @@
-/* Extended Listbox 1.0.6; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
+/* Extended Listbox 1.1.0; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
 /**
  * Extended Listbox is a simple to use jQuery plugin as powerful
  * alternative to the HTML `<select>` tag.
@@ -10,26 +10,13 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2016, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.0.6
+ * @version     1.1.0
  * @license     BSD-3-Clause
  */
 
-var ExtendedListbox;
-(function (ExtendedListbox) {
-    "use strict";
-    var ListboxSearchBarButtonOptions = (function () {
-        function ListboxSearchBarButtonOptions() {
-            this.visible = false;
-            this.icon = null;
-            this.onClick = null;
-        }
-        return ListboxSearchBarButtonOptions;
-    })();
-    ExtendedListbox.ListboxSearchBarButtonOptions = ListboxSearchBarButtonOptions;
-})(ExtendedListbox || (ExtendedListbox = {}));
-/// <reference path="../../typings/tsd.d.ts" />
-var ExtendedListbox;
-(function (ExtendedListbox) {
+/// <reference path="../../../typings/tsd.d.ts" />
+var EL;
+(function (EL) {
     "use strict";
     var ListboxItem = (function () {
         function ListboxItem() {
@@ -44,34 +31,104 @@ var ExtendedListbox;
         }
         return ListboxItem;
     })();
-    ExtendedListbox.ListboxItem = ListboxItem;
-})(ExtendedListbox || (ExtendedListbox = {}));
-/// <reference path="../../typings/tsd.d.ts" />
+    EL.ListboxItem = ListboxItem;
+})(EL || (EL = {}));
+var EL;
+(function (EL) {
+    "use strict";
+    var ListboxSearchBarButtonOptions = (function () {
+        function ListboxSearchBarButtonOptions() {
+            this.visible = false;
+            this.icon = null;
+            this.onClick = null;
+        }
+        return ListboxSearchBarButtonOptions;
+    })();
+    EL.ListboxSearchBarButtonOptions = ListboxSearchBarButtonOptions;
+})(EL || (EL = {}));
+/// <reference path="../../../typings/tsd.d.ts" />
+var EL;
+(function (EL) {
+    "use strict";
+    var ListboxEvent = (function () {
+        function ListboxEvent(eventName, target, args) {
+            this.eventName = eventName;
+            this.target = target;
+            this.args = args;
+        }
+        ListboxEvent.VALUE_CHANGED = "valueChanged";
+        ListboxEvent.FILTER_CHANGED = "filterChanged";
+        ListboxEvent.ITEMS_CHANGED = "itemsChanged";
+        ListboxEvent.ITEM_ENTER_PRESSED = "itemEnterPressed";
+        ListboxEvent.ITEM_DOUBLE_CLICKED = "itemDoubleClicked";
+        return ListboxEvent;
+    })();
+    EL.ListboxEvent = ListboxEvent;
+})(EL || (EL = {}));
+/// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="./ListboxSearchBarButtonOptions.ts" />
-/// <reference path="./ListboxItem.ts" />
-var ExtendedListbox;
-(function (ExtendedListbox) {
+/// <reference path="../event/ListboxEvent.ts" />
+var EL;
+(function (EL) {
     "use strict";
     var ListboxSettings = (function () {
         function ListboxSettings() {
             this.searchBar = false;
             this.searchBarWatermark = 'Search...';
-            this.searchBarButton = new ExtendedListbox.ListboxSearchBarButtonOptions();
+            this.searchBarButton = new EL.ListboxSearchBarButtonOptions();
             this.multiple = false;
             this.getItems = null;
             this.onValueChanged = null;
             this.onFilterChanged = null;
             this.onItemsChanged = null;
+            this.onItemEnterPressed = null;
+            this.onItemDoubleClicked = null;
         }
         return ListboxSettings;
     })();
-    ExtendedListbox.ListboxSettings = ListboxSettings;
-})(ExtendedListbox || (ExtendedListbox = {}));
+    EL.ListboxSettings = ListboxSettings;
+})(EL || (EL = {}));
+/// <reference path="../../../typings/tsd.d.ts" />
+/// <reference path="../BaseListBox.ts" />
+/// <reference path="./ListboxEvent.ts" />
+var EL;
+(function (EL) {
+    "use strict";
+    var ListboxEventHandler = (function () {
+        function ListboxEventHandler(listBox) {
+            this.listBox = listBox;
+        }
+        ListboxEventHandler.prototype.fire = function (name, delegate, args) {
+            if (delegate) {
+                var event = new EL.ListboxEvent(name, this.listBox._target, args);
+                delegate(event);
+            }
+        };
+        ListboxEventHandler.prototype.fireValueChangedEvent = function (args) {
+            this.fire(EL.ListboxEvent.VALUE_CHANGED, this.listBox._settings.onValueChanged, args);
+        };
+        ListboxEventHandler.prototype.fireItemsChangedEvent = function (args) {
+            this.fire(EL.ListboxEvent.ITEMS_CHANGED, this.listBox._settings.onItemsChanged, args);
+        };
+        ListboxEventHandler.prototype.fireFilterChangedEvent = function (args) {
+            this.fire(EL.ListboxEvent.FILTER_CHANGED, this.listBox._settings.onFilterChanged, args);
+        };
+        ListboxEventHandler.prototype.fireItemEnterPressedEvent = function (args) {
+            this.fire(EL.ListboxEvent.ITEM_ENTER_PRESSED, this.listBox._settings.onItemEnterPressed, args);
+        };
+        ListboxEventHandler.prototype.fireItemDoubleClickedEvent = function (args) {
+            this.fire(EL.ListboxEvent.ITEM_DOUBLE_CLICKED, this.listBox._settings.onItemDoubleClicked, args);
+        };
+        return ListboxEventHandler;
+    })();
+    EL.ListboxEventHandler = ListboxEventHandler;
+})(EL || (EL = {}));
 /// <reference path="../../typings/tsd.d.ts" />
-/// <reference path="./ListboxSettings.ts" />
-/// <reference path="./ListboxItem.ts" />
-var ExtendedListbox;
-(function (ExtendedListbox) {
+/// <reference path="./contract/ListboxItem.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
+/// <reference path="./event/ListboxEventHandler.ts" />
+var EL;
+(function (EL) {
     "use strict";
     var BaseListBox = (function () {
         /**
@@ -85,8 +142,9 @@ var ExtendedListbox;
          * @param {object} options an object with Listbox settings
          */
         function BaseListBox(domelement, options) {
-            this._parent = domelement;
+            this._target = domelement;
             this._settings = options;
+            this.eventHandler = new EL.ListboxEventHandler(this);
             this._createListbox();
         }
         /**
@@ -97,7 +155,7 @@ var ExtendedListbox;
          * @this {BaseListBox}
          */
         BaseListBox.prototype._createListbox = function () {
-            this._parent.addClass(BaseListBox.MAIN_CLASS);
+            this._target.addClass(BaseListBox.MAIN_CLASS);
             if (this._settings.searchBar) {
                 this._createSearchbar();
             }
@@ -115,7 +173,7 @@ var ExtendedListbox;
             // the searchbar over the listbox width
             var searchbarWrapper = $('<div>')
                 .addClass(BaseListBox.SEARCHBAR_CLASS + '-wrapper')
-                .appendTo(this._parent);
+                .appendTo(this._target);
             var searchbar = $('<input>')
                 .addClass(BaseListBox.SEARCHBAR_CLASS)
                 .appendTo(searchbarWrapper)
@@ -192,7 +250,7 @@ var ExtendedListbox;
             // create container
             this._list = $('<div>')
                 .addClass(BaseListBox.LIST_CLASS)
-                .appendTo(this._parent);
+                .appendTo(this._target);
             this._resizeListToListbox();
             // create items
             if (this._settings.getItems) {
@@ -221,7 +279,7 @@ var ExtendedListbox;
          * @param {object} dataItem object returned from getItems
          */
         BaseListBox.prototype._prepareDataItem = function (dataItem) {
-            var item = new ExtendedListbox.ListboxItem();
+            var item = new EL.ListboxItem();
             if (!dataItem.id) {
                 item.id = this._generateItemId();
             }
@@ -255,9 +313,33 @@ var ExtendedListbox;
                 .text(dataItem.text)
                 .attr("id", dataItem.id)
                 .attr("title", dataItem.text)
+                .attr("tabindex", "1")
                 .data("dataItem", dataItem)
+                .keyup(function (e) {
+                var $target = $(e.target);
+                if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
+                    if (e.which === 13) {
+                        // Enter
+                        self.onItemEnterPressed($target);
+                    }
+                    else if (e.which === 38) {
+                        // Arrow up
+                        self.onItemArrowUp($target);
+                    }
+                    else if (e.which === 40) {
+                        // Arrow down
+                        self.onItemArrowDown($target);
+                    }
+                }
+            })
                 .click(function () {
                 self.onItemClick($(this));
+            })
+                .dblclick(function () {
+                var $target = $(this);
+                if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                    self.onItemDoubleClicked($target);
+                }
             });
             if (dataItem.disabled) {
                 item.addClass(BaseListBox.LIST_ITEM_CLASS_DISABLED);
@@ -269,11 +351,8 @@ var ExtendedListbox;
                 this.onItemClick(item);
             }
             if (dataItem.parentGroupId) {
-                var $possibleParent = $("#" + dataItem.parentGroupId, this._list);
-                if ($possibleParent.length === 0) {
-                    $possibleParent = $('div[title="' + dataItem.parentGroupId + '"]');
-                }
-                if ($possibleParent.length > 0) {
+                var $possibleParent = this.locateItem(dataItem.parentGroupId);
+                if ($possibleParent) {
                     $parent = $possibleParent;
                 }
             }
@@ -313,9 +392,7 @@ var ExtendedListbox;
             }
             var id = this._addItem(this._prepareDataItem(dataItem), internal, null);
             if (!internal) {
-                if (this._settings.onItemsChanged) {
-                    this._settings.onItemsChanged(this.getItems());
-                }
+                this.eventHandler.fireItemsChangedEvent(this.getItems());
             }
             return id;
         };
@@ -326,18 +403,11 @@ var ExtendedListbox;
          * @param {string} item: display text or id from item to remove
          */
         BaseListBox.prototype.removeItem = function (item) {
-            var items = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
-            var index;
-            for (index in items) {
-                var uiItem = $(items[index]);
-                if (uiItem.text() === item || uiItem.attr("id") === item) {
-                    this._clearItemSelection(uiItem);
-                    uiItem.remove();
-                    if (this._settings.onItemsChanged) {
-                        this._settings.onItemsChanged(this.getItems());
-                    }
-                    return;
-                }
+            var uiItem = this.locateItem(item);
+            if (uiItem) {
+                this._clearItemSelection(uiItem);
+                uiItem.remove();
+                this.eventHandler.fireItemsChangedEvent(this.getItems());
             }
         };
         /**
@@ -346,15 +416,15 @@ var ExtendedListbox;
          * @this {BaseListBox}
          */
         BaseListBox.prototype.destroy = function () {
-            this._parent.children().remove();
-            this._parent.removeClass(BaseListBox.MAIN_CLASS);
+            this._target.children().remove();
+            this._target.removeClass(BaseListBox.MAIN_CLASS);
         };
         /**
          * Resize list to listbox. It's a small hack since I can't
          * do it with CSS.
          */
         BaseListBox.prototype._resizeListToListbox = function () {
-            var listHeight = this._parent.height();
+            var listHeight = this._target.height();
             if (this._settings.searchBar) {
                 listHeight -= this._searchbarWrapper.outerHeight(true);
             }
@@ -372,13 +442,13 @@ var ExtendedListbox;
                 $(allItems[index]).data("dataItem").selected = false;
             }
             if (this._settings.multiple) {
-                this._parent.val([]);
+                this._target.val([]);
             }
             else {
-                this._parent.val(null);
+                this._target.val(null);
             }
             if (!internal) {
-                this._parent.trigger('change');
+                this._target.trigger('change');
             }
         };
         /**
@@ -390,15 +460,17 @@ var ExtendedListbox;
             domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
             domItem.data("dataItem").selected = false;
             if (this._settings.multiple) {
-                var parentValues = this._parent.val();
-                var removeIndex = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
-                parentValues.splice(removeIndex, 1);
-                this._parent.val(parentValues);
+                var parentValues = this._target.val();
+                if (parentValues) {
+                    var removeIndex = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
+                    parentValues.splice(removeIndex, 1);
+                    this._target.val(parentValues);
+                }
             }
             else {
-                this._parent.val(null);
+                this._target.val(null);
             }
-            this._parent.trigger('change');
+            this._target.trigger('change');
         };
         /**
          * Returns the dataItem for a given id or text.
@@ -407,11 +479,8 @@ var ExtendedListbox;
          */
         BaseListBox.prototype.getItem = function (id) {
             var data = null;
-            var $item = $("#" + id, this._list);
-            if ($item.length === 0) {
-                $item = $('div[title="' + id + '"]');
-            }
-            if ($item.length > 0) {
+            var $item = this.locateItem(id);
+            if ($item) {
                 data = $item.data("dataItem");
             }
             return data;
@@ -435,18 +504,13 @@ var ExtendedListbox;
          */
         BaseListBox.prototype.moveItemUp = function (id) {
             var newIndex = null;
-            var $item = $("#" + id, this._list);
-            if ($item.length === 0) {
-                $item = $('div[title="' + id + '"]');
-            }
-            if ($item.length > 0) {
+            var $item = this.locateItem(id);
+            if ($item) {
                 $item.insertBefore($item.prev());
                 newIndex = $item.index();
                 $item.data("dataItem").index = newIndex;
             }
-            if (this._settings.onItemsChanged) {
-                this._settings.onItemsChanged(this.getItems());
-            }
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
             return newIndex;
         };
         /**
@@ -456,18 +520,45 @@ var ExtendedListbox;
          */
         BaseListBox.prototype.moveItemDown = function (id) {
             var newIndex = null;
-            var $item = $("#" + id, this._list);
-            if ($item.length === 0) {
-                $item = $('div[title="' + id + '"]');
-            }
-            if ($item.length > 0) {
+            var $item = this.locateItem(id);
+            if ($item) {
                 $item.insertAfter($item.next());
                 newIndex = $item.index();
                 $item.data("dataItem").index = newIndex;
             }
-            if (this._settings.onItemsChanged) {
-                this._settings.onItemsChanged(this.getItems());
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
+            return newIndex;
+        };
+        /**
+         * Sets the index of the item to zero.
+         *
+         * @param {object} id unique id or text from listItem
+         */
+        BaseListBox.prototype.moveItemToTop = function (id) {
+            var newIndex = null;
+            var $item = this.locateItem(id);
+            if ($item) {
+                $item.parent().prepend($item);
+                newIndex = $item.index();
+                $item.data("dataItem").index = newIndex;
             }
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
+            return newIndex;
+        };
+        /**
+         * Sets the index of the matching item to the highest.
+         *
+         * @param {object} id unique id or text from listItem
+         */
+        BaseListBox.prototype.moveItemToBottom = function (id) {
+            var newIndex = null;
+            var $item = this.locateItem(id);
+            if ($item) {
+                $item.parent().append($item);
+                newIndex = $item.index();
+                $item.data("dataItem").index = newIndex;
+            }
+            this.eventHandler.fireItemsChangedEvent(this.getItems());
             return newIndex;
         };
         /**
@@ -477,11 +568,68 @@ var ExtendedListbox;
          */
         BaseListBox.prototype.enable = function (enable) {
             if (enable) {
-                this._parent.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
+                this._target.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
             }
-            else if (!this._parent.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
-                this._parent.addClass(BaseListBox.MAIN_DISABLED_CLASS);
+            else if (!this._target.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
+                this._target.addClass(BaseListBox.MAIN_DISABLED_CLASS);
             }
+        };
+        BaseListBox.prototype.locateItem = function (id) {
+            var $item = $("#" + id, this._list);
+            if ($item.length === 0) {
+                $item = $('div[title="' + id + '"]');
+            }
+            if ($item.length === 0) {
+                $item = null;
+            }
+            return $item;
+        };
+        /**
+         * Called for a keyPressed event with the enter key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        BaseListBox.prototype.onItemEnterPressed = function (domItem) {
+            this.eventHandler.fireItemEnterPressedEvent(domItem.data("dataItem"));
+        };
+        /**
+         * Called for a doubleClick on a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        BaseListBox.prototype.onItemDoubleClicked = function (domItem) {
+            this.eventHandler.fireItemDoubleClickedEvent(domItem.data("dataItem"));
+        };
+        /**
+         * Called for a keyPressed event with the arrow up key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        BaseListBox.prototype.onItemArrowUp = function (domItem) {
+            var prev = domItem.prev();
+            if (prev.length > 0) {
+                this._clearItemSelection(domItem);
+                this.onItemClick(prev);
+            }
+        };
+        /**
+         * Called for a keyPressed event with the arrow down key for a item.
+         *
+         * @param {JQuery} domItem: the domItem.
+         */
+        BaseListBox.prototype.onItemArrowDown = function (domItem) {
+            var next = domItem.next();
+            if (next.length > 0) {
+                this._clearItemSelection(domItem);
+                this.onItemClick(next);
+            }
+        };
+        /**
+         * Returns all dataItems which are selected.
+         */
+        BaseListBox.prototype.getSelection = function () {
+            var items = this.getItems();
+            return items.filter(function (item) { return item.selected; });
         };
         BaseListBox.MAIN_CLASS = 'listbox-root';
         BaseListBox.MAIN_DISABLED_CLASS = 'listbox-disabled';
@@ -495,17 +643,89 @@ var ExtendedListbox;
         BaseListBox.SEARCHBAR_BUTTON_CLASS = 'listbox-searchbar-button';
         return BaseListBox;
     })();
-    ExtendedListbox.BaseListBox = BaseListBox;
-})(ExtendedListbox || (ExtendedListbox = {}));
+    EL.BaseListBox = BaseListBox;
+})(EL || (EL = {}));
 /// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./BaseListBox.ts" />
+/// <reference path="./contract/ListboxItem.ts" />
+/// <reference path="./event/ListboxEvent.ts" />
+var EL;
+(function (EL) {
+    "use strict";
+    var ExtendedListboxInstance = (function () {
+        function ExtendedListboxInstance() {
+        }
+        ExtendedListboxInstance.createFrom = function (listbox, target) {
+            var instance = new ExtendedListboxInstance();
+            instance.listbox = listbox;
+            instance.target = target;
+            return instance;
+        };
+        ExtendedListboxInstance.prototype.addItem = function (item) {
+            return this.listbox.addItem(item, false);
+        };
+        ExtendedListboxInstance.prototype.removeItem = function (identifier) {
+            this.listbox.removeItem(identifier);
+        };
+        ExtendedListboxInstance.prototype.destroy = function () {
+            this.listbox.destroy();
+        };
+        ExtendedListboxInstance.prototype.clearSelection = function () {
+            this.listbox.clearSelection(false);
+        };
+        ExtendedListboxInstance.prototype.getItem = function (identifier) {
+            return this.listbox.getItem(identifier);
+        };
+        ExtendedListboxInstance.prototype.getItems = function () {
+            return this.listbox.getItems();
+        };
+        ExtendedListboxInstance.prototype.getSelection = function () {
+            return this.listbox.getSelection();
+        };
+        ExtendedListboxInstance.prototype.moveItemUp = function (identifier) {
+            return this.listbox.moveItemUp(identifier);
+        };
+        ExtendedListboxInstance.prototype.moveItemDown = function (identifier) {
+            return this.listbox.moveItemDown(identifier);
+        };
+        ExtendedListboxInstance.prototype.moveItemToTop = function (identifier) {
+            return this.listbox.moveItemToTop(identifier);
+        };
+        ExtendedListboxInstance.prototype.moveItemToBottom = function (identifier) {
+            return this.listbox.moveItemToBottom(identifier);
+        };
+        ExtendedListboxInstance.prototype.enable = function (state) {
+            this.listbox.enable(state);
+        };
+        ExtendedListboxInstance.prototype.onValueChanged = function (callback) {
+            this.listbox._settings.onValueChanged = callback;
+        };
+        ExtendedListboxInstance.prototype.onItemsChanged = function (callback) {
+            this.listbox._settings.onItemsChanged = callback;
+        };
+        ExtendedListboxInstance.prototype.onFilterChanged = function (callback) {
+            this.listbox._settings.onFilterChanged = callback;
+        };
+        ExtendedListboxInstance.prototype.onItemEnterPressed = function (callback) {
+            this.listbox._settings.onItemEnterPressed = callback;
+        };
+        ExtendedListboxInstance.prototype.onItemDoubleClicked = function (callback) {
+            this.listbox._settings.onItemDoubleClicked = callback;
+        };
+        return ExtendedListboxInstance;
+    })();
+    EL.ExtendedListboxInstance = ExtendedListboxInstance;
+})(EL || (EL = {}));
+/// <reference path="../../typings/tsd.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var ExtendedListbox;
-(function (ExtendedListbox) {
+/// <reference path="./BaseListBox.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
+var EL;
+(function (EL) {
     "use strict";
     var MultiSelectListbox = (function (_super) {
         __extends(MultiSelectListbox, _super);
@@ -529,42 +749,41 @@ var ExtendedListbox;
          * @param {object} domItem a DOM object
          */
         MultiSelectListbox.prototype.onItemClick = function (domItem) {
-            if (domItem.hasClass(ExtendedListbox.BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-                domItem.hasClass(ExtendedListbox.BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+            if (domItem.hasClass(EL.BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+                domItem.hasClass(EL.BaseListBox.LIST_ITEM_CLASS_GROUP)) {
                 return;
             }
-            var parentValues = this._parent.val();
-            if (domItem.hasClass(ExtendedListbox.BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
-                domItem.removeClass(ExtendedListbox.BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            var parentValues = this._target.val();
+            if (domItem.hasClass(EL.BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
+                domItem.removeClass(EL.BaseListBox.LIST_ITEM_CLASS_SELECTED);
                 var removeIndex = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
                 parentValues.splice(removeIndex, 1);
                 domItem.data("dataItem").selected = false;
             }
             else {
-                domItem.addClass(ExtendedListbox.BaseListBox.LIST_ITEM_CLASS_SELECTED);
+                domItem.addClass(EL.BaseListBox.LIST_ITEM_CLASS_SELECTED);
                 domItem.data("dataItem").selected = true;
                 if (!parentValues) {
                     parentValues = [];
                 }
                 parentValues.push(JSON.stringify(domItem.data("dataItem")));
             }
-            this._parent.val(parentValues);
-            this._parent.trigger('change');
-            if (this._settings.onValueChanged) {
-                this._settings.onValueChanged(parentValues);
-            }
+            this._target.val(parentValues);
+            this._target.trigger('change');
+            this.eventHandler.fireValueChangedEvent(parentValues);
         };
         MultiSelectListbox.prototype.onFilterChange = function () {
             return undefined;
         };
         return MultiSelectListbox;
-    })(ExtendedListbox.BaseListBox);
-    ExtendedListbox.MultiSelectListbox = MultiSelectListbox;
-})(ExtendedListbox || (ExtendedListbox = {}));
+    })(EL.BaseListBox);
+    EL.MultiSelectListbox = MultiSelectListbox;
+})(EL || (EL = {}));
 /// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./BaseListBox.ts" />
-var ExtendedListbox;
-(function (ExtendedListbox) {
+/// <reference path="./contract/ListboxSettings.ts" />
+var EL;
+(function (EL) {
     "use strict";
     var SingleSelectListbox = (function (_super) {
         __extends(SingleSelectListbox, _super);
@@ -589,22 +808,21 @@ var ExtendedListbox;
          * @param {object} domItem a DOM object
          */
         SingleSelectListbox.prototype.onItemClick = function (domItem) {
-            if (domItem.hasClass(ExtendedListbox.BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-                domItem.hasClass(ExtendedListbox.BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+            if (domItem.hasClass(EL.BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+                domItem.hasClass(EL.BaseListBox.LIST_ITEM_CLASS_GROUP)) {
                 return;
             }
             if (this._selectedDomItem) {
                 this.clearSelection(true);
                 this._selectedDomItem = null;
             }
-            domItem.toggleClass(ExtendedListbox.BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            domItem.toggleClass(EL.BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            domItem.focus();
             this._selectedDomItem = domItem;
             domItem.data("dataItem").selected = true;
-            this._parent.val(domItem.data("dataItem"));
-            this._parent.trigger('change');
-            if (this._settings.onValueChanged) {
-                this._settings.onValueChanged(domItem.data("dataItem"));
-            }
+            this._target.val(domItem.data("dataItem"));
+            this._target.trigger('change');
+            this.eventHandler.fireValueChangedEvent(domItem.data("dataItem"));
         };
         /**
          * Select first visible item if none selected.
@@ -618,42 +836,96 @@ var ExtendedListbox;
                     this.onItemClick(element);
                 }
             }
-            if (this._settings.onFilterChanged) {
-                this._settings.onFilterChanged(this._searchbar.val());
-            }
+            this.eventHandler.fireFilterChangedEvent(this._searchbar.val());
         };
         return SingleSelectListbox;
-    })(ExtendedListbox.BaseListBox);
-    ExtendedListbox.SingleSelectListbox = SingleSelectListbox;
-})(ExtendedListbox || (ExtendedListbox = {}));
-/// <reference path="../../typings/tsd.d.ts" />
-/// <reference path="./MultiSelectListbox.ts" />
-/// <reference path="./SingleSelectListbox.ts" />
-/// <reference path="./ListboxSettings.ts" />
-var ExtendedListbox;
-(function (ExtendedListbox) {
+    })(EL.BaseListBox);
+    EL.SingleSelectListbox = SingleSelectListbox;
+})(EL || (EL = {}));
+/// <reference path="../../../typings/tsd.d.ts" />
+var EL;
+(function (EL) {
     "use strict";
-    function initializeListBoxFromOptions(options) {
-        var settings = new ExtendedListbox.ListboxSettings();
-        settings = $.extend(settings, options);
-        return this.each(function () {
-            var instance;
-            if (settings.multiple) {
-                instance = new ExtendedListbox.MultiSelectListbox($(this), settings);
+    var Util = (function () {
+        function Util() {
+        }
+        Util.deprecatedMethod = function (method, version, replacement) {
+            if (replacement === void 0) { replacement = null; }
+            var warning;
+            if (replacement) {
+                warning = ("ExtendedListbox: Method " + method + " is deprecated and ") +
+                    ("will be replaced with " + replacement + " in " + version + ".");
             }
             else {
-                instance = new ExtendedListbox.SingleSelectListbox($(this), settings);
+                warning = "ExtendedListbox: Method " + method + " is deprecated and will be removed in " + version + ".";
             }
-            $(this).data('listbox', instance);
-            return !!instance;
+            console.warn(warning);
+        };
+        return Util;
+    })();
+    EL.Util = Util;
+})(EL || (EL = {}));
+/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="./ExtendedListboxInstance.ts" />
+/// <reference path="./BaseListBox.ts" />
+/// <reference path="./MultiSelectListbox.ts" />
+/// <reference path="./SingleSelectListbox.ts" />
+/// <reference path="./contract/ListboxSettings.ts" />
+/// <reference path="./infrastructure/Util.ts" />
+var EL;
+(function (EL) {
+    "use strict";
+    function initializeListBoxFromOptions(options) {
+        "use strict";
+        var settings = new EL.ListboxSettings();
+        settings = $.extend(settings, options);
+        var multipleInstances = [];
+        var singleInstance = null;
+        var multipleElements = this.length > 1;
+        var setInstance = function (instance) {
+            if (multipleElements) {
+                multipleInstances.push(instance);
+            }
+            else {
+                singleInstance = instance;
+            }
+        };
+        this.each(function () {
+            var listbox;
+            var instance;
+            var $this = $(this);
+            if ($this.data('listbox-instance')) {
+                setInstance($this.data('listbox-instance'));
+                return;
+            }
+            if (settings.multiple) {
+                listbox = new EL.MultiSelectListbox($this, settings);
+            }
+            else {
+                listbox = new EL.SingleSelectListbox($this, settings);
+            }
+            instance = EL.ExtendedListboxInstance.createFrom(listbox, $this);
+            $this.data('listbox', listbox);
+            $this.data('listbox-instance', instance);
+            setInstance(instance);
         });
+        return multipleElements ? multipleInstances : singleInstance;
     }
+    /**
+     * @deprecated: This method will be removed in 2.0.0
+     *
+     * @param functionName
+     * @param callArgs
+     * @returns {any}
+     */
     function callApiFunction(functionName, callArgs) {
+        "use strict";
         var publicFunctions = ["addItem", "removeItem", "destroy", "getItem", "getItems",
             "moveItemUp", "moveItemDown", "clearSelection", "enable"];
         var ret = null;
         this.each(function () {
             var instance = $(this).data('listbox');
+            EL.Util.deprecatedMethod(functionName, "2.0.0", "corresponding method in class ExtendedListboxInstance");
             if (instance == null && window.console && console.error) {
                 console.error('The listbox(\'' + functionName + '\') method was called on an ' +
                     'element that is not using ListBox.');
@@ -675,27 +947,13 @@ var ExtendedListbox;
      * @param {object} options an object with Listbox settings
      */
     $.fn.listbox = function (options) {
-        if (typeof options === 'object') {
+        if (typeof options === 'object' || !options) {
             return initializeListBoxFromOptions.call(this, options);
         }
         else if (typeof options === 'string') {
             return callApiFunction.call(this, options, arguments);
         }
     };
-})(ExtendedListbox || (ExtendedListbox = {}));
-/// <reference path="../../typings/tsd.d.ts" />
-var ExtendedListbox;
-(function (ExtendedListbox) {
-    "use strict";
-    var Util = (function () {
-        function Util() {
-        }
-        Util.warning = function (message) {
-            console.warn(message);
-        };
-        return Util;
-    })();
-    ExtendedListbox.Util = Util;
-})(ExtendedListbox || (ExtendedListbox = {}));
+})(EL || (EL = {}));
 
 //# sourceMappingURL=extended-listbox.js.map
