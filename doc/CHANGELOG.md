@@ -7,7 +7,7 @@ release.
 
 ## Version 1.1.0
 
-Not yet released.
+Released on January 13, 2016.
 
 ### Features
 -   Added new public API interface (`ExtendedListboxInstance`)
