@@ -29,6 +29,10 @@ Install with NPM:
 ```
 npm install extended-listbox
 ```
+Install TypeScript Definitions:
+```
+tsd install extended-listbox
+```
 
 
 ## Usage
