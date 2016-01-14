@@ -1,4 +1,4 @@
-// Type definitions for extended-listbox 1.1.0
+// Type definitions for extended-listbox 1.1.1
 // Project: https://github.com/code-chris/extended-listbox
 // Definitions by: Christian Kotzbauer <https://github.com/code-chris>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped

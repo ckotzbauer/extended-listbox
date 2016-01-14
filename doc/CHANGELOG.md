@@ -5,6 +5,13 @@ Here you can see the full list of changes between each Extended Listbox
 release.
 
 
+## Version 1.1.1
+
+Released on January 14, 2016.
+
+-   Fixed npm package
+
+
 ## Version 1.1.0
 
 Released on January 13, 2016.
