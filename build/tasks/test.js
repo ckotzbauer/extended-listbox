@@ -60,7 +60,9 @@ gulp.task('generate-testmain', function () {
 });
 
 gulp.task('execute-tests', function (callback) {
-    var p = path.resolve("./karma.conf.js");
+    var karmaConfigName = process.env.SAUCE_USERNAME ? "./karma.conf-ci.js" : "./karma.conf.js";
+
+    var p = path.resolve(karmaConfigName);
     var config = karmaParseConfig(p, {});
 
     var server = new karma.Server(config, function(exitCode) {
