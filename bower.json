@@ -29,6 +29,7 @@
     "typings",
     "gulpfile.js",
     "karma.conf.js",
+    "karma.conf-ci.js",
     "tsd.json",
     "tslint.json"
   ],
