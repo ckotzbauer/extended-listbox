@@ -23,6 +23,13 @@
     "url": "https://github.com/code-chris/extended-listbox/issues"
   },
   "homepage": "https://github.com/code-chris/extended-listbox#readme",
+  "files": [
+    "dist",
+    "doc/pages",
+    "doc/CHANGELOG.md",
+    "doc/ROADMAP.md",
+    "bower.json"
+  ],
   "devDependencies": {
     "bower": "^1.7.2",
     "coverage-percentage": "0.0.2",

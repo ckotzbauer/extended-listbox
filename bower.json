@@ -21,10 +21,16 @@
   ],
   "ignore": [
     "**/.*",
-    "node_modules",
     "bower_components",
+    "build",
+    "node_modules",
+    "src",
     "test",
-    "tests"
+    "typings",
+    "gulpfile.js",
+    "karma.conf.js",
+    "tsd.json",
+    "tslint.json"
   ],
   "dependencies": {
     "jquery": ">=1.11.3"
