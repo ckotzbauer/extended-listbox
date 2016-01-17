@@ -30,6 +30,7 @@
     "gulpfile.js",
     "karma.conf.js",
     "karma.conf-ci.js",
+    "karma.conf-base.js",
     "tsd.json",
     "tslint.json"
   ],
