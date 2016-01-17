@@ -67,9 +67,10 @@ gulp.task('execute-tests', function (callback) {
 
     var server = new karma.Server(config, function(exitCode) {
         console.log('Karma has exited with ' + exitCode);
-        printCoverage();
-        process.exit(exitCode);
-        callback();
+        printCoverage(function () {
+            process.exit(exitCode);
+            callback();
+        });
     });
 
     server.start();
@@ -84,13 +85,14 @@ gulp.task('coveralls', function () {
         .pipe(coveralls());
 });
 
-function printCoverage() {
+function printCoverage(callback) {
     var f = path.resolve('build/coverage/lcov.info');
     coverPercentage(f, 'lcov', function (err, coverage) {
         if (err) {
             throw err;
         } else {
             console.log("Coverage: " + coverage.toFixed(2) + " %");
+            callback();
         }
     });
 }
