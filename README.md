@@ -20,6 +20,15 @@ JavaScript. It opens up great possibilities for customization.
 In addition, this component provides other useful features like a search
 bar or group items.
 
+
+## Supported Browsers
+
+- IE 9+
+- Edge latest
+- Chrome latest
+- Firefox latest
+
+
 ## Installation
 
 Install with bower:
