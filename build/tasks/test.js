@@ -68,6 +68,7 @@ gulp.task('execute-tests', function (callback) {
     var server = new karma.Server(config, function(exitCode) {
         console.log('Karma has exited with ' + exitCode);
         printCoverage();
+        process.exit(exitCode);
         callback();
     });
 
