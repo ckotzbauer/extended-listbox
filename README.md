@@ -59,7 +59,7 @@ Link the component and a stylesheet from your page.
 ```
 
 
-[Documentation](http://code-chris.github.io/extended-listbox/documentation/latest/index.html)
+[Documentation](http://code-chris.github.io/extended-listbox/documentation/latest/)
 --------------
 [License](https://github.com/code-chris/extended-listbox/blob/master/LICENSE)
 --------
