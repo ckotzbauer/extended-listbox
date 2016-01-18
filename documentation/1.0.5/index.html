@@ -34,86 +34,86 @@
     <link href="../styles/documentation.css" rel="stylesheet">
 </head>
 <body>
-    <a href="#" class="tocButton topButton fa fa-arrow-up"></a>
+<a href="#" class="tocButton topButton fa fa-arrow-up"></a>
 
-    <section class="page-header">
-        <h1 class="project-name">Documentation 1.0.5</h1>
-        <h2 class="project-tagline">A simple to use jQuery plugin as powerful alternative to the HTML &lt;select&gt; tag</h2>
-        <a href="https://github.com/code-chris/extended-listbox" class="btn">View on GitHub</a>
-        <a href="https://github.com/code-chris/extended-listbox/zipball/1.0.5" class="btn">Download .zip</a>
-        <a href="https://github.com/code-chris/extended-listbox/tarball/1.0.5" class="btn">Download .tar.gz</a>
-    </section>
+<section class="page-header">
+    <h1 class="project-name">Documentation 1.0.5</h1>
+    <h2 class="project-tagline">A simple to use jQuery plugin as powerful alternative to the HTML &lt;select&gt; tag</h2>
+    <a href="https://github.com/code-chris/extended-listbox" class="btn">View on GitHub</a>
+    <a href="https://github.com/code-chris/extended-listbox/zipball/1.0.5" class="btn">Download .zip</a>
+    <a href="https://github.com/code-chris/extended-listbox/tarball/1.0.5" class="btn">Download .tar.gz</a>
+</section>
 
-    <section class="main-content">
-        <h1>Table of Contents</h1>
+<section class="main-content">
+    <h1>Table of Contents</h1>
 
-        <a href="#exampleHeadline" class="tocButton">Examples</a>
-        <a href="#apiFunctionsHeadline" class="tocButton">API Reference - Functions</a>
-        <a href="#apiClassesHeadline" class="tocButton">API Reference - Classes</a>
-        <a href="#cssHeadline" class="tocButton">CSS Reference</a>
-    </section>
+    <a href="#exampleHeadline" class="tocButton">Examples</a>
+    <a href="#apiFunctionsHeadline" class="tocButton">API Reference - Functions</a>
+    <a href="#apiClassesHeadline" class="tocButton">API Reference - Classes</a>
+    <a href="#cssHeadline" class="tocButton">CSS Reference</a>
+</section>
 
-    <section class="main-content">
-        <h1 id="exampleHeadline">Examples</h1>
+<section class="main-content">
+    <h1 id="exampleHeadline">Examples</h1>
 
-        <div class="sourceSnippets" id="sourceSnippets"></div>
-    </section>
+    <div class="sourceSnippets" id="sourceSnippets"></div>
+</section>
 
-    <section class="main-content">
-        <h1>API Reference</h1>
+<section class="main-content">
+    <h1>API Reference</h1>
 
-        <div class="apiReference" id="apiReference">
-            <h2 id="apiFunctionsHeadline"><strong>Functions</strong></h2>
-            <div id="apiFunctionWrapper" class="apiFunctionWrapper"></div>
+    <div class="apiReference" id="apiReference">
+        <h2 id="apiFunctionsHeadline"><strong>Functions</strong></h2>
+        <div id="apiFunctionWrapper" class="apiFunctionWrapper"></div>
 
-            <h2 id="apiClassesHeadline"><strong>Classes</strong></h2>
-            <div id="apiClassWrapper" class="apiClassWrapper"></div>
-        </div>
-    </section>
+        <h2 id="apiClassesHeadline"><strong>Classes</strong></h2>
+        <div id="apiClassWrapper" class="apiClassWrapper"></div>
+    </div>
+</section>
 
-    <section class="main-content">
-        <h1 id="cssHeadline">CSS Reference</h1>
+<section class="main-content">
+    <h1 id="cssHeadline">CSS Reference</h1>
 
-        <div class="cssWrapper" id="cssWrapper"></div>
-    </section>
+    <div class="cssWrapper" id="cssWrapper"></div>
+</section>
 
-    <section class="main-content">
-        <footer class="site-footer">
+<section class="main-content">
+    <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/code-chris/extended-listbox">Extended Listbox</a> is maintained by <a
                 href="https://github.com/code-chris">code-chris</a>.</span>
-        </footer>
-    </section>
+    </footer>
+</section>
 
-    <script>
-        require.config({
-            baseUrl: '.'
-        });
+<script>
+    require.config({
+        baseUrl: '.'
+    });
 
-        var copySnippetFunc = null;
+    var copySnippetFunc = null;
 
-        require(["../infrastructure/docUtil", "./snippets"], function (DocUtil, snippets) {
-            var util = new DocUtil(snippets);
-            util.init();
+    require(["../infrastructure/docUtil", "./snippets"], function (DocUtil, snippets) {
+        var util = new DocUtil(snippets);
+        util.init();
 
-            copySnippetFunc = util.copySnippet;
-        });
+        copySnippetFunc = util.copySnippet;
+    });
 
-        function copySnippet(snippetId) {
-            copySnippetFunc(snippetId);
+    function copySnippet(snippetId) {
+        copySnippetFunc(snippetId);
+    }
+
+    $(".tocButton").click(function (event) {
+        var target = event.target.href.substr(event.target.href.indexOf("#"));
+
+        if (target === "#") {
+            $.scrollTo($("html"), 800);
+        } else {
+            $.scrollTo($(target), 800);
         }
 
-        $(".tocButton").click(function (event) {
-            var target = event.target.href.substr(event.target.href.indexOf("#"));
-
-            if (target === "#") {
-                $.scrollTo($("html"), 800);
-            } else {
-                $.scrollTo($(target), 800);
-            }
-
-            event.preventDefault();
-        });
-    </script>
+        event.preventDefault();
+    });
+</script>
 
 </body>
 </html>
