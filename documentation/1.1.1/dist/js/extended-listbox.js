@@ -1,4 +1,4 @@
-/* Extended Listbox 1.1.0; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
+/* Extended Listbox 1.1.1; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
 /**
  * Extended Listbox is a simple to use jQuery plugin as powerful
  * alternative to the HTML `<select>` tag.
@@ -10,7 +10,7 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2016, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.1.0
+ * @version     1.1.1
  * @license     BSD-3-Clause
  */
 
