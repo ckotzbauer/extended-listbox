@@ -483,7 +483,7 @@ module EL {
         var listbox: JQuery = TestHelper.child(root.target);
         var item: JQuery = TestHelper.child(listbox, 1); // id02
 
-        var e: JQueryEventObject = jQuery.Event("keyup");
+        var e: JQueryEventObject = jQuery.Event("keydown");
         e.which = 13;
         e.eventPhase = 2;
         item.trigger(e);
@@ -521,7 +521,7 @@ module EL {
         equal(root.getItem("id01").selected, false);
         equal(root.getItem("id02").selected, true);
 
-        var e: JQueryEventObject = jQuery.Event("keyup");
+        var e: JQueryEventObject = jQuery.Event("keydown");
         e.which = 38;
         e.eventPhase = 2;
         item.trigger(e);
@@ -542,7 +542,7 @@ module EL {
         equal(root.getItem("id02").selected, true);
         equal(root.getItem("id03").selected, false);
 
-        var e: JQueryEventObject = jQuery.Event("keyup");
+        var e: JQueryEventObject = jQuery.Event("keydown");
         e.which = 40;
         e.eventPhase = 2;
         item.trigger(e);

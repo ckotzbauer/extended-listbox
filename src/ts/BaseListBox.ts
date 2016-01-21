@@ -257,7 +257,7 @@ module EL {
                 .attr("title", dataItem.text)
                 .attr("tabindex", "1")
                 .data("dataItem", dataItem)
-                .keyup(function (e: JQueryKeyEventObject): void {
+                .keydown(function (e: JQueryKeyEventObject): void {
                     var $target: JQuery = $(e.target);
                     if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
                         if (e.which === 13) {
@@ -265,9 +265,11 @@ module EL {
                             self.onItemEnterPressed($target);
                         } else if (e.which === 38) {
                             // Arrow up
+                            e.preventDefault();
                             self.onItemArrowUp($target);
                         } else if (e.which === 40) {
                             // Arrow down
+                            e.preventDefault();
                             self.onItemArrowDown($target);
                         }
                     }
@@ -613,9 +615,9 @@ module EL {
          * @param {JQuery} domItem: the domItem.
          */
         protected onItemArrowUp(domItem: JQuery): void {
-            var prev: JQuery = domItem.prev();
+            var prev: JQuery = this.findNextItem(domItem, "prev");
 
-            if (prev.length > 0) {
+            if (prev) {
                 this._clearItemSelection(domItem);
                 this.onItemClick(prev);
             }
@@ -627,12 +629,40 @@ module EL {
          * @param {JQuery} domItem: the domItem.
          */
         protected onItemArrowDown(domItem: JQuery): void {
-            var next: JQuery = domItem.next();
+            var next: JQuery = this.findNextItem(domItem, "next");
 
-            if (next.length > 0) {
+            if (next) {
                 this._clearItemSelection(domItem);
                 this.onItemClick(next);
             }
+        }
+
+        private findNextItem(current: JQuery, direction: string): JQuery {
+            var potentialNext: JQuery = current;
+
+            do {
+                potentialNext = potentialNext[direction]();
+
+                if (potentialNext.length === 0) {
+                    var parent: JQuery = current.parent();
+                    if (parent.length === 1) {
+                        var nextChildren: JQuery = parent[direction]().children();
+                        if (nextChildren.length > 0) {
+                            potentialNext = direction === "next" ? nextChildren.first() : nextChildren.last();
+                        } else {
+                            potentialNext = parent;
+                        }
+                    } else {
+                        return null;
+                    }
+                }
+
+                if (potentialNext.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
+                    continue;
+                }
+
+                return potentialNext;
+            } while (true);
         }
 
         /**
