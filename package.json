@@ -43,12 +43,14 @@
     "gulp-filter": "^3.0.1",
     "gulp-header": "^1.7.1",
     "gulp-less": "^3.0.5",
+    "gulp-lesshint": "^1.0.0",
     "gulp-minify": "0.0.5",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-tslint": "^4.3.0",
+    "gulp-tslint": "^4.3.1",
     "gulp-typescript": "^2.10.0",
+    "jasmine-core": "^2.4.1",
     "karma": "^0.13.19",
     "karma-coverage": "^0.5.3",
     "karma-phantomjs-launcher": "^0.2.3",
@@ -60,10 +62,10 @@
     "requirejs": "^2.1.22",
     "run-sequence": "^1.1.5",
     "through2": "^2.0.0",
-    "tslint": "^3.2.1",
+    "tslint": "^3.3.0",
     "typescript": "^1.7.5",
     "vinyl-paths": "^2.1.0",
-    "yargs": "^3.31.0"
+    "yargs": "^3.32.0"
   },
   "dependencies": {
     "jquery": ">=1.11.3"
