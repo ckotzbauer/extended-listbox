@@ -1,4 +1,4 @@
-/* Extended Listbox 1.1.1; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
+/* Extended Listbox 1.1.2; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
 /**
  * Extended Listbox is a simple to use jQuery plugin as powerful
  * alternative to the HTML `<select>` tag.
@@ -10,7 +10,7 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2016, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.1.1
+ * @version     1.1.2
  * @license     BSD-3-Clause
  */
 
@@ -315,7 +315,7 @@ var EL;
                 .attr("title", dataItem.text)
                 .attr("tabindex", "1")
                 .data("dataItem", dataItem)
-                .keyup(function (e) {
+                .keydown(function (e) {
                 var $target = $(e.target);
                 if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
                     if (e.which === 13) {
@@ -324,10 +324,12 @@ var EL;
                     }
                     else if (e.which === 38) {
                         // Arrow up
+                        e.preventDefault();
                         self.onItemArrowUp($target);
                     }
                     else if (e.which === 40) {
                         // Arrow down
+                        e.preventDefault();
                         self.onItemArrowDown($target);
                     }
                 }
@@ -606,8 +608,8 @@ var EL;
          * @param {JQuery} domItem: the domItem.
          */
         BaseListBox.prototype.onItemArrowUp = function (domItem) {
-            var prev = domItem.prev();
-            if (prev.length > 0) {
+            var prev = this.findNextItem(domItem, "prev");
+            if (prev) {
                 this._clearItemSelection(domItem);
                 this.onItemClick(prev);
             }
@@ -618,11 +620,36 @@ var EL;
          * @param {JQuery} domItem: the domItem.
          */
         BaseListBox.prototype.onItemArrowDown = function (domItem) {
-            var next = domItem.next();
-            if (next.length > 0) {
+            var next = this.findNextItem(domItem, "next");
+            if (next) {
                 this._clearItemSelection(domItem);
                 this.onItemClick(next);
             }
+        };
+        BaseListBox.prototype.findNextItem = function (current, direction) {
+            var potentialNext = current;
+            do {
+                potentialNext = potentialNext[direction]();
+                if (potentialNext.length === 0) {
+                    var parent = current.parent();
+                    if (parent.length === 1) {
+                        var nextChildren = parent[direction]().children();
+                        if (nextChildren.length > 0) {
+                            potentialNext = direction === "next" ? nextChildren.first() : nextChildren.last();
+                        }
+                        else {
+                            potentialNext = parent;
+                        }
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                if (potentialNext.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
+                    continue;
+                }
+                return potentialNext;
+            } while (true);
         };
         /**
          * Returns all dataItems which are selected.
