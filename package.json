@@ -31,7 +31,7 @@
     "bower.json"
   ],
   "devDependencies": {
-    "bower": "^1.7.2",
+    "bower": "^1.7.4",
     "coverage-percentage": "0.0.2",
     "dateformat": "^1.0.12",
     "del": "^2.2.0",
