@@ -31,7 +31,7 @@
     "bower.json"
   ],
   "devDependencies": {
-    "bower": "^1.7.4",
+    "bower": "^1.7.7",
     "coverage-percentage": "0.0.2",
     "dateformat": "^1.0.12",
     "del": "^2.2.0",
@@ -53,11 +53,11 @@
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.19",
     "karma-coverage": "^0.5.3",
-    "karma-phantomjs-launcher": "^0.2.3",
+    "karma-phantomjs-launcher": "^1.0.0",
     "karma-qunit": "^0.1.9",
     "karma-sauce-launcher": "^0.3.0",
-    "phantomjs": "^1.9.19",
-    "qunitjs": "^1.20.0",
+    "phantomjs-prebuilt": "^2.1.4",
+    "qunitjs": "^1.21.0",
     "require-dir": "^0.3.0",
     "requirejs": "^2.1.22",
     "run-sequence": "^1.1.5",
