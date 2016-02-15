@@ -566,13 +566,16 @@ module EL {
 
     test("check getSelection", function (): void {
         var items: any[] = [{ text: "Item#1", id: "id01" },
-            { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
+            { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03", childItems: [
+                { text: "SubItem#1", id: "subid01", selected: true }, { text: "SubItem#2", id: "subid02" }
+            ] }];
 
-        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+        var root: ExtendedListboxInstance = TestHelper.generateMultipleList({}, items);
 
         var selection: ListboxItem[] = root.getSelection();
 
-        equal(selection.length, 1);
+        equal(selection.length, 2);
         equal(selection[0].id, "id02");
+        equal(selection[1].id, "subid01");
     });
 }

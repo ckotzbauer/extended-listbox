@@ -669,8 +669,14 @@ module EL {
          * Returns all dataItems which are selected.
          */
         public getSelection(): ListboxItem[] {
-            var items: ListboxItem[] = this.getItems();
-            return items.filter((item: ListboxItem) => item.selected);
+            var topLevelItems: ListboxItem[] = this.getItems();
+            var allItems: ListboxItem[] = [].concat(topLevelItems);
+
+            topLevelItems.forEach((item: ListboxItem) => {
+                allItems = allItems.concat(item.childItems);
+            });
+
+            return allItems.filter((item: ListboxItem) => item.selected);
         }
     }
 }
