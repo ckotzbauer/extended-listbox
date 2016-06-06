@@ -5,6 +5,13 @@ Here you can see the full list of changes between each Extended Listbox
 release.
 
 
+## Version 1.1.3
+
+Released on June 6, 2016.
+
+-   Bugfix: ````getSelection()``` returns wrong values for child items.
+
+
 ## Version 1.1.2
 
 Released on January 24, 2016.
@@ -12,7 +19,6 @@ Released on January 24, 2016.
 -   Specified files to put into npm and bower packages
 -   Added automated cross browser testing with Saucelabs
 -   Bugfix: Fixed bad behavior with arrow key usage (arrow up and down)
--   Updated devDependencies
 
 
 ## Version 1.1.1
