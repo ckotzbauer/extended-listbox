@@ -1,5 +1,3 @@
-/// <reference path="../../typings/tsd.d.ts" />
-
 /// <reference path="./ExtendedListboxInstance.ts" />
 /// <reference path="./BaseListBox.ts" />
 /// <reference path="./MultiSelectListbox.ts" />

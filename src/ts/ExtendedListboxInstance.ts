@@ -1,5 +1,3 @@
-/// <reference path="../../typings/tsd.d.ts" />
-
 /// <reference path="./BaseListBox.ts" />
 /// <reference path="./contract/ListboxItem.ts" />
 /// <reference path="./event/ListboxEvent.ts" />

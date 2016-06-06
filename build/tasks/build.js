@@ -6,7 +6,6 @@ var less = require('gulp-less');
 var replace = require('gulp-replace');
 var sourceMaps = require('gulp-sourcemaps');
 var ts = require('gulp-typescript');
-var compilerOptions = require('../tsc-options');
 var header = require('gulp-header');
 var fs = require('fs');
 var minify = require('gulp-minify');
@@ -21,20 +20,19 @@ function minimalistHeader() {
 
 gulp.task('build-js', function () {
     var fileComment = fs.readFileSync("build/libheader.js", "utf8") + "\n\n";
+    var tsProject = ts.createProject('tsconfig.json');
 
-    compilerOptions.outDir = ".";
-
-    return gulp.src(paths.source, { base: "js" })
+    return gulp.src([paths.source, "typings/**/*.d.ts"])
         .pipe(debug())
         .pipe(sourceMaps.init())
-        .pipe(ts(compilerOptions))
+        .pipe(ts(tsProject))
         .pipe(debug())
         .pipe(header(fileComment))
         .pipe(replace('[VERSION]', args.version))
         .pipe(replace('[YEAR]', args.year))
         .pipe(replace('[LICENSE]', args.license))
         .pipe(sourceMaps.write('.'))
-        .pipe(gulp.dest(paths.output));
+        .pipe(gulp.dest("."));
 });
 
 gulp.task('build-less', function () {

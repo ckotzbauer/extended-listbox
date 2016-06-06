@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outFile": "build/out/js/extended-listbox.js"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

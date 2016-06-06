@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts" />
+/// <reference path="../typings/index.d.ts" />
 /// <reference path="../dist/extended-listbox.d.ts" />
 
 /// <reference path="../src/ts/event/ListboxEvent.ts" />

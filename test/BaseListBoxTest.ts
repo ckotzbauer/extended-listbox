@@ -82,7 +82,7 @@ module EL {
     });
 
     test("check existent searchbar button with icon", function (): void {
-        var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true,
+        var root: ExtendedListboxInstance = TestHelper.generateSingleList(<ListboxSettings>{ searchBar: true,
             searchBarButton: { visible: true, icon: "testIcon" } });
         var button: JQuery = root.target.find('.listbox-searchbar-button');
         var icon: JQuery = TestHelper.child(button);
