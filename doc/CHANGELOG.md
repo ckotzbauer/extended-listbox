@@ -9,6 +9,7 @@ release.
 
 Released on June 6, 2016.
 
+-   Added support for Typings
 -   Bugfix: ````getSelection()``` returns wrong values for child items.
 
 
