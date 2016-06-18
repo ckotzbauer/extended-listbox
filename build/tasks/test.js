@@ -11,7 +11,6 @@ var karmaParseConfig = require('karma/lib/config').parseConfig;
 var coveralls = require('gulp-coveralls');
 var debug = require('gulp-debug');
 var coverPercentage = require('coverage-percentage');
-var filter = require('gulp-filter');
 
 var files = [];
 
