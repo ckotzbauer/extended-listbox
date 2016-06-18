@@ -19,12 +19,9 @@ gulp.task('build-tests', function () {
     compilerOptions.outFile = null;
     compilerOptions.outDir = ".";
 
-    var testFiles = filter("test/test/**");
-
-    return gulp.src(paths.testSource + "**/*Test.ts")
+    return gulp.src([paths.testSource + "**/*Test.ts", paths.testSource + "infrastructure/*.ts"])
         .pipe(debug())
         .pipe(ts(compilerOptions))
-        .pipe(testFiles)
         .pipe(debug())
         .pipe(gulp.dest("build/out/"));
 });
