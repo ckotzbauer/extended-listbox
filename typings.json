@@ -1,6 +1,6 @@
 {
   "name": "extended-listbox",
-  "dependencies": {},
+  "main": "dist/extended-listbox.d.ts",
   "globalDependencies": {
     "jquery": "registry:dt/jquery#1.10.0+20160417213236"
   },
