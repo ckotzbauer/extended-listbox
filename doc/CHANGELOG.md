@@ -7,7 +7,7 @@ release.
 
 ## Version 1.1.3
 
-Released on June 6, 2016.
+Released on June 19, 2016.
 
 -   Added support for Typings
 -   Bugfix: ````getSelection()``` returns wrong values for child items.
