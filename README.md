@@ -43,6 +43,10 @@ Install TypeScript Definitions:
 ```
 tsd install extended-listbox
 ```
+or
+```
+typings install github:code-chris/extended-listbox --global
+```
 
 
 ## Usage
