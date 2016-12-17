@@ -2,7 +2,12 @@ language:
   - "node_js"
 
 node_js:
-  - "5.2"
+  - "7.2"
+
+branches:
+  only:
+    - master
+    - 2.x
 
 before_install:
   - npm install

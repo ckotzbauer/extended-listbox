@@ -17,3 +17,4 @@ Here you can see the planned list of features.
 -   General refactoring
 -   Removal of old APIs
 -   Update jQuery to latest 2.x
+-   Drop Bower support
