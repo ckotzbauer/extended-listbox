@@ -4,7 +4,6 @@
     "**/**-min-**",
     "**/**-min.**",
     "**/**.min.**",
-    "bower_components/**",
     "doc/pages/documentation/scripts/**",
     "doc/pages/stylesheets/**",
     "typings/**",

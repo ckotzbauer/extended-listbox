@@ -5,7 +5,7 @@ var args = require('../args');
 var paths = require('../paths');
 
 gulp.task('bump-version', function() {
-    return gulp.src(['./package.json', './bower.json'])
+    return gulp.src(['./package.json'])
         .pipe(bump({ version: args.version }))//1.2.3
         .pipe(gulp.dest('./'));
 });
