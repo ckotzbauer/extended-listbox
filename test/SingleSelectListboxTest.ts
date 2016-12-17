@@ -1,7 +1,7 @@
 /// <reference path="./test-typings.d.ts" />
 /// <amd-module name="SingleSelectListboxTest"/>
 
-/// <reference path="./infrastructure/TestHelper" />
+/// <reference path="./infrastructure/TestHelper.ts" />
 
 module EL {
     "use strict";

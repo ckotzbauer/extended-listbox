@@ -11,4 +11,3 @@
 /// <reference path="../src/ts/contract/ListboxSettings.ts" />
 /// <reference path="../src/ts/MultiSelectListbox.ts" />
 /// <reference path="../src/ts/SingleSelectListbox.ts" />
-/// <reference path="../src/ts/infrastructure/Util.ts" />

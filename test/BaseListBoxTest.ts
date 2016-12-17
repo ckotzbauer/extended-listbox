@@ -1,7 +1,7 @@
 /// <reference path="./test-typings.d.ts" />
 /// <amd-module name="BaseListBoxTest"/>
 
-/// <reference path="./infrastructure/TestHelper" />
+/// <reference path="./infrastructure/TestHelper.ts" />
 
 module EL {
     "use strict";
@@ -107,20 +107,6 @@ module EL {
         button.click();
 
         equal(count, 1);
-    });
-
-    test("check legacy addItem", function (): void {
-        var items: any[] = ["Item#1", "Item#2", "Item#3"];
-
-        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
-        var listbox: JQuery = TestHelper.child(root.target);
-
-        var id: string = root.target.listbox("addItem", { text: "Item#4", id: "myId" });
-
-        var itemElements: JQuery[] = TestHelper.children(listbox);
-
-        equal(itemElements.length, 4);
-        equal(id, "myId");
     });
 
     test("check simple items", function (): void {
@@ -549,19 +535,6 @@ module EL {
 
         equal(root.getItem("id02").selected, false);
         equal(root.getItem("id03").selected, true);
-    });
-
-    test("check illegal legacy api method", function (): void {
-        var items: any[] = ["Item#1", "Item#2", "Item#3"];
-
-        var logError = (message: any) => {
-            equal(message, 'blub is no public API function.');
-        };
-
-        console.error = logError;
-
-        var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
-        root.target.listbox("blub");
     });
 
     test("check getSelection", function (): void {
