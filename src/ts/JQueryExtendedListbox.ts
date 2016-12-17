@@ -3,7 +3,6 @@
 /// <reference path="./MultiSelectListbox.ts" />
 /// <reference path="./SingleSelectListbox.ts" />
 /// <reference path="./contract/ListboxSettings.ts" />
-/// <reference path="./infrastructure/Util.ts" />
 
 module EL {
     "use strict";
@@ -53,50 +52,6 @@ module EL {
         return multipleElements ? multipleInstances : singleInstance;
     }
 
-    /**
-     * @deprecated: This method will be removed in 2.0.0
-     *
-     * @param functionName
-     * @param callArgs
-     * @returns {any}
-     */
-    function callApiFunction(functionName: string, callArgs: any): any {
-        "use strict";
-
-        var publicFunctions: string[] = ["addItem", "removeItem", "destroy", "getItem", "getItems",
-            "moveItemUp", "moveItemDown", "clearSelection", "enable"];
-
-
-        var ret: any = null;
-
-        this.each(function (): void {
-            var instance: BaseListBox = $(this).data('listbox');
-
-            Util.deprecatedMethod(functionName, "2.0.0", "corresponding method in class ExtendedListboxInstance");
-
-            if (instance == null && window.console && console.error) {
-                console.error(
-                    'The listbox(\'' + functionName + '\') method was called on an ' +
-                    'element that is not using ListBox.'
-                );
-                return;
-            }
-
-            if ($.inArray(functionName, publicFunctions) === -1) {
-                console.error(
-                    '' + functionName + ' is no public API function.'
-                );
-                return;
-            }
-
-            var args: any = Array.prototype.slice.call(callArgs, 1);
-
-            ret = instance[functionName].apply(instance, args);
-        });
-
-        return ret;
-    }
-
 
     /**
      * jQuery plugin definition. Please note, that jQuery's `each()` method
@@ -104,11 +59,9 @@ module EL {
      *
      * @param {object} options an object with Listbox settings
      */
-    $.fn.listbox = function (options: any): any {
+    $.fn.listbox = function (options: ListboxSettings): any {
         if (typeof options === 'object' || !options) {
             return initializeListBoxFromOptions.call(this, options);
-        } else if (typeof options === 'string') {
-            return callApiFunction.call(this, options, arguments);
         }
     };
 }
