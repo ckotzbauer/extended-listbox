@@ -7,6 +7,7 @@
     "outFile": "build/out/js/extended-listbox.js"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "doc/pages"
   ]
 }
