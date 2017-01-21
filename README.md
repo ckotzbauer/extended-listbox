@@ -1,5 +1,7 @@
 # Extended Listbox
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/code-chris/extended-listbox.svg)](https://greenkeeper.io/)
+
 
 [![Travis](https://img.shields.io/travis/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
