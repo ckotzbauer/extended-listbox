@@ -8,6 +8,7 @@ branches:
   only:
     - master
     - 2.x
+    - /^greenkeeper/.*$/
 
 before_install:
   - npm install
