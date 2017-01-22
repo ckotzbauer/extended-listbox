@@ -1,6 +1,5 @@
 # Extended Listbox
 
-
 [![Travis](https://img.shields.io/travis/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
 [![Bower](https://img.shields.io/bower/v/extended-listbox.svg)](https://github.com/code-chris/extended-listbox)
@@ -8,6 +7,7 @@
 [![David](https://img.shields.io/david/dev/code-chris/extended-listbox.svg)](https://david-dm.org/code-chris/extended-listbox)
 [![Coverage Status](https://coveralls.io/repos/code-chris/extended-listbox/badge.svg?branch=master&service=github)](https://coveralls.io/github/code-chris/extended-listbox?branch=master)
 [![bitHound Overall Score](https://www.bithound.io/github/code-chris/extended-listbox/badges/score.svg)](https://www.bithound.io/github/code-chris/extended-listbox)
+[![Greenkeeper badge](https://badges.greenkeeper.io/code-chris/extended-listbox.svg)](https://greenkeeper.io/)
 
 
 **Extended Listbox** is a simple to use jQuery plugin as powerful
