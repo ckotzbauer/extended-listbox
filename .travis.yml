@@ -12,10 +12,12 @@ branches:
 
 before_install:
   - npm install
+  - npm install typings -g
 
 addons:
   sauce_connect: true
 
 script:
+  - "typings install"
   - "gulp test"
   - "gulp coveralls"
