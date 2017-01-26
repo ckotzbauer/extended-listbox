@@ -37,7 +37,7 @@
     "dateformat": "^2.0.0",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
-    "gulp-bump": "^2.5.1",
+    "gulp-bump": "^2.6.0",
     "gulp-coveralls": "^0.1.4",
     "gulp-cssnano": "^2.1.2",
     "gulp-debug": "^3.0.0",
