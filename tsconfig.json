@@ -8,6 +8,7 @@
   },
   "exclude": [
     "node_modules",
-    "doc/pages"
+    "doc/pages",
+    "test"
   ]
 }

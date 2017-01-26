@@ -5,12 +5,10 @@ module.exports = {
     files: [
         'node_modules/jquery/dist/jquery.js',
         'node_modules/requirejs/require.js',
-        {pattern: 'src/ts/**/*.ts', included: false},
-        {pattern: 'test/**/*Test.ts', included: false},
+        {pattern: 'build/out/test/src/ts/*.js', included: false},
+        {pattern: 'build/out/test/test/**/*Test.js', included: true},
+        {pattern: 'build/out/test/test/infrastructure/**/*.js', included: true},
         'build/out/js/extended-listbox.js',
-
-        'build/out/test/**/infrastructure/*.js',
-        'build/out/test/**/*Test.js',
         'test/**/TestMain.js'
     ],
     reporters: ['dots', 'coverage'],

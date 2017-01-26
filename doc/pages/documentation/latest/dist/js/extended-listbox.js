@@ -1,4 +1,4 @@
-/* Extended Listbox 1.1.0; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
+/* Extended Listbox 1.1.3; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
 /**
  * Extended Listbox is a simple to use jQuery plugin as powerful
  * alternative to the HTML `<select>` tag.
@@ -10,11 +10,15 @@
  * possibilities for customization.
  *
  * @copyright   (c) 2016, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.1.0
+ * @version     1.1.3
  * @license     BSD-3-Clause
  */
 
-/// <reference path="../../../typings/tsd.d.ts" />
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var EL;
 (function (EL) {
     "use strict";
@@ -30,7 +34,7 @@ var EL;
             this.childItems = [];
         }
         return ListboxItem;
-    })();
+    }());
     EL.ListboxItem = ListboxItem;
 })(EL || (EL = {}));
 var EL;
@@ -43,10 +47,9 @@ var EL;
             this.onClick = null;
         }
         return ListboxSearchBarButtonOptions;
-    })();
+    }());
     EL.ListboxSearchBarButtonOptions = ListboxSearchBarButtonOptions;
 })(EL || (EL = {}));
-/// <reference path="../../../typings/tsd.d.ts" />
 var EL;
 (function (EL) {
     "use strict";
@@ -62,10 +65,9 @@ var EL;
         ListboxEvent.ITEM_ENTER_PRESSED = "itemEnterPressed";
         ListboxEvent.ITEM_DOUBLE_CLICKED = "itemDoubleClicked";
         return ListboxEvent;
-    })();
+    }());
     EL.ListboxEvent = ListboxEvent;
 })(EL || (EL = {}));
-/// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="./ListboxSearchBarButtonOptions.ts" />
 /// <reference path="../event/ListboxEvent.ts" />
 var EL;
@@ -85,10 +87,9 @@ var EL;
             this.onItemDoubleClicked = null;
         }
         return ListboxSettings;
-    })();
+    }());
     EL.ListboxSettings = ListboxSettings;
 })(EL || (EL = {}));
-/// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../BaseListBox.ts" />
 /// <reference path="./ListboxEvent.ts" />
 var EL;
@@ -120,10 +121,9 @@ var EL;
             this.fire(EL.ListboxEvent.ITEM_DOUBLE_CLICKED, this.listBox._settings.onItemDoubleClicked, args);
         };
         return ListboxEventHandler;
-    })();
+    }());
     EL.ListboxEventHandler = ListboxEventHandler;
 })(EL || (EL = {}));
-/// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./contract/ListboxItem.ts" />
 /// <reference path="./contract/ListboxSettings.ts" />
 /// <reference path="./event/ListboxEventHandler.ts" />
@@ -315,7 +315,7 @@ var EL;
                 .attr("title", dataItem.text)
                 .attr("tabindex", "1")
                 .data("dataItem", dataItem)
-                .keyup(function (e) {
+                .keydown(function (e) {
                 var $target = $(e.target);
                 if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
                     if (e.which === 13) {
@@ -324,10 +324,12 @@ var EL;
                     }
                     else if (e.which === 38) {
                         // Arrow up
+                        e.preventDefault();
                         self.onItemArrowUp($target);
                     }
                     else if (e.which === 40) {
                         // Arrow down
+                        e.preventDefault();
                         self.onItemArrowDown($target);
                     }
                 }
@@ -606,8 +608,8 @@ var EL;
          * @param {JQuery} domItem: the domItem.
          */
         BaseListBox.prototype.onItemArrowUp = function (domItem) {
-            var prev = domItem.prev();
-            if (prev.length > 0) {
+            var prev = this.findNextItem(domItem, "prev");
+            if (prev) {
                 this._clearItemSelection(domItem);
                 this.onItemClick(prev);
             }
@@ -618,18 +620,47 @@ var EL;
          * @param {JQuery} domItem: the domItem.
          */
         BaseListBox.prototype.onItemArrowDown = function (domItem) {
-            var next = domItem.next();
-            if (next.length > 0) {
+            var next = this.findNextItem(domItem, "next");
+            if (next) {
                 this._clearItemSelection(domItem);
                 this.onItemClick(next);
             }
+        };
+        BaseListBox.prototype.findNextItem = function (current, direction) {
+            var potentialNext = current;
+            do {
+                potentialNext = potentialNext[direction]();
+                if (potentialNext.length === 0) {
+                    var parent = current.parent();
+                    if (parent.length === 1) {
+                        var nextChildren = parent[direction]().children();
+                        if (nextChildren.length > 0) {
+                            potentialNext = direction === "next" ? nextChildren.first() : nextChildren.last();
+                        }
+                        else {
+                            potentialNext = parent;
+                        }
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                if (potentialNext.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
+                    continue;
+                }
+                return potentialNext;
+            } while (true);
         };
         /**
          * Returns all dataItems which are selected.
          */
         BaseListBox.prototype.getSelection = function () {
-            var items = this.getItems();
-            return items.filter(function (item) { return item.selected; });
+            var topLevelItems = this.getItems();
+            var allItems = [].concat(topLevelItems);
+            topLevelItems.forEach(function (item) {
+                allItems = allItems.concat(item.childItems);
+            });
+            return allItems.filter(function (item) { return item.selected; });
         };
         BaseListBox.MAIN_CLASS = 'listbox-root';
         BaseListBox.MAIN_DISABLED_CLASS = 'listbox-disabled';
@@ -642,10 +673,9 @@ var EL;
         BaseListBox.SEARCHBAR_CLASS = 'listbox-searchbar';
         BaseListBox.SEARCHBAR_BUTTON_CLASS = 'listbox-searchbar-button';
         return BaseListBox;
-    })();
+    }());
     EL.BaseListBox = BaseListBox;
 })(EL || (EL = {}));
-/// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./BaseListBox.ts" />
 /// <reference path="./contract/ListboxItem.ts" />
 /// <reference path="./event/ListboxEvent.ts" />
@@ -713,15 +743,9 @@ var EL;
             this.listbox._settings.onItemDoubleClicked = callback;
         };
         return ExtendedListboxInstance;
-    })();
+    }());
     EL.ExtendedListboxInstance = ExtendedListboxInstance;
 })(EL || (EL = {}));
-/// <reference path="../../typings/tsd.d.ts" />
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 /// <reference path="./BaseListBox.ts" />
 /// <reference path="./contract/ListboxSettings.ts" />
 var EL;
@@ -776,10 +800,9 @@ var EL;
             return undefined;
         };
         return MultiSelectListbox;
-    })(EL.BaseListBox);
+    }(EL.BaseListBox));
     EL.MultiSelectListbox = MultiSelectListbox;
 })(EL || (EL = {}));
-/// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./BaseListBox.ts" />
 /// <reference path="./contract/ListboxSettings.ts" />
 var EL;
@@ -839,10 +862,9 @@ var EL;
             this.eventHandler.fireFilterChangedEvent(this._searchbar.val());
         };
         return SingleSelectListbox;
-    })(EL.BaseListBox);
+    }(EL.BaseListBox));
     EL.SingleSelectListbox = SingleSelectListbox;
 })(EL || (EL = {}));
-/// <reference path="../../../typings/tsd.d.ts" />
 var EL;
 (function (EL) {
     "use strict";
@@ -862,10 +884,9 @@ var EL;
             console.warn(warning);
         };
         return Util;
-    })();
+    }());
     EL.Util = Util;
 })(EL || (EL = {}));
-/// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="./ExtendedListboxInstance.ts" />
 /// <reference path="./BaseListBox.ts" />
 /// <reference path="./MultiSelectListbox.ts" />

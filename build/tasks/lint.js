@@ -2,11 +2,6 @@ var gulp = require('gulp');
 var paths = require('../paths');
 var tslint = require('gulp-tslint');
 var lesshint = require('gulp-lesshint');
-var runSequence = require("run-sequence");
-
-gulp.task("lint", function () {
-    return runSequence(["lint-ts", "lint-less"]);
-});
 
 gulp.task('lint-ts', function() {
     return gulp.src(paths.source)
