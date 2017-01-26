@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "build/out/test"
+  },
+  "exclude": [
+    "node_modules",
+    "doc/pages"
+  ]
+}
