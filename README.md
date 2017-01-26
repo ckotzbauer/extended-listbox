@@ -1,6 +1,6 @@
 # Extended Listbox
 
-[![Travis](https://img.shields.io/travis/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox)
+[![Travis](https://img.shields.io/travis/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox?branch=master)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
 [![Bower](https://img.shields.io/bower/v/extended-listbox.svg)](https://github.com/code-chris/extended-listbox)
 [![David](https://img.shields.io/david/code-chris/extended-listbox.svg)](https://david-dm.org/code-chris/extended-listbox)
