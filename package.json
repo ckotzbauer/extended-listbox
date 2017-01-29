@@ -51,7 +51,7 @@
     "gulp-tslint": "^7.0.1",
     "gulp-typescript": "^2.13.6",
     "jasmine-core": "^2.4.1",
-    "karma": "^1.4.0",
+    "karma": "^1.4.1",
     "karma-coverage": "^1.1.1",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-qunit": "^1.2.1",
