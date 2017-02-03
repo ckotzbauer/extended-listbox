@@ -21,4 +21,4 @@ addons:
 
 script:
   - "typings install"
-  - "sudo npm run test:ci"
+  - "npm run test:ci"
