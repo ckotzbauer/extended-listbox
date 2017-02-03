@@ -5,18 +5,6 @@ var coveralls = require('coveralls');
 var coverPercentage = require('coverage-percentage');
 var globby = require("globby");
 
-gulp.task('generate-testmain', function () {
-    var files = globby.sync("build/out/test/**/*Test.js");
-    var relatives = files.map(function (f) {
-        return path.relative(".", f.replace(".js", "")).replace(/\\/g, "/");
-    });
-
-    var template = 'var tests = [FILES]; require(tests);';
-    var list = '"' + relatives.join('", "') + '"';
-    template = template.replace("FILES", list);
-
-    fs.writeFileSync("test/TestMain.js", template);
-});
 
 function printCoverage(exitCode) {
     var f = path.resolve('build/coverage/lcov.info');

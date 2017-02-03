@@ -2,7 +2,7 @@ language:
   - "node_js"
 
 node_js:
-  - "7.2"
+  - "7.5"
 
 branches:
   only:
@@ -19,5 +19,4 @@ addons:
 
 script:
   - "typings install"
-  - "gulp test"
-  - "gulp coveralls"
+  - "npm run test:ci"
