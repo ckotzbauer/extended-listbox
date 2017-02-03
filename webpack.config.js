@@ -37,9 +37,6 @@ var config = {
         libraryTarget: 'var'
     },
     module: {
-        /*preLoaders: [
-            { test: /\.ts?$/, loader: 'tslint', exclude: /node_modules/ }
-        ],*/
         loaders: [
             { test: /\.ts?$/, loader: 'ts-loader', exclude: /node_modules/ },
             { test: /\.less/, loader: ExtractTextPlugin.extract("css-loader!less-loader") }
@@ -49,13 +46,7 @@ var config = {
         root: path.resolve('./src/ts'),
         extensions: ['', '.ts', '.less']
     },
-    plugins: plugins,
-
-    // Individual Plugin Options
-    tslint: {
-        emitErrors: true,
-        failOnHint: true
-    }
+    plugins: plugins
 };
 
 module.exports = config;
