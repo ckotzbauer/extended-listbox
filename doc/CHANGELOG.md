@@ -4,13 +4,25 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 2.0.0
+
+Released on February 4, 2017.
+
+-   Dropped Bower Supported.
+-   Updated JQuery to 2.x.
+-   Dropped Support for IE 9 and 10.
+-   Use MIT License.
+-   Removed methods marked as deprecated.
+-   Internal: Major build system update
+-   Internal: Replaced Karma with Testem
+
 
 ## Version 1.1.3
 
 Released on June 19, 2016.
 
 -   Added support for Typings
--   Bugfix: ````getSelection()``` returns wrong values for child items.
+-   Bugfix: `getSelection()` returns wrong values for child items.
 
 
 ## Version 1.1.2

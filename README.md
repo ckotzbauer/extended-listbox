@@ -2,10 +2,8 @@
 
 [![Travis](https://img.shields.io/travis/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox?branch=master)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
-[![Bower](https://img.shields.io/bower/v/extended-listbox.svg)](https://github.com/code-chris/extended-listbox)
 [![David](https://img.shields.io/david/code-chris/extended-listbox.svg)](https://david-dm.org/code-chris/extended-listbox)
 [![David](https://img.shields.io/david/dev/code-chris/extended-listbox.svg)](https://david-dm.org/code-chris/extended-listbox)
-[![Coverage Status](https://coveralls.io/repos/code-chris/extended-listbox/badge.svg?branch=master&service=github)](https://coveralls.io/github/code-chris/extended-listbox?branch=master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/code-chris/extended-listbox.svg)](https://greenkeeper.io/)
 
 
@@ -22,7 +20,7 @@ bar or group items.
 
 ## Supported Browsers
 
-- IE 9+
+- IE 11
 - Edge latest
 - Chrome latest
 - Firefox latest
@@ -30,19 +28,11 @@ bar or group items.
 
 ## Installation
 
-Install with bower:
-```
-bower install extended-listbox
-```
 Install with NPM:
 ```
 npm install extended-listbox
 ```
 Install TypeScript Definitions:
-```
-tsd install extended-listbox
-```
-or
 ```
 typings install github:code-chris/extended-listbox --global
 ```
@@ -60,6 +50,15 @@ Link the component and a stylesheet from your page.
 <link href="/path/to/extended-listbox.css" rel="stylesheet">
 <script src="/path/to/extended-listbox.js"></script>
 ```
+
+## Size
+
+| Type                             | Size     |
+|----------------------------------|----------|
+| Uncompressed, not minified       | 40,7 KB  |
+| Uncompressed, minified           | 13,7 KB  |
+| Compressed (gzip), not minified  | 6,7 KB   |
+| Compressed (gzip), minified      | 3,5 KB   |
 
 
 [Documentation](http://code-chris.github.io/extended-listbox/documentation/latest/)

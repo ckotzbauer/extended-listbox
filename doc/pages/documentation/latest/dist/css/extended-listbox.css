@@ -1,9 +1,11 @@
-/**
- * A default stylesheme for Extended-Listbox plugin.
- *
- * @copyright   (c) 2016, Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * @version     1.1.0
- * @license     BSD-3-Clause
+/*!
+ * Extended ListBox
+ * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
+ * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
+ * Version     2.0.0
+ * Released    2017-02-04T12:35:10.196Z
+ * License     MIT
+ * Copyright   (c) 2017
  */
 .listbox-root {
   margin: 0px;
@@ -70,3 +72,5 @@
   padding: 3px 5px;
   border: 1px solid #ccc;
 }
+
+/*# sourceMappingURL=extended-listbox.css.map*/

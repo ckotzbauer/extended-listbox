@@ -1,6 +1,5 @@
 .idea
 node_modules
-bower_components
 build/out/**
 build/coverage/**
 src/ts/**/*.js

@@ -1,88 +1,86 @@
-/// <reference path="./BaseListBox.ts" />
-/// <reference path="./contract/ListboxItem.ts" />
-/// <reference path="./event/ListboxEvent.ts" />
+import ListboxEvent = require("./event/ListboxEvent");
+import ListboxItem = require("./contract/ListboxItem");
+import Listbox = require("./Listbox");
 
-module EL {
-    "use strict";
+class ExtendedListboxInstance {
 
-    export class ExtendedListboxInstance {
+    private listbox: Listbox;
+    public target: JQuery;
 
-        private listbox: BaseListBox;
-        public target: JQuery;
+    public static createFrom(listbox: Listbox, target: JQuery): ExtendedListboxInstance {
+        var instance: ExtendedListboxInstance = new ExtendedListboxInstance();
+        instance.listbox = listbox;
+        instance.target = target;
+        return instance;
+    }
 
-        public static createFrom(listbox: BaseListBox, target: JQuery): ExtendedListboxInstance {
-            var instance: ExtendedListboxInstance = new ExtendedListboxInstance();
-            instance.listbox = listbox;
-            instance.target = target;
-            return instance;
-        }
+    public addItem(item: string|ListboxItem): string {
+        return this.listbox.baseListBox.addItem(item, false);
+    }
 
-        public addItem(item: string|ListboxItem): string {
-            return this.listbox.addItem(item, false);
-        }
+    public removeItem(identifier: string): void {
+        this.listbox.baseListBox.removeItem(identifier);
+    }
 
-        public removeItem(identifier: string): void {
-            this.listbox.removeItem(identifier);
-        }
+    public destroy(): void {
+        this.listbox.baseListBox.destroy();
+    }
 
-        public destroy(): void {
-            this.listbox.destroy();
-        }
+    public clearSelection(): void {
+        this.listbox.baseListBox.clearSelection(false);
+    }
 
-        public clearSelection(): void {
-            this.listbox.clearSelection(false);
-        }
+    public getItem(identifier: string): ListboxItem {
+        return this.listbox.baseListBox.getItem(identifier);
+    }
 
-        public getItem(identifier: string): ListboxItem {
-            return this.listbox.getItem(identifier);
-        }
+    public getItems(): ListboxItem[] {
+        return this.listbox.baseListBox.getItems();
+    }
 
-        public getItems(): ListboxItem[] {
-            return this.listbox.getItems();
-        }
+    public getSelection(): ListboxItem[] {
+        return this.listbox.baseListBox.getSelection();
+    }
 
-        public getSelection(): ListboxItem[] {
-            return this.listbox.getSelection();
-        }
+    public moveItemUp(identifier: string): number {
+        return this.listbox.baseListBox.moveItemUp(identifier);
+    }
 
-        public moveItemUp(identifier: string): number {
-            return this.listbox.moveItemUp(identifier);
-        }
+    public moveItemDown(identifier: string): number {
+        return this.listbox.baseListBox.moveItemDown(identifier);
+    }
 
-        public moveItemDown(identifier: string): number {
-            return this.listbox.moveItemDown(identifier);
-        }
+    public moveItemToTop(identifier: string): number {
+        return this.listbox.baseListBox.moveItemToTop(identifier);
+    }
 
-        public moveItemToTop(identifier: string): number {
-            return this.listbox.moveItemToTop(identifier);
-        }
+    public moveItemToBottom(identifier: string): number {
+        return this.listbox.baseListBox.moveItemToBottom(identifier);
+    }
 
-        public moveItemToBottom(identifier: string): number {
-            return this.listbox.moveItemToBottom(identifier);
-        }
+    public enable(state: boolean): void {
+        this.listbox.baseListBox.enable(state);
+    }
 
-        public enable(state: boolean): void {
-            this.listbox.enable(state);
-        }
+    public onValueChanged(callback: (event: ListboxEvent) => void): void {
+        this.listbox.baseListBox._settings.onValueChanged = callback;
+    }
 
-        public onValueChanged(callback: (event: ListboxEvent) => void): void {
-            this.listbox._settings.onValueChanged = callback;
-        }
+    public onItemsChanged(callback: (event: ListboxEvent) => void): void {
+        this.listbox.baseListBox._settings.onItemsChanged = callback;
+    }
 
-        public onItemsChanged(callback: (event: ListboxEvent) => void): void {
-            this.listbox._settings.onItemsChanged = callback;
-        }
+    public onFilterChanged(callback: (event: ListboxEvent) => void): void {
+        this.listbox.baseListBox._settings.onFilterChanged = callback;
+    }
 
-        public onFilterChanged(callback: (event: ListboxEvent) => void): void {
-            this.listbox._settings.onFilterChanged = callback;
-        }
+    public onItemEnterPressed(callback: (event: ListboxEvent) => void): void {
+        this.listbox.baseListBox._settings.onItemEnterPressed = callback;
+    }
 
-        public onItemEnterPressed(callback: (event: ListboxEvent) => void): void {
-            this.listbox._settings.onItemEnterPressed = callback;
-        }
-
-        public onItemDoubleClicked(callback: (event: ListboxEvent) => void): void {
-            this.listbox._settings.onItemDoubleClicked = callback;
-        }
+    public onItemDoubleClicked(callback: (event: ListboxEvent) => void): void {
+        this.listbox.baseListBox._settings.onItemDoubleClicked = callback;
     }
 }
+
+export = ExtendedListboxInstance;

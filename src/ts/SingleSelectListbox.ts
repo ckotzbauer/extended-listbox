@@ -1,70 +1,71 @@
-/// <reference path="./BaseListBox.ts" />
-/// <reference path="./contract/ListboxSettings.ts" />
+import BaseListBox = require("./BaseListBox");
+import ListboxSettings = require("./contract/ListboxSettings");
+import Listbox = require("./Listbox");
 
-module EL {
-    "use strict";
+class SingleSelectListbox implements Listbox {
 
-    export class SingleSelectListbox extends BaseListBox {
+    public baseListBox: BaseListBox;
+    private _selectedDomItem: JQuery;
 
-        private _selectedDomItem: JQuery;
+    /**
+     * Create an instance of SingleSelectListbox.
+     *
+     * Inherit a {Listbox} class.
+     *
+     * @constructor
+     * @this {SingleSelectListbox}
+     * @param {object} domelement DOM element to be converted to the Listbox
+     * @param {object} options an object with Listbox settings
+     */
+    constructor(domelement: JQuery, options: ListboxSettings) {
+        this._selectedDomItem = null;
+        this.baseListBox = new BaseListBox(domelement, options, this);
+        this.baseListBox.createListbox();
+    }
 
-        /**
-         * Create an instance of SingleSelectListbox.
-         *
-         * Inherit a {Listbox} class.
-         *
-         * @constructor
-         * @this {SingleSelectListbox}
-         * @param {object} domelement DOM element to be converted to the Listbox
-         * @param {object} options an object with Listbox settings
-         */
-        constructor(domelement: JQuery, options: ListboxSettings) {
-            super(domelement, options);
+    /**
+     * Reset all items and select a given one.
+     *
+     * @this {SingleSelectListbox}
+     * @param {object} domItem a DOM object
+     */
+    public onItemClick(domItem: JQuery): void {
+        if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+            domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+            return;
+        }
+
+        if (this._selectedDomItem) {
+            this.baseListBox.clearSelection(true);
             this._selectedDomItem = null;
         }
 
-        /**
-         * Reset all items and select a given one.
-         *
-         * @this {SingleSelectListbox}
-         * @param {object} domItem a DOM object
-         */
-        public onItemClick(domItem: JQuery): void {
-            if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-                domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                return;
+        domItem.toggleClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+        domItem.focus();
+        this._selectedDomItem = domItem;
+        domItem.data("dataItem").selected = true;
+        this.baseListBox._target.val(domItem.data("dataItem"));
+        this.baseListBox._target.trigger('change');
+
+        this.baseListBox.eventHandler.fireValueChangedEvent(domItem.data("dataItem"));
+    }
+
+
+    /**
+     * Select first visible item if none selected.
+     *
+     * @this {SingleSelectListbox}
+     */
+    public onFilterChange(): void {
+        if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
+            var element: JQuery = this.baseListBox._list.children(':visible').first();
+            if (element && element.length > 0) {
+                this.onItemClick(element);
             }
-
-            if (this._selectedDomItem) {
-                this.clearSelection(true);
-                this._selectedDomItem = null;
-            }
-
-            domItem.toggleClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-            domItem.focus();
-            this._selectedDomItem = domItem;
-            domItem.data("dataItem").selected = true;
-            this._target.val(domItem.data("dataItem"));
-            this._target.trigger('change');
-
-            this.eventHandler.fireValueChangedEvent(domItem.data("dataItem"));
         }
 
-
-        /**
-         * Select first visible item if none selected.
-         *
-         * @this {SingleSelectListbox}
-         */
-        public onFilterChange(): void {
-            if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
-                var element: JQuery = this._list.children(':visible').first();
-                if (element && element.length > 0) {
-                    this.onItemClick(element);
-                }
-            }
-
-            this.eventHandler.fireFilterChangedEvent(this._searchbar.val());
-        }
+        this.baseListBox.eventHandler.fireFilterChangedEvent(this.baseListBox._searchbar.val());
     }
 }
+
+export = SingleSelectListbox;
