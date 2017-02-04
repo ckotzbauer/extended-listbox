@@ -27,7 +27,8 @@ plugins.push(new webpack.BannerPlugin(banner));
 
 var config = {
     entry: [
-        __dirname + '/src/ts/JQueryExtendedListbox.ts'
+        __dirname + '/src/ts/JQueryExtendedListbox.ts',
+        __dirname + '/src/less/extended-listbox.less'
     ],
     devtool: "source-map",
     output: {

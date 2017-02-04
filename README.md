@@ -20,7 +20,7 @@ bar or group items.
 
 ## Supported Browsers
 
-- IE 9+
+- IE 11
 - Edge latest
 - Chrome latest
 - Firefox latest

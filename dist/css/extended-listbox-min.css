@@ -1,2 +1,11 @@
-/* Extended Listbox 1.1.3; (c) 2016 Christian Kotzbauer; BSD-3-Clause License */ 
+/*!
+ * Extended ListBox
+ * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
+ * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
+ * Version     2.0.0
+ * Released    2017-02-04T12:35:20.615Z
+ * License     MIT
+ * Copyright   (c) 2017
+ */
 .listbox-root{margin:0;width:170px;padding:5px;border:1px solid #ccc;border-radius:5px;background:#fcfcfc;height:300px}.listbox-root.listbox-disabled .listbox-item,.listbox-root.listbox-disabled .listbox-searchbar-wrapper{pointer-events:none}.listbox-root.listbox-disabled .listbox-searchbar-wrapper .listbox-searchbar{background:#f5f5f5}.listbox-root .listbox{margin:0;overflow:auto}.listbox-root .listbox .listbox-item{margin:0;padding:5px;cursor:pointer}.listbox-root .listbox .listbox-item:hover{background:rgba(112,147,216,.9)}.listbox-root .listbox .listbox-item.listbox-item-selected{background:rgba(112,147,216,.5)}.listbox-root .listbox .listbox-item.listbox-item-disabled{color:#999;cursor:default}.listbox-root .listbox .listbox-item.listbox-item-disabled:hover{background:#fcfcfc}.listbox-root .listbox .listbox-item.listbox-item-group{color:#000;font-weight:700;cursor:default}.listbox-root .listbox .listbox-item.listbox-item-group:hover{background:#fcfcfc}.listbox-root .listbox .listbox-item.listbox-item-child{padding-left:15px;font-weight:400}.listbox-root .listbox-searchbar-wrapper{margin:0}.listbox-root .listbox-searchbar-wrapper .listbox-searchbar-button{margin-left:-22px;border:none;background:none}.listbox-root .listbox-searchbar-wrapper .listbox-searchbar{margin:0;margin-bottom:10px;width:100%;padding:3px 5px;border:1px solid #ccc}
+/*# sourceMappingURL=extended-listbox-min.css.map*/

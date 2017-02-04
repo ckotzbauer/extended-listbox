@@ -3,7 +3,7 @@
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
  * Version     2.0.0
- * Released    2017-02-04T10:56:48.696Z
+ * Released    2017-02-04T12:35:10.196Z
  * License     MIT
  * Copyright   (c) 2017
  */
@@ -73,14 +73,14 @@ var extendedlistbox =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(9), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEventHandler, ListboxItem) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEventHandler) {
     "use strict";
     var BaseListBox = (function () {
         /**
@@ -96,8 +96,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
          */
         function BaseListBox(domelement, options, boxInstance) {
             this._target = domelement;
-            this._settings = options;
             this._box = boxInstance;
+            this._settings = options;
             this.eventHandler = new ListboxEventHandler(this);
         }
         /**
@@ -249,7 +249,16 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
          * @param {object} dataItem object returned from getItems
          */
         BaseListBox.prototype._prepareDataItem = function (dataItem) {
-            var item = new ListboxItem();
+            var item = {
+                childItems: [],
+                disabled: false,
+                groupHeader: null,
+                id: null,
+                parentGroupId: null,
+                selected: false,
+                text: null,
+                index: null
+            };
             if (!dataItem.id) {
                 item.id = this._generateItemId();
             }
@@ -653,12 +662,16 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(7), __webpack_require__(3), __webpack_require__(4), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxSettings, MultiSelectListbox, SingleSelectListbox, ExtendedListboxInstance) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(4), __webpack_require__(5), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, MultiSelectListbox, SingleSelectListbox, ExtendedListboxInstance) {
     "use strict";
     function initializeListBoxFromOptions(options) {
         "use strict";
-        var settings = new ListboxSettings();
-        settings = $.extend(settings, options);
+        var settings = $.extend({
+            searchBar: false,
+            searchBarWatermark: "Search...",
+            searchBarButton: { visible: false },
+            multiple: false
+        }, options);
         var multipleInstances = [];
         var singleInstance = null;
         var multipleElements = this.length > 1;
@@ -708,6 +721,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
@@ -780,7 +799,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
@@ -841,7 +860,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
@@ -907,76 +926,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-    "use strict";
-    var ListboxItem = (function () {
-        function ListboxItem() {
-            this.text = null;
-            this.id = null;
-            this.index = null;
-            this.disabled = false;
-            this.selected = false;
-            this.groupHeader = false;
-            this.parentGroupId = null;
-            this.childItems = [];
-        }
-        return ListboxItem;
-    }());
-    return ListboxItem;
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-    "use strict";
-    var ListboxSearchBarButtonOptions = (function () {
-        function ListboxSearchBarButtonOptions() {
-            this.visible = false;
-            this.icon = null;
-            this.onClick = null;
-        }
-        return ListboxSearchBarButtonOptions;
-    }());
-    return ListboxSearchBarButtonOptions;
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxSearchBarButtonOptions) {
-    "use strict";
-    var ListboxSettings = (function () {
-        function ListboxSettings() {
-            this.searchBar = false;
-            this.searchBarWatermark = 'Search...';
-            this.searchBarButton = new ListboxSearchBarButtonOptions();
-            this.multiple = false;
-            this.getItems = null;
-            this.onValueChanged = null;
-            this.onFilterChanged = null;
-            this.onItemsChanged = null;
-            this.onItemEnterPressed = null;
-            this.onItemDoubleClicked = null;
-        }
-        return ListboxSettings;
-    }());
-    return ListboxSettings;
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
@@ -1000,10 +950,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(8)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEvent) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEvent) {
     "use strict";
     var ListboxEventHandler = (function () {
         function ListboxEventHandler(listBox) {
@@ -1038,10 +988,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(1);
+__webpack_require__(1);
+module.exports = __webpack_require__(2);
 
 
 /***/ })
