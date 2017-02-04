@@ -4,7 +4,8 @@
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "outFile": "build/out/js/extended-listbox.js"
+    "outFile": "build/out/js/extended-listbox.js",
+    "lib": ["es2016", "dom"]
   },
   "exclude": [
     "node_modules",

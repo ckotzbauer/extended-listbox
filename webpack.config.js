@@ -10,10 +10,10 @@ var outputFile;
 
 if (yargs.argv.p) {
     plugins.push(new webpack.optimize.UglifyJsPlugin({ minimize: true }));
-    plugins.push(new ExtractTextPlugin(libraryName + "-min.css", { allChunks: true }));
+    plugins.push(new ExtractTextPlugin({ filename: libraryName + "-min.css", allChunks: true }));
     outputFile = libraryName + '-min.js';
 } else {
-    plugins.push(new ExtractTextPlugin(libraryName + ".css", { allChunks: true }));
+    plugins.push(new ExtractTextPlugin({ filename: libraryName + ".css", allChunks: true }));
     outputFile = libraryName + '.js';
 }
 
@@ -27,9 +27,9 @@ plugins.push(new webpack.BannerPlugin(banner));
 
 var config = {
     entry: [
-        __dirname + '/src/ts/BaseListBox.ts'
+        __dirname + '/src/ts/JQueryExtendedListbox.ts'
     ],
-    devtool: null,
+    devtool: "source-map",
     output: {
         path: path.join(__dirname, '/build/out/js/'),
         filename: outputFile,
@@ -37,14 +37,14 @@ var config = {
         libraryTarget: 'var'
     },
     module: {
-        loaders: [
-            { test: /\.ts?$/, loader: 'ts-loader', exclude: /node_modules/ },
-            { test: /\.less/, loader: ExtractTextPlugin.extract("css-loader!less-loader") }
+        rules: [
+            { test: /\.ts?$/, loader: 'awesome-typescript-loader', exclude: /node_modules/ },
+            { test: /\.less/, loader: ExtractTextPlugin.extract({ use: "css-loader!less-loader" }) }
         ]
     },
     resolve: {
-        root: path.resolve('./src/ts'),
-        extensions: ['', '.ts', '.less']
+        //root: path.resolve('./src/ts'),
+        extensions: ['.ts', '.less']
     },
     plugins: plugins
 };
