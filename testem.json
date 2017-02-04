@@ -43,6 +43,7 @@
   "launch_in_dev": ["chrome"],
   "launch_in_ci": [
     "SL_Chrome_Current",
-    "SL_Firefox_Current"
+    "SL_Firefox_Current",
+    "SL_MS_Edge"
   ]
 }
