@@ -1,7 +1,7 @@
 {
   "framework": "qunit",
   "timeout": 600,
-  "parallel": 5,
+  "parallel": 1,
   "disable_watching": true,
   "port": 7000,
   "browser_start_timeout": 90,
@@ -40,9 +40,8 @@
       "protocol": "browser"
     }
   },
-  "launch_in_dev": ["PhantomJS"],
+  "launch_in_dev": ["chrome"],
   "launch_in_ci": [
-    "PhantomJS",
     "SL_Chrome_Current",
     "SL_Firefox_Current"
   ]
