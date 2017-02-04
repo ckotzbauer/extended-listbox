@@ -55,10 +55,10 @@ Link the component and a stylesheet from your page.
 
 | Type                             | Size     |
 |----------------------------------|----------|
-| Uncompressed, not minified       | 43,2 KB  |
-| Uncompressed, minified           | 14,5 KB  |
-| Compressed (gzip), not minified  | 6,9 KB   |
-| Compressed (gzip), minified      | 3,6 KB   |
+| Uncompressed, not minified       | 40,7 KB  |
+| Uncompressed, minified           | 13,7 KB  |
+| Compressed (gzip), not minified  | 6,7 KB   |
+| Compressed (gzip), minified      | 3,5 KB   |
 
 
 [Documentation](http://code-chris.github.io/extended-listbox/documentation/latest/)

@@ -7,8 +7,12 @@ import Listbox = require("./Listbox");
 function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListboxInstance|ExtendedListboxInstance[] {
     "use strict";
 
-    var settings: ListboxSettings = new ListboxSettings();
-    settings = $.extend(settings, options);
+    var settings: ListboxSettings = $.extend({
+        searchBar: false,
+        searchBarWatermark: "Search...",
+        searchBarButton: { visible: false },
+        multiple: false
+    }, options);
 
     var multipleInstances: ExtendedListboxInstance[] = [];
     var singleInstance: ExtendedListboxInstance = null;

@@ -39,8 +39,8 @@ class BaseListBox {
      */
     constructor(domelement: JQuery, options: ListboxSettings, boxInstance: Listbox) {
         this._target = domelement;
-        this._settings = options;
         this._box = boxInstance;
+        this._settings = options;
 
         this.eventHandler = new ListboxEventHandler(this);
     }
@@ -216,7 +216,16 @@ class BaseListBox {
      * @param {object} dataItem object returned from getItems
      */
     protected _prepareDataItem(dataItem: any): ListboxItem {
-        var item: ListboxItem = new ListboxItem();
+        var item: ListboxItem = {
+            childItems: [],
+            disabled: false,
+            groupHeader: null,
+            id: null,
+            parentGroupId: null,
+            selected: false,
+            text: null,
+            index: null
+        };
 
         if (!dataItem.id) {
             item.id = this._generateItemId();
