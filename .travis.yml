@@ -10,8 +10,7 @@ branches:
     - /^greenkeeper/.*$/
 
 before_install:
-  - npm install
-  - npm install typings -g
+  - yarn global add typings
 
 addons:
   sauce_connect: true
