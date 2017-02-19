@@ -17,3 +17,10 @@ script:
   - yarn global add typings
   - "typings install"
   - "npm run test:ci"
+  
+after_success:
+  - bash ./yarn-greenkeeper.sh
+  
+env:
+  global:
+    - secure: "qfQFNjh8I4JqZnDDDrwHd4jMdJlfSl7kIWbBoLK9McYtFmtXNX1W58F2hrrnBa3OtzLkqob04+NE3RPIpJ4su5aJ9fGXIfOB9j78g8a1kgWUpm5J0VpbU80709jW0ZdwvPDLRF8oH4XdDf9r2RoA86IXPZk8E+XHQFeYWS56kR5ADiex4ioD6ZyuwxhSSWd1YBxGi7uOywwnP5u6nFCZcuZHQ0J3kO+eNg2pF03o3J2NQwUEc/zjNRY3ios4chPQ42R6hNFanmUlQDlTaAmI68h8qsUGDkVVWtHJIFruyK5aG2AqDobsZ6A1FgL2LqWN5RyokRNwQ7E9MlLO8/nR/7Y9ciGLxsA3sKHAp49TqmPoAce8q3Y0Ba2qFN9uY199nARUOTTHHZczxBjf8xNPJbZYHXPGG59QxCGj8KbnYFCiExNqPxKRYt43iMl2uUsejrgzmVzZsE+wSijsZE5/nTSIOChyZHYztWfSJ33HGJH5JHYc+yKe3a12zQ2fXS8HbzCyMQH+MLZIFEqqo4XFSa5tHIN+p9uAJt7gfjJWSed+02dgetOQb2W+dA9luNHvftqKWix3T+89RvX5ie5AkK5JUbdB4e8Ev9QuvGm+cmMqbvsmvKBBk9TOrfpdCBiDoAmEBCc9rfVGypFC0y3JFltVG/vT/xUtbsdi5V7L4us="
