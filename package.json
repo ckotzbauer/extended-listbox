@@ -41,7 +41,7 @@
     "lint": "node node_modules/tslint/bin/tslint -c tslint.json --project tsconfig.json -t verbose -o tslint.txt"
   },
   "devDependencies": {
-    "awesome-typescript-loader": "~3.0.0-beta.18",
+    "awesome-typescript-loader": "~3.0.6",
     "css-loader": "~0.26.1",
     "extract-text-webpack-plugin": "~2.0.0-beta.5",
     "globby": "~6.1.0",
