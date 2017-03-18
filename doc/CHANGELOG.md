@@ -4,6 +4,15 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 2.0.1
+
+Released on March 18, 2017.
+
+-   Improved distribution size.
+-   Fixed wrong dependency range for jquery.
+-   Several devDependency updates.
+
+
 ## Version 2.0.0
 
 Released on February 4, 2017.

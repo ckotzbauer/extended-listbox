@@ -2,8 +2,8 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     2.0.0
- * Released    2017-02-04T12:35:10.196Z
+ * Version     2.0.1
+ * Released    2017-03-18T14:21:31.795Z
  * License     MIT
  * Copyright   (c) 2017
  */
@@ -83,47 +83,18 @@ var extendedlistbox =
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEventHandler) {
     "use strict";
     var BaseListBox = (function () {
-        /**
-         * Create an instance of Listbox. The constructor creates div-based
-         * listbox under the given root domelement. It applies the given
-         * configuration.
-         *
-         * @constructor
-         * @this {BaseListBox}
-         * @param {object} domelement DOM element to be converted to the Listbox
-         * @param {object} options an object with Listbox settings
-         * @param {Listbox} boxInstance of specific implementation
-         */
         function BaseListBox(domelement, options, boxInstance) {
             this._target = domelement;
             this._box = boxInstance;
             this._settings = options;
             this.eventHandler = new ListboxEventHandler(this);
         }
-        /**
-         * Click handling and triggering from other delegates and events.
-         *
-         * @this {BaseListBox}
-         * @param {object} domItem a DOM object
-         */
         BaseListBox.prototype.onItemClick = function (domItem) {
             this._box.onItemClick(domItem);
         };
-        /**
-         * Select first visible item if none selected.
-         *
-         * @this {BaseListBox}
-         */
         BaseListBox.prototype.onFilterChange = function () {
             this._box.onFilterChange();
         };
-        /**
-         * Creates a `div`-based listbox, which includes such things as
-         * container, listbox itself and searchbar as an optional element.
-         *
-         * @private
-         * @this {BaseListBox}
-         */
         BaseListBox.prototype.createListbox = function () {
             this._target.addClass(BaseListBox.MAIN_CLASS);
             if (this._settings.searchBar) {
@@ -131,16 +102,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             this._createList();
         };
-        /**
-         * Creates a Listbox's searchbar.
-         *
-         * @private
-         * @this {BaseListBox}
-         * @TODO: critical to rewrite this piece of shit
-         */
         BaseListBox.prototype._createSearchbar = function () {
-            // searchbar wrapper is needed for properly stretch
-            // the searchbar over the listbox width
             var searchbarWrapper = $('<div>')
                 .addClass(BaseListBox.SEARCHBAR_CLASS + '-wrapper')
                 .appendTo(this._target);
@@ -148,12 +110,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 .addClass(BaseListBox.SEARCHBAR_CLASS)
                 .appendTo(searchbarWrapper)
                 .attr('placeholder', this._settings.searchBarWatermark);
-            // set filter handler
             var self = this;
             searchbar.keyup(function () {
                 var searchQuery = $(this).val().toLowerCase();
                 if (searchQuery !== '') {
-                    // hide list items which are not matched search query
                     self._list.find("." + BaseListBox.LIST_ITEM_CLASS).each(function () {
                         var $this = $(this);
                         if ($this.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
@@ -168,7 +128,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                             $this.css('display', 'none');
                         }
                     });
-                    // hide group item only, if all childs are hidden
                     self._list.find("." + BaseListBox.LIST_ITEM_CLASS_GROUP).each(function () {
                         var $this = $(this);
                         if ($this.children(':visible').length === 0) {
@@ -180,19 +139,15 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                     });
                 }
                 else {
-                    // make visible all list items
                     self._list.find("." + BaseListBox.LIST_ITEM_CLASS).each(function () {
                         $(this).css('display', 'block');
                     });
                 }
-                // @hack: call special handler which is used only for SingleSelectListbox
-                //        to prevent situation when none of items are selected
                 if (self.onFilterChange) {
                     self.onFilterChange();
                 }
             });
             if (this._settings.searchBarButton.visible) {
-                // create button in search field
                 var button = $('<button>')
                     .attr('id', 'searchBarButton')
                     .attr('tabindex', '-1')
@@ -201,28 +156,18 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 if (this._settings.searchBarButton.onClick) {
                     button.click(this._settings.searchBarButton.onClick);
                 }
-                // icon for search button
                 $('<i>')
                     .addClass(this._settings.searchBarButton.icon)
                     .appendTo(button);
             }
-            // save for using in _resizeListToListbox()
             this._searchbarWrapper = searchbarWrapper;
             this._searchbar = searchbar;
         };
-        /**
-         * Creates a listbox itself.
-         *
-         * @private
-         * @this {BaseListBox}
-         */
         BaseListBox.prototype._createList = function () {
-            // create container
             this._list = $('<div>')
                 .addClass(BaseListBox.LIST_CLASS)
                 .appendTo(this._target);
             this._resizeListToListbox();
-            // create items
             if (this._settings.getItems) {
                 var items = this._settings.getItems();
                 if (items) {
@@ -233,21 +178,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 }
             }
         };
-        /**
-         * Generates a new ID for a item.
-         *
-         * @this {BaseListBox}
-         */
         BaseListBox.prototype._generateItemId = function () {
             var num = parseInt("" + (Math.random() * 10000000), 10);
             return "listboxitem" + num;
         };
-        /**
-         * Prepares the dataobject for one item.
-         *
-         * @this {BaseListBox}
-         * @param {object} dataItem object returned from getItems
-         */
         BaseListBox.prototype._prepareDataItem = function (dataItem) {
             var item = {
                 childItems: [],
@@ -277,14 +211,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 return item;
             }
         };
-        /**
-         * Add item to the listbox.
-         *
-         * @this {BaseListBox}
-         * @param {object} dataItem display data for item
-         * @param {object} internal: true if this function is not called directly as api function.
-         * * @param {object} $parent: the DOM parent element
-         */
         BaseListBox.prototype._addItem = function (dataItem, internal, $parent) {
             var self = this;
             var item = $('<div>')
@@ -298,16 +224,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 var $target = $(e.target);
                 if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
                     if (e.which === 13) {
-                        // Enter
                         self.onItemEnterPressed($target);
                     }
                     else if (e.which === 38) {
-                        // Arrow up
                         e.preventDefault();
                         self.onItemArrowUp($target);
                     }
                     else if (e.which === 40) {
-                        // Arrow down
                         e.preventDefault();
                         self.onItemArrowDown($target);
                     }
@@ -360,13 +283,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             return dataItem.id;
         };
-        /**
-         * Add item to the listbox.
-         *
-         * @this {BaseListBox}
-         * @param {object} dataItem display data for item
-         * @param {object} internal: true if this function is not called directly as api function.
-         */
         BaseListBox.prototype.addItem = function (dataItem, internal) {
             if (!internal && !this._settings.multiple && dataItem.selected) {
                 this.clearSelection(internal);
@@ -377,12 +293,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             return id;
         };
-        /**
-         * Remove first matching item from the listbox.
-         *
-         * @this {BaseListBox}
-         * @param {string} item: display text or id from item to remove
-         */
         BaseListBox.prototype.removeItem = function (item) {
             var uiItem = this.locateItem(item);
             if (uiItem) {
@@ -391,19 +301,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 this.eventHandler.fireItemsChangedEvent(this.getItems());
             }
         };
-        /**
-         * Reverts all changes on the DOM
-         *
-         * @this {BaseListBox}
-         */
         BaseListBox.prototype.destroy = function () {
             this._target.children().remove();
             this._target.removeClass(BaseListBox.MAIN_CLASS);
         };
-        /**
-         * Resize list to listbox. It's a small hack since I can't
-         * do it with CSS.
-         */
         BaseListBox.prototype._resizeListToListbox = function () {
             var listHeight = this._target.height();
             if (this._settings.searchBar) {
@@ -411,11 +312,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             this._list.height(listHeight);
         };
-        /**
-         * Clears all selected items.
-         */
         BaseListBox.prototype.clearSelection = function (internal) {
-            // Remove selected class from all other items
             var allItems = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
             allItems.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
             var index;
@@ -432,11 +329,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 this._target.trigger('change');
             }
         };
-        /**
-         * Clears selection of given items.
-         *
-         * @param {object} domItem DOM item
-         */
         BaseListBox.prototype._clearItemSelection = function (domItem) {
             domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
             domItem.data("dataItem").selected = false;
@@ -453,11 +345,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             this._target.trigger('change');
         };
-        /**
-         * Returns the dataItem for a given id or text.
-         *
-         * @param {object} id unique id or text from listItem
-         */
         BaseListBox.prototype.getItem = function (id) {
             var data = null;
             var $item = this.locateItem(id);
@@ -466,9 +353,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             return data;
         };
-        /**
-         * Returns all dataItems.
-         */
         BaseListBox.prototype.getItems = function () {
             var dataItems = [];
             var childs = this._list.children();
@@ -478,11 +362,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             return dataItems;
         };
-        /**
-         * Decreases the index of the item by one.
-         *
-         * @param {object} id unique id or text from listItem
-         */
         BaseListBox.prototype.moveItemUp = function (id) {
             var newIndex = null;
             var $item = this.locateItem(id);
@@ -494,11 +373,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             this.eventHandler.fireItemsChangedEvent(this.getItems());
             return newIndex;
         };
-        /**
-         * Increases the index of the item by one.
-         *
-         * @param {object} id unique id or text from listItem
-         */
         BaseListBox.prototype.moveItemDown = function (id) {
             var newIndex = null;
             var $item = this.locateItem(id);
@@ -510,11 +384,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             this.eventHandler.fireItemsChangedEvent(this.getItems());
             return newIndex;
         };
-        /**
-         * Sets the index of the item to zero.
-         *
-         * @param {object} id unique id or text from listItem
-         */
         BaseListBox.prototype.moveItemToTop = function (id) {
             var newIndex = null;
             var $item = this.locateItem(id);
@@ -526,11 +395,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             this.eventHandler.fireItemsChangedEvent(this.getItems());
             return newIndex;
         };
-        /**
-         * Sets the index of the matching item to the highest.
-         *
-         * @param {object} id unique id or text from listItem
-         */
         BaseListBox.prototype.moveItemToBottom = function (id) {
             var newIndex = null;
             var $item = this.locateItem(id);
@@ -542,11 +406,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             this.eventHandler.fireItemsChangedEvent(this.getItems());
             return newIndex;
         };
-        /**
-         * Enables or disables the whole component.
-         *
-         * @param {boolean} enable: new enable value.
-         */
         BaseListBox.prototype.enable = function (enable) {
             if (enable) {
                 this._target.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
@@ -565,27 +424,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             return $item;
         };
-        /**
-         * Called for a keyPressed event with the enter key for a item.
-         *
-         * @param {JQuery} domItem: the domItem.
-         */
         BaseListBox.prototype.onItemEnterPressed = function (domItem) {
             this.eventHandler.fireItemEnterPressedEvent(domItem.data("dataItem"));
         };
-        /**
-         * Called for a doubleClick on a item.
-         *
-         * @param {JQuery} domItem: the domItem.
-         */
         BaseListBox.prototype.onItemDoubleClicked = function (domItem) {
             this.eventHandler.fireItemDoubleClickedEvent(domItem.data("dataItem"));
         };
-        /**
-         * Called for a keyPressed event with the arrow up key for a item.
-         *
-         * @param {JQuery} domItem: the domItem.
-         */
         BaseListBox.prototype.onItemArrowUp = function (domItem) {
             var prev = this.findNextItem(domItem, "prev");
             if (prev) {
@@ -593,11 +437,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 this.onItemClick(prev);
             }
         };
-        /**
-         * Called for a keyPressed event with the arrow down key for a item.
-         *
-         * @param {JQuery} domItem: the domItem.
-         */
         BaseListBox.prototype.onItemArrowDown = function (domItem) {
             var next = this.findNextItem(domItem, "next");
             if (next) {
@@ -630,9 +469,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 return potentialNext;
             } while (true);
         };
-        /**
-         * Returns all dataItems which are selected.
-         */
         BaseListBox.prototype.getSelection = function () {
             var topLevelItems = this.getItems();
             var allItems = [].concat(topLevelItems);
@@ -664,6 +500,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(4), __webpack_require__(5), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, MultiSelectListbox, SingleSelectListbox, ExtendedListboxInstance) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     function initializeListBoxFromOptions(options) {
         "use strict";
         var settings = $.extend({
@@ -704,12 +541,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         });
         return multipleElements ? multipleInstances : singleInstance;
     }
-    /**
-     * jQuery plugin definition. Please note, that jQuery's `each()` method
-     * returns `false` to stop iteration; otherwise it should return `true`.
-     *
-     * @param {object} options an object with Listbox settings
-     */
     $.fn.listbox = function (options) {
         if (typeof options === 'object' || !options) {
             return initializeListBoxFromOptions.call(this, options);
@@ -805,26 +636,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
     "use strict";
     var MultiSelectListbox = (function () {
-        /**
-         * Create an instance of MultiSelectListbox.
-         *
-         * Inherit a {Listbox} class.
-         *
-         * @constructor
-         * @this {MultiSelectListbox}
-         * @param {object} domelement DOM element to be converted to the Listbox
-         * @param {object} options an object with Listbox settings
-         */
         function MultiSelectListbox(domelement, options) {
             this.baseListBox = new BaseListBox(domelement, options, this);
             this.baseListBox.createListbox();
         }
-        /**
-         * Toggle item status.
-         *
-         * @this {MultiSelectListbox}
-         * @param {object} domItem a DOM object
-         */
         MultiSelectListbox.prototype.onItemClick = function (domItem) {
             if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
                 domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
@@ -866,27 +681,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
     "use strict";
     var SingleSelectListbox = (function () {
-        /**
-         * Create an instance of SingleSelectListbox.
-         *
-         * Inherit a {Listbox} class.
-         *
-         * @constructor
-         * @this {SingleSelectListbox}
-         * @param {object} domelement DOM element to be converted to the Listbox
-         * @param {object} options an object with Listbox settings
-         */
         function SingleSelectListbox(domelement, options) {
             this._selectedDomItem = null;
             this.baseListBox = new BaseListBox(domelement, options, this);
             this.baseListBox.createListbox();
         }
-        /**
-         * Reset all items and select a given one.
-         *
-         * @this {SingleSelectListbox}
-         * @param {object} domItem a DOM object
-         */
         SingleSelectListbox.prototype.onItemClick = function (domItem) {
             if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
                 domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
@@ -904,11 +703,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             this.baseListBox._target.trigger('change');
             this.baseListBox.eventHandler.fireValueChangedEvent(domItem.data("dataItem"));
         };
-        /**
-         * Select first visible item if none selected.
-         *
-         * @this {SingleSelectListbox}
-         */
         SingleSelectListbox.prototype.onFilterChange = function () {
             if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
                 var element = this.baseListBox._list.children(':visible').first();
