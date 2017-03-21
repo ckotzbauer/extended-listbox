@@ -1835,12 +1835,13 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-less-loader@~3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-3.0.0.tgz#199f7f4a79ff8a195ab47649d71c6d7109da32b9"
+less-loader@~4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-4.0.1.tgz#bf0a5d6c5f61f272de592421d0ea87a168d1edf7"
   dependencies:
     clone-deep "^0.2.4"
     loader-utils "^1.0.2"
+    pify "^2.3.0"
 
 less@~2.7.2:
   version "2.7.2"
@@ -2350,7 +2351,7 @@ pbkdf2@^3.0.3:
   dependencies:
     create-hmac "^1.1.2"
 
-pify@^2.0.0:
+pify@^2.0.0, pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
 

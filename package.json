@@ -46,7 +46,7 @@
     "extract-text-webpack-plugin": "~2.1.0",
     "globby": "~6.1.0",
     "less": "~2.7.2",
-    "less-loader": "~3.0.0",
+    "less-loader": "~4.0.1",
     "qunitjs": "~2.2.0",
     "requirejs": "~2.3.3",
     "rimraf": "~2.6.0",
