@@ -51,7 +51,7 @@
     "requirejs": "~2.3.3",
     "rimraf": "~2.6.0",
     "saucie": "~3.1.0",
-    "testem": "~1.15.0",
+    "testem": "~1.16.0",
     "tslint": "~5.1.0",
     "typescript": "~2.2.1",
     "webpack": "~2.4.0",
