@@ -44,6 +44,7 @@
   "launch_in_ci": [
     "SL_Chrome_Current",
     "SL_Firefox_Current",
-    "SL_MS_Edge"
+    "SL_MS_Edge",
+    "SL_IE_11"
   ]
 }
