@@ -4,6 +4,15 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 2.0.2
+
+Released on May 14, 2017.
+
+-   Improved distribution size.
+-   Fixed unit tests in IE.
+-   Several devDependency updates.
+
+
 ## Version 2.0.1
 
 Released on March 18, 2017.
