@@ -32,7 +32,10 @@ class TestHelper {
             }
         }, options);
 
-        return <ExtendedListboxInstance>$('#test').listbox(options);
+        $('#qunit-fixture').append('<div id="test">');
+        let $test: JQuery = $('#test');
+
+        return <ExtendedListboxInstance>$test.listbox(options);
     }
 
     public static generateMultipleList(options: ListBoxOptions = null, items: any[] = null): ExtendedListboxInstance {
@@ -42,6 +45,9 @@ class TestHelper {
                 return items;
             }
         }, options);
+
+        $('#qunit-fixture').append('<div id="test">');
+        let $test: JQuery = $('#test');
 
         return <ExtendedListboxInstance>$('#test').listbox(options);
     }
@@ -75,7 +81,7 @@ class TestHelper {
     }
 
     public static beforeEach(): void {
-        $('body').append('<div id="qunit-fixture"><div id="test"></div></div>');
+        $('body').append('<div id="qunit-fixture"></div>');
     }
 
     public static afterEach(): void {

@@ -45,6 +45,8 @@
     "SL_Chrome_Current",
     "SL_Firefox_Current",
     "SL_MS_Edge",
-    "SL_IE_11"
+    "SL_IE_11",
+    "SL_IE_10",
+    "SL_IE_9"
   ]
 }
