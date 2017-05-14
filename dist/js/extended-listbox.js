@@ -2,8 +2,8 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     2.0.1
- * Released    2017-03-18T14:21:31.795Z
+ * Version     2.0.2
+ * Released    2017-05-14T14:25:28.720Z
  * License     MIT
  * Copyright   (c) 2017
  */
@@ -16,9 +16,9 @@ var extendedlistbox =
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -80,7 +80,31 @@ var extendedlistbox =
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(7)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEventHandler) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+    "use strict";
+    var ListboxEvent = (function () {
+        function ListboxEvent(eventName, target, args) {
+            this.eventName = eventName;
+            this.target = target;
+            this.args = args;
+        }
+        return ListboxEvent;
+    }());
+    ListboxEvent.VALUE_CHANGED = "valueChanged";
+    ListboxEvent.FILTER_CHANGED = "filterChanged";
+    ListboxEvent.ITEMS_CHANGED = "itemsChanged";
+    ListboxEvent.ITEM_ENTER_PRESSED = "itemEnterPressed";
+    ListboxEvent.ITEM_DOUBLE_CLICKED = "itemDoubleClicked";
+    return ListboxEvent;
+}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(7), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEventHandler, ListboxEvent) {
     "use strict";
     var BaseListBox = (function () {
         function BaseListBox(domelement, options, boxInstance) {
@@ -289,7 +313,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             var id = this._addItem(this._prepareDataItem(dataItem), internal, null);
             if (!internal) {
-                this.eventHandler.fireItemsChangedEvent(this.getItems());
+                this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
             }
             return id;
         };
@@ -298,7 +322,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             if (uiItem) {
                 this._clearItemSelection(uiItem);
                 uiItem.remove();
-                this.eventHandler.fireItemsChangedEvent(this.getItems());
+                this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
             }
         };
         BaseListBox.prototype.destroy = function () {
@@ -370,7 +394,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 newIndex = $item.index();
                 $item.data("dataItem").index = newIndex;
             }
-            this.eventHandler.fireItemsChangedEvent(this.getItems());
+            this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
             return newIndex;
         };
         BaseListBox.prototype.moveItemDown = function (id) {
@@ -381,7 +405,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 newIndex = $item.index();
                 $item.data("dataItem").index = newIndex;
             }
-            this.eventHandler.fireItemsChangedEvent(this.getItems());
+            this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
             return newIndex;
         };
         BaseListBox.prototype.moveItemToTop = function (id) {
@@ -392,7 +416,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 newIndex = $item.index();
                 $item.data("dataItem").index = newIndex;
             }
-            this.eventHandler.fireItemsChangedEvent(this.getItems());
+            this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
             return newIndex;
         };
         BaseListBox.prototype.moveItemToBottom = function (id) {
@@ -403,7 +427,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 newIndex = $item.index();
                 $item.data("dataItem").index = newIndex;
             }
-            this.eventHandler.fireItemsChangedEvent(this.getItems());
+            this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
             return newIndex;
         };
         BaseListBox.prototype.enable = function (enable) {
@@ -425,10 +449,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             return $item;
         };
         BaseListBox.prototype.onItemEnterPressed = function (domItem) {
-            this.eventHandler.fireItemEnterPressedEvent(domItem.data("dataItem"));
+            this.eventHandler.fire(ListboxEvent.ITEM_ENTER_PRESSED, domItem.data("dataItem"));
         };
         BaseListBox.prototype.onItemDoubleClicked = function (domItem) {
-            this.eventHandler.fireItemDoubleClickedEvent(domItem.data("dataItem"));
+            this.eventHandler.fire(ListboxEvent.ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
         };
         BaseListBox.prototype.onItemArrowUp = function (domItem) {
             var prev = this.findNextItem(domItem, "prev");
@@ -495,10 +519,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(4), __webpack_require__(5), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, MultiSelectListbox, SingleSelectListbox, ExtendedListboxInstance) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(5), __webpack_require__(6), __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, MultiSelectListbox, SingleSelectListbox, ExtendedListboxInstance) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function initializeListBoxFromOptions(options) {
@@ -534,7 +558,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             else {
                 listbox = new SingleSelectListbox($this, settings);
             }
-            instance = ExtendedListboxInstance.createFrom(listbox, $this);
+            instance = new ExtendedListboxInstance(listbox, $this);
             $this.data('listbox', listbox);
             $this.data('listbox-instance', instance);
             setInstance(instance);
@@ -551,77 +575,38 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
     "use strict";
     var ExtendedListboxInstance = (function () {
-        function ExtendedListboxInstance() {
+        function ExtendedListboxInstance(listbox, target) {
+            this.listbox = listbox;
+            this.target = target;
+            var lb = this.listbox.baseListBox;
+            var methods = ["addItem", "removeItem", "destroy", "clearSelection", "getItem", "getItems",
+                "getSelection", "moveItemUp", "moveItemDown", "moveItemToTop", "moveItemToBottom", "enable"];
+            for (var i = 0; i < methods.length; i++) {
+                var name_1 = methods[i];
+                this[name_1] = lb[name_1].bind(lb);
+            }
+            methods = ["onValueChanged", "onItemsChanged", "onFilterChanged", "onItemEnterPressed", "onItemDoubleClicked"];
+            var _loop_1 = function (i) {
+                var name_2 = methods[i];
+                this_1[name_2] = function (e) { lb._settings[name_2] = e; };
+            };
+            var this_1 = this;
+            for (var i = 0; i < methods.length; i++) {
+                _loop_1(i);
+            }
         }
-        ExtendedListboxInstance.createFrom = function (listbox, target) {
-            var instance = new ExtendedListboxInstance();
-            instance.listbox = listbox;
-            instance.target = target;
-            return instance;
-        };
-        ExtendedListboxInstance.prototype.addItem = function (item) {
-            return this.listbox.baseListBox.addItem(item, false);
-        };
-        ExtendedListboxInstance.prototype.removeItem = function (identifier) {
-            this.listbox.baseListBox.removeItem(identifier);
-        };
-        ExtendedListboxInstance.prototype.destroy = function () {
-            this.listbox.baseListBox.destroy();
-        };
-        ExtendedListboxInstance.prototype.clearSelection = function () {
-            this.listbox.baseListBox.clearSelection(false);
-        };
-        ExtendedListboxInstance.prototype.getItem = function (identifier) {
-            return this.listbox.baseListBox.getItem(identifier);
-        };
-        ExtendedListboxInstance.prototype.getItems = function () {
-            return this.listbox.baseListBox.getItems();
-        };
-        ExtendedListboxInstance.prototype.getSelection = function () {
-            return this.listbox.baseListBox.getSelection();
-        };
-        ExtendedListboxInstance.prototype.moveItemUp = function (identifier) {
-            return this.listbox.baseListBox.moveItemUp(identifier);
-        };
-        ExtendedListboxInstance.prototype.moveItemDown = function (identifier) {
-            return this.listbox.baseListBox.moveItemDown(identifier);
-        };
-        ExtendedListboxInstance.prototype.moveItemToTop = function (identifier) {
-            return this.listbox.baseListBox.moveItemToTop(identifier);
-        };
-        ExtendedListboxInstance.prototype.moveItemToBottom = function (identifier) {
-            return this.listbox.baseListBox.moveItemToBottom(identifier);
-        };
-        ExtendedListboxInstance.prototype.enable = function (state) {
-            this.listbox.baseListBox.enable(state);
-        };
-        ExtendedListboxInstance.prototype.onValueChanged = function (callback) {
-            this.listbox.baseListBox._settings.onValueChanged = callback;
-        };
-        ExtendedListboxInstance.prototype.onItemsChanged = function (callback) {
-            this.listbox.baseListBox._settings.onItemsChanged = callback;
-        };
-        ExtendedListboxInstance.prototype.onFilterChanged = function (callback) {
-            this.listbox.baseListBox._settings.onFilterChanged = callback;
-        };
-        ExtendedListboxInstance.prototype.onItemEnterPressed = function (callback) {
-            this.listbox.baseListBox._settings.onItemEnterPressed = callback;
-        };
-        ExtendedListboxInstance.prototype.onItemDoubleClicked = function (callback) {
-            this.listbox.baseListBox._settings.onItemDoubleClicked = callback;
-        };
         return ExtendedListboxInstance;
     }());
     return ExtendedListboxInstance;
@@ -630,10 +615,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(1), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox, ListboxEvent) {
     "use strict";
     var MultiSelectListbox = (function () {
         function MultiSelectListbox(domelement, options) {
@@ -662,7 +647,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             }
             this.baseListBox._target.val(parentValues);
             this.baseListBox._target.trigger('change');
-            this.baseListBox.eventHandler.fireValueChangedEvent(parentValues);
+            this.baseListBox.eventHandler.fire(ListboxEvent.VALUE_CHANGED, parentValues);
         };
         MultiSelectListbox.prototype.onFilterChange = function () {
             return undefined;
@@ -675,10 +660,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(1), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox, ListboxEvent) {
     "use strict";
     var SingleSelectListbox = (function () {
         function SingleSelectListbox(domelement, options) {
@@ -701,7 +686,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             domItem.data("dataItem").selected = true;
             this.baseListBox._target.val(domItem.data("dataItem"));
             this.baseListBox._target.trigger('change');
-            this.baseListBox.eventHandler.fireValueChangedEvent(domItem.data("dataItem"));
+            this.baseListBox.eventHandler.fire(ListboxEvent.VALUE_CHANGED, domItem.data("dataItem"));
         };
         SingleSelectListbox.prototype.onFilterChange = function () {
             if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
@@ -710,7 +695,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                     this.onItemClick(element);
                 }
             }
-            this.baseListBox.eventHandler.fireFilterChangedEvent(this.baseListBox._searchbar.val());
+            this.baseListBox.eventHandler.fire(ListboxEvent.FILTER_CHANGED, this.baseListBox._searchbar.val());
         };
         return SingleSelectListbox;
     }());
@@ -720,59 +705,21 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-    "use strict";
-    var ListboxEvent = (function () {
-        function ListboxEvent(eventName, target, args) {
-            this.eventName = eventName;
-            this.target = target;
-            this.args = args;
-        }
-        return ListboxEvent;
-    }());
-    ListboxEvent.VALUE_CHANGED = "valueChanged";
-    ListboxEvent.FILTER_CHANGED = "filterChanged";
-    ListboxEvent.ITEMS_CHANGED = "itemsChanged";
-    ListboxEvent.ITEM_ENTER_PRESSED = "itemEnterPressed";
-    ListboxEvent.ITEM_DOUBLE_CLICKED = "itemDoubleClicked";
-    return ListboxEvent;
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEvent) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ListboxEvent) {
     "use strict";
     var ListboxEventHandler = (function () {
         function ListboxEventHandler(listBox) {
             this.listBox = listBox;
         }
-        ListboxEventHandler.prototype.fire = function (name, delegate, args) {
+        ListboxEventHandler.prototype.fire = function (name, args) {
+            var delegate = this.listBox._settings["on" + name[0].toUpperCase() + name.substr(1)];
             if (delegate) {
                 var event = new ListboxEvent(name, this.listBox._target, args);
                 delegate(event);
             }
-        };
-        ListboxEventHandler.prototype.fireValueChangedEvent = function (args) {
-            this.fire(ListboxEvent.VALUE_CHANGED, this.listBox._settings.onValueChanged, args);
-        };
-        ListboxEventHandler.prototype.fireItemsChangedEvent = function (args) {
-            this.fire(ListboxEvent.ITEMS_CHANGED, this.listBox._settings.onItemsChanged, args);
-        };
-        ListboxEventHandler.prototype.fireFilterChangedEvent = function (args) {
-            this.fire(ListboxEvent.FILTER_CHANGED, this.listBox._settings.onFilterChanged, args);
-        };
-        ListboxEventHandler.prototype.fireItemEnterPressedEvent = function (args) {
-            this.fire(ListboxEvent.ITEM_ENTER_PRESSED, this.listBox._settings.onItemEnterPressed, args);
-        };
-        ListboxEventHandler.prototype.fireItemDoubleClickedEvent = function (args) {
-            this.fire(ListboxEvent.ITEM_DOUBLE_CLICKED, this.listBox._settings.onItemDoubleClicked, args);
         };
         return ListboxEventHandler;
     }());
@@ -785,8 +732,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
-module.exports = __webpack_require__(2);
+__webpack_require__(2);
+module.exports = __webpack_require__(3);
 
 
 /***/ })
