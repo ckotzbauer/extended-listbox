@@ -1,5 +1,6 @@
 import ListboxSettings = require("./contract/ListboxSettings");
 import ListboxEventHandler = require("./event/ListboxEventHandler");
+import ListboxEvent = require("./event/ListboxEvent");
 import ListboxItem = require("./contract/ListboxItem");
 import Listbox = require("./Listbox");
 
@@ -357,7 +358,7 @@ class BaseListBox {
         var id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
 
         if (!internal) {
-            this.eventHandler.fireItemsChangedEvent(this.getItems());
+            this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
         }
 
         return id;
@@ -376,7 +377,7 @@ class BaseListBox {
             this._clearItemSelection(uiItem);
             uiItem.remove();
 
-            this.eventHandler.fireItemsChangedEvent(this.getItems());
+            this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
         }
     }
 
@@ -506,7 +507,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.eventHandler.fireItemsChangedEvent(this.getItems());
+        this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -527,7 +528,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.eventHandler.fireItemsChangedEvent(this.getItems());
+        this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -548,7 +549,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.eventHandler.fireItemsChangedEvent(this.getItems());
+        this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -569,7 +570,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.eventHandler.fireItemsChangedEvent(this.getItems());
+        this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -607,7 +608,7 @@ class BaseListBox {
      * @param {JQuery} domItem: the domItem.
      */
     protected onItemEnterPressed(domItem: JQuery): void {
-        this.eventHandler.fireItemEnterPressedEvent(domItem.data("dataItem"));
+        this.eventHandler.fire(ListboxEvent.ITEM_ENTER_PRESSED, domItem.data("dataItem"));
     }
 
     /**
@@ -616,7 +617,7 @@ class BaseListBox {
      * @param {JQuery} domItem: the domItem.
      */
     protected onItemDoubleClicked(domItem: JQuery): void {
-        this.eventHandler.fireItemDoubleClickedEvent(domItem.data("dataItem"));
+        this.eventHandler.fire(ListboxEvent.ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
     }
 
     /**

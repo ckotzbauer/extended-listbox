@@ -4,7 +4,7 @@
 import TestHelper = require("../infrastructure/TestHelper");
 import ListboxEvent = require("../../src/ts/event/ListboxEvent");
 import ListboxEventHandler = require("../../src/ts/event/ListboxEventHandler");
-import ExtendedListboxInstance = require("../../src/ts/ExtendedListboxInstance");
+//import ExtendedListboxInstance = require("../../src/ts/ExtendedListboxInstance");
 
 QUnit.module( "ListboxEventHandlerTest", {
     beforeEach: function(): void {
@@ -29,7 +29,7 @@ test("check valueChanged event", function (): void {
 
     var handler: ListboxEventHandler = new ListboxEventHandler(listbox["listbox"].baseListBox);
 
-    handler.fireValueChangedEvent("mySpecialValue");
+    handler.fire(ListboxEvent.VALUE_CHANGED, "mySpecialValue");
 });
 
 test("check itemsChanged event", function (): void {
@@ -46,7 +46,7 @@ test("check itemsChanged event", function (): void {
 
     var handler: ListboxEventHandler = new ListboxEventHandler(listbox["listbox"].baseListBox);
 
-    handler.fireItemsChangedEvent("mySpecialValue");
+    handler.fire(ListboxEvent.ITEMS_CHANGED, "mySpecialValue");
 });
 
 test("check filterChanged event", function (): void {
@@ -63,7 +63,7 @@ test("check filterChanged event", function (): void {
 
     var handler: ListboxEventHandler = new ListboxEventHandler(listbox["listbox"].baseListBox);
 
-    handler.fireFilterChangedEvent("mySpecialValue");
+    handler.fire(ListboxEvent.FILTER_CHANGED, "mySpecialValue");
 });
 
 test("check itemEnterPressed event", function (): void {
@@ -80,7 +80,7 @@ test("check itemEnterPressed event", function (): void {
 
     var handler: ListboxEventHandler = new ListboxEventHandler(listbox["listbox"].baseListBox);
 
-    handler.fireItemEnterPressedEvent("mySpecialValue");
+    handler.fire(ListboxEvent.ITEM_ENTER_PRESSED, "mySpecialValue");
 });
 
 test("check itemDoubleClicked event", function (): void {
@@ -97,5 +97,5 @@ test("check itemDoubleClicked event", function (): void {
 
     var handler: ListboxEventHandler = new ListboxEventHandler(listbox["listbox"].baseListBox);
 
-    handler.fireItemDoubleClickedEvent("mySpecialValue");
+    handler.fire(ListboxEvent.ITEM_DOUBLE_CLICKED, "mySpecialValue");
 });

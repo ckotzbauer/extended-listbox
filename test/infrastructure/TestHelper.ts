@@ -2,7 +2,7 @@
 /// <amd-module name="build/out/test/test/infrastructure/TestHelper"/>
 
 import "../../src/ts/JQueryExtendedListbox";
-import ExtendedListboxInstance = require("../../src/ts/ExtendedListboxInstance");
+//import ExtendedListboxInstance = require("../../src/ts/ExtendedListboxInstance");
 
 class TestHelper {
 

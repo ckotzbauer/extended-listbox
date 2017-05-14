@@ -42,7 +42,7 @@ function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListbox
             listbox = new SingleSelectListbox($this, settings);
         }
 
-        instance = ExtendedListboxInstance.createFrom(listbox, $this);
+        instance = new ExtendedListboxInstance(listbox, $this);
 
         $this.data('listbox', listbox);
         $this.data('listbox-instance', instance);

@@ -1,6 +1,7 @@
 import BaseListBox = require("./BaseListBox");
 import ListboxSettings = require("./contract/ListboxSettings");
 import Listbox = require("./Listbox");
+import ListboxEvent = require("./event/ListboxEvent");
 
 class MultiSelectListbox implements Listbox {
 
@@ -56,7 +57,7 @@ class MultiSelectListbox implements Listbox {
         this.baseListBox._target.val(parentValues);
         this.baseListBox._target.trigger('change');
 
-        this.baseListBox.eventHandler.fireValueChangedEvent(parentValues);
+        this.baseListBox.eventHandler.fire(ListboxEvent.VALUE_CHANGED, parentValues);
     }
 
     public onFilterChange(): void {

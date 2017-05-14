@@ -1,6 +1,7 @@
 import BaseListBox = require("./BaseListBox");
 import ListboxSettings = require("./contract/ListboxSettings");
 import Listbox = require("./Listbox");
+import ListboxEvent = require("./event/ListboxEvent");
 
 class SingleSelectListbox implements Listbox {
 
@@ -47,7 +48,7 @@ class SingleSelectListbox implements Listbox {
         this.baseListBox._target.val(domItem.data("dataItem"));
         this.baseListBox._target.trigger('change');
 
-        this.baseListBox.eventHandler.fireValueChangedEvent(domItem.data("dataItem"));
+        this.baseListBox.eventHandler.fire(ListboxEvent.VALUE_CHANGED, domItem.data("dataItem"));
     }
 
 
@@ -64,7 +65,7 @@ class SingleSelectListbox implements Listbox {
             }
         }
 
-        this.baseListBox.eventHandler.fireFilterChangedEvent(this.baseListBox._searchbar.val());
+        this.baseListBox.eventHandler.fire(ListboxEvent.FILTER_CHANGED, this.baseListBox._searchbar.val());
     }
 }
 
