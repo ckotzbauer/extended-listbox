@@ -2,7 +2,7 @@ language:
   - "node_js"
 
 node_js:
-  - "7.5"
+  - "node"
 
 branches:
   only:
@@ -13,20 +13,23 @@ branches:
 addons:
   sauce_connect: true
 
+before_install:
+  - npm i -g npm5
+  - npm5 i -g greenkeeper-lockfile
+
+install: npm5 install
+
+before_script: greenkeeper-lockfile-update
+
 script:
-  - yarn global add typings
-  - "typings install"
-  - "npm run test:ci"
-  
-after_success:
-  - bash ./yarn-greenkeeper.sh
+  - npm5 i -g typings
+  - typings install
+  - npm5 run test:ci
+
+after_script: greenkeeper-lockfile-upload
 
 notifications:
   slack:
     on_success: change
     on_failure: always
     secure: "A1n8ycSyggWJGeIBSUtlaS6JVcW63AWn6tw9EprzWHeWSvhFRaQ546pmZtObmf03+bTu2KAQFYLoJZHa+FPzxa4+qpOfsMOm30rikWZFQame1MTGMZs0e7NSdDmt4fT4bSI8HOJbut4ODtO7/ynmS3UUyjgp1WpanC7UtMITxfzj0qbxKxxBdDRfZYwp+rlfhvuzuYCxDadzLFyMVJbTD+aTeialH/AQll9LNjxRU15TYLvgqT3mQJ4MEfwSiHVQV4M/ldoEKvHvVRO/ZPXbXUU7rIalGKNklhiMI/N5Cfj5kASGtKlaplbWOkV62Ixa9T/oYpjRmwn4QULv9iICvQs2SlIzBLL7DaRxU/jXf/Sb59CRSOfb5sUt49LTQWTQTwoqDxtvGibjlSrTCwtkoindrbbFsidfbnd99EW5SNecj0QiZjYYd5F7Zv+0rbnr6n6hP40kt/C6HuMdx3Sx0GiMorGD1e/12oI+Yw+c4yAIE89CdCtv7gSlTNiysnNfKRoGYGJGwKdLh9IqMrBSgU+PUJbEoiSmjCHvLEtuIQQaAKMKhJfxMeQmIXhn+Dn76gB1vanAdS/6MZTcKS9hDX41JT9AUaMYGhoWDAB4FFdbIZM9R2Ko2KtZGoB03BIJh8wyPI8uk7iae63Gvq0csJkf5d+U6qxuO0js3DDr3vU="
-
-env:
-  global:
-    - secure: "qfQFNjh8I4JqZnDDDrwHd4jMdJlfSl7kIWbBoLK9McYtFmtXNX1W58F2hrrnBa3OtzLkqob04+NE3RPIpJ4su5aJ9fGXIfOB9j78g8a1kgWUpm5J0VpbU80709jW0ZdwvPDLRF8oH4XdDf9r2RoA86IXPZk8E+XHQFeYWS56kR5ADiex4ioD6ZyuwxhSSWd1YBxGi7uOywwnP5u6nFCZcuZHQ0J3kO+eNg2pF03o3J2NQwUEc/zjNRY3ios4chPQ42R6hNFanmUlQDlTaAmI68h8qsUGDkVVWtHJIFruyK5aG2AqDobsZ6A1FgL2LqWN5RyokRNwQ7E9MlLO8/nR/7Y9ciGLxsA3sKHAp49TqmPoAce8q3Y0Ba2qFN9uY199nARUOTTHHZczxBjf8xNPJbZYHXPGG59QxCGj8KbnYFCiExNqPxKRYt43iMl2uUsejrgzmVzZsE+wSijsZE5/nTSIOChyZHYztWfSJ33HGJH5JHYc+yKe3a12zQ2fXS8HbzCyMQH+MLZIFEqqo4XFSa5tHIN+p9uAJt7gfjJWSed+02dgetOQb2W+dA9luNHvftqKWix3T+89RvX5ie5AkK5JUbdB4e8Ev9QuvGm+cmMqbvsmvKBBk9TOrfpdCBiDoAmEBCc9rfVGypFC0y3JFltVG/vT/xUtbsdi5V7L4us="
