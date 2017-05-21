@@ -19,11 +19,6 @@
       "args": ["-b", "firefox", "-p", "Windows 10", "-v", "latest", "--no-connect", "--attach", "-u"],
       "protocol": "browser"
     },
-    "SL_MS_Edge": {
-      "exe": "node_modules/.bin/saucie",
-      "args": ["-b", "microsoftedge", "--no-connect", "--attach", "-u"],
-      "protocol": "browser"
-    },
     "SL_IE_11": {
       "exe": "node_modules/.bin/saucie",
       "args": ["-b", "internet explorer", "-v", "11", "--no-connect", "--attach", "-u"],
@@ -44,7 +39,6 @@
   "launch_in_ci": [
     "SL_Chrome_Current",
     "SL_Firefox_Current",
-    "SL_MS_Edge",
     "SL_IE_11",
     "SL_IE_10",
     "SL_IE_9"
