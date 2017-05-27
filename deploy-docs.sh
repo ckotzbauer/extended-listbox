@@ -23,6 +23,7 @@ mkdir public/documentation/fonts
 mkdir public/documentation/infrastructure
 mkdir public/documentation/scripts
 mkdir public/documentation/styles
+mkdir public/documentation/$PKG_VERSION
 
 cp -r doc/pages/documentation/fonts/* public/documentation/fonts
 cp -r doc/pages/documentation/infrastructure/* public/documentation/infrastructure
