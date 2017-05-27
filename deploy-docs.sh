@@ -31,8 +31,8 @@ cp -r doc/pages/documentation/scripts/* public/documentation/scripts
 cp -r doc/pages/documentation/styles/* public/documentation/styles
 cp -r doc/pages/documentation/latest/* public/documentation/$PKG_VERSION
 
-sed -i '/refresh/c\<meta http-equiv="refresh" content="0; URL=../$PKG_VERSION/">' public/documentation/latest/index.html
-sed -i '/<!-- Add here -->/c\<li><a href="./documentation/$PKG_VERSION/">$PKG_VERSION</a></li>\n<!-- Add here -->' public/index.html
+sed -i "/refresh/c\<meta http-equiv=\"refresh\" content=\"0; URL=../$PKG_VERSION/\">' public/documentation/latest/index.html
+sed -i "/Addhere/c\<li><a href=\"./documentation/$PKG_VERSION/\">$PKG_VERSION</a></li>\n<span id=\"Addhere\"></span>" public/index.html
 
 cp dist/js/extended-listbox.js public/documentation/$PKG_VERSION/dist/js/extended-listbox.js
 cp dist/css/extended-listbox.css public/documentation/$PKG_VERSION/dist/css/extended-listbox.css
