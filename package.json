@@ -38,7 +38,7 @@
     "prepare-tests": "npm run build && tsc --project tsconfig.test.json && node build/scripts/generate-test.js",
     "test:dev": "npm run prepare-tests && node node_modules/testem/testem.js dev",
     "test:ci": "npm run prepare-tests && node node_modules/testem/testem.js ci",
-    "lint": "node node_modules/tslint/bin/tslint -c tslint.json --project tsconfig.json -t verbose -o tslint.txt"
+    "lint": "node node_modules/tslint/bin/tslint -c tslint.json --project tsconfig.json -t verbose -o build/out/tslint.txt"
   },
   "devDependencies": {
     "awesome-typescript-loader": "~3.1.1",
