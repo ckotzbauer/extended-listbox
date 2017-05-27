@@ -9,7 +9,7 @@ rm -rf public
 git config --global user.email "christian.kotzbauer@gmail.com"
 git config --global user.name "Christian Kotzbauer"
 
-git clone https://${GH_TOKEN}@github.com/code-chris/extended-listbox.git -b gh-test public
+git clone https://${GH_TOKEN}@github.com/code-chris/extended-listbox.git -b gh-pages public
 
 # build
 PKG_VERSION=`node -p "require('./package.json').version"`
@@ -44,4 +44,4 @@ cp dist/css/extended-listbox.css public/documentation/$PKG_VERSION/dist/css/exte
 cd public
 git add .
 git commit -m "Deploy to Github Pages"
-git push origin gh-test
+git push origin gh-pages
