@@ -1,4 +1,4 @@
-var saucie = require('saucie');
-var pidFile = 'sc_client.pid';
+const saucie = require('saucie');
+const pidFile = 'sc_client.pid';
 
 saucie.disconnect(pidFile);

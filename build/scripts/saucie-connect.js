@@ -1,7 +1,7 @@
-var saucie = require('saucie');
-var pidFile = 'sc_client.pid';
+const saucie = require('saucie');
+const pidFile = 'sc_client.pid';
 
-var opts = {
+const opts = {
     username: process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,
     verbose: true,
@@ -13,6 +13,6 @@ if (process.env.TRAVIS_JOB_NUMBER) {
     opts.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
 }
 
-saucie.connect(opts).then(function () {
+saucie.connect(opts).then(() => {
     process.exit();
 });
