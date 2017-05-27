@@ -28,7 +28,7 @@ plugins.push(new webpack.BannerPlugin(banner));
 var config = {
     entry: [
         __dirname + '/src/ts/JQueryExtendedListbox.ts',
-        __dirname + '/src/less/extended-listbox.less'
+        __dirname + '/src/styles/extended-listbox.scss'
     ],
     devtool: "source-map",
     output: {
@@ -40,12 +40,12 @@ var config = {
     module: {
         rules: [
             { test: /\.ts?$/, loader: 'awesome-typescript-loader', exclude: /node_modules/ },
-            { test: /\.less/, loader: ExtractTextPlugin.extract({ use: "css-loader!less-loader" }) }
+            { test: /\.scss/, loader: ExtractTextPlugin.extract({ use: "css-loader!sass-loader" }) }
         ]
     },
     resolve: {
         //root: path.resolve('./src/ts'),
-        extensions: ['.ts', '.less']
+        extensions: ['.ts', '.scss']
     },
     plugins: plugins
 };
