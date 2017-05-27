@@ -12,36 +12,36 @@ QUnit.module( "SingleSelectListboxTest", {
     }
 });
 
-test('construct default', function (): void {
+QUnit.test('construct default', function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList();
 
-    equal(root.target.attr('class'), 'listbox-root');
+    QUnit.assert.equal(root.target.attr('class'), 'listbox-root');
 
     var listbox: JQuery = TestHelper.child(root.target);
-    equal(listbox.attr('class'), 'listbox');
+    QUnit.assert.equal(listbox.attr('class'), 'listbox');
 
     var searchbar: JQuery = listbox.find('.listbox-searchbar');
-    notEqual(searchbar.attr('class'), 'listbox-searchbar');
+    QUnit.assert.notEqual(searchbar.attr('class'), 'listbox-searchbar');
 });
 
 
-test('construct with searchbar', function (): void {
+QUnit.test('construct with searchbar', function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
 
     var searchbar: JQuery = TestHelper.child(root.target);
-    equal(searchbar.attr('class'), 'listbox-searchbar-wrapper');
-    equal(TestHelper.child(searchbar).attr('placeholder'), 'Search...');
+    QUnit.assert.equal(searchbar.attr('class'), 'listbox-searchbar-wrapper');
+    QUnit.assert.equal(TestHelper.child(searchbar).attr('placeholder'), 'Search...');
 
     var listbox: JQuery = TestHelper.child(root.target, 1);
-    equal(listbox.attr('class'), 'listbox');
+    QUnit.assert.equal(listbox.attr('class'), 'listbox');
 });
 
-test('construct with searchbar watermark', function (): void {
+QUnit.test('construct with searchbar watermark', function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList(
         { searchBar: true, searchBarWatermark: "Suche..." });
 
     var searchbar: JQuery = TestHelper.child(root.target);
-    equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
+    QUnit.assert.equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
 });
 
 // TODO implement implicit default value
@@ -55,13 +55,13 @@ test('construct with searchbar watermark', function (): void {
  var list = select.next().find('.lbjs-list');
  var selectedItems = list.children('[selected]');
 
- equal(selectedItems.length, 1);
- equal(selectedItems.text(), 'A');
- equal(selectedItems.text(), select.val());
+ QUnit.assert.equal(selectedItems.length, 1);
+ QUnit.assert.equal(selectedItems.text(), 'A');
+ QUnit.assert.equal(selectedItems.text(), select.val());
  });*/
 
 
-test('explicit default value', function (): void {
+QUnit.test('explicit default value', function (): void {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
@@ -71,13 +71,13 @@ test('explicit default value', function (): void {
 
     var selectedItems: JQuery = select.target.find(".listbox-item-selected");
 
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'C');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 });
 
 
-test('two explicit default values', function (): void {
+QUnit.test('two explicit default values', function (): void {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         { text: "B", selected: true },
@@ -87,13 +87,13 @@ test('two explicit default values', function (): void {
 
     var selectedItems: JQuery = select.target.find(".listbox-item-selected");
 
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'C');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 });
 
 
-test('one click', function (): void {
+QUnit.test('one click', function (): void {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
@@ -106,13 +106,13 @@ test('one click', function (): void {
     $(items[1]).click();     // click on 'B'
 
     var selectedItems: JQuery = select.target.find(".listbox-item-selected");
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'B');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'B');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 });
 
 
-test('multiple clicks', function (): void {
+QUnit.test('multiple clicks', function (): void {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
@@ -125,48 +125,48 @@ test('multiple clicks', function (): void {
     $(items[1]).click();     // click on 'B'
 
     var selectedItems: JQuery = select.target.find(".listbox-item-selected");
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'B');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'B');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[2]).click();     // click on 'C'
 
     selectedItems = select.target.find(".listbox-item-selected");
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'C');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[0]).click();     // click on 'A'
 
     selectedItems = select.target.find(".listbox-item-selected");
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'A');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'A');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[3]).click();     // click on 'D'
 
     selectedItems = select.target.find(".listbox-item-selected");
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'D');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'D');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[1]).click();     // click on 'B'
 
     selectedItems = select.target.find(".listbox-item-selected");
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'B');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'B');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 
     $(items[2]).click();     // click on 'C'
 
     selectedItems = select.target.find(".listbox-item-selected");
-    equal(selectedItems.length, 1);
-    equal(selectedItems.text(), 'C');
-    equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems.length, 1);
+    QUnit.assert.equal(selectedItems.text(), 'C');
+    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
 });
 
 
-test('change event', function (): void {
+QUnit.test('change event', function (): void {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
@@ -182,15 +182,15 @@ test('change event', function (): void {
     var items: JQuery = select.target.find(".listbox-item");
 
     $(items[0]).click();
-    equal(receiveCounter, 1);
+    QUnit.assert.equal(receiveCounter, 1);
 
     $(items[1]).click();
     $(items[2]).click();
 
-    equal(receiveCounter, 3);
+    QUnit.assert.equal(receiveCounter, 3);
 });
 
-test('onValueChanged callback', function (): void {
+QUnit.test('onValueChanged callback', function (): void {
     var receiveCounter: number = 0;
     var lastValue: any = null;
 
@@ -210,12 +210,12 @@ test('onValueChanged callback', function (): void {
     var items: JQuery = select.target.find(".listbox-item");
 
     $(items[0]).click();
-    equal(receiveCounter, 1);
-    equal(lastValue, "A");
+    QUnit.assert.equal(receiveCounter, 1);
+    QUnit.assert.equal(lastValue, "A");
 
     $(items[1]).click();
     $(items[2]).click();
 
-    equal(receiveCounter, 3);
-    equal(lastValue, "C");
+    QUnit.assert.equal(receiveCounter, 3);
+    QUnit.assert.equal(lastValue, "C");
 });

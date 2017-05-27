@@ -13,82 +13,82 @@ QUnit.module( "BaseListBoxTest", {
     }
 });
 
-test("check multiple creations", function (): void {
+QUnit.test("check multiple creations", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList();
     var instance: ExtendedListboxInstance = <ExtendedListboxInstance>root.target.listbox();
 
-    equal(root, instance);
+    QUnit.assert.equal(root, instance);
 });
 
-test("check root css class", function (): void {
+QUnit.test("check root css class", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList();
 
-    equal(root.target.attr('class'), 'listbox-root');
+    QUnit.assert.equal(root.target.attr('class'), 'listbox-root');
 });
 
-test("check list css class", function (): void {
+QUnit.test("check list css class", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList();
 
     var listbox: JQuery = TestHelper.child(root.target);
-    equal(listbox.attr('class'), 'listbox');
+    QUnit.assert.equal(listbox.attr('class'), 'listbox');
 });
 
-test("check non existent searchbar", function (): void {
+QUnit.test("check non existent searchbar", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList();
     var searchbar: JQuery = root.target.find('.listbox-searchbar');
 
-    equal(searchbar.length, 0);
+    QUnit.assert.equal(searchbar.length, 0);
 });
 
-test("check searchbarwrapper css class", function (): void {
+QUnit.test("check searchbarwrapper css class", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
     var searchbarWrapper: JQuery = TestHelper.child(root.target);
 
-    equal(searchbarWrapper.attr('class'), 'listbox-searchbar-wrapper');
+    QUnit.assert.equal(searchbarWrapper.attr('class'), 'listbox-searchbar-wrapper');
 });
 
-test("check searchbar css class", function (): void {
-    var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
-    var searchbarWrapper: JQuery = TestHelper.child(root.target);
-    var searchbar: JQuery = TestHelper.child(searchbarWrapper);
-
-    equal(searchbar.attr('class'), 'listbox-searchbar');
-});
-
-test("check default searchbar watermark", function (): void {
+QUnit.test("check searchbar css class", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
     var searchbarWrapper: JQuery = TestHelper.child(root.target);
     var searchbar: JQuery = TestHelper.child(searchbarWrapper);
 
-    equal(searchbar.attr('placeholder'), 'Search...');
+    QUnit.assert.equal(searchbar.attr('class'), 'listbox-searchbar');
 });
 
-test("check explicit searchbar watermark", function (): void {
+QUnit.test("check default searchbar watermark", function (): void {
+    var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
+    var searchbarWrapper: JQuery = TestHelper.child(root.target);
+    var searchbar: JQuery = TestHelper.child(searchbarWrapper);
+
+    QUnit.assert.equal(searchbar.attr('placeholder'), 'Search...');
+});
+
+QUnit.test("check explicit searchbar watermark", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList(
         { searchBar: true, searchBarWatermark: "Suche ..." });
     var searchbarWrapper: JQuery = TestHelper.child(root.target);
     var searchbar: JQuery = TestHelper.child(searchbarWrapper);
 
-    equal(searchbar.attr('placeholder'), 'Suche ...');
+    QUnit.assert.equal(searchbar.attr('placeholder'), 'Suche ...');
 });
 
-test("check non existent searchbar button", function (): void {
+QUnit.test("check non existent searchbar button", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
     var button: JQuery = root.target.find('.listbox-searchbar-button');
 
-    equal(button.length, 0);
+    QUnit.assert.equal(button.length, 0);
 });
 
-test("check existent searchbar button with icon", function (): void {
+QUnit.test("check existent searchbar button with icon", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList(<ListboxSettings>{ searchBar: true,
         searchBarButton: { visible: true, icon: "testIcon" } });
     var button: JQuery = root.target.find('.listbox-searchbar-button');
     var icon: JQuery = TestHelper.child(button);
 
-    equal(icon.attr('class'), 'testIcon');
+    QUnit.assert.equal(icon.attr('class'), 'testIcon');
 });
 
-test("check searchbar button callback", function (): void {
+QUnit.test("check searchbar button callback", function (): void {
     var count: number = 0;
     var callback: () => void = function(): void {
         count++;
@@ -104,30 +104,30 @@ test("check searchbar button callback", function (): void {
     var button: JQuery = root.target.find('.listbox-searchbar-button');
     button.click();
 
-    equal(count, 1);
+    QUnit.assert.equal(count, 1);
 });
 
-test("check simple items", function (): void {
+QUnit.test("check simple items", function (): void {
     var items: any[] = ["Item#1", "Item#2", "Item#3"];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 3);
+    QUnit.assert.equal(itemElements.length, 3);
 
     for (var i: number = 0; i < itemElements.length; i++) {
         var element: JQuery = itemElements[i];
         var item: any = items[i];
 
-        equal(element.attr("class"), "listbox-item");
-        equal(element.text(), item);
-        equal(element.attr("title"), item);
-        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
+        QUnit.assert.equal(element.attr("class"), "listbox-item");
+        QUnit.assert.equal(element.text(), item);
+        QUnit.assert.equal(element.attr("title"), item);
+        QUnit.assert.ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
     }
 });
 
-test("check disabled items", function (): void {
+QUnit.test("check disabled items", function (): void {
     var items: any[] = [{ text: "Item#1", disabled: true },
         { text: "Item#2", disabled: true }, { text: "Item#3", disabled: true }];
 
@@ -135,108 +135,108 @@ test("check disabled items", function (): void {
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 3);
+    QUnit.assert.equal(itemElements.length, 3);
 
     for (var i: number = 0; i < itemElements.length; i++) {
         var element: JQuery = itemElements[i];
         var item: any = items[i];
 
-        equal(element.attr("class"), "listbox-item listbox-item-disabled");
-        equal(element.text(), item.text);
-        equal(element.attr("title"), item.text);
-        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
+        QUnit.assert.equal(element.attr("class"), "listbox-item listbox-item-disabled");
+        QUnit.assert.equal(element.text(), item.text);
+        QUnit.assert.equal(element.attr("title"), item.text);
+        QUnit.assert.ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
     }
 });
 
-test("check selected item", function (): void {
+QUnit.test("check selected item", function (): void {
     var items: any[] = [{ text: "Item#1", selected: true }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 1);
+    QUnit.assert.equal(itemElements.length, 1);
 
     for (var i: number = 0; i < itemElements.length; i++) {
         var element: JQuery = itemElements[i];
         var item: any = items[i];
 
-        equal(element.attr("class"), "listbox-item listbox-item-selected");
-        equal(element.text(), item.text);
-        equal(element.attr("title"), item.text);
-        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
+        QUnit.assert.equal(element.attr("class"), "listbox-item listbox-item-selected");
+        QUnit.assert.equal(element.text(), item.text);
+        QUnit.assert.equal(element.attr("title"), item.text);
+        QUnit.assert.ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
     }
 });
 
-test("check header item", function (): void {
+QUnit.test("check header item", function (): void {
     var items: any[] = [{ text: "Item#1", groupHeader: true }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 1);
+    QUnit.assert.equal(itemElements.length, 1);
 
     for (var i: number = 0; i < itemElements.length; i++) {
         var element: JQuery = itemElements[i];
         var item: any = items[i];
 
-        equal(element.attr("class"), "listbox-item listbox-item-group");
-        equal(element.text(), item.text);
-        equal(element.attr("title"), item.text);
-        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
+        QUnit.assert.equal(element.attr("class"), "listbox-item listbox-item-group");
+        QUnit.assert.equal(element.text(), item.text);
+        QUnit.assert.equal(element.attr("title"), item.text);
+        QUnit.assert.ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
     }
 });
 
-test("check item with id", function (): void {
+QUnit.test("check item with id", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 3);
+    QUnit.assert.equal(itemElements.length, 3);
 
     for (var i: number = 0; i < itemElements.length; i++) {
         var element: JQuery = itemElements[i];
         var item: any = items[i];
 
-        equal(element.attr("id"), item.id);
+        QUnit.assert.equal(element.attr("id"), item.id);
     }
 });
 
-test("check item with childs", function (): void {
+QUnit.test("check item with childs", function (): void {
     var items: any[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 1);
+    QUnit.assert.equal(itemElements.length, 1);
 
     for (var i: number = 0; i < itemElements.length; i++) {
         var element: JQuery = itemElements[i];
         var item: any = items[i];
 
-        equal(element.attr("class"), "listbox-item listbox-item-group");
-        equal(element.attr("title"), item.text);
-        ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
+        QUnit.assert.equal(element.attr("class"), "listbox-item listbox-item-group");
+        QUnit.assert.equal(element.attr("title"), item.text);
+        QUnit.assert.ok(TestHelper.startsWith(element.attr("id"), "listboxitem"));
 
         var childElements: JQuery[] = TestHelper.children(element);
-        equal(childElements.length, 2);
+        QUnit.assert.equal(childElements.length, 2);
         for (var j: number = 0; j < childElements.length; j++) {
             var childElement: JQuery = childElements[j];
             var childItem: any = items[0].childItems[j];
 
-            equal(childElement.attr("class"), "listbox-item listbox-item-child");
-            equal(childElement.text(), childItem);
-            equal(childElement.attr("title"), childItem);
-            ok(TestHelper.startsWith(childElement.attr("id"), "listboxitem"));
+            QUnit.assert.equal(childElement.attr("class"), "listbox-item listbox-item-child");
+            QUnit.assert.equal(childElement.text(), childItem);
+            QUnit.assert.equal(childElement.attr("title"), childItem);
+            QUnit.assert.ok(TestHelper.startsWith(childElement.attr("id"), "listboxitem"));
         }
     }
 });
 
-test("check item removal id", function (): void {
+QUnit.test("check item removal id", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ multiple: true }, items);
@@ -246,7 +246,7 @@ test("check item removal id", function (): void {
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 2);
+    QUnit.assert.equal(itemElements.length, 2);
 
     var found: boolean = false;
     itemElements.forEach(function ($elem: JQuery): void {
@@ -256,10 +256,10 @@ test("check item removal id", function (): void {
         }
     });
 
-    equal(found, false);
+    QUnit.assert.equal(found, false);
 });
 
-test("check item removal text", function (): void {
+QUnit.test("check item removal text", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
@@ -269,7 +269,7 @@ test("check item removal text", function (): void {
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 2);
+    QUnit.assert.equal(itemElements.length, 2);
 
     var found: boolean = false;
     itemElements.forEach(function ($elem: JQuery): void {
@@ -279,10 +279,10 @@ test("check item removal text", function (): void {
         }
     });
 
-    equal(found, false);
+    QUnit.assert.equal(found, false);
 });
 
-test("check parent item removal", function (): void {
+QUnit.test("check parent item removal", function (): void {
     var items: any[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
@@ -292,10 +292,10 @@ test("check parent item removal", function (): void {
     var listbox: JQuery = TestHelper.child(root.target);
     var itemElements: JQuery[] = TestHelper.children(listbox);
 
-    equal(itemElements.length, 0);
+    QUnit.assert.equal(itemElements.length, 0);
 });
 
-test("check destroy", function (): void {
+QUnit.test("check destroy", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true }, items);
@@ -305,11 +305,11 @@ test("check destroy", function (): void {
     var listbox: JQuery = TestHelper.child(root.target);
     var containerChilds: JQuery[] = TestHelper.children(listbox);
 
-    notEqual(root.target.attr("class"), "listbox-root");
-    equal(containerChilds.length, 0);
+    QUnit.assert.notEqual(root.target.attr("class"), "listbox-root");
+    QUnit.assert.equal(containerChilds.length, 0);
 });
 
-test("check clearSelection", function (): void {
+QUnit.test("check clearSelection", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01", selected: true }, { text: "Item#2", id: "id02", selected: true }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ multiple: true }, items);
@@ -327,44 +327,44 @@ test("check clearSelection", function (): void {
         }
     });
 
-    equal(found, false);
+    QUnit.assert.equal(found, false);
 });
 
-test("check getItem id", function (): void {
+QUnit.test("check getItem id", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ multiple: true }, items);
 
     var item: ListboxItem = root.getItem("id02");
 
-    ok(item !== null);
-    equal(item.id, "id02");
-    equal(item.text, "Item#2");
+    QUnit.assert.ok(item !== null);
+    QUnit.assert.equal(item.id, "id02");
+    QUnit.assert.equal(item.text, "Item#2");
 });
 
-test("check getItem text", function (): void {
+QUnit.test("check getItem text", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ multiple: true }, items);
 
     var item: ListboxItem = root.getItem("Item#1");
 
-    ok(item !== null);
-    equal(item.id, "id01");
-    equal(item.text, "Item#1");
+    QUnit.assert.ok(item !== null);
+    QUnit.assert.equal(item.id, "id01");
+    QUnit.assert.equal(item.text, "Item#1");
 });
 
-test("check getItems", function (): void {
+QUnit.test("check getItems", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ multiple: true }, items);
 
     var listItems: ListboxItem[] = root.getItems();
 
-    equal(listItems.length, 3);
+    QUnit.assert.equal(listItems.length, 3);
 });
 
-test("check moveItemUp", function (): void {
+QUnit.test("check moveItemUp", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ multiple: true }, items);
@@ -372,11 +372,11 @@ test("check moveItemUp", function (): void {
     var originalIndex: number = root.getItem("id03").index;
     var newIndex: number = root.moveItemUp("id03");
 
-    notEqual(originalIndex, newIndex);
-    equal(newIndex, 1);
+    QUnit.assert.notEqual(originalIndex, newIndex);
+    QUnit.assert.equal(newIndex, 1);
 });
 
-test("check moveItemUp (first item)", function (): void {
+QUnit.test("check moveItemUp (first item)", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01", index: 0 },
         { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
@@ -385,11 +385,11 @@ test("check moveItemUp (first item)", function (): void {
     var originalIndex: number = root.getItem("id01").index;
     var newIndex: number = root.moveItemUp("id01");
 
-    equal(originalIndex, newIndex);
-    equal(newIndex, 0);
+    QUnit.assert.equal(originalIndex, newIndex);
+    QUnit.assert.equal(newIndex, 0);
 });
 
-test("check moveItemDown", function (): void {
+QUnit.test("check moveItemDown", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ multiple: true }, items);
@@ -397,11 +397,11 @@ test("check moveItemDown", function (): void {
     var originalIndex: number = root.getItem("id01").index;
     var newIndex: number = root.moveItemDown("id01");
 
-    notEqual(originalIndex, newIndex);
-    equal(newIndex, 1);
+    QUnit.assert.notEqual(originalIndex, newIndex);
+    QUnit.assert.equal(newIndex, 1);
 });
 
-test("check moveItemDown (last item)", function (): void {
+QUnit.test("check moveItemDown (last item)", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" },
         { text: "Item#3", id: "id03", index: 2 }];
 
@@ -410,27 +410,27 @@ test("check moveItemDown (last item)", function (): void {
     var originalIndex: number = root.getItem("id03").index;
     var newIndex: number = root.moveItemDown("id03");
 
-    equal(originalIndex, newIndex);
-    equal(newIndex, 2);
+    QUnit.assert.equal(originalIndex, newIndex);
+    QUnit.assert.equal(newIndex, 2);
 });
 
-test("check enable", function (): void {
+QUnit.test("check enable", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ });
 
     root.enable(true);
 
-    notEqual(root.target.attr("class"), "listbox-root listbox-disabled");
+    QUnit.assert.notEqual(root.target.attr("class"), "listbox-root listbox-disabled");
 });
 
-test("check disable", function (): void {
+QUnit.test("check disable", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ });
 
     root.enable(false);
 
-    equal(root.target.attr("class"), "listbox-root listbox-disabled");
+    QUnit.assert.equal(root.target.attr("class"), "listbox-root listbox-disabled");
 });
 
-test("check moveItemToBottom", function (): void {
+QUnit.test("check moveItemToBottom", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
@@ -438,11 +438,11 @@ test("check moveItemToBottom", function (): void {
     var originalIndex: number = root.getItem("id01").index;
     var newIndex: number = root.moveItemToBottom("id01");
 
-    notEqual(originalIndex, newIndex);
-    equal(newIndex, 2);
+    QUnit.assert.notEqual(originalIndex, newIndex);
+    QUnit.assert.equal(newIndex, 2);
 });
 
-test("check moveItemToTop", function (): void {
+QUnit.test("check moveItemToTop", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
@@ -450,11 +450,11 @@ test("check moveItemToTop", function (): void {
     var originalIndex: number = root.getItem("id02").index;
     var newIndex: number = root.moveItemToTop("id02");
 
-    notEqual(originalIndex, newIndex);
-    equal(newIndex, 0);
+    QUnit.assert.notEqual(originalIndex, newIndex);
+    QUnit.assert.equal(newIndex, 0);
 });
 
-test("check itemEnterPressed event", function (): void {
+QUnit.test("check itemEnterPressed event", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var count: number = 0;
@@ -472,10 +472,10 @@ test("check itemEnterPressed event", function (): void {
     e.eventPhase = 2;
     item.trigger(e);
 
-    equal(count, 1);
+    QUnit.assert.equal(count, 1);
 });
 
-test("check itemDoubleClicked event", function (): void {
+QUnit.test("check itemDoubleClicked event", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var count: number = 0;
@@ -490,10 +490,10 @@ test("check itemDoubleClicked event", function (): void {
 
     item.dblclick();
 
-    equal(count, 1);
+    QUnit.assert.equal(count, 1);
 });
 
-test("check itemArrowUp event", function (): void {
+QUnit.test("check itemArrowUp event", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" },
         { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
 
@@ -502,19 +502,19 @@ test("check itemArrowUp event", function (): void {
     var listbox: JQuery = TestHelper.child(root.target);
     var item: JQuery = TestHelper.child(listbox, 1); // id02
 
-    equal(root.getItem("id01").selected, false);
-    equal(root.getItem("id02").selected, true);
+    QUnit.assert.equal(root.getItem("id01").selected, false);
+    QUnit.assert.equal(root.getItem("id02").selected, true);
 
     var e: any = jQuery.Event("keydown");
     e.which = 38;
     e.eventPhase = 2;
     item.trigger(e);
 
-    equal(root.getItem("id01").selected, true);
-    equal(root.getItem("id02").selected, false);
+    QUnit.assert.equal(root.getItem("id01").selected, true);
+    QUnit.assert.equal(root.getItem("id02").selected, false);
 });
 
-test("check itemArrowDown event", function (): void {
+QUnit.test("check itemArrowDown event", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" },
         { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
 
@@ -523,19 +523,19 @@ test("check itemArrowDown event", function (): void {
     var listbox: JQuery = TestHelper.child(root.target);
     var item: JQuery = TestHelper.child(listbox, 1); // id02
 
-    equal(root.getItem("id02").selected, true);
-    equal(root.getItem("id03").selected, false);
+    QUnit.assert.equal(root.getItem("id02").selected, true);
+    QUnit.assert.equal(root.getItem("id03").selected, false);
 
     var e: any = jQuery.Event("keydown");
     e.which = 40;
     e.eventPhase = 2;
     item.trigger(e);
 
-    equal(root.getItem("id02").selected, false);
-    equal(root.getItem("id03").selected, true);
+    QUnit.assert.equal(root.getItem("id02").selected, false);
+    QUnit.assert.equal(root.getItem("id03").selected, true);
 });
 
-test("check getSelection", function (): void {
+QUnit.test("check getSelection", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" },
         { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03", childItems: [
             { text: "SubItem#1", id: "subid01", selected: true }, { text: "SubItem#2", id: "subid02" }
@@ -545,7 +545,7 @@ test("check getSelection", function (): void {
 
     var selection: ListboxItem[] = root.getSelection();
 
-    equal(selection.length, 2);
-    equal(selection[0].id, "id02");
-    equal(selection[1].id, "subid01");
+    QUnit.assert.equal(selection.length, 2);
+    QUnit.assert.equal(selection[0].id, "id02");
+    QUnit.assert.equal(selection[1].id, "subid01");
 });

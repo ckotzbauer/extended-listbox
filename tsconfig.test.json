@@ -5,7 +5,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "outDir": "build/out/test",
-    "lib": ["es2016", "dom"]
+    "lib": ["es2016", "dom"],
+    "moduleResolution": "node"
   },
   "exclude": [
     "node_modules",
