@@ -19,11 +19,11 @@ rm -r -f public/documentation/infrastructure
 rm -r -f public/documentation/scripts
 rm -r -f public/documentation/styles
 
-cp -r doc/pages/documentation/fonts/**/* public/documentation/fonts
-cp -r doc/pages/documentation/infrastructure/**/* public/documentation/infrastructure
-cp -r doc/pages/documentation/scripts/**/* public/documentation/scripts
-cp -r doc/pages/documentation/styles/**/* public/documentation/styles
-cp -r doc/pages/documentation/latest/**/* public/documentation/$PKG_VERSION
+cp -r doc/pages/documentation/fonts/* public/documentation/fonts
+cp -r doc/pages/documentation/infrastructure/* public/documentation/infrastructure
+cp -r doc/pages/documentation/scripts/* public/documentation/scripts
+cp -r doc/pages/documentation/styles/* public/documentation/styles
+cp -r doc/pages/documentation/latest/* public/documentation/$PKG_VERSION
 
 sed -i '/refresh/c\<meta http-equiv="refresh" content="0; URL=../$PKG_VERSION/">' public/documentation/latest/index.html
 sed -i '/<!-- Add here -->/c\<li><a href="./documentation/$PKG_VERSION/">$PKG_VERSION</a></li>\n<!-- Add here -->' public/index.html
