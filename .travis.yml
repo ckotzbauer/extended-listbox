@@ -28,6 +28,9 @@ script:
 
 after_script: greenkeeper-lockfile-upload
 
+after_success:
+  - bash ./deploy-docs.sh
+
 notifications:
   slack:
     on_success: change
