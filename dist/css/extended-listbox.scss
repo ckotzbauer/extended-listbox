@@ -1,0 +1,95 @@
+
+$listbox-border:            #CCC !default;
+$listbox-background-light:  #FCFCFC !default;
+$listbox-searchbar:         #f5f5f5 !default;
+$listbox-item-hover:        rgba(112, 147, 216, 0.9) !default;
+$listbox-item-selected:     rgba(112, 147, 216, 0.5) !default;
+$listbox-item-disabled:     #999 !default;
+$listbox-item-group:        black !default;
+$listbox-item-height:         300px !default;
+$listbox-item-width:          170px !default;
+$listbox-border-radius:       5px !default;
+
+.listbox-root {
+  margin: 0px;
+  width: $listbox-item-width;
+  padding: 5px;
+  border: 1px solid $listbox-border;
+  border-radius: $listbox-border-radius;
+  background: $listbox-background-light;
+  height: $listbox-item-height;
+
+  &.listbox-disabled {
+    .listbox-searchbar-wrapper,
+    .listbox-item {
+      pointer-events: none;
+    }
+
+    .listbox-searchbar-wrapper {
+      .listbox-searchbar {
+        background: $listbox-searchbar;
+      }
+    }
+  }
+
+  .listbox {
+    margin: 0px;
+    overflow: auto;
+
+    .listbox-item {
+      margin: 0px;
+      padding: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background: $listbox-item-hover;
+      }
+
+      &.listbox-item-selected {
+        background: $listbox-item-selected;
+      }
+
+      &.listbox-item-disabled {
+        color: $listbox-item-disabled;
+        cursor: default;
+
+        &:hover {
+          background: $listbox-background-light;
+        }
+      }
+
+      &.listbox-item-group {
+        color: $listbox-item-group;
+        font-weight: bold;
+        cursor: default;
+
+        &:hover {
+          background: $listbox-background-light;
+        }
+      }
+
+      &.listbox-item-child {
+        padding-left: 15px;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .listbox-searchbar-wrapper {
+    margin: 0px;
+
+    .listbox-searchbar-button {
+      margin-left: -22px;
+      border: none;
+      background: none;
+    }
+
+    .listbox-searchbar {
+      margin: 0px;
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 3px 5px;
+      border: 1px solid $listbox-border;
+    }
+  }
+}

@@ -4,7 +4,7 @@
 Here you can see the planned list of features.
 
 
-## Version 2.1.0
+## Version 2.2.0
 
 -   Drag & Drop between two Extended Listbox instances
 -   Drag & Drop to change item order

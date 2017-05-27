@@ -4,6 +4,15 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 2.1.0
+
+Released on May 27, 2017.
+
+-   Switched from LESS to SASS internally.
+-   Added SASS file to dist folder.
+-   Several devDependency updates.
+
+
 ## Version 2.0.2
 
 Released on May 14, 2017.
