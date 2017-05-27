@@ -19,6 +19,11 @@ rm -r -f public/documentation/infrastructure
 rm -r -f public/documentation/scripts
 rm -r -f public/documentation/styles
 
+mkdir public/documentation/fonts
+mkdir public/documentation/infrastructure
+mkdir public/documentation/scripts
+mkdir public/documentation/styles
+
 cp -r doc/pages/documentation/fonts/* public/documentation/fonts
 cp -r doc/pages/documentation/infrastructure/* public/documentation/infrastructure
 cp -r doc/pages/documentation/scripts/* public/documentation/scripts
