@@ -14,6 +14,8 @@ git clone https://${GH_TOKEN}@github.com/code-chris/extended-listbox.git -b gh-t
 # build
 PKG_VERSION=`node -p "require('./package.json').version"`
 
+if [ -d "public/documentation/$PKG_VERSION" ]; then exit 0; fi
+
 rm -r -f public/documentation/fonts
 rm -r -f public/documentation/infrastructure
 rm -r -f public/documentation/scripts
@@ -33,6 +35,7 @@ cp -r doc/pages/documentation/latest/* public/documentation/$PKG_VERSION
 
 sed -i "/refresh/c\<meta http-equiv=\"refresh\" content=\"0; URL=../$PKG_VERSION/\">" public/documentation/latest/index.html
 sed -i "/Addhere/c\<li><a href=\"./documentation/$PKG_VERSION/\">$PKG_VERSION</a></li>\n<span id=\"Addhere\"></span>" public/index.html
+sed -i "s/VERSION/$PKG_VERSION/g" public/documentation/$PKG_VERSION/index.html
 
 cp dist/js/extended-listbox.js public/documentation/$PKG_VERSION/dist/js/extended-listbox.js
 cp dist/css/extended-listbox.css public/documentation/$PKG_VERSION/dist/css/extended-listbox.css
