@@ -352,10 +352,12 @@ class BaseListBox {
      * @param {object} dataItem display data for item
      * @param {object} internal: true if this function is not called directly as api function.
      */
-    public addItem(dataItem: ListboxItem, internal: boolean = false): string {
-        if (!internal && !this._settings.multiple && dataItem.selected) {
+    public addItem(dataItem: ListboxItem|string, internal: boolean = false): string {
+        /* tslint:disable:no-string-literal */
+        if (!internal && !this._settings.multiple && dataItem["selected"]) {
             this.clearSelection(internal);
         }
+        /* tslint:enable:no-string-literal */
 
         var id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
 
@@ -372,8 +374,8 @@ class BaseListBox {
      * @this {BaseListBox}
      * @param {object} dataItems display data of items
      */
-    public addItems(dataItems: ListboxItem[]): string[] {
-        return dataItems.map((item: ListboxItem) => this.addItem(item));
+    public addItems(dataItems: (string|ListboxItem)[]): string[] {
+        return dataItems.map((item: string|ListboxItem) => this.addItem(item));
     }
 
     /**
