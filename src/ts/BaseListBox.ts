@@ -1,5 +1,4 @@
 import ListboxSettings = require("./contract/ListboxSettings");
-import ListboxEventHandler = require("./event/ListboxEventHandler");
 import ListboxEvent = require("./event/ListboxEvent");
 import ListboxItem = require("./contract/ListboxItem");
 import Listbox = require("./Listbox");
@@ -24,7 +23,6 @@ class BaseListBox {
 
     public _settings: ListboxSettings;
     private _box: Listbox;
-    public eventHandler: ListboxEventHandler;
 
 
     /**
@@ -42,8 +40,6 @@ class BaseListBox {
         this._target = domelement;
         this._box = boxInstance;
         this._settings = options;
-
-        this.eventHandler = new ListboxEventHandler(this);
     }
 
 
@@ -358,7 +354,7 @@ class BaseListBox {
         var id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
 
         if (!internal) {
-            this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
+            this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
         }
 
         return id;
@@ -386,7 +382,7 @@ class BaseListBox {
             this._clearItemSelection(uiItem);
             uiItem.remove();
 
-            this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
+            this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
         }
     }
 
@@ -526,7 +522,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
+        this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -547,7 +543,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
+        this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -568,7 +564,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
+        this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -589,7 +585,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
+        this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -627,7 +623,7 @@ class BaseListBox {
      * @param {JQuery} domItem: the domItem.
      */
     protected onItemEnterPressed(domItem: JQuery): void {
-        this.eventHandler.fire(ListboxEvent.ITEM_ENTER_PRESSED, domItem.data("dataItem"));
+        this.fireEvent(ListboxEvent.ITEM_ENTER_PRESSED, domItem.data("dataItem"));
     }
 
     /**
@@ -636,7 +632,7 @@ class BaseListBox {
      * @param {JQuery} domItem: the domItem.
      */
     protected onItemDoubleClicked(domItem: JQuery): void {
-        this.eventHandler.fire(ListboxEvent.ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
+        this.fireEvent(ListboxEvent.ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
     }
 
     /**
@@ -707,6 +703,15 @@ class BaseListBox {
         });
 
         return allItems.filter((item: ListboxItem) => item.selected);
+    }
+
+    public fireEvent(name: string, args: any): void {
+        let delegate: Function = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
+
+        if (delegate) {
+            var event: ListboxEvent = new ListboxEvent(name, this._target, args);
+            delegate(event);
+        }
     }
 }
 

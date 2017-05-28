@@ -48,7 +48,7 @@ class SingleSelectListbox implements Listbox {
         this.baseListBox._target.val(domItem.data("dataItem"));
         this.baseListBox._target.trigger('change');
 
-        this.baseListBox.eventHandler.fire(ListboxEvent.VALUE_CHANGED, domItem.data("dataItem"));
+        this.baseListBox.fireEvent(ListboxEvent.VALUE_CHANGED, domItem.data("dataItem"));
     }
 
 
@@ -65,7 +65,7 @@ class SingleSelectListbox implements Listbox {
             }
         }
 
-        this.baseListBox.eventHandler.fire(ListboxEvent.FILTER_CHANGED, this.baseListBox._searchbar.val());
+        this.baseListBox.fireEvent(ListboxEvent.FILTER_CHANGED, this.baseListBox._searchbar.val());
     }
 }
 

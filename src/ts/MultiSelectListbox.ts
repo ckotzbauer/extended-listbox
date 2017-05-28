@@ -57,7 +57,7 @@ class MultiSelectListbox implements Listbox {
         this.baseListBox._target.val(parentValues);
         this.baseListBox._target.trigger('change');
 
-        this.baseListBox.eventHandler.fire(ListboxEvent.VALUE_CHANGED, parentValues);
+        this.baseListBox.fireEvent(ListboxEvent.VALUE_CHANGED, parentValues);
     }
 
     public onFilterChange(): void {
