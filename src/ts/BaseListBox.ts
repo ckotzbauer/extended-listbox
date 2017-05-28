@@ -350,7 +350,7 @@ class BaseListBox {
      * @param {object} dataItem display data for item
      * @param {object} internal: true if this function is not called directly as api function.
      */
-    public addItem(dataItem: any, internal: boolean): string {
+    public addItem(dataItem: ListboxItem, internal: boolean = false): string {
         if (!internal && !this._settings.multiple && dataItem.selected) {
             this.clearSelection(internal);
         }
@@ -364,6 +364,15 @@ class BaseListBox {
         return id;
     }
 
+    /**
+     * Add multiple item to the listbox.
+     *
+     * @this {BaseListBox}
+     * @param {object} dataItems display data of items
+     */
+    public addItems(dataItems: ListboxItem[]): string[] {
+        return dataItems.map((item: any) => this.addItem(item));
+    }
 
     /**
      * Remove first matching item from the listbox.
@@ -379,6 +388,16 @@ class BaseListBox {
 
             this.eventHandler.fire(ListboxEvent.ITEMS_CHANGED, this.getItems());
         }
+    }
+
+    /**
+     * Remove all matching items of array from the listbox.
+     *
+     * @this {BaseListBox}
+     * @param {string[]} items: display text or id from items to remove
+     */
+    public removeItems(items: string[]): void {
+        items.forEach((item: string) => this.removeItem(item));
     }
 
 
