@@ -36,6 +36,11 @@ $listbox-border-radius:       5px !default;
     margin: 0px;
     overflow: auto;
 
+    &.dropHover {
+      border: 2px dashed lightgray;
+      border-radius: 5px;
+    }
+
     .listbox-item {
       margin: 0px;
       padding: 5px;

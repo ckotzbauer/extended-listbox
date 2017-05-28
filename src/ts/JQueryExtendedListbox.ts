@@ -12,7 +12,8 @@ function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListbox
             searchBar: false,
             searchBarWatermark: "Search...",
             searchBarButton: { visible: false },
-            multiple: false
+            multiple: false,
+            dragAndDrop: false
         },
         options);
 

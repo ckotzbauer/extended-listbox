@@ -3,6 +3,7 @@ import ListboxEventHandler = require("./event/ListboxEventHandler");
 import ListboxEvent = require("./event/ListboxEvent");
 import ListboxItem = require("./contract/ListboxItem");
 import Listbox = require("./Listbox");
+import DragAndDropHandler = require("./DragAndDropHandler");
 
 class BaseListBox {
 
@@ -188,6 +189,8 @@ class BaseListBox {
 
         this._resizeListToListbox();
 
+        this._list = DragAndDropHandler.addListDragAndDrop(this._list, this._settings.dragAndDrop);
+
         // create items
         if (this._settings.getItems) {
             var items: any[] = this._settings.getItems();
@@ -294,6 +297,8 @@ class BaseListBox {
                     self.onItemDoubleClicked($target);
                 }
             });
+
+        item = DragAndDropHandler.addItemDragAndDrop(item, this._settings.dragAndDrop);
 
         if (dataItem.disabled) {
             item.addClass(BaseListBox.LIST_ITEM_CLASS_DISABLED);
