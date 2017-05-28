@@ -32,14 +32,14 @@
   ],
   "scripts": {
     "clean": "node node_modules/rimraf/bin.js build/out build/coverage test/TestMain.js",
-    "build:dev": "node node_modules/webpack/bin/webpack.js",
-    "build:prod": "node node_modules/webpack/bin/webpack.js -p",
-    "build": "npm run clean && npm run build:dev && npm run build:prod",
-    "prepare-tests": "npm run build && tsc --project tsconfig.test.json && node build/scripts/generate-test.js",
+    "compile:dev": "node node_modules/webpack/bin/webpack.js",
+    "compile:prod": "node node_modules/webpack/bin/webpack.js -p",
+    "compile": "npm run clean && npm run compile:dev && npm run compile:prod",
+    "prepare-tests": "npm run compile && tsc --project tsconfig.test.json && node build/scripts/generate-test.js",
     "test:dev": "npm run prepare-tests && node node_modules/testem/testem.js dev",
     "test:ci": "npm run prepare-tests && node node_modules/testem/testem.js ci",
     "lint": "node node_modules/tslint/bin/tslint -c tslint.json --project tsconfig.json -t verbose -o build/out/tslint.txt",
-    "prepublish": "npm run build && node build/scripts/prepublish.js"
+    "dist": "npm run build && node build/scripts/prepublish.js"
   },
   "devDependencies": {
     "@types/jquery": "~2.0.45",
@@ -61,6 +61,6 @@
     "yargs": "~8.0.1"
   },
   "dependencies": {
-    "jquery": ">= 2.x"
+    "jquery": ">=3.x"
   }
 }
