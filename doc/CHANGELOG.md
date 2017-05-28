@@ -4,6 +4,18 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 3.0.0
+
+Unreleased
+
+- Dropped Support for JQuery 2.x
+- New API-Method `addItems` added
+- New API-Method `removeItems` added
+- Reduced distribution size
+- Clarified type definitions
+- Improved unit-tests
+
+
 ## Version 2.1.0
 
 Released on May 27, 2017.
