@@ -26,7 +26,7 @@ interface ListboxItem {
     parentGroupId?: string;
 
     /** list of childItems */
-    childItems?: any[];
+    childItems?: ListboxItem[];
 }
 
 interface ListboxSearchBarButtonOptions {
@@ -54,7 +54,7 @@ interface ListBoxOptions {
     multiple?: boolean;
 
     /** function which returns a array of items */
-    getItems?: () => any;
+    getItems?: () => ListboxItem[];
 
     /** callback for selection changes */
     onValueChanged?: (event: ListboxEvent) => void;

@@ -16,6 +16,12 @@ class BaseListBox {
     public static SEARCHBAR_CLASS: string = 'listbox-searchbar';
     public static SEARCHBAR_BUTTON_CLASS: string = 'listbox-searchbar-button';
 
+    public static EVENT_VALUE_CHANGED: string = "valueChanged";
+    public static EVENT_FILTER_CHANGED: string = "filterChanged";
+    public static EVENT_ITEMS_CHANGED: string = "itemsChanged";
+    public static EVENT_ITEM_ENTER_PRESSED: string = "itemEnterPressed";
+    public static EVENT_ITEM_DOUBLE_CLICKED: string = "itemDoubleClicked";
+
     public _target: JQuery;
     public _list: JQuery;
     private _searchbarWrapper: JQuery;
@@ -186,10 +192,9 @@ class BaseListBox {
 
         // create items
         if (this._settings.getItems) {
-            var items: any[] = this._settings.getItems();
+            var items: ListboxItem[] = <ListboxItem[]>this._settings.getItems();
             if (items) {
-                var index: any;
-                for (index in items) {
+                for (let index in items) {
                     this.addItem(this._prepareDataItem(items[index]), true);
                 }
             }
@@ -212,7 +217,7 @@ class BaseListBox {
      * @this {BaseListBox}
      * @param {object} dataItem object returned from getItems
      */
-    protected _prepareDataItem(dataItem: any): ListboxItem {
+    protected _prepareDataItem(dataItem: ListboxItem|string): ListboxItem {
         var item: ListboxItem = {
             childItems: [],
             disabled: false,
@@ -224,9 +229,11 @@ class BaseListBox {
             index: null
         };
 
-        if (!dataItem.id) {
+        /* tslint:disable:no-string-literal */
+        if (!dataItem["id"]) {
             item.id = this._generateItemId();
         }
+        /* tslint:enable:no-string-literal */
 
         if (typeof dataItem === "string" || typeof dataItem === "number") {
             item.text = <string> dataItem;
@@ -236,8 +243,7 @@ class BaseListBox {
 
             var childs: ListboxItem[] = [];
 
-            var index: any;
-            for (index in item.childItems) {
+            for (let index in item.childItems) {
                 childs.push(this._prepareDataItem(item.childItems[index]));
             }
 
@@ -354,7 +360,7 @@ class BaseListBox {
         var id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
 
         if (!internal) {
-            this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
+            this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
         }
 
         return id;
@@ -367,7 +373,7 @@ class BaseListBox {
      * @param {object} dataItems display data of items
      */
     public addItems(dataItems: ListboxItem[]): string[] {
-        return dataItems.map((item: any) => this.addItem(item));
+        return dataItems.map((item: ListboxItem) => this.addItem(item));
     }
 
     /**
@@ -382,7 +388,7 @@ class BaseListBox {
             this._clearItemSelection(uiItem);
             uiItem.remove();
 
-            this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
+            this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
         }
     }
 
@@ -522,7 +528,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
+        this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -543,7 +549,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
+        this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -564,7 +570,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
+        this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -585,7 +591,7 @@ class BaseListBox {
             $item.data("dataItem").index = newIndex;
         }
 
-        this.fireEvent(ListboxEvent.ITEMS_CHANGED, this.getItems());
+        this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -623,7 +629,7 @@ class BaseListBox {
      * @param {JQuery} domItem: the domItem.
      */
     protected onItemEnterPressed(domItem: JQuery): void {
-        this.fireEvent(ListboxEvent.ITEM_ENTER_PRESSED, domItem.data("dataItem"));
+        this.fireEvent(BaseListBox.EVENT_ITEM_ENTER_PRESSED, domItem.data("dataItem"));
     }
 
     /**
@@ -632,7 +638,7 @@ class BaseListBox {
      * @param {JQuery} domItem: the domItem.
      */
     protected onItemDoubleClicked(domItem: JQuery): void {
-        this.fireEvent(ListboxEvent.ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
+        this.fireEvent(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
     }
 
     /**
@@ -706,11 +712,10 @@ class BaseListBox {
     }
 
     public fireEvent(name: string, args: any): void {
-        let delegate: Function = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
+        let delegate: (e: ListboxEvent) => void = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
 
         if (delegate) {
-            var event: ListboxEvent = new ListboxEvent(name, this._target, args);
-            delegate(event);
+            delegate({ eventName: name, target: this._target, args: args });
         }
     }
 }
