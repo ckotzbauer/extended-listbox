@@ -1,4 +1,4 @@
-class ListboxOptions {
+class ListBoxOptions {
     /* If the searchBar is visible */
     searchBar: boolean = false;
 
@@ -12,20 +12,20 @@ class ListboxOptions {
     multiple: boolean = false;
 
     /* Function which should return a array of items (see below) */
-    getItems: Function = null;
+    getItems: () => ListboxItem[] = null;
 
     /* Delegate which is called on selection changes */
-    onValueChanged: Function = null;
+    onValueChanged: (event: ListboxEvent) => void = null;
 
     /* Delegate which is called on search query changes */
-    onFilterChanged: Function = null;
+    onFilterChanged: (event: ListboxEvent) => void = null;
 
     /* Called if items where added, removed or their position changed */
-    onItemsChanged: Function = null;
+    onItemsChanged: (event: ListboxEvent) => void = null;
 
     /* callback for enter keyPress event on an item */
-    onItemEnterPressed: Function = null;
+    onItemEnterPressed: (event: ListboxEvent) => void = null;
 
     /* callback for doubleClick event on an item */
-    onItemDoubleClicked: Function = null;
+    onItemDoubleClicked: (event: ListboxEvent) => void = null;
 }

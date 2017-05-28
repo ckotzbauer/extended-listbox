@@ -5,8 +5,14 @@ class ExtendedListboxInstance {
     /* Adds a new item to the list */
     addItem(item: string|ListboxItem): string;
 
+    /* Adds new items to the list */
+    addItems(item: (string | ListboxItem)[]): string[];
+
     /* Removes a item from the list */
     removeItem(identifier: string): void;
+
+    /* Removes items from the list */
+    removeItems(identifiers: string[]): void;
 
     /* Reverts all changes from the DOM */
     destroy(): void;
