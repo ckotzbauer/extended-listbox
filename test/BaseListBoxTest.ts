@@ -3,7 +3,7 @@
 
 import TestHelper = require("./infrastructure/TestHelper");
 import ListboxSettings = require("../src/ts/contract/ListboxSettings");
-import ListboxEvent = require("../src/ts/event/ListboxEvent");
+import BaseListBox = require("../src/ts/BaseListBox");
 
 /* tslint:disable:no-string-literal */
 
@@ -557,7 +557,7 @@ QUnit.test("check valueChanged event", function (): void {
     var target: JQuery = null;
 
     var delegate: any = (event: ListboxEvent) => {
-        QUnit.assert.equal(event.eventName, ListboxEvent.VALUE_CHANGED);
+        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_VALUE_CHANGED);
         QUnit.assert.equal(event.target, target);
         QUnit.assert.equal(event.args, "mySpecialValue");
     };
@@ -565,14 +565,14 @@ QUnit.test("check valueChanged event", function (): void {
     var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onValueChanged: delegate });
     target = listbox.target;
 
-    listbox["listbox"].baseListBox.fireEvent(ListboxEvent.VALUE_CHANGED, "mySpecialValue");
+    listbox["listbox"].baseListBox.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
 });
 
 QUnit.test("check itemsChanged event", function (): void {
     var target: JQuery = null;
 
     var delegate: any = (event: ListboxEvent) => {
-        QUnit.assert.equal(event.eventName, ListboxEvent.ITEMS_CHANGED);
+        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEMS_CHANGED);
         QUnit.assert.equal(event.target, target);
         QUnit.assert.equal(event.args, "mySpecialValue");
     };
@@ -580,14 +580,14 @@ QUnit.test("check itemsChanged event", function (): void {
     var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onItemsChanged: delegate });
     target = listbox.target;
 
-    listbox["listbox"].baseListBox.fireEvent(ListboxEvent.ITEMS_CHANGED, "mySpecialValue");
+    listbox["listbox"].baseListBox.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, "mySpecialValue");
 });
 
 QUnit.test("check filterChanged event", function (): void {
     var target: JQuery = null;
 
     var delegate: any = (event: ListboxEvent) => {
-        QUnit.assert.equal(event.eventName, ListboxEvent.FILTER_CHANGED);
+        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_FILTER_CHANGED);
         QUnit.assert.equal(event.target, target);
         QUnit.assert.equal(event.args, "mySpecialValue");
     };
@@ -595,14 +595,14 @@ QUnit.test("check filterChanged event", function (): void {
     var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onFilterChanged: delegate });
     target = listbox.target;
 
-    listbox["listbox"].baseListBox.fireEvent(ListboxEvent.FILTER_CHANGED, "mySpecialValue");
+    listbox["listbox"].baseListBox.fireEvent(BaseListBox.EVENT_FILTER_CHANGED, "mySpecialValue");
 });
 
 QUnit.test("check itemEnterPressed event", function (): void {
     var target: JQuery = null;
 
     var delegate: any = (event: ListboxEvent) => {
-        QUnit.assert.equal(event.eventName, ListboxEvent.ITEM_ENTER_PRESSED);
+        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEM_ENTER_PRESSED);
         QUnit.assert.equal(event.target, target);
         QUnit.assert.equal(event.args, "mySpecialValue");
     };
@@ -610,14 +610,14 @@ QUnit.test("check itemEnterPressed event", function (): void {
     var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onItemEnterPressed: delegate });
     target = listbox.target;
 
-    listbox["listbox"].baseListBox.fireEvent(ListboxEvent.ITEM_ENTER_PRESSED, "mySpecialValue");
+    listbox["listbox"].baseListBox.fireEvent(BaseListBox.EVENT_ITEM_ENTER_PRESSED, "mySpecialValue");
 });
 
 QUnit.test("check itemDoubleClicked event", function (): void {
     var target: JQuery = null;
 
     var delegate: any = (event: ListboxEvent) => {
-        QUnit.assert.equal(event.eventName, ListboxEvent.ITEM_DOUBLE_CLICKED);
+        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEM_DOUBLE_CLICKED);
         QUnit.assert.equal(event.target, target);
         QUnit.assert.equal(event.args, "mySpecialValue");
     };
@@ -625,7 +625,7 @@ QUnit.test("check itemDoubleClicked event", function (): void {
     var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onItemDoubleClicked: delegate });
     target = listbox.target;
 
-    listbox["listbox"].baseListBox.fireEvent(ListboxEvent.ITEM_DOUBLE_CLICKED, "mySpecialValue");
+    listbox["listbox"].baseListBox.fireEvent(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED, "mySpecialValue");
 });
 
 /* tslint:enable:no-string-literal */
