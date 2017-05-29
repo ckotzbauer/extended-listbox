@@ -192,7 +192,7 @@ class BaseListBox {
 
         // create items
         if (this._settings.getItems) {
-            var items: ListboxItem[] = <ListboxItem[]>this._settings.getItems();
+            var items: (string|ListboxItem)[] = <(string|ListboxItem)[]>this._settings.getItems();
             if (items) {
                 for (let index in items) {
                     this.addItem(this._prepareDataItem(items[index]), true);

@@ -1,4 +1,4 @@
-// Type definitions for extended-listbox 2.0.x
+// Type definitions for extended-listbox 3.0.x
 // Project: https://github.com/code-chris/extended-listbox
 // Definitions by: Christian Kotzbauer <https://github.com/code-chris>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -54,7 +54,7 @@ interface ListBoxOptions {
     multiple?: boolean;
 
     /** function which returns a array of items */
-    getItems?: () => ListboxItem[];
+    getItems?: () => (string|ListboxItem)[];
 
     /** callback for selection changes */
     onValueChanged?: (event: ListboxEvent) => void;
