@@ -44,22 +44,6 @@ QUnit.test('construct with searchbar watermark', function (): void {
     QUnit.assert.equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
 });
 
-// TODO implement implicit default value
-/*test('implicit default value', function (): void {
- var select = $('#test')
- .append('<option>A</option>')
- .append('<option>B</option>')
- .append('<option>C</option>')
- .listbox();
-
- var list = select.next().find('.lbjs-list');
- var selectedItems = list.children('[selected]');
-
- QUnit.assert.equal(selectedItems.length, 1);
- QUnit.assert.equal(selectedItems.text(), 'A');
- QUnit.assert.equal(selectedItems.text(), select.val());
- });*/
-
 
 QUnit.test('explicit default value', function (): void {
     var select: ExtendedListboxInstance = TestHelper.generateMultipleList({}, [
@@ -127,7 +111,6 @@ QUnit.test('two clicks', function (): void {
 
     var selectedItems: JQuery = select.target.find(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 0);
-    // TODO QUnit.assert.equal(select.val(), []);
 });
 
 
@@ -194,14 +177,12 @@ QUnit.test('multiple clicks', function (): void {
     selectedItems = select.target.find(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 3);
     QUnit.assert.equal(TestHelper.itemsToVal(selectedItems), 'A,B,C');
-    //QUnit.assert.equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[1]).click();     // click on 'B'
 
     selectedItems = select.target.find(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
     QUnit.assert.equal(TestHelper.itemsToVal(selectedItems), 'A,C');
-    //QUnit.assert.equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[0]).click();     // click on 'A'
 
@@ -215,7 +196,6 @@ QUnit.test('multiple clicks', function (): void {
     selectedItems = select.target.find(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
     QUnit.assert.equal(TestHelper.itemsToVal(selectedItems), 'B,C');
-    //QUnit.assert.equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[2]).click();     // click on 'C'
 

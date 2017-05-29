@@ -44,22 +44,6 @@ QUnit.test('construct with searchbar watermark', function (): void {
     QUnit.assert.equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
 });
 
-// TODO implement implicit default value
-/*test('implicit default value', function (): void {
- var select = $('#test')
- .append('<option>A</option>')
- .append('<option>B</option>')
- .append('<option>C</option>')
- .listbox();
-
- var list = select.next().find('.lbjs-list');
- var selectedItems = list.children('[selected]');
-
- QUnit.assert.equal(selectedItems.length, 1);
- QUnit.assert.equal(selectedItems.text(), 'A');
- QUnit.assert.equal(selectedItems.text(), select.val());
- });*/
-
 
 QUnit.test('explicit default value', function (): void {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [

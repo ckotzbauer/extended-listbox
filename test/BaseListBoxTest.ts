@@ -16,6 +16,8 @@ QUnit.module( "BaseListBoxTest", {
     }
 });
 
+// ********************** BASICS **********************
+
 QUnit.test("check multiple creations", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList();
     var instance: ExtendedListboxInstance = <ExtendedListboxInstance>root.target.listbox();
@@ -35,6 +37,9 @@ QUnit.test("check list css class", function (): void {
     var listbox: JQuery = TestHelper.child(root.target);
     QUnit.assert.equal(listbox.attr('class'), 'listbox');
 });
+
+
+// ********************** SEARCHBAR **********************
 
 QUnit.test("check non existent searchbar", function (): void {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList();
@@ -109,6 +114,9 @@ QUnit.test("check searchbar button callback", function (): void {
 
     QUnit.assert.equal(count, 1);
 });
+
+
+// ********************** ITEMS **********************
 
 QUnit.test("check simple items", function (): void {
     var items: any[] = ["Item#1", "Item#2", "Item#3"];
@@ -239,6 +247,54 @@ QUnit.test("check item with childs", function (): void {
     }
 });
 
+
+// ********************** METHODS **********************
+
+QUnit.test("check item addition text", function (): void {
+    var root: ExtendedListboxInstance = TestHelper.generateSingleList();
+    root.addItem("Item #1");
+
+    var listbox: JQuery = TestHelper.child(root.target);
+    var itemElements: JQuery[] = TestHelper.children(listbox);
+
+    QUnit.assert.equal(itemElements.length, 1);
+
+    itemElements.forEach(function ($elem: JQuery): void {
+        QUnit.assert.equal($elem.attr("id").startsWith("listboxitem"), true);
+        QUnit.assert.equal($elem.text(), "Item #1");
+    });
+});
+
+QUnit.test("check item addition object", function (): void {
+    var root: ExtendedListboxInstance = TestHelper.generateSingleList();
+    root.addItem({ text: "Item #1", id: "id01" });
+
+    var listbox: JQuery = TestHelper.child(root.target);
+    var itemElements: JQuery[] = TestHelper.children(listbox);
+
+    QUnit.assert.equal(itemElements.length, 1);
+
+    itemElements.forEach(function ($elem: JQuery): void {
+        QUnit.assert.equal($elem.attr("id"), "id01");
+        QUnit.assert.equal($elem.text(), "Item #1");
+    });
+});
+
+QUnit.test("check item additions objects", function (): void {
+    var root: ExtendedListboxInstance = TestHelper.generateSingleList();
+    root.addItems([{ text: "Item #1", id: "id01" }, { text: "Item #2", id: "id02" }]);
+
+    var listbox: JQuery = TestHelper.child(root.target);
+    var itemElements: JQuery[] = TestHelper.children(listbox);
+
+    QUnit.assert.equal(itemElements.length, 2);
+
+    itemElements.forEach(function ($elem: JQuery, index: number): void {
+        QUnit.assert.equal($elem.attr("id"), index === 0 ? "id01" : "id02");
+        QUnit.assert.equal($elem.text(), index === 0 ? "Item #1" : "Item #2");
+    });
+});
+
 QUnit.test("check item removal id", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
@@ -283,6 +339,29 @@ QUnit.test("check item removal text", function (): void {
     });
 
     QUnit.assert.equal(found, false);
+});
+
+QUnit.test("check items removals text", function (): void {
+    var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+
+    var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
+
+    root.removeItems(["Item#3", "Item#1"]);
+
+    var listbox: JQuery = TestHelper.child(root.target);
+    var itemElements: JQuery[] = TestHelper.children(listbox);
+
+    QUnit.assert.equal(itemElements.length, 1);
+
+    var found: boolean = false;
+    itemElements.forEach(function ($elem: JQuery): void {
+        var text: string = $elem.text();
+        if (text === "Item#2") {
+            found = true;
+        }
+    });
+
+    QUnit.assert.equal(found, true);
 });
 
 QUnit.test("check parent item removal", function (): void {
@@ -457,14 +536,36 @@ QUnit.test("check moveItemToTop", function (): void {
     QUnit.assert.equal(newIndex, 0);
 });
 
+QUnit.test("check getSelection", function (): void {
+    var items: any[] = [{ text: "Item#1", id: "id01" },
+    { text: "Item#2", id: "id02", selected: true }, {
+        text: "Item#3", id: "id03", childItems: [
+            { text: "SubItem#1", id: "subid01", selected: true }, { text: "SubItem#2", id: "subid02" }
+        ]
+    }];
+
+    var root: ExtendedListboxInstance = TestHelper.generateMultipleList({}, items);
+
+    var selection: ListboxItem[] = root.getSelection();
+
+    QUnit.assert.equal(selection.length, 2);
+    QUnit.assert.equal(selection[0].id, "id02");
+    QUnit.assert.equal(selection[1].id, "subid01");
+});
+
+
+// ********************** EVENTS **********************
+
 QUnit.test("check itemEnterPressed event", function (): void {
     var items: any[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     var count: number = 0;
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
-    root.onItemEnterPressed(function (): void {
+    root.onItemEnterPressed(function (event: ListboxEvent): void {
         count++;
+        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEM_ENTER_PRESSED);
+        QUnit.assert.equal(event.target, root.target);
     });
 
     var listbox: JQuery = TestHelper.child(root.target);
@@ -484,8 +585,10 @@ QUnit.test("check itemDoubleClicked event", function (): void {
     var count: number = 0;
 
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({}, items);
-    root.onItemDoubleClicked(function (): void {
+    root.onItemDoubleClicked(function (event: ListboxEvent): void {
         count++;
+        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEM_DOUBLE_CLICKED);
+        QUnit.assert.equal(event.target, root.target);
     });
 
     var listbox: JQuery = TestHelper.child(root.target);
@@ -538,21 +641,6 @@ QUnit.test("check itemArrowDown event", function (): void {
     QUnit.assert.equal(root.getItem("id03").selected, true);
 });
 
-QUnit.test("check getSelection", function (): void {
-    var items: any[] = [{ text: "Item#1", id: "id01" },
-        { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03", childItems: [
-            { text: "SubItem#1", id: "subid01", selected: true }, { text: "SubItem#2", id: "subid02" }
-        ] }];
-
-    var root: ExtendedListboxInstance = TestHelper.generateMultipleList({}, items);
-
-    var selection: ListboxItem[] = root.getSelection();
-
-    QUnit.assert.equal(selection.length, 2);
-    QUnit.assert.equal(selection[0].id, "id02");
-    QUnit.assert.equal(selection[1].id, "subid01");
-});
-
 QUnit.test("check valueChanged event", function (): void {
     var target: JQuery = null;
 
@@ -596,36 +684,6 @@ QUnit.test("check filterChanged event", function (): void {
     target = listbox.target;
 
     listbox["listbox"].baseListBox.fireEvent(BaseListBox.EVENT_FILTER_CHANGED, "mySpecialValue");
-});
-
-QUnit.test("check itemEnterPressed event", function (): void {
-    var target: JQuery = null;
-
-    var delegate: any = (event: ListboxEvent) => {
-        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEM_ENTER_PRESSED);
-        QUnit.assert.equal(event.target, target);
-        QUnit.assert.equal(event.args, "mySpecialValue");
-    };
-
-    var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onItemEnterPressed: delegate });
-    target = listbox.target;
-
-    listbox["listbox"].baseListBox.fireEvent(BaseListBox.EVENT_ITEM_ENTER_PRESSED, "mySpecialValue");
-});
-
-QUnit.test("check itemDoubleClicked event", function (): void {
-    var target: JQuery = null;
-
-    var delegate: any = (event: ListboxEvent) => {
-        QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEM_DOUBLE_CLICKED);
-        QUnit.assert.equal(event.target, target);
-        QUnit.assert.equal(event.args, "mySpecialValue");
-    };
-
-    var listbox: ExtendedListboxInstance = TestHelper.generateSingleList({ onItemDoubleClicked: delegate });
-    target = listbox.target;
-
-    listbox["listbox"].baseListBox.fireEvent(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED, "mySpecialValue");
 });
 
 /* tslint:enable:no-string-literal */
