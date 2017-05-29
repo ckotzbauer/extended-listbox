@@ -55,8 +55,8 @@ Link the component and a stylesheet from your page.
 
 | Type                             | Size     |
 |----------------------------------|----------|
-| Uncompressed, not minified       | 31,4 KB  |
-| Uncompressed, minified           | 12,2 KB  |
+| Uncompressed, not minified       | 30,2 KB  |
+| Uncompressed, minified           | 12,0 KB  |
 | Compressed (gzip), not minified  | 5,2 KB   |
 | Compressed (gzip), minified      | 3,4 KB   |
 

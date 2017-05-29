@@ -18,16 +18,16 @@ class TestHelper {
         var childs: JQuery[] = [];
 
         for (var i: number = 0; i < element.children().length; i++) {
-            var c: any = element.children()[i];
+            var c: Element = element.children()[i];
             childs.push($(c));
         }
 
         return childs;
     }
 
-    public static generateSingleList(options: ListBoxOptions = null, items: any[] = null): ExtendedListboxInstance {
+    public static generateSingleList(options: ListBoxOptions = null, items: ListboxItem[] = null): ExtendedListboxInstance {
         options = $.extend({
-            getItems: function (): any[] {
+            getItems: (): ListboxItem[] => {
                 return items;
             }
         }, options);
@@ -38,10 +38,10 @@ class TestHelper {
         return <ExtendedListboxInstance>$test.listbox(options);
     }
 
-    public static generateMultipleList(options: ListBoxOptions = null, items: any[] = null): ExtendedListboxInstance {
+    public static generateMultipleList(options: ListBoxOptions = null, items: ListboxItem[] = null): ExtendedListboxInstance {
         options = $.extend({
             multiple: true,
-            getItems: function (): any[] {
+            getItems: (): ListboxItem[] => {
                 return items;
             }
         }, options);
@@ -64,7 +64,7 @@ class TestHelper {
         return result;
     }
 
-    public static jsonToVal(items: any[]): string {
+    public static jsonToVal(items: string[]): string {
         var result: string = '';
         for (var i: number = 0; i < items.length; ++i) {
             if (i !== 0) {

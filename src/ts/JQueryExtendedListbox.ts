@@ -62,8 +62,10 @@ function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListbox
  *
  * @param {object} options an object with Listbox settings
  */
-$.fn.listbox = function (options: ListboxSettings): any {
+$.fn.listbox = function (options: ListboxSettings): ExtendedListboxInstance | ExtendedListboxInstance[] {
     if (typeof options === 'object' || !options) {
         return initializeListBoxFromOptions.call(this, options);
     }
+
+    return null;
 };

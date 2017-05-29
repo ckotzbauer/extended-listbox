@@ -1,4 +1,5 @@
 import Listbox = require("./Listbox");
+import BaseListBox = require("./BaseListBox");
 
 class ExtendedListboxInstance {
 
@@ -9,9 +10,9 @@ class ExtendedListboxInstance {
         this.listbox = listbox;
         this.target = target;
 
-        var lb: any = this.listbox.baseListBox;
-        var methods: string[] = ["addItem", "removeItem", "destroy", "clearSelection", "getItem", "getItems",
-            "getSelection", "moveItemUp", "moveItemDown", "moveItemToTop", "moveItemToBottom", "enable"];
+        var lb: BaseListBox = this.listbox.baseListBox;
+        var methods: string[] = ["addItem", "addItems", "removeItem", "removeItems", "destroy", "clearSelection",
+            "getItem", "getItems", "getSelection", "moveItemUp", "moveItemDown", "moveItemToTop", "moveItemToBottom", "enable"];
 
         for (let i: number = 0; i < methods.length; i++) {
             let name: string = methods[i];

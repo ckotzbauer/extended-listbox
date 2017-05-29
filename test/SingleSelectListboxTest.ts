@@ -3,16 +3,16 @@
 
 import TestHelper = require("./infrastructure/TestHelper");
 
-QUnit.module( "SingleSelectListboxTest", {
-    beforeEach: function(): void {
+QUnit.module("SingleSelectListboxTest", {
+    beforeEach: (): void => {
         TestHelper.beforeEach();
     },
-    afterEach: function(): void {
+    afterEach: (): void => {
         TestHelper.afterEach();
     }
 });
 
-QUnit.test('construct default', function (): void {
+QUnit.test('construct default', (): void => {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList();
 
     QUnit.assert.equal(root.target.attr('class'), 'listbox-root');
@@ -25,7 +25,7 @@ QUnit.test('construct default', function (): void {
 });
 
 
-QUnit.test('construct with searchbar', function (): void {
+QUnit.test('construct with searchbar', (): void => {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
 
     var searchbar: JQuery = TestHelper.child(root.target);
@@ -36,7 +36,7 @@ QUnit.test('construct with searchbar', function (): void {
     QUnit.assert.equal(listbox.attr('class'), 'listbox');
 });
 
-QUnit.test('construct with searchbar watermark', function (): void {
+QUnit.test('construct with searchbar watermark', (): void => {
     var root: ExtendedListboxInstance = TestHelper.generateSingleList(
         { searchBar: true, searchBarWatermark: "Suche..." });
 
@@ -44,24 +44,8 @@ QUnit.test('construct with searchbar watermark', function (): void {
     QUnit.assert.equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
 });
 
-// TODO implement implicit default value
-/*test('implicit default value', function (): void {
- var select = $('#test')
- .append('<option>A</option>')
- .append('<option>B</option>')
- .append('<option>C</option>')
- .listbox();
 
- var list = select.next().find('.lbjs-list');
- var selectedItems = list.children('[selected]');
-
- QUnit.assert.equal(selectedItems.length, 1);
- QUnit.assert.equal(selectedItems.text(), 'A');
- QUnit.assert.equal(selectedItems.text(), select.val());
- });*/
-
-
-QUnit.test('explicit default value', function (): void {
+QUnit.test('explicit default value', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
@@ -77,7 +61,7 @@ QUnit.test('explicit default value', function (): void {
 });
 
 
-QUnit.test('two explicit default values', function (): void {
+QUnit.test('two explicit default values', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         { text: "B", selected: true },
@@ -93,7 +77,7 @@ QUnit.test('two explicit default values', function (): void {
 });
 
 
-QUnit.test('one click', function (): void {
+QUnit.test('one click', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
@@ -112,7 +96,7 @@ QUnit.test('one click', function (): void {
 });
 
 
-QUnit.test('multiple clicks', function (): void {
+QUnit.test('multiple clicks', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
@@ -166,7 +150,7 @@ QUnit.test('multiple clicks', function (): void {
 });
 
 
-QUnit.test('change event', function (): void {
+QUnit.test('change event', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
         "A",
         "B",
@@ -175,7 +159,7 @@ QUnit.test('change event', function (): void {
     ]);
 
     var receiveCounter: number = 0;
-    select.target.on('change', function(): void {
+    select.target.on('change', (): void => {
         receiveCounter++;
     });
 
@@ -190,12 +174,12 @@ QUnit.test('change event', function (): void {
     QUnit.assert.equal(receiveCounter, 3);
 });
 
-QUnit.test('onValueChanged callback', function (): void {
+QUnit.test('onValueChanged callback', (): void => {
     var receiveCounter: number = 0;
     var lastValue: any = null;
 
     var options: ListBoxOptions = <ListBoxOptions> {};
-    options.onValueChanged = function(newValue: ListboxEvent): void {
+    options.onValueChanged = (newValue: ListboxEvent): void => {
         receiveCounter++;
         lastValue = newValue.args.text;
     };

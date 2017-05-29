@@ -6,5 +6,5 @@ class ListboxSearchBarButtonOptions {
     icon: string = null;
 
     /* Delegate for button click */
-    onClick: Function = null;
+    onClick: () => void = null;
 }

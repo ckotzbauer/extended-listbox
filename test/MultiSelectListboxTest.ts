@@ -3,16 +3,16 @@
 
 import TestHelper = require("./infrastructure/TestHelper");
 
-QUnit.module( "MultiSelectListboxTest", {
-    beforeEach: function(): void {
+QUnit.module("MultiSelectListboxTest", {
+    beforeEach: (): void => {
         TestHelper.beforeEach();
     },
-    afterEach: function(): void {
+    afterEach: (): void => {
         TestHelper.afterEach();
     }
 });
 
-QUnit.test('construct default', function (): void {
+QUnit.test('construct default', (): void => {
     var root: ExtendedListboxInstance = TestHelper.generateMultipleList();
 
     QUnit.assert.equal(root.target.attr('class'), 'listbox-root');
@@ -25,7 +25,7 @@ QUnit.test('construct default', function (): void {
 });
 
 
-QUnit.test('construct with searchbar', function (): void {
+QUnit.test('construct with searchbar', (): void => {
     var root: ExtendedListboxInstance = TestHelper.generateMultipleList({ searchBar: true });
 
     var searchbar: JQuery = TestHelper.child(root.target);
@@ -36,7 +36,7 @@ QUnit.test('construct with searchbar', function (): void {
     QUnit.assert.equal(listbox.attr('class'), 'listbox');
 });
 
-QUnit.test('construct with searchbar watermark', function (): void {
+QUnit.test('construct with searchbar watermark', (): void => {
     var root: ExtendedListboxInstance = TestHelper.generateMultipleList(
         { searchBar: true, searchBarWatermark: "Suche..." });
 
@@ -44,24 +44,8 @@ QUnit.test('construct with searchbar watermark', function (): void {
     QUnit.assert.equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
 });
 
-// TODO implement implicit default value
-/*test('implicit default value', function (): void {
- var select = $('#test')
- .append('<option>A</option>')
- .append('<option>B</option>')
- .append('<option>C</option>')
- .listbox();
 
- var list = select.next().find('.lbjs-list');
- var selectedItems = list.children('[selected]');
-
- QUnit.assert.equal(selectedItems.length, 1);
- QUnit.assert.equal(selectedItems.text(), 'A');
- QUnit.assert.equal(selectedItems.text(), select.val());
- });*/
-
-
-QUnit.test('explicit default value', function (): void {
+QUnit.test('explicit default value', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateMultipleList({}, [
         "A",
         "B",
@@ -77,7 +61,7 @@ QUnit.test('explicit default value', function (): void {
 });
 
 
-QUnit.test('two explicit default values', function (): void {
+QUnit.test('two explicit default values', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateMultipleList({}, [
         "A",
         { text: "B", selected: true },
@@ -93,7 +77,7 @@ QUnit.test('two explicit default values', function (): void {
 });
 
 
-QUnit.test('one click', function (): void {
+QUnit.test('one click', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateMultipleList({}, [
         "A",
         "B",
@@ -112,7 +96,7 @@ QUnit.test('one click', function (): void {
 });
 
 
-QUnit.test('two clicks', function (): void {
+QUnit.test('two clicks', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateMultipleList({}, [
         "A",
         "B",
@@ -127,11 +111,10 @@ QUnit.test('two clicks', function (): void {
 
     var selectedItems: JQuery = select.target.find(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 0);
-    // TODO QUnit.assert.equal(select.val(), []);
 });
 
 
-QUnit.test('two clicks on different items', function (): void {
+QUnit.test('two clicks on different items', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateMultipleList({}, [
         "A",
         "B",
@@ -151,7 +134,7 @@ QUnit.test('two clicks on different items', function (): void {
 });
 
 
-QUnit.test('multiple clicks', function (): void {
+QUnit.test('multiple clicks', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateMultipleList({}, [
         "A",
         "B",
@@ -194,14 +177,12 @@ QUnit.test('multiple clicks', function (): void {
     selectedItems = select.target.find(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 3);
     QUnit.assert.equal(TestHelper.itemsToVal(selectedItems), 'A,B,C');
-    //QUnit.assert.equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[1]).click();     // click on 'B'
 
     selectedItems = select.target.find(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
     QUnit.assert.equal(TestHelper.itemsToVal(selectedItems), 'A,C');
-    //QUnit.assert.equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[0]).click();     // click on 'A'
 
@@ -215,7 +196,6 @@ QUnit.test('multiple clicks', function (): void {
     selectedItems = select.target.find(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
     QUnit.assert.equal(TestHelper.itemsToVal(selectedItems), 'B,C');
-    //QUnit.assert.equal(itemsToVal(selectedItems), jsonToVal(select.val())); TODO fix sorting
 
     $(items[2]).click();     // click on 'C'
 
@@ -226,7 +206,7 @@ QUnit.test('multiple clicks', function (): void {
 });
 
 
-QUnit.test('change event', function (): void {
+QUnit.test('change event', (): void => {
     var select: ExtendedListboxInstance = TestHelper.generateMultipleList({}, [
         "A",
         "B",
@@ -235,7 +215,7 @@ QUnit.test('change event', function (): void {
     ]);
 
     var receiveCounter: number = 0;
-    select.target.on('change', function(): void {
+    select.target.on('change', (): void => {
         receiveCounter++;
     });
 
@@ -250,12 +230,12 @@ QUnit.test('change event', function (): void {
     QUnit.assert.equal(receiveCounter, 3);
 });
 
-QUnit.test('onValueChanged callback', function (): void {
+QUnit.test('onValueChanged callback', (): void => {
     var receiveCounter: number = 0;
     var lastValue: any = null;
 
     var options: ListBoxOptions = <ListBoxOptions> {};
-    options.onValueChanged = function(newValue: ListboxEvent): void {
+    options.onValueChanged = (newValue: ListboxEvent): void => {
         receiveCounter++;
         lastValue = newValue.args;
     };
