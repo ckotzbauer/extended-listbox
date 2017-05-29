@@ -260,7 +260,7 @@ QUnit.test("check item addition text", (): void => {
     QUnit.assert.equal(itemElements.length, 1);
 
     itemElements.forEach(($elem: JQuery): void => {
-        QUnit.assert.equal($elem.attr("id").startsWith("listboxitem"), true);
+        QUnit.assert.equal(TestHelper.startsWith($elem.attr("id"), "listboxitem"), true);
         QUnit.assert.equal($elem.text(), "Item #1");
     });
 });
