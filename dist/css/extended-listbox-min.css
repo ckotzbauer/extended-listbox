@@ -3,7 +3,7 @@
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
  * Version     3.0.0
- * Released    2017-05-28T17:40:44.278Z
+ * Released    2017-05-29T08:30:39.487Z
  * License     MIT
  * Copyright   (c) 2017
  */
