@@ -54,7 +54,7 @@
     "rimraf": "~2.6.0",
     "sass-loader": "~6.0.5",
     "saucie": "~3.1.0",
-    "testem": "~1.16.0",
+    "testem": "~1.17.0",
     "tslint": "~5.4.1",
     "typescript": "~2.3.3",
     "webpack": "~3.0.0-rc.1",
