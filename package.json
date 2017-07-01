@@ -56,7 +56,7 @@
     "saucie": "~3.1.0",
     "testem": "~1.18.0",
     "tslint": "~5.4.1",
-    "typescript": "~2.3.3",
+    "typescript": "~2.4.1",
     "webpack": "~3.0.0-rc.1",
     "yargs": "~8.0.2"
   },
