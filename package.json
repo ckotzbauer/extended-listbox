@@ -44,7 +44,7 @@
   "devDependencies": {
     "@types/jquery": "~2.0.45",
     "@types/qunit": "~2.0.31",
-    "awesome-typescript-loader": "~3.1.1",
+    "awesome-typescript-loader": "~3.2.1",
     "css-loader": "~0.28.3",
     "extract-text-webpack-plugin": "~2.1.2",
     "globby": "~6.1.0",
