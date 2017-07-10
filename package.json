@@ -53,7 +53,7 @@
     "requirejs": "~2.3.3",
     "rimraf": "~2.6.0",
     "sass-loader": "~6.0.5",
-    "saucie": "~3.1.0",
+    "saucie": "~3.2.0",
     "testem": "~1.18.0",
     "tslint": "~5.5.0",
     "typescript": "~2.3.3",
