@@ -57,7 +57,7 @@
     "testem": "~1.18.0",
     "tslint": "~5.5.0",
     "typescript": "~2.3.3",
-    "webpack": "~3.3.0",
+    "webpack": "~3.4.1",
     "yargs": "~8.0.2"
   },
   "dependencies": {
