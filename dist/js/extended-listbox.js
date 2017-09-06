@@ -2,8 +2,8 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     3.0.0
- * Released    2017-05-29T08:30:32.499Z
+ * Version     4.0.0-beta.1
+ * Released    2017-09-06T20:31:52.267Z
  * License     MIT
  * Copyright   (c) 2017
  */
@@ -43,9 +43,6 @@ var extendedlistbox =
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -73,7 +70,7 @@ var extendedlistbox =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -218,18 +215,18 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 .attr("tabindex", "1")
                 .data("dataItem", dataItem)
                 .keydown(function (e) {
-                var $target = $(e.target);
-                if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
+                var $t = $(e.target);
+                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
                     if (e.which === 13) {
-                        self.onItemEnterPressed($target);
+                        self.onItemEnterPressed($t);
                     }
                     else if (e.which === 38) {
                         e.preventDefault();
-                        self.onItemArrowUp($target);
+                        self.onItemArrowUp($t);
                     }
                     else if (e.which === 40) {
                         e.preventDefault();
-                        self.onItemArrowDown($target);
+                        self.onItemArrowDown($t);
                     }
                 }
             })
@@ -237,9 +234,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 self.onItemClick($(this));
             })
                 .dblclick(function () {
-                var $target = $(this);
-                if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                    self.onItemDoubleClicked($target);
+                var $t = $(this);
+                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                    self.onItemDoubleClicked($t);
                 }
             });
             if (dataItem.disabled) {
@@ -515,7 +512,15 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(4), __webpack_require__(5), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, MultiSelectListbox, SingleSelectListbox, ExtendedListboxInstance) {
+__webpack_require__(2);
+module.exports = __webpack_require__(6);
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(3), __webpack_require__(4), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, MultiSelectListbox, SingleSelectListbox, ExtendedListboxInstance) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function initializeListBoxFromOptions(options) {
@@ -569,47 +574,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-    "use strict";
-    var ExtendedListboxInstance = (function () {
-        function ExtendedListboxInstance(listbox, target) {
-            this.listbox = listbox;
-            this.target = target;
-            var lb = this.listbox.baseListBox;
-            var methods = ["addItem", "addItems", "removeItem", "removeItems", "destroy", "clearSelection",
-                "getItem", "getItems", "getSelection", "moveItemUp", "moveItemDown", "moveItemToTop", "moveItemToBottom", "enable"];
-            for (var i = 0; i < methods.length; i++) {
-                var name_1 = methods[i];
-                this[name_1] = lb[name_1].bind(lb);
-            }
-            methods = ["onValueChanged", "onItemsChanged", "onFilterChanged", "onItemEnterPressed", "onItemDoubleClicked"];
-            var _loop_1 = function (i) {
-                var name_2 = methods[i];
-                this_1[name_2] = function (e) { lb._settings[name_2] = e; };
-            };
-            var this_1 = this;
-            for (var i = 0; i < methods.length; i++) {
-                _loop_1(i);
-            }
-        }
-        return ExtendedListboxInstance;
-    }());
-    return ExtendedListboxInstance;
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
@@ -654,7 +619,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
@@ -699,12 +664,44 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
-module.exports = __webpack_require__(2);
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+    "use strict";
+    var ExtendedListboxInstance = (function () {
+        function ExtendedListboxInstance(listbox, target) {
+            this.listbox = listbox;
+            this.target = target;
+            var lb = this.listbox.baseListBox;
+            var methods = ["addItem", "addItems", "removeItem", "removeItems", "destroy", "clearSelection",
+                "getItem", "getItems", "getSelection", "moveItemUp", "moveItemDown", "moveItemToTop", "moveItemToBottom", "enable"];
+            for (var i = 0; i < methods.length; i++) {
+                var name_1 = methods[i];
+                this[name_1] = lb[name_1].bind(lb);
+            }
+            methods = ["onValueChanged", "onItemsChanged", "onFilterChanged", "onItemEnterPressed", "onItemDoubleClicked"];
+            var _loop_1 = function (i) {
+                var name_2 = methods[i];
+                this_1[name_2] = function (e) { lb._settings[name_2] = e; };
+            };
+            var this_1 = this;
+            for (var i = 0; i < methods.length; i++) {
+                _loop_1(i);
+            }
+        }
+        return ExtendedListboxInstance;
+    }());
+    return ExtendedListboxInstance;
+}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
