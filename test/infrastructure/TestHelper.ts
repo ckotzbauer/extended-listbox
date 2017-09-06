@@ -64,9 +64,9 @@ class TestHelper {
         return result;
     }
 
-    public static jsonToVal(items: string[]): string {
+    public static jsonToVal(items: string|number|string[]): string {
         var result: string = '';
-        for (var i: number = 0; i < items.length; ++i) {
+        for (var i: number = 0; i < (<string[]>items).length; ++i) {
             if (i !== 0) {
                 result += ',';
             }

@@ -34,7 +34,7 @@ class MultiSelectListbox implements Listbox {
             return;
         }
 
-        var parentValues: any[] = this.baseListBox._target.val();
+        var parentValues: any[] = <any[]>this.baseListBox._target.val();
 
         if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
             domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);

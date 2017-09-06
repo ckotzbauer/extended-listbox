@@ -108,7 +108,7 @@ class BaseListBox {
         // set filter handler
         var self: BaseListBox = this;
         searchbar.keyup(function (): void {
-            var searchQuery: string = $(this).val().toLowerCase();
+            var searchQuery: string = (<string>$(this).val()).toLowerCase();
 
             if (searchQuery !== '') {
                 // hide list items which are not matched search query
@@ -270,20 +270,20 @@ class BaseListBox {
             .attr("title", dataItem.text)
             .attr("tabindex", "1")
             .data("dataItem", dataItem)
-            .keydown(function (e: JQueryKeyEventObject): void {
-                var $target: JQuery = $(e.target);
-                if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
+            .keydown(function (e: any): void {// TODO: remove this any cast in upcoming major release if this project
+                var $t: JQuery = $(e.target); // TODO does not depend on jquery anymore
+                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
                     if (e.which === 13) {
                         // Enter
-                        self.onItemEnterPressed($target);
+                        self.onItemEnterPressed($t);
                     } else if (e.which === 38) {
                         // Arrow up
                         e.preventDefault();
-                        self.onItemArrowUp($target);
+                        self.onItemArrowUp($t);
                     } else if (e.which === 40) {
                         // Arrow down
                         e.preventDefault();
-                        self.onItemArrowDown($target);
+                        self.onItemArrowDown($t);
                     }
                 }
             })
@@ -291,9 +291,9 @@ class BaseListBox {
                 self.onItemClick($(this));
             })
             .dblclick(function (): void {
-                var $target: JQuery = $(this);
-                if (!$target.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                    self.onItemDoubleClicked($target);
+                var $t: JQuery = $(this);
+                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                    self.onItemDoubleClicked($t);
                 }
             });
 
@@ -466,7 +466,7 @@ class BaseListBox {
         domItem.data("dataItem").selected = false;
 
         if (this._settings.multiple) {
-            var parentValues: any[] = this._target.val();
+            var parentValues: any[] = <any[]>this._target.val();
             if (parentValues) {
                 var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
                 parentValues.splice(removeIndex, 1);
