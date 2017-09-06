@@ -1,9 +1,8 @@
 import ListboxSettings = require("./contract/ListboxSettings");
 import MultiSelectListbox = require("./MultiSelectListbox");
 import SingleSelectListbox = require("./SingleSelectListbox");
-import ExtendedListboxInstance = require("./ExtendedListboxInstanceImpl");
+import ExtendedListboxInstance = require("./ExtendedListboxInstance");
 import Listbox = require("./Listbox");
-import ExtendedListboxInstanceImpl = require("./ExtendedListboxInstanceImpl");
 
 function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListboxInstance|ExtendedListboxInstance[] {
     "use strict";
@@ -45,7 +44,7 @@ function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListbox
             listbox = new SingleSelectListbox($this, settings);
         }
 
-        instance = new ExtendedListboxInstanceImpl(listbox, $this);
+        instance = new ExtendedListboxInstance(listbox, $this);
 
         $this.data('listbox', listbox);
         $this.data('listbox-instance', instance);
@@ -63,7 +62,8 @@ function initializeListBoxFromOptions(options: ListboxSettings): ExtendedListbox
  *
  * @param {object} options an object with Listbox settings
  */
-$.fn.listbox = function (options?: ListboxSettings): ExtendedListboxInstance | ExtendedListboxInstance[] {
+// TODO: remove this any cast in upcoming major release if this project does not depend on jquery anymore
+$.fn.listbox = <any>function (options?: ListboxSettings): ExtendedListboxInstance | ExtendedListboxInstance[] {
     if (typeof options === 'object' || !options) {
         return initializeListBoxFromOptions.call(this, options);
     }
