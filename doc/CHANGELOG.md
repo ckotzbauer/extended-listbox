@@ -6,7 +6,7 @@ release.
 
 ## Version 3.0.0
 
-Unreleased
+Released on May 29, 2017.
 
 - Dropped Support for JQuery 2.x
 - New API-Method `addItems` added
