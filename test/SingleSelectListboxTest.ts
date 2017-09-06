@@ -178,7 +178,7 @@ QUnit.test('onValueChanged callback', (): void => {
     var receiveCounter: number = 0;
     var lastValue: any = null;
 
-    var options: ListBoxOptions = <ListBoxOptions> {};
+    var options: ListboxSettings = <ListboxSettings> {};
     options.onValueChanged = (newValue: ListboxEvent): void => {
         receiveCounter++;
         lastValue = newValue.args.text;

@@ -4,6 +4,7 @@
 import TestHelper = require("./infrastructure/TestHelper");
 import ListboxSettings = require("../src/ts/contract/ListboxSettings");
 import BaseListBox = require("../src/ts/BaseListBox");
+import ListboxSearchBarButtonOptions = require("../src/ts/contract/ListboxSearchBarButtonOptions");
 
 /* tslint:disable:no-string-literal */
 
@@ -102,7 +103,7 @@ QUnit.test("check searchbar button callback", (): void => {
         count++;
     };
 
-    var options: ListBoxOptions = <ListBoxOptions> {};
+    var options: ListboxSettings = <ListboxSettings> {};
     options.searchBar = true;
     options.searchBarButton = <ListboxSearchBarButtonOptions> {};
     options.searchBarButton.visible = true;

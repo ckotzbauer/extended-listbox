@@ -25,7 +25,7 @@ class TestHelper {
         return childs;
     }
 
-    public static generateSingleList(options: ListBoxOptions = null, items: ListboxItem[] = null): ExtendedListboxInstance {
+    public static generateSingleList(options: ListboxSettings = null, items: ListboxItem[] = null): ExtendedListboxInstance {
         options = $.extend({
             getItems: (): ListboxItem[] => {
                 return items;
@@ -38,7 +38,7 @@ class TestHelper {
         return <ExtendedListboxInstance>$test.listbox(options);
     }
 
-    public static generateMultipleList(options: ListBoxOptions = null, items: ListboxItem[] = null): ExtendedListboxInstance {
+    public static generateMultipleList(options: ListboxSettings = null, items: ListboxItem[] = null): ExtendedListboxInstance {
         options = $.extend({
             multiple: true,
             getItems: (): ListboxItem[] => {

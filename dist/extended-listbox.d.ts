@@ -40,7 +40,7 @@ interface ListboxSearchBarButtonOptions {
     onClick?: () => void;
 }
 
-interface ListBoxOptions {
+interface ListboxSettings {
     /** determines if the searchBar is visible */
     searchBar?: boolean;
 
@@ -150,5 +150,5 @@ interface JQuery {
     listbox(): ExtendedListboxInstance|ExtendedListboxInstance[];
 
     /** constructs a new instance of Listbox on the given DOM item */
-    listbox(options: ListBoxOptions): ExtendedListboxInstance|ExtendedListboxInstance[];
+    listbox(options: ListboxSettings): ExtendedListboxInstance|ExtendedListboxInstance[];
 }
