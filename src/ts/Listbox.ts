@@ -3,7 +3,7 @@ import BaseListBox = require("./BaseListBox");
 
 interface Listbox {
 
-    onItemClick(domItem: JQuery): void;
+    onItemClick(domItem: HTMLElement): void;
     onFilterChange(): void;
     baseListBox: BaseListBox;
 }

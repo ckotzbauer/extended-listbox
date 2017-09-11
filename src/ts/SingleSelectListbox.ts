@@ -1,12 +1,11 @@
 import BaseListBox = require("./BaseListBox");
 import ListboxSettings = require("./contract/ListboxSettings");
 import Listbox = require("./Listbox");
-import ListboxEvent = require("./event/ListboxEvent");
 
 class SingleSelectListbox implements Listbox {
 
     public baseListBox: BaseListBox;
-    private _selectedDomItem: JQuery;
+    private _selectedDomItem: HTMLElement;
 
     /**
      * Create an instance of SingleSelectListbox.
@@ -15,12 +14,21 @@ class SingleSelectListbox implements Listbox {
      *
      * @constructor
      * @this {SingleSelectListbox}
-     * @param {object} domelement DOM element to be converted to the Listbox
+     * @param {object} domElement DOM element to be converted to the Listbox
      * @param {object} options an object with Listbox settings
      */
-    constructor(domelement: JQuery, options: ListboxSettings) {
+    constructor(domElement: HTMLElement, options: ListboxSettings) {
+        options = $.extend(
+            {
+                searchBar: false,
+                searchBarWatermark: "Search...",
+                searchBarButton: { visible: false },
+                multiple: false
+            },
+            options);
+
         this._selectedDomItem = null;
-        this.baseListBox = new BaseListBox(domelement, options, this);
+        this.baseListBox = new BaseListBox(domElement, options, this);
         this.baseListBox.createListbox();
     }
 
@@ -30,9 +38,9 @@ class SingleSelectListbox implements Listbox {
      * @this {SingleSelectListbox}
      * @param {object} domItem a DOM object
      */
-    public onItemClick(domItem: JQuery): void {
-        if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-            domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+    public onItemClick(domItem: HTMLElement): void {
+        if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
             return;
         }
 
@@ -41,12 +49,12 @@ class SingleSelectListbox implements Listbox {
             this._selectedDomItem = null;
         }
 
-        domItem.toggleClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+        domItem.classList.toggle(BaseListBox.LIST_ITEM_CLASS_SELECTED);
         domItem.focus();
         this._selectedDomItem = domItem;
         domItem.data("dataItem").selected = true;
         this.baseListBox._target.val(domItem.data("dataItem"));
-        this.baseListBox._target.trigger('change');
+        this.baseListBox._target.dispatchEvent(new Event("change"));
 
         this.baseListBox.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, domItem.data("dataItem"));
     }
@@ -58,8 +66,8 @@ class SingleSelectListbox implements Listbox {
      * @this {SingleSelectListbox}
      */
     public onFilterChange(): void {
-        if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
-            var element: JQuery = this.baseListBox._list.children(':visible').first();
+        if (!this._selectedDomItem || this._selectedDomItem.querySelectorAll(":visible").length > 0) {
+            var element: HTMLElement = this.baseListBox._list.querySelectorAll(':visible').item(0) as HTMLElement;
             if (element && element.length > 0) {
                 this.onItemClick(element);
             }

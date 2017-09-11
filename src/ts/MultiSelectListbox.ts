@@ -1,7 +1,6 @@
 import BaseListBox = require("./BaseListBox");
 import ListboxSettings = require("./contract/ListboxSettings");
 import Listbox = require("./Listbox");
-import ListboxEvent = require("./event/ListboxEvent");
 
 class MultiSelectListbox implements Listbox {
 
@@ -14,11 +13,20 @@ class MultiSelectListbox implements Listbox {
      *
      * @constructor
      * @this {MultiSelectListbox}
-     * @param {object} domelement DOM element to be converted to the Listbox
+     * @param {object} domElement DOM element to be converted to the Listbox
      * @param {object} options an object with Listbox settings
      */
-    constructor(domelement: JQuery, options: ListboxSettings) {
-        this.baseListBox = new BaseListBox(domelement, options, this);
+    constructor(domElement: HTMLElement, options: ListboxSettings) {
+        options = $.extend(
+            {
+                searchBar: false,
+                searchBarWatermark: "Search...",
+                searchBarButton: { visible: false },
+                multiple: false
+            },
+            options);
+
+        this.baseListBox = new BaseListBox(domElement, options, this);
         this.baseListBox.createListbox();
     }
 
@@ -28,23 +36,23 @@ class MultiSelectListbox implements Listbox {
      * @this {MultiSelectListbox}
      * @param {object} domItem a DOM object
      */
-    public onItemClick(domItem: JQuery): void {
-        if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-            domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+    public onItemClick(domItem: HTMLElement): void {
+        if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
             return;
         }
 
-        var parentValues: any[] = <any[]>this.baseListBox._target.val();
+        let parentValues: any[] = <any[]>this.baseListBox._target.val();
 
-        if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
-            domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+        if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
+            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_SELECTED);
 
-            var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
+            const removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
             parentValues.splice(removeIndex, 1);
 
             domItem.data("dataItem").selected = false;
         } else {
-            domItem.addClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            domItem.classList.add(BaseListBox.LIST_ITEM_CLASS_SELECTED);
             domItem.data("dataItem").selected = true;
 
             if (!parentValues) {
@@ -55,7 +63,7 @@ class MultiSelectListbox implements Listbox {
         }
 
         this.baseListBox._target.val(parentValues);
-        this.baseListBox._target.trigger('change');
+        this.baseListBox._target.dispatchEvent(new Event("change"));
 
         this.baseListBox.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, parentValues);
     }

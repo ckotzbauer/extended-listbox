@@ -4,14 +4,14 @@ import BaseListBox = require("./BaseListBox");
 class ExtendedListboxInstance {
 
     private listbox: Listbox;
-    public target: JQuery;
+    public target: HTMLElement;
 
-    constructor(listbox: Listbox, target: JQuery) {
+    constructor(listbox: Listbox, target: HTMLElement) {
         this.listbox = listbox;
         this.target = target;
 
-        var lb: BaseListBox = this.listbox.baseListBox;
-        var methods: string[] = ["addItem", "addItems", "removeItem", "removeItems", "destroy", "clearSelection",
+        const lb: BaseListBox = this.listbox.baseListBox;
+        let methods: string[] = ["addItem", "addItems", "removeItem", "removeItems", "destroy", "clearSelection",
             "getItem", "getItems", "getSelection", "moveItemUp", "moveItemDown", "moveItemToTop", "moveItemToBottom", "enable"];
 
         for (let i: number = 0; i < methods.length; i++) {

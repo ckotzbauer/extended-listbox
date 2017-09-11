@@ -1,6 +1,6 @@
 interface ListboxEvent {
     eventName: string;
-    target: JQuery;
+    target: Element;
     args: any;
 }
 

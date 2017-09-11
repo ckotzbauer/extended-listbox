@@ -22,10 +22,10 @@ class BaseListBox {
     public static EVENT_ITEM_ENTER_PRESSED: string = "itemEnterPressed";
     public static EVENT_ITEM_DOUBLE_CLICKED: string = "itemDoubleClicked";
 
-    public _target: JQuery;
-    public _list: JQuery;
-    private _searchbarWrapper: JQuery;
-    public _searchbar: JQuery;
+    public _target: HTMLElement;
+    public _list: HTMLDivElement;
+    private _searchbarWrapper: HTMLDivElement;
+    public _searchbar: HTMLInputElement;
 
     public _settings: ListboxSettings;
     private _box: Listbox;
@@ -42,7 +42,7 @@ class BaseListBox {
      * @param {object} options an object with Listbox settings
      * @param {Listbox} boxInstance of specific implementation
      */
-    constructor(domelement: JQuery, options: ListboxSettings, boxInstance: Listbox) {
+    constructor(domelement: HTMLElement, options: ListboxSettings, boxInstance: Listbox) {
         this._target = domelement;
         this._box = boxInstance;
         this._settings = options;
@@ -55,7 +55,7 @@ class BaseListBox {
      * @this {BaseListBox}
      * @param {object} domItem a DOM object
      */
-    protected onItemClick(domItem: JQuery): void {
+    protected onItemClick(domItem: HTMLElement): void {
         this._box.onItemClick(domItem);
     }
 
@@ -77,7 +77,7 @@ class BaseListBox {
      * @this {BaseListBox}
      */
     public createListbox(): void {
-        this._target.addClass(BaseListBox.MAIN_CLASS);
+        this._target.classList.add(BaseListBox.MAIN_CLASS);
 
         if (this._settings.searchBar) {
             this._createSearchbar();
@@ -96,78 +96,83 @@ class BaseListBox {
     private _createSearchbar(): void {
         // searchbar wrapper is needed for properly stretch
         // the searchbar over the listbox width
-        var searchbarWrapper: JQuery = $('<div>')
-            .addClass(BaseListBox.SEARCHBAR_CLASS + '-wrapper')
-            .appendTo(this._target);
+        const searchbarWrapper: HTMLDivElement = document.createElement("div");
+        searchbarWrapper.classList.add(BaseListBox.SEARCHBAR_CLASS + '-wrapper');
+        this._target.appendChild(searchbarWrapper);
 
-        var searchbar: JQuery = $('<input>')
-            .addClass(BaseListBox.SEARCHBAR_CLASS)
-            .appendTo(searchbarWrapper)
-            .attr('placeholder', this._settings.searchBarWatermark);
+        const searchbar: HTMLInputElement = document.createElement("input");
+        searchbar.classList.add(BaseListBox.SEARCHBAR_CLASS);
+        searchbar.setAttribute("placeholder", this._settings.searchBarWatermark);
+        searchbarWrapper.appendChild(searchbar);
 
         // set filter handler
-        var self: BaseListBox = this;
-        searchbar.keyup(function (): void {
-            var searchQuery: string = (<string>$(this).val()).toLowerCase();
+        searchbar.onkeyup = (): void => {
+            const searchQuery: string = (<string>$(this).val()).toLowerCase();
 
             if (searchQuery !== '') {
                 // hide list items which are not matched search query
-                self._list.find("." + BaseListBox.LIST_ITEM_CLASS).each(function (): void {
-                    var $this: JQuery = $(this);
+                const items: NodeListOf<HTMLDivElement> = this._list.querySelectorAll<any>("." + BaseListBox.LIST_ITEM_CLASS);
+                for (let i: number = 0; i < items.length; i++) {
+                    const thisItem: HTMLDivElement = items.item(i);
 
-                    if ($this.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                    if (thisItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
                         return;
                     }
 
-                    var text: string = $this.text().toLowerCase();
+                    const text: string = thisItem.innerText.toLowerCase();
 
                     if (text.search('^' + searchQuery) !== -1) {
-                        $this.css('display', 'block');
-                        $this.parent().css('display', 'block');
+                        thisItem.style.display = "block";
+                        thisItem.parentElement.style.display = "block";
                     } else {
-                        $this.css('display', 'none');
+                        thisItem.style.display = "none";
                     }
-                });
+                }
 
                 // hide group item only, if all childs are hidden
-                self._list.find("." + BaseListBox.LIST_ITEM_CLASS_GROUP).each(function (): void {
-                    var $this: JQuery = $(this);
-                    if ($this.children(':visible').length === 0) {
-                        $this.css('display', 'none');
+                const groups: NodeListOf<HTMLDivElement> =
+                    this._list.querySelectorAll<any>("." + BaseListBox.LIST_ITEM_CLASS_GROUP);
+                for (let i: number = 0; i < groups.length; i++) {
+                    const thisItem: HTMLDivElement = items.item(i);
+
+                    if (thisItem.querySelectorAll(':visible').length === 0) {
+                        thisItem.style.display = "none";
                     } else {
-                        $this.css('display', 'block');
+                        thisItem.style.display = "block";
                     }
-                });
+                }
             } else {
                 // make visible all list items
-                self._list.find("." + BaseListBox.LIST_ITEM_CLASS).each(function (): void {
-                    $(this).css('display', 'block');
-                });
+                const items: NodeListOf<HTMLDivElement> = this._list.querySelectorAll<any>("." + BaseListBox.LIST_ITEM_CLASS);
+                for (let i: number = 0; i < items.length; i++) {
+                    const thisItem: HTMLDivElement = items.item(i);
+                    thisItem.style.display = "block";
+                }
             }
 
             // @hack: call special handler which is used only for SingleSelectListbox
             //        to prevent situation when none of items are selected
-            if (self.onFilterChange) {
-                self.onFilterChange();
+            if (this.onFilterChange) {
+                this.onFilterChange();
             }
-        });
+        };
 
         if (this._settings.searchBarButton.visible) {
             // create button in search field
-            var button: JQuery = $('<button>')
-                .attr('id', 'searchBarButton')
-                .attr('tabindex', '-1')
-                .addClass(BaseListBox.SEARCHBAR_BUTTON_CLASS)
-                .appendTo(searchbarWrapper);
+            const button: HTMLButtonElement = document.createElement("button");
+            button.id = "searchBarButton";
+            button.setAttribute("tabindex", "-1");
+            button.classList.add(BaseListBox.SEARCHBAR_BUTTON_CLASS);
+            searchbarWrapper.appendChild(button);
 
             if (this._settings.searchBarButton.onClick) {
-                button.click(this._settings.searchBarButton.onClick);
+                button.onclick = this._settings.searchBarButton.onClick;
             }
 
             // icon for search button
-            $('<i>')
-                .addClass(this._settings.searchBarButton.icon)
-                .appendTo(button);
+            const icon: HTMLElement = document.createElement("i");
+            icon.classList.add(this._settings.searchBarButton.icon);
+            button.appendChild(icon);
         }
 
         // save for using in _resizeListToListbox()
@@ -184,15 +189,15 @@ class BaseListBox {
      */
     private _createList(): void {
         // create container
-        this._list = $('<div>')
-            .addClass(BaseListBox.LIST_CLASS)
-            .appendTo(this._target);
+        this._list = document.createElement("div");
+        this._list.classList.add(BaseListBox.LIST_CLASS);
+        this._target.appendChild(this._list);
 
         this._resizeListToListbox();
 
         // create items
         if (this._settings.getItems) {
-            var items: (string|ListboxItem)[] = <(string|ListboxItem)[]>this._settings.getItems();
+            const items: (string|ListboxItem)[] = <(string|ListboxItem)[]>this._settings.getItems();
             if (items) {
                 for (let index in items) {
                     this.addItem(this._prepareDataItem(items[index]), true);
@@ -207,7 +212,7 @@ class BaseListBox {
      * @this {BaseListBox}
      */
     protected _generateItemId(): string {
-        var num: number = parseInt("" + (Math.random() * 10000000), 10);
+        const num: number = parseInt("" + (Math.random() * 10000000), 10);
         return "listboxitem" + num;
     }
 
@@ -218,7 +223,7 @@ class BaseListBox {
      * @param {object} dataItem object returned from getItems
      */
     protected _prepareDataItem(dataItem: ListboxItem|string): ListboxItem {
-        var item: ListboxItem = {
+        let item: ListboxItem = {
             childItems: [],
             disabled: false,
             groupHeader: null,
@@ -241,7 +246,7 @@ class BaseListBox {
         } else {
             item = $.extend(item, dataItem);
 
-            var childs: ListboxItem[] = [];
+            const childs: ListboxItem[] = [];
 
             for (let index in item.childItems) {
                 childs.push(this._prepareDataItem(item.childItems[index]));
@@ -261,48 +266,47 @@ class BaseListBox {
      * @param {object} internal: true if this function is not called directly as api function.
      * * @param {object} $parent: the DOM parent element
      */
-    protected _addItem(dataItem: ListboxItem, internal: boolean, $parent: JQuery): string {
-        var self: BaseListBox = this;
-        var item: JQuery = $('<div>')
-            .addClass(BaseListBox.LIST_ITEM_CLASS)
-            .text(dataItem.text)
-            .attr("id", dataItem.id)
-            .attr("title", dataItem.text)
-            .attr("tabindex", "1")
-            .data("dataItem", dataItem)
-            .keydown(function (e: any): void {// TODO: remove this any cast in upcoming major release if this project
-                var $t: JQuery = $(e.target); // TODO does not depend on jquery anymore
-                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
-                    if (e.which === 13) {
-                        // Enter
-                        self.onItemEnterPressed($t);
-                    } else if (e.which === 38) {
-                        // Arrow up
-                        e.preventDefault();
-                        self.onItemArrowUp($t);
-                    } else if (e.which === 40) {
-                        // Arrow down
-                        e.preventDefault();
-                        self.onItemArrowDown($t);
-                    }
+    protected _addItem(dataItem: ListboxItem, internal: boolean, $parent: HTMLElement): string {
+        const item: HTMLDivElement = document.createElement("div");
+        item.classList.add(BaseListBox.LIST_ITEM_CLASS);
+        item.innerText = dataItem.text;
+        item.id = dataItem.id;
+        item.title = dataItem.text;
+        item.tabIndex = 1;
+        // TODO: data
+        item.onkeydown = (e: KeyboardEvent): void => {
+            if (!(<HTMLElement>e.target).classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
+                if (e.which === 13) {
+                    // Enter
+                    this.onItemEnterPressed(e.target as HTMLElement);
+                } else if (e.which === 38) {
+                    // Arrow up
+                    e.preventDefault();
+                    this.onItemArrowUp(e.target as HTMLElement);
+                } else if (e.which === 40) {
+                    // Arrow down
+                    e.preventDefault();
+                    this.onItemArrowDown(e.target as HTMLElement);
                 }
-            })
-            .click(function (): void {
-                self.onItemClick($(this));
-            })
-            .dblclick(function (): void {
-                var $t: JQuery = $(this);
-                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                    self.onItemDoubleClicked($t);
-                }
-            });
+            }
+        };
+
+        item.onclick = (e: MouseEvent): void => {
+            this.onItemClick(e.target as HTMLElement);
+        };
+
+        item.ondblclick = (e: MouseEvent): void => {
+            if (!(<HTMLElement>e.target).classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                this.onItemDoubleClicked(e.target as HTMLElement);
+            }
+        };
 
         if (dataItem.disabled) {
-            item.addClass(BaseListBox.LIST_ITEM_CLASS_DISABLED);
+            item.classList.add(BaseListBox.LIST_ITEM_CLASS_DISABLED);
         }
 
         if (dataItem.groupHeader) {
-            item.addClass(BaseListBox.LIST_ITEM_CLASS_GROUP);
+            item.classList.add(BaseListBox.LIST_ITEM_CLASS_GROUP);
         }
 
         if (dataItem.selected) {
@@ -310,7 +314,7 @@ class BaseListBox {
         }
 
         if (dataItem.parentGroupId) {
-            var $possibleParent: JQuery = this.locateItem(dataItem.parentGroupId);
+            const $possibleParent: HTMLElement = this.locateItem(dataItem.parentGroupId);
 
             if ($possibleParent) {
                 $parent = $possibleParent;
@@ -318,25 +322,24 @@ class BaseListBox {
         }
 
         if ($parent) {
-            item.addClass(BaseListBox.LIST_ITEM_CLASS_CHILD);
+            item.classList.add(BaseListBox.LIST_ITEM_CLASS_CHILD);
         }
 
-        var $target: JQuery = $parent ? $parent : this._list;
+        let $target: HTMLElement = $parent ? $parent : this._list;
         if (dataItem.index !== undefined && dataItem.index !== null && !internal) {
-            $target = $target.children().eq(dataItem.index);
-            item.insertBefore($target);
+            $target = <HTMLElement>$target.children.item(dataItem.index);
+            $target.parentElement.insertBefore(item, $target);
         } else {
-            item.appendTo($target);
+            $target.appendChild(item);
         }
 
         if (dataItem.childItems && dataItem.childItems.length > 0) {
-            if (!item.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                item.addClass(BaseListBox.LIST_ITEM_CLASS_GROUP);
+            if (!item.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                item.classList.add(BaseListBox.LIST_ITEM_CLASS_GROUP);
             }
 
-            var index: number;
-            for (index = 0; index < dataItem.childItems.length; index++) {
-                var child: ListboxItem = dataItem.childItems[index];
+            for (let index: number = 0; index < dataItem.childItems.length; index++) {
+                let child: ListboxItem = dataItem.childItems[index];
                 this._addItem(child, internal, item);
             }
         }
@@ -359,7 +362,7 @@ class BaseListBox {
         }
         /* tslint:enable:no-string-literal */
 
-        var id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
+        const id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
 
         if (!internal) {
             this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
@@ -385,7 +388,7 @@ class BaseListBox {
      * @param {string} item: display text or id from item to remove
      */
     public removeItem(item: string): void {
-        var uiItem: JQuery = this.locateItem(item);
+        const uiItem: HTMLElement = this.locateItem(item);
         if (uiItem) {
             this._clearItemSelection(uiItem);
             uiItem.remove();
@@ -411,8 +414,11 @@ class BaseListBox {
      * @this {BaseListBox}
      */
     public destroy(): void {
-        this._target.children().remove();
-        this._target.removeClass(BaseListBox.MAIN_CLASS);
+        while (this._target.firstChild) {
+            this._target.removeChild(this._target.firstChild);
+        }
+
+        this._target.classList.remove(BaseListBox.MAIN_CLASS);
     }
 
 
@@ -421,13 +427,13 @@ class BaseListBox {
      * do it with CSS.
      */
     protected _resizeListToListbox(): void {
-        var listHeight: number = this._target.height();
+        let listHeight: number = this._target.clientHeight;
 
         if (this._settings.searchBar) {
-            listHeight -= this._searchbarWrapper.outerHeight(true);
+            listHeight -= this._searchbarWrapper.offsetHeight;
         }
 
-        this._list.height(listHeight);
+        this._list.style.height = listHeight + "px";
     }
 
 
@@ -436,12 +442,12 @@ class BaseListBox {
      */
     public clearSelection(internal: boolean): void {
         // Remove selected class from all other items
-        var allItems: JQuery = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
+        const allItems: NodeList = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
 
-        allItems.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-        var index: number;
-        for (index = 0; index < allItems.length; index++) {
-            $(allItems[index]).data("dataItem").selected = false;
+        for (let index: number = 0; index < allItems.length; index++) {
+            (<HTMLElement>allItems[index]).classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            //$(allItems[index]).data("dataItem").selected = false;
+            // TODO Data
         }
 
         if (this._settings.multiple) {
@@ -451,7 +457,7 @@ class BaseListBox {
         }
 
         if (!internal) {
-            this._target.trigger('change');
+            this._target.dispatchEvent(new Event("change"));
         }
     }
 
@@ -461,14 +467,15 @@ class BaseListBox {
      *
      * @param {object} domItem DOM item
      */
-    protected _clearItemSelection(domItem: JQuery): void {
-        domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-        domItem.data("dataItem").selected = false;
+    protected _clearItemSelection(domItem: HTMLElement): void {
+        domItem.classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+        //domItem.data("dataItem").selected = false;
+        // TODO data
 
         if (this._settings.multiple) {
-            var parentValues: any[] = <any[]>this._target.val();
+            const parentValues: any[] = <any[]>this._target.val();
             if (parentValues) {
-                var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
+                const removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
                 parentValues.splice(removeIndex, 1);
                 this._target.val(parentValues);
             }
@@ -476,7 +483,7 @@ class BaseListBox {
             this._target.val(null);
         }
 
-        this._target.trigger('change');
+        this._target.dispatchEvent(new Event("change"));
     }
 
 
@@ -486,9 +493,9 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public getItem(id: string): ListboxItem {
-        var data: ListboxItem = null;
+        let data: ListboxItem = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const $item: HTMLElement = this.locateItem(id);
 
         if ($item) {
             data = $item.data("dataItem");
@@ -502,12 +509,11 @@ class BaseListBox {
      * Returns all dataItems.
      */
     public getItems(): ListboxItem[] {
-        var dataItems: ListboxItem[] = [];
+        const dataItems: ListboxItem[] = [];
 
-        var childs: JQuery = this._list.children();
-        var index: number;
-        for (index = 0; index < childs.length; index++) {
-            dataItems.push($(childs[index]).data("dataItem"));
+        const childs: NodeList = this._list.children;
+        for (let index: number = 0; index < childs.length; index++) {
+            dataItems.push(childs[index].data("dataItem"));
         }
 
         return dataItems;
@@ -520,13 +526,13 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public moveItemUp(id: string): number {
-        var newIndex: number = null;
+        let newIndex: number = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const $item: HTMLElement = this.locateItem(id);
 
         if ($item) {
-            $item.insertBefore($item.prev());
-            newIndex = $item.index();
+            $item.parentElement.insertBefore($item, $item.previousElementSibling);
+            newIndex = this.elementIndex($item);
             $item.data("dataItem").index = newIndex;
         }
 
@@ -541,13 +547,13 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public moveItemDown(id: string): number {
-        var newIndex: number = null;
+        let newIndex: number = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const $item: HTMLElement = this.locateItem(id);
 
         if ($item) {
-            $item.insertAfter($item.next());
-            newIndex = $item.index();
+            $item.parentNode.insertBefore($item, $item.nextSibling);
+            newIndex = this.elementIndex($item);
             $item.data("dataItem").index = newIndex;
         }
 
@@ -562,13 +568,13 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public moveItemToTop(id: string): number {
-        var newIndex: number = null;
+        let newIndex: number = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const $item: HTMLElement = this.locateItem(id);
 
         if ($item) {
-            $item.parent().prepend($item);
-            newIndex = $item.index();
+            $item.parentElement.parentElement.insertBefore($item, $item.parentElement.firstElementChild);
+            newIndex = this.elementIndex($item);
             $item.data("dataItem").index = newIndex;
         }
 
@@ -583,13 +589,13 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public moveItemToBottom(id: string): number {
-        var newIndex: number = null;
+        let newIndex: number = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const $item: HTMLElement = this.locateItem(id);
 
         if ($item) {
-            $item.parent().append($item);
-            newIndex = $item.index();
+            $item.parentElement.appendChild($item);
+            newIndex = this.elementIndex($item);
             $item.data("dataItem").index = newIndex;
         }
 
@@ -606,20 +612,20 @@ class BaseListBox {
      */
     public enable(enable: boolean): void {
         if (enable) {
-            this._target.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
-        } else if (!this._target.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
-            this._target.addClass(BaseListBox.MAIN_DISABLED_CLASS);
+            this._target.classList.remove(BaseListBox.MAIN_DISABLED_CLASS);
+        } else if (!this._target.classList.contains(BaseListBox.MAIN_DISABLED_CLASS)) {
+            this._target.classList.add(BaseListBox.MAIN_DISABLED_CLASS);
         }
     }
 
-    protected locateItem(id: string): JQuery {
-        var $item: JQuery = $("#" + id, this._list);
-        if ($item.length === 0) {
-            $item = $('div[title="' + id + '"]');
-        }
+    protected locateItem(id: string): HTMLElement {
+        let $item: HTMLElement = document.getElementById(id);
+        if (!$item) {
+            const titleItems: NodeListOf<Element> = document.querySelectorAll('div[title="' + id + '"]');
 
-        if ($item.length === 0) {
-            $item = null;
+            if (titleItems.length > 0) {
+                return titleItems[0] as HTMLElement;
+            }
         }
 
         return $item;
@@ -630,7 +636,7 @@ class BaseListBox {
      *
      * @param {JQuery} domItem: the domItem.
      */
-    protected onItemEnterPressed(domItem: JQuery): void {
+    protected onItemEnterPressed(domItem: HTMLElement): void {
         this.fireEvent(BaseListBox.EVENT_ITEM_ENTER_PRESSED, domItem.data("dataItem"));
     }
 
@@ -639,7 +645,7 @@ class BaseListBox {
      *
      * @param {JQuery} domItem: the domItem.
      */
-    protected onItemDoubleClicked(domItem: JQuery): void {
+    protected onItemDoubleClicked(domItem: HTMLElement): void {
         this.fireEvent(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
     }
 
@@ -648,8 +654,8 @@ class BaseListBox {
      *
      * @param {JQuery} domItem: the domItem.
      */
-    protected onItemArrowUp(domItem: JQuery): void {
-        var prev: JQuery = this.findNextItem(domItem, "prev");
+    protected onItemArrowUp(domItem: HTMLElement): void {
+        const prev: HTMLElement = this.findNextItem(domItem, "previous");
 
         if (prev) {
             this._clearItemSelection(domItem);
@@ -662,8 +668,8 @@ class BaseListBox {
      *
      * @param {JQuery} domItem: the domItem.
      */
-    protected onItemArrowDown(domItem: JQuery): void {
-        var next: JQuery = this.findNextItem(domItem, "next");
+    protected onItemArrowDown(domItem: HTMLElement): void {
+        const next: HTMLElement = this.findNextItem(domItem, "next");
 
         if (next) {
             this._clearItemSelection(domItem);
@@ -671,18 +677,20 @@ class BaseListBox {
         }
     }
 
-    private findNextItem(current: JQuery, direction: string): JQuery {
-        var potentialNext: JQuery = current;
+    private findNextItem(current: HTMLElement, direction: string): HTMLElement {
+        let potentialNext: Element = current;
 
         do {
-            potentialNext = potentialNext[direction]();
+            potentialNext = potentialNext[direction + "ElementSibling"]();
 
-            if (potentialNext.length === 0) {
-                var parent: JQuery = current.parent();
-                if (parent.length === 1) {
-                    var nextChildren: JQuery = parent[direction]().children();
+            if (!potentialNext) {
+                const parent: HTMLElement = current.parentElement;
+                if (parent) {
+                    const nextChildren: NodeListOf<Element> = parent[direction + "ElementSibling"].children;
                     if (nextChildren.length > 0) {
-                        potentialNext = direction === "next" ? nextChildren.first() : nextChildren.last();
+                        potentialNext = direction === "next"
+                            ? nextChildren[0].firstElementChild
+                            : nextChildren[0].lastElementChild;
                     } else {
                         potentialNext = parent;
                     }
@@ -691,11 +699,11 @@ class BaseListBox {
                 }
             }
 
-            if (potentialNext.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
+            if (potentialNext.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
                 continue;
             }
 
-            return potentialNext;
+            return potentialNext as HTMLElement;
         } while (true);
     }
 
@@ -703,8 +711,8 @@ class BaseListBox {
      * Returns all dataItems which are selected.
      */
     public getSelection(): ListboxItem[] {
-        var topLevelItems: ListboxItem[] = this.getItems();
-        var allItems: ListboxItem[] = [].concat(topLevelItems);
+        const topLevelItems: ListboxItem[] = this.getItems();
+        let allItems: ListboxItem[] = [].concat(topLevelItems);
 
         topLevelItems.forEach((item: ListboxItem) => {
             allItems = allItems.concat(item.childItems);
@@ -719,6 +727,11 @@ class BaseListBox {
         if (delegate) {
             delegate({ eventName: name, target: this._target, args: args });
         }
+    }
+
+    private elementIndex(element: Element): number {
+        const childs: Element[] = Array.prototype.slice.call(element.parentElement.children);
+        return childs.indexOf(element);
     }
 }
 
