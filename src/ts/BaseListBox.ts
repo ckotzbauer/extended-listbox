@@ -1,8 +1,8 @@
-import ListboxSettings = require("./contract/ListboxSettings");
-import ListboxEvent = require("./event/ListboxEvent");
-import ListboxItem = require("./contract/ListboxItem");
+import {ListboxSettings} from "./contract/ListboxSettings";
+import {ListboxEvent} from "./event/ListboxEvent";
+import {ListboxItem} from "./contract/ListboxItem";
 
-class BaseListBox {
+export class BaseListBox {
 
     public static MAIN_CLASS: string = 'listbox-root';
     public static MAIN_DISABLED_CLASS: string = 'listbox-disabled';
@@ -717,5 +717,3 @@ class BaseListBox {
         return null;
     }
 }
-
-export = BaseListBox;

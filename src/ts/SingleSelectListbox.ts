@@ -1,8 +1,8 @@
-import BaseListBox = require("./BaseListBox");
-import ListboxSettings = require("./contract/ListboxSettings");
-import ListboxItem = require("./contract/ListboxItem");
+import {BaseListBox} from "./BaseListBox";
+import {ListboxSettings} from "./contract/ListboxSettings";
+import {ListboxItem} from "./contract/ListboxItem";
 
-class SingleSelectListbox extends BaseListBox {
+export class SingleSelectListbox extends BaseListBox {
 
     private _selectedDomItem: HTMLElement;
 
@@ -67,5 +67,3 @@ class SingleSelectListbox extends BaseListBox {
         this.fireEvent(BaseListBox.EVENT_FILTER_CHANGED, this._searchbar.value);
     }
 }
-
-export = SingleSelectListbox;

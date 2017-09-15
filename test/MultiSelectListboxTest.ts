@@ -1,9 +1,9 @@
 /// <reference path="./test-typings.d.ts" />
 /// <amd-module name="build/out/test/test/MultiSelectListboxTest"/>
 
-import TestHelper = require("./infrastructure/TestHelper");
-import ListboxSettings = require("../src/ts/contract/ListboxSettings");
-import ListboxEvent = require("../src/ts/event/ListboxEvent");
+import {TestHelper} from "./infrastructure/TestHelper";
+import {ListboxSettings} from "../src/ts/contract/ListboxSettings";
+import {ListboxEvent} from "../src/ts/event/ListboxEvent";
 
 QUnit.module("MultiSelectListboxTest", {
     beforeEach: (): void => {

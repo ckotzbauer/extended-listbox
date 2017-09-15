@@ -1,8 +1,8 @@
-import BaseListBox = require("./BaseListBox");
-import ListboxSettings = require("./contract/ListboxSettings");
-import ListboxItem = require("./contract/ListboxItem");
+import {BaseListBox} from "./BaseListBox";
+import {ListboxSettings} from "./contract/ListboxSettings";
+import {ListboxItem} from "./contract/ListboxItem";
 
-class MultiSelectListbox extends BaseListBox {
+export class MultiSelectListbox extends BaseListBox {
 
     /**
      * Create an instance of MultiSelectListbox.
@@ -51,5 +51,3 @@ class MultiSelectListbox extends BaseListBox {
         this.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, this.selectedDataItems);
     }
 }
-
-export = MultiSelectListbox;

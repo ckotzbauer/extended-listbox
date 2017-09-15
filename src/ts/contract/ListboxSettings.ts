@@ -1,7 +1,7 @@
-import ListboxSearchBarButtonOptions = require("./ListboxSearchBarButtonOptions");
-import ListboxEvent = require("../event/ListboxEvent");
+import {ListboxSearchBarButtonOptions} from "./ListboxSearchBarButtonOptions";
+import {ListboxEvent} from "../event/ListboxEvent";
 
-interface ListboxSettings {
+export interface ListboxSettings {
     searchBar?: boolean;
     searchBarWatermark?: string;
     searchBarButton?: ListboxSearchBarButtonOptions;
@@ -13,5 +13,3 @@ interface ListboxSettings {
     onItemEnterPressed?: (values: ListboxEvent) => void;
     onItemDoubleClicked?: (values: ListboxEvent) => void;
 }
-
-export = ListboxSettings;

@@ -1,11 +1,11 @@
 /// <reference path="./test-typings.d.ts" />
 /// <amd-module name="build/out/test/test/BaseListBoxTest"/>
 
-import TestHelper = require("./infrastructure/TestHelper");
-import ListboxSettings = require("../src/ts/contract/ListboxSettings");
-import BaseListBox = require("../src/ts/BaseListBox");
-import ListboxEvent = require("../src/ts/event/ListboxEvent");
-import ListboxSearchBarButtonOptions = require("../src/ts/contract/ListboxSearchBarButtonOptions");
+import {TestHelper} from "./infrastructure/TestHelper";
+import {ListboxSettings} from "../src/ts/contract/ListboxSettings";
+import {BaseListBox} from "../src/ts/BaseListBox";
+import {ListboxEvent} from "../src/ts/event/ListboxEvent";
+import {ListboxSearchBarButtonOptions} from "../src/ts/contract/ListboxSearchBarButtonOptions";
 
 /* tslint:disable:no-string-literal */
 

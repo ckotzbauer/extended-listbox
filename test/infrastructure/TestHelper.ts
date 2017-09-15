@@ -1,11 +1,11 @@
 /// <reference path="../test-typings.d.ts" />
 /// <amd-module name="build/out/test/test/infrastructure/TestHelper"/>
 
-import ListboxSettings = require("../../src/ts/contract/ListboxSettings");
-import SingleSelectListbox = require("../../src/ts/SingleSelectListbox");
-import MultiSelectListbox = require("../../src/ts/MultiSelectListbox");
+import {ListboxSettings} from "../../src/ts/contract/ListboxSettings";
+import {SingleSelectListbox} from "../../src/ts/SingleSelectListbox";
+import {MultiSelectListbox} from "../../src/ts/MultiSelectListbox";
 
-class TestHelper {
+export class TestHelper {
 
     public static child(element: HTMLElement, index: number = null): HTMLElement {
         return element.children[index || 0] as HTMLElement;
@@ -76,4 +76,3 @@ class TestHelper {
     }
 }
 
-export = TestHelper;

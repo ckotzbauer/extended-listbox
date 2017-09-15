@@ -1,5 +1,5 @@
 
-interface ListboxItem {
+export interface ListboxItem {
     text: string;
     id?: string;
     index?: number;
@@ -9,5 +9,3 @@ interface ListboxItem {
     parentGroupId?: string;
     childItems?: ListboxItem[];
 }
-
-export = ListboxItem;
