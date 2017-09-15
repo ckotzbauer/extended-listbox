@@ -397,7 +397,7 @@ class BaseListBox {
         const uiItem: HTMLElement = this.locateItem(item);
         if (uiItem) {
             this._clearItemSelection(uiItem);
-            uiItem.remove();
+            uiItem.parentElement.removeChild(uiItem);
 
             const dataItem: ListboxItem = this.getDataItem(uiItem.id);
             this.dataItems.splice(this.dataItems.indexOf(dataItem), 1);
