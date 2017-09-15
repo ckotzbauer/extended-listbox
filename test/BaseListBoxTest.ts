@@ -114,7 +114,7 @@ QUnit.test("check searchbar button callback", (): void => {
 // ********************** ITEMS **********************
 
 QUnit.test("check simple items", (): void => {
-    const items: ListboxItem[] = ["Item#1", "Item#2", "Item#3"];
+    const items: string[] = ["Item#1", "Item#2", "Item#3"];
 
     const { target } = TestHelper.generateSingleList({}, items);
     const listbox: HTMLElement = TestHelper.child(target);
@@ -124,7 +124,7 @@ QUnit.test("check simple items", (): void => {
 
     for (let i: number = 0; i < itemElements.length; i++) {
         const element: HTMLElement = itemElements[i];
-        const item: ListboxItem = items[i];
+        const item: string = items[i];
 
         QUnit.assert.ok(element.classList.contains("listbox-item"));
         QUnit.assert.equal(element.innerText, item);
@@ -232,7 +232,7 @@ QUnit.test("check item with childs", (): void => {
         QUnit.assert.equal(childElements.length, 2);
         for (let j: number = 0; j < childElements.length; j++) {
             const childElement: HTMLElement = childElements[j];
-            const childItem: ListboxItem = items[0].childItems[j];
+            const childItem: string|ListboxItem = items[0].childItems[j];
 
             QUnit.assert.ok(childElement.classList.contains("listbox-item") &&
                 childElement.classList.contains("listbox-item-child"));

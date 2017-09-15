@@ -26,7 +26,7 @@ interface ListboxItem {
     parentGroupId?: string;
 
     /** list of childItems */
-    childItems?: ListboxItem[];
+    childItems?: (string|ListboxItem)[];
 }
 
 interface ListboxSearchBarButtonOptions {

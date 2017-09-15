@@ -16,10 +16,10 @@ export class TestHelper {
     }
 
     public static generateSingleList(options: ListboxSettings = null,
-                                     items: ListboxItem[] = null): { box: SingleSelectListbox, target: HTMLElement } {
+                                     items: (string|ListboxItem)[] = null): { box: SingleSelectListbox, target: HTMLElement } {
         options = options || {};
         if (!options.getItems) {
-            options.getItems = (): ListboxItem[] => items;
+            options.getItems = (): (string|ListboxItem)[] => items;
         }
 
         const test: HTMLElement = document.createElement("div");
@@ -30,11 +30,11 @@ export class TestHelper {
     }
 
     public static generateMultipleList(options: ListboxSettings = null,
-                                       items: ListboxItem[] = null): { box: MultiSelectListbox, target: HTMLElement } {
+                                       items: (string|ListboxItem)[] = null): { box: MultiSelectListbox, target: HTMLElement } {
         options = options || {};
         options.multiple = options.multiple || true;
         if (!options.getItems) {
-            options.getItems = (): ListboxItem[] => items;
+            options.getItems = (): (string|ListboxItem)[] => items;
         }
 
         const test: HTMLElement = document.createElement("div");
