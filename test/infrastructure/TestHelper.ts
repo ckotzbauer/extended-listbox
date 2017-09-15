@@ -71,7 +71,8 @@ class TestHelper {
     }
 
     public static afterEach(): void {
-        document.getElementById("qunit-fixture").remove();
+        const e: Element = document.getElementById("qunit-fixture");
+        e.parentElement.removeChild(e);
     }
 }
 
