@@ -564,7 +564,8 @@ QUnit.test("check itemEnterPressed event", (): void => {
     const listbox: HTMLElement = TestHelper.child(target);
     const item: HTMLElement = TestHelper.child(listbox, 1); // id02
 
-    const e: any = new Event("keydown");
+    const e: any = document.createEvent("Event");
+    e.initEvent("keydown", true, false);
     e.which = 13;
     item.dispatchEvent(e);
 
@@ -606,7 +607,8 @@ QUnit.test("check itemArrowUp event", (): void => {
     QUnit.assert.equal(box.getItem("id01").selected, false);
     QUnit.assert.equal(box.getItem("id02").selected, true);
 
-    const e: any = new Event("keydown");
+    const e: any = document.createEvent("Event");
+    e.initEvent("keydown", true, false);
     e.which = 38;
     item.dispatchEvent(e);
 
@@ -626,7 +628,8 @@ QUnit.test("check itemArrowDown event", (): void => {
     QUnit.assert.equal(box.getItem("id02").selected, true);
     QUnit.assert.equal(box.getItem("id03").selected, false);
 
-    const e: any = new Event("keydown");
+    const e: any = document.createEvent("Event");
+    e.initEvent("keydown", true, false);
     e.which = 40;
     item.dispatchEvent(e);
 
