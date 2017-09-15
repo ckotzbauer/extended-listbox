@@ -112,7 +112,7 @@ class BaseListBox {
 
         // set filter handler
         searchbar.onkeyup = (): void => {
-            const searchQuery: string = (<string>$(this).val()).toLowerCase();
+            const searchQuery: string = searchbar.value.toLowerCase();
 
             if (searchQuery !== '') {
                 // hide list items which are not matched search query
@@ -269,9 +269,9 @@ class BaseListBox {
      * @this {BaseListBox}
      * @param {object} dataItem display data for item
      * @param {object} internal: true if this function is not called directly as api function.
-     * * @param {object} $parent: the DOM parent element
+     * * @param {object} parent: the DOM parent element
      */
-    protected _addItem(dataItem: ListboxItem, internal: boolean, $parent: HTMLElement): string {
+    protected _addItem(dataItem: ListboxItem, internal: boolean, parent: HTMLElement): string {
         this.dataItems.push(dataItem);
 
         const item: HTMLDivElement = document.createElement("div");
@@ -320,23 +320,23 @@ class BaseListBox {
         }
 
         if (dataItem.parentGroupId) {
-            const $possibleParent: HTMLElement = this.locateItem(dataItem.parentGroupId);
+            const possibleParent: HTMLElement = this.locateItem(dataItem.parentGroupId);
 
-            if ($possibleParent) {
-                $parent = $possibleParent;
+            if (possibleParent) {
+                parent = possibleParent;
             }
         }
 
-        if ($parent) {
+        if (parent) {
             item.classList.add(BaseListBox.LIST_ITEM_CLASS_CHILD);
         }
 
-        let $target: HTMLElement = $parent ? $parent : this._list;
+        let target: HTMLElement = parent ? parent : this._list;
         if (dataItem.index !== undefined && dataItem.index !== null && !internal) {
-            $target = <HTMLElement>$target.children.item(dataItem.index);
-            $target.parentElement.insertBefore(item, $target);
+            target = <HTMLElement>target.children.item(dataItem.index);
+            target.parentElement.insertBefore(item, target);
         } else {
-            $target.appendChild(item);
+            target.appendChild(item);
         }
 
         if (dataItem.childItems && dataItem.childItems.length > 0) {
@@ -498,10 +498,10 @@ class BaseListBox {
     public getItem(id: string): ListboxItem {
         let data: ListboxItem = null;
 
-        const $item: HTMLElement = this.locateItem(id);
+        const item: HTMLElement = this.locateItem(id);
 
-        if ($item) {
-            data = this.getDataItem($item.id);
+        if (item) {
+            data = this.getDataItem(item.id);
         }
 
         return data;
@@ -531,15 +531,15 @@ class BaseListBox {
     public moveItemUp(id: string): number {
         let newIndex: number = null;
 
-        const $item: HTMLElement = this.locateItem(id);
+        const item: HTMLElement = this.locateItem(id);
 
-        if ($item && $item.previousElementSibling) {
-            $item.parentElement.insertBefore($item, $item.previousElementSibling);
-            newIndex = this.elementIndex($item);
-            this.getDataItem($item.id).index = newIndex;
+        if (item && item.previousElementSibling) {
+            item.parentElement.insertBefore(item, item.previousElementSibling);
+            newIndex = this.elementIndex(item);
+            this.getDataItem(item.id).index = newIndex;
             this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
-        } else if ($item) {
-            newIndex = this.elementIndex($item);
+        } else if (item) {
+            newIndex = this.elementIndex(item);
         }
 
         return newIndex;
@@ -553,15 +553,15 @@ class BaseListBox {
     public moveItemDown(id: string): number {
         let newIndex: number = null;
 
-        const $item: HTMLElement = this.locateItem(id);
+        const item: HTMLElement = this.locateItem(id);
 
-        if ($item && $item.nextElementSibling) {
-            $item.parentNode.insertBefore($item.nextElementSibling, $item);
-            newIndex = this.elementIndex($item);
-            this.getDataItem($item.id).index = newIndex;
+        if (item && item.nextElementSibling) {
+            item.parentNode.insertBefore(item.nextElementSibling, item);
+            newIndex = this.elementIndex(item);
+            this.getDataItem(item.id).index = newIndex;
             this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
-        } else if ($item) {
-            newIndex = this.elementIndex($item);
+        } else if (item) {
+            newIndex = this.elementIndex(item);
         }
 
         return newIndex;
@@ -575,12 +575,12 @@ class BaseListBox {
     public moveItemToTop(id: string): number {
         let newIndex: number = null;
 
-        const $item: HTMLElement = this.locateItem(id);
+        const item: HTMLElement = this.locateItem(id);
 
-        if ($item) {
-            $item.parentElement.insertBefore($item, $item.parentElement.firstElementChild);
-            newIndex = this.elementIndex($item);
-            this.getDataItem($item.id).index = newIndex;
+        if (item) {
+            item.parentElement.insertBefore(item, item.parentElement.firstElementChild);
+            newIndex = this.elementIndex(item);
+            this.getDataItem(item.id).index = newIndex;
             this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
         }
 
@@ -595,12 +595,12 @@ class BaseListBox {
     public moveItemToBottom(id: string): number {
         let newIndex: number = null;
 
-        const $item: HTMLElement = this.locateItem(id);
+        const item: HTMLElement = this.locateItem(id);
 
-        if ($item) {
-            $item.parentElement.appendChild($item);
-            newIndex = this.elementIndex($item);
-            this.getDataItem($item.id).index = newIndex;
+        if (item) {
+            item.parentElement.appendChild(item);
+            newIndex = this.elementIndex(item);
+            this.getDataItem(item.id).index = newIndex;
         }
 
         this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
@@ -623,8 +623,8 @@ class BaseListBox {
     }
 
     protected locateItem(id: string): HTMLElement {
-        let $item: HTMLElement = document.getElementById(id);
-        if (!$item) {
+        let item: HTMLElement = document.getElementById(id);
+        if (!item) {
             const titleItems: NodeListOf<Element> = document.querySelectorAll('div[title="' + id + '"]');
 
             if (titleItems.length > 0) {
@@ -632,7 +632,7 @@ class BaseListBox {
             }
         }
 
-        return $item;
+        return item;
     }
 
     /**
