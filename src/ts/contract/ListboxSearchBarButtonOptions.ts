@@ -1,6 +1,6 @@
 
 export interface ListboxSearchBarButtonOptions {
     visible: boolean;
-    icon: string;
-    onClick: () => void;
+    icon?: string;
+    onClick?: () => void;
 }

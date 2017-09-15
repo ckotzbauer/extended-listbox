@@ -17,11 +17,10 @@ export class TestHelper {
 
     public static generateSingleList(options: ListboxSettings = null,
                                      items: ListboxItem[] = null): { box: SingleSelectListbox, target: HTMLElement } {
-        options = $.extend({
-            getItems: (): ListboxItem[] => {
-                return items;
-            }
-        }, options);
+        options = options || {};
+        if (!options.getItems) {
+            options.getItems = (): ListboxItem[] => items;
+        }
 
         const test: HTMLElement = document.createElement("div");
         test.id = "test";
@@ -32,12 +31,11 @@ export class TestHelper {
 
     public static generateMultipleList(options: ListboxSettings = null,
                                        items: ListboxItem[] = null): { box: MultiSelectListbox, target: HTMLElement } {
-        options = $.extend({
-            multiple: true,
-            getItems: (): ListboxItem[] => {
-                return items;
-            }
-        }, options);
+        options = options || {};
+        options.multiple = options.multiple || true;
+        if (!options.getItems) {
+            options.getItems = (): ListboxItem[] => items;
+        }
 
         const test: HTMLElement = document.createElement("div");
         test.id = "test";
@@ -73,6 +71,10 @@ export class TestHelper {
     public static afterEach(): void {
         const e: Element = document.getElementById("qunit-fixture");
         e.parentElement.removeChild(e);
+    }
+
+    public static click(element: Element): void {
+        (element as HTMLButtonElement).click();
     }
 }
 

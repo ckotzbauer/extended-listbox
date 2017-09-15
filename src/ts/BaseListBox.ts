@@ -43,14 +43,11 @@ export class BaseListBox {
      * @param {object} options an object with Listbox settings
      */
     constructor(domelement: HTMLElement, options: ListboxSettings) {
-        options = $.extend(
-            {
-                searchBar: false,
-                searchBarWatermark: "Search...",
-                searchBarButton: { visible: false },
-                multiple: false
-            },
-            options);
+        options = options || {};
+        options.searchBar = options.searchBar || false;
+        options.searchBarWatermark = options.searchBarWatermark || "Search...";
+        options.searchBarButton = options.searchBarButton || { visible: false };
+        options.multiple = options.multiple || false;
 
         this._target = domelement;
         this._settings = options;
@@ -228,28 +225,28 @@ export class BaseListBox {
      * @param {object} dataItem object returned from getItems
      */
     protected _prepareDataItem(dataItem: ListboxItem|string): ListboxItem {
+        /* tslint:disable:no-string-literal */
         let item: ListboxItem = {
             childItems: [],
             disabled: false,
             groupHeader: null,
-            id: null,
+            id: dataItem["id"] || this._generateItemId(),
             parentGroupId: null,
             selected: false,
             text: null,
             index: null
         };
-
-        /* tslint:disable:no-string-literal */
-        if (!dataItem["id"]) {
-            item.id = this._generateItemId();
-        }
         /* tslint:enable:no-string-literal */
 
         if (typeof dataItem === "string" || typeof dataItem === "number") {
             item.text = <string> dataItem;
             return item;
         } else {
-            item = $.extend(item, dataItem);
+            for (let i in dataItem) {
+                if (dataItem.hasOwnProperty(i)) {
+                    item[i] = dataItem[i];
+                }
+            }
 
             const childs: ListboxItem[] = [];
 

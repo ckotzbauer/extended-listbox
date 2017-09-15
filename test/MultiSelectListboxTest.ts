@@ -89,7 +89,7 @@ QUnit.test('one click', (): void => {
 
     const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
-    $(items[1]).click();     // click on 'B'
+    TestHelper.click(items[1]);     // click on 'B'
 
     const selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
@@ -108,8 +108,8 @@ QUnit.test('two clicks', (): void => {
 
     const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
-    $(items[1]).click();     // click on 'B'
-    $(items[1]).click();     // click on 'B'
+    TestHelper.click(items[1]);     // click on 'B'
+    TestHelper.click(items[1]);     // click on 'B'
 
     const selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 0);
@@ -126,8 +126,8 @@ QUnit.test('two clicks on different items', (): void => {
 
     const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
-    $(items[0]).click();     // click on 'A'
-    $(items[2]).click();     // click on 'C'
+    TestHelper.click(items[0]);     // click on 'A'
+    TestHelper.click(items[2]);     // click on 'C'
 
     const selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
@@ -146,60 +146,60 @@ QUnit.test('multiple clicks', (): void => {
 
     const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
-    $(items[0]).click();     // click on 'A'
+    TestHelper.click(items[0]);     // click on 'A'
 
     let selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
     QUnit.assert.ok(TestHelper.elementEquals(box.selectedDataItems, ["A"]));
     QUnit.assert.ok(TestHelper.itemEquals(selectedItems, box.selectedDataItems));
 
-    $(items[1]).click();     // click on 'B'
+    TestHelper.click(items[1]);     // click on 'B'
 
     selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
     QUnit.assert.ok(TestHelper.elementEquals(box.selectedDataItems, ["A", "B"]));
     QUnit.assert.ok(TestHelper.itemEquals(selectedItems, box.selectedDataItems));
 
-    $(items[0]).click();     // click on 'A'
+    TestHelper.click(items[0]);     // click on 'A'
 
     selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
     QUnit.assert.ok(TestHelper.elementEquals(box.selectedDataItems, ["B"]));
     QUnit.assert.ok(TestHelper.itemEquals(selectedItems, box.selectedDataItems));
 
-    $(items[2]).click();     // click on 'C'
+    TestHelper.click(items[2]);     // click on 'C'
 
     selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
     QUnit.assert.ok(TestHelper.elementEquals(box.selectedDataItems, ["B", "C"]));
     QUnit.assert.ok(TestHelper.itemEquals(selectedItems, box.selectedDataItems));
 
-    $(items[0]).click();     // click on 'A'
+    TestHelper.click(items[0]);     // click on 'A'
 
     selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 3);
     QUnit.assert.ok(TestHelper.elementEquals(box.selectedDataItems, ["B", "C", "A"]));
 
-    $(items[1]).click();     // click on 'B'
+    TestHelper.click(items[1]);     // click on 'B'
 
     selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
     QUnit.assert.ok(TestHelper.elementEquals(box.selectedDataItems, ["C", "A"]));
 
-    $(items[0]).click();     // click on 'A'
+    TestHelper.click(items[0]);     // click on 'A'
 
     selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
     QUnit.assert.ok(TestHelper.elementEquals(box.selectedDataItems, ["C"]));
     QUnit.assert.ok(TestHelper.itemEquals(selectedItems, box.selectedDataItems));
 
-    $(items[1]).click();     // click on 'B'
+    TestHelper.click(items[1]);     // click on 'B'
 
     selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 2);
     QUnit.assert.ok(TestHelper.elementEquals(box.selectedDataItems, ["C", "B"]));
 
-    $(items[2]).click();     // click on 'C'
+    TestHelper.click(items[2]);     // click on 'C'
 
     selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
@@ -227,12 +227,12 @@ QUnit.test('onValueChanged callback', (): void => {
 
     const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
-    $(items[0]).click();
+    TestHelper.click(items[0]);
     QUnit.assert.equal(receiveCounter, 1);
     //QUnit.assert.equal(TestHelper.jsonToVal(lastValue), "A"); TODO
 
-    $(items[1]).click();
-    $(items[2]).click();
+    TestHelper.click(items[1]);
+    TestHelper.click(items[2]);
 
     QUnit.assert.equal(receiveCounter, 3);
     //QUnit.assert.equal(TestHelper.jsonToVal(lastValue), ["A", "B", "C"]); TODO

@@ -6,7 +6,7 @@
   "port": 7000,
   "browser_start_timeout": 90,
   "src_files": [
-    "node_modules/requirejs/require.js", "node_modules/jquery/dist/jquery.js", "build/out/js/extended-listbox.js", "test/TestMain.js"
+    "node_modules/requirejs/require.js", "build/out/js/extended-listbox.js", "test/TestMain.js"
   ],
   "launchers": {
     "SL_Chrome_Current": {
