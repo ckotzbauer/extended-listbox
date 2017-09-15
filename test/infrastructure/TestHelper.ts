@@ -1,44 +1,37 @@
 /// <reference path="../test-typings.d.ts" />
 /// <amd-module name="build/out/test/test/infrastructure/TestHelper"/>
 
-import "../../src/ts/JQueryExtendedListbox";
-//import ExtendedListboxInstance = require("../../src/ts/ExtendedListboxInstance");
+import ListboxSettings = require("../../src/ts/contract/ListboxSettings");
+import SingleSelectListbox = require("../../src/ts/SingleSelectListbox");
+import MultiSelectListbox = require("../../src/ts/MultiSelectListbox");
 
 class TestHelper {
 
-    public static child(element: JQuery, index: number = null): JQuery {
-        if (!index) {
-            index = 0;
-        }
-
-        return $(element.children()[index]);
+    public static child(element: HTMLElement, index: number = null): HTMLElement {
+        return element.children[index || 0] as HTMLElement;
     }
 
-    public static children(element: JQuery): JQuery[] {
-        var childs: JQuery[] = [];
-
-        for (var i: number = 0; i < element.children().length; i++) {
-            var c: Element = element.children()[i];
-            childs.push($(c));
-        }
-
-        return childs;
+    public static children(element: HTMLElement): HTMLElement[] {
+        return Array.prototype.slice.call(element.children);
     }
 
-    public static generateSingleList(options: ListboxSettings = null, items: ListboxItem[] = null): ExtendedListboxInstance {
+    public static generateSingleList(options: ListboxSettings = null,
+                                     items: ListboxItem[] = null): { box: SingleSelectListbox, target: HTMLElement } {
         options = $.extend({
             getItems: (): ListboxItem[] => {
                 return items;
             }
         }, options);
 
-        $('#qunit-fixture').append('<div id="test">');
-        let $test: JQuery = $('#test');
+        const test: HTMLElement = document.createElement("div");
+        test.id = "test";
+        document.getElementById("qunit-fixture").appendChild(test);
 
-        return <ExtendedListboxInstance>$test.listbox(options);
+        return { box: new SingleSelectListbox(test, options), target: test };
     }
 
-    public static generateMultipleList(options: ListboxSettings = null, items: ListboxItem[] = null): ExtendedListboxInstance {
+    public static generateMultipleList(options: ListboxSettings = null,
+                                       items: ListboxItem[] = null): { box: MultiSelectListbox, target: HTMLElement } {
         options = $.extend({
             multiple: true,
             getItems: (): ListboxItem[] => {
@@ -46,46 +39,39 @@ class TestHelper {
             }
         }, options);
 
-        $('#qunit-fixture').append('<div id="test">');
-        let $test: JQuery = $('#test');
+        const test: HTMLElement = document.createElement("div");
+        test.id = "test";
+        document.getElementById("qunit-fixture").appendChild(test);
 
-        return <ExtendedListboxInstance>$('#test').listbox(options);
-    }
-
-    public static itemsToVal(items: JQuery): string {
-        var result: string = '';
-        for (var i: number = 0; i < items.length; ++i) {
-            if (i !== 0) {
-                result += ',';
-            }
-
-            result += $(items[i]).data("dataItem").text;
-        }
-        return result;
-    }
-
-    public static jsonToVal(items: string|number|string[]): string {
-        var result: string = '';
-        for (var i: number = 0; i < (<string[]>items).length; ++i) {
-            if (i !== 0) {
-                result += ',';
-            }
-
-            result += JSON.parse(items[i]).text;
-        }
-        return result;
+        return { box: new MultiSelectListbox(test, options), target: test };
     }
 
     public static startsWith(s: string, check: string): boolean {
         return s.indexOf(check) === 0;
     }
 
+    public static elementEquals(dataItems: ListboxItem[], elements: string[]): boolean {
+        return JSON.stringify(dataItems.map((d: ListboxItem) => d.id)) === JSON.stringify(elements);
+    }
+
+    public static itemEquals(items: NodeListOf<Element>, dataItems: ListboxItem[]): boolean {
+        let ids: string[] = [];
+
+        for (let i: number = 0; i < items.length; i++) {
+            ids.push(items.item(i).id);
+        }
+
+        return TestHelper.elementEquals(dataItems, ids);
+    }
+
     public static beforeEach(): void {
-        $('body').append('<div id="qunit-fixture"></div>');
+        const div: HTMLElement = document.createElement("div");
+        div.id = "qunit-fixture";
+        document.body.appendChild(div);
     }
 
     public static afterEach(): void {
-        $('#qunit-fixture').remove();
+        document.getElementById("qunit-fixture").remove();
     }
 }
 

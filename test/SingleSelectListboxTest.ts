@@ -2,6 +2,8 @@
 /// <amd-module name="build/out/test/test/SingleSelectListboxTest"/>
 
 import TestHelper = require("./infrastructure/TestHelper");
+import ListboxSettings = require("../src/ts/contract/ListboxSettings");
+import ListboxEvent = require("../src/ts/event/ListboxEvent");
 
 QUnit.module("SingleSelectListboxTest", {
     beforeEach: (): void => {
@@ -13,157 +15,148 @@ QUnit.module("SingleSelectListboxTest", {
 });
 
 QUnit.test('construct default', (): void => {
-    var root: ExtendedListboxInstance = TestHelper.generateSingleList();
+    const { target } = TestHelper.generateSingleList();
 
-    QUnit.assert.equal(root.target.attr('class'), 'listbox-root');
+    QUnit.assert.ok(target.classList.contains("listbox-root"));
 
-    var listbox: JQuery = TestHelper.child(root.target);
-    QUnit.assert.equal(listbox.attr('class'), 'listbox');
+    const listbox: HTMLElement = TestHelper.child(target);
+    QUnit.assert.ok(listbox.classList.contains("listbox"));
 
-    var searchbar: JQuery = listbox.find('.listbox-searchbar');
-    QUnit.assert.notEqual(searchbar.attr('class'), 'listbox-searchbar');
+    const searchbar: Element = listbox.querySelector('.listbox-searchbar');
+    QUnit.assert.ok(!searchbar);
 });
 
 
 QUnit.test('construct with searchbar', (): void => {
-    var root: ExtendedListboxInstance = TestHelper.generateSingleList({ searchBar: true });
+    const { target } = TestHelper.generateSingleList({ searchBar: true });
 
-    var searchbar: JQuery = TestHelper.child(root.target);
-    QUnit.assert.equal(searchbar.attr('class'), 'listbox-searchbar-wrapper');
-    QUnit.assert.equal(TestHelper.child(searchbar).attr('placeholder'), 'Search...');
+    const searchbar: HTMLElement = TestHelper.child(target);
+    QUnit.assert.ok(searchbar.classList.contains('listbox-searchbar-wrapper'));
+    QUnit.assert.equal(TestHelper.child(searchbar).getAttribute('placeholder'), 'Search...');
 
-    var listbox: JQuery = TestHelper.child(root.target, 1);
-    QUnit.assert.equal(listbox.attr('class'), 'listbox');
+    const listbox: HTMLElement = TestHelper.child(target, 1);
+    QUnit.assert.ok(listbox.classList.contains("listbox"));
 });
 
 QUnit.test('construct with searchbar watermark', (): void => {
-    var root: ExtendedListboxInstance = TestHelper.generateSingleList(
+    const { target } = TestHelper.generateSingleList(
         { searchBar: true, searchBarWatermark: "Suche..." });
 
-    var searchbar: JQuery = TestHelper.child(root.target);
-    QUnit.assert.equal(TestHelper.child(searchbar).attr('placeholder'), 'Suche...');
+    const searchbar: HTMLElement = TestHelper.child(target);
+    QUnit.assert.equal(TestHelper.child(searchbar).getAttribute('placeholder'), 'Suche...');
 });
 
 
 QUnit.test('explicit default value', (): void => {
-    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
+    const { target } = TestHelper.generateSingleList({}, [
         "A",
         "B",
         { text: "C", selected: true },
         "D"
     ]);
 
-    var selectedItems: JQuery = select.target.find(".listbox-item-selected");
+    const selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
 
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'C');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'C');
 });
 
 
 QUnit.test('two explicit default values', (): void => {
-    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
+    const { target } = TestHelper.generateSingleList({}, [
         "A",
         { text: "B", selected: true },
         { text: "C", selected: true },
         "D"
     ]);
 
-    var selectedItems: JQuery = select.target.find(".listbox-item-selected");
+    const selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
 
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'C');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'C');
 });
 
 
 QUnit.test('one click', (): void => {
-    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
+    const { target } = TestHelper.generateSingleList({}, [
         "A",
-        "B",
+        { id: "B", text: "B" },
         "C",
         "D"
     ]);
 
-    var items: JQuery = select.target.find(".listbox-item");
+    const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
     $(items[1]).click();     // click on 'B'
 
-    var selectedItems: JQuery = select.target.find(".listbox-item-selected");
+    const selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'B');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'B');
 });
 
 
 QUnit.test('multiple clicks', (): void => {
-    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
+    const { target } = TestHelper.generateSingleList({}, [
         "A",
         "B",
         "C",
         "D"
     ]);
 
-    var items: JQuery = select.target.find(".listbox-item");
+    const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
     $(items[1]).click();     // click on 'B'
 
-    var selectedItems: JQuery = select.target.find(".listbox-item-selected");
+    let selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'B');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'B');
 
     $(items[2]).click();     // click on 'C'
 
-    selectedItems = select.target.find(".listbox-item-selected");
+    selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'C');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'C');
 
     $(items[0]).click();     // click on 'A'
 
-    selectedItems = select.target.find(".listbox-item-selected");
+    selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'A');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'A');
 
     $(items[3]).click();     // click on 'D'
 
-    selectedItems = select.target.find(".listbox-item-selected");
+    selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'D');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'D');
 
     $(items[1]).click();     // click on 'B'
 
-    selectedItems = select.target.find(".listbox-item-selected");
+    selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'B');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'B');
 
     $(items[2]).click();     // click on 'C'
 
-    selectedItems = select.target.find(".listbox-item-selected");
+    selectedItems = target.querySelectorAll(".listbox-item-selected");
     QUnit.assert.equal(selectedItems.length, 1);
-    QUnit.assert.equal(selectedItems.text(), 'C');
-    QUnit.assert.equal(selectedItems.data("dataItem"), select.target.val());
+    QUnit.assert.equal(selectedItems[0].textContent, 'C');
 });
 
 
 QUnit.test('change event', (): void => {
-    var select: ExtendedListboxInstance = TestHelper.generateSingleList({}, [
+    const { target } = TestHelper.generateSingleList({}, [
         "A",
         "B",
         "C",
         "D"
     ]);
 
-    var receiveCounter: number = 0;
-    select.target.on('change', (): void => {
+    let receiveCounter: number = 0;
+    target.onchange = (): void => {
         receiveCounter++;
-    });
+    };
 
-    var items: JQuery = select.target.find(".listbox-item");
+    const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
     $(items[0]).click();
     QUnit.assert.equal(receiveCounter, 1);
@@ -175,23 +168,23 @@ QUnit.test('change event', (): void => {
 });
 
 QUnit.test('onValueChanged callback', (): void => {
-    var receiveCounter: number = 0;
-    var lastValue: any = null;
+    let receiveCounter: number = 0;
+    let lastValue: any = null;
 
-    var options: ListboxSettings = <ListboxSettings> {};
+    const options: ListboxSettings = <ListboxSettings> {};
     options.onValueChanged = (newValue: ListboxEvent): void => {
         receiveCounter++;
         lastValue = newValue.args.text;
     };
 
-    var select: ExtendedListboxInstance = TestHelper.generateSingleList(options, [
+    const { target } = TestHelper.generateSingleList(options, [
         "A",
         "B",
         "C",
         "D"
     ]);
 
-    var items: JQuery = select.target.find(".listbox-item");
+    const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
     $(items[0]).click();
     QUnit.assert.equal(receiveCounter, 1);

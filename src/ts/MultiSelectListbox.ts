@@ -1,10 +1,8 @@
 import BaseListBox = require("./BaseListBox");
 import ListboxSettings = require("./contract/ListboxSettings");
-import Listbox = require("./Listbox");
+import ListboxItem = require("./contract/ListboxItem");
 
-class MultiSelectListbox implements Listbox {
-
-    public baseListBox: BaseListBox;
+class MultiSelectListbox extends BaseListBox {
 
     /**
      * Create an instance of MultiSelectListbox.
@@ -17,17 +15,8 @@ class MultiSelectListbox implements Listbox {
      * @param {object} options an object with Listbox settings
      */
     constructor(domElement: HTMLElement, options: ListboxSettings) {
-        options = $.extend(
-            {
-                searchBar: false,
-                searchBarWatermark: "Search...",
-                searchBarButton: { visible: false },
-                multiple: false
-            },
-            options);
-
-        this.baseListBox = new BaseListBox(domElement, options, this);
-        this.baseListBox.createListbox();
+        super(domElement, options);
+        this.createListbox();
     }
 
     /**
@@ -42,34 +31,26 @@ class MultiSelectListbox implements Listbox {
             return;
         }
 
-        let parentValues: any[] = <any[]>this.baseListBox._target.val();
-
         if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
-            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            domItem.classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
 
-            const removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
-            parentValues.splice(removeIndex, 1);
+            const removeIndex: number = this.selectedDataItems.indexOf(
+                this.getDataItem(domItem.id));
+            this.selectedDataItems.splice(removeIndex, 1);
 
-            domItem.data("dataItem").selected = false;
+            this.getDataItem(domItem.id).selected = false;
         } else {
             domItem.classList.add(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-            domItem.data("dataItem").selected = true;
 
-            if (!parentValues) {
-                parentValues = [];
-            }
+            let dataItem: ListboxItem = this.getDataItem(domItem.id);
+            dataItem.selected = true;
 
-            parentValues.push(JSON.stringify(domItem.data("dataItem")));
+            this.selectedDataItems.push(dataItem);
         }
 
-        this.baseListBox._target.val(parentValues);
-        this.baseListBox._target.dispatchEvent(new Event("change"));
+        this._target.dispatchEvent(new Event("change"));
 
-        this.baseListBox.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, parentValues);
-    }
-
-    public onFilterChange(): void {
-        return undefined;
+        this.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, this.selectedDataItems);
     }
 }
 
