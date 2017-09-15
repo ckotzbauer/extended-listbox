@@ -1,7 +1,7 @@
 {
   "name": "extended-listbox",
   "version": "4.0.0-beta.1",
-  "description": "A simple to use jQuery plugin as powerful alternative to the HTML <select> tag",
+  "description": "A simple to use javascript component as powerful alternative to the HTML <select> tag",
   "main": "dist/js/extended-listbox.js",
   "typings": "dist/extended-listbox.d.ts",
   "repository": {
@@ -14,9 +14,7 @@
     "multiselect",
     "form",
     "input",
-    "ui",
-    "jquery-plugin",
-    "ecosystem:jquery"
+    "ui"
   ],
   "author": "Christian Kotzbauer",
   "license": "MIT",
