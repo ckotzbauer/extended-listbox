@@ -714,7 +714,13 @@ class BaseListBox {
     }
 
     public getDataItem(id: string): ListboxItem {
-        return this.dataItems.find((d: ListboxItem) => d.id === id);
+        for (let i: number = 0; i < this.dataItems.length; i++) {
+            if (this.dataItems[i].id === id) {
+                return this.dataItems[i];
+            }
+        }
+
+        return null;
     }
 }
 
