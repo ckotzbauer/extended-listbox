@@ -48,8 +48,6 @@ class MultiSelectListbox extends BaseListBox {
             this.selectedDataItems.push(dataItem);
         }
 
-        this._target.dispatchEvent(new Event("change"));
-
         this.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, this.selectedDataItems);
     }
 }

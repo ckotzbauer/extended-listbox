@@ -35,7 +35,7 @@ class SingleSelectListbox extends BaseListBox {
         }
 
         if (this._selectedDomItem) {
-            this.clearSelection(true);
+            this.clearSelection();
             this._selectedDomItem = null;
         }
 
@@ -47,7 +47,6 @@ class SingleSelectListbox extends BaseListBox {
         dataItem.selected = true;
         this.selectedDataItems.push(dataItem);
 
-        this._target.dispatchEvent(new Event("change"));
         this.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, this.getDataItem(domItem.id));
     }
 

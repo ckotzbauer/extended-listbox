@@ -364,7 +364,7 @@ class BaseListBox {
     public addItem(dataItem: ListboxItem|string, internal: boolean = false): string {
         /* tslint:disable:no-string-literal */
         if (!internal && !this._settings.multiple && dataItem["selected"]) {
-            this.clearSelection(internal);
+            this.clearSelection();
         }
         /* tslint:enable:no-string-literal */
 
@@ -454,17 +454,13 @@ class BaseListBox {
     /**
      * Clears all selected items.
      */
-    public clearSelection(internal?: boolean): void {
+    public clearSelection(): void {
         // Remove selected class from all other items
         const allItems: NodeList = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
 
         for (let index: number = 0; index < allItems.length; index++) {
             (<HTMLElement>allItems[index]).classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
             this.getDataItem((allItems[index] as Element).id).selected = false;
-        }
-
-        if (!internal) {
-            this._target.dispatchEvent(new Event("change"));
         }
     }
 
@@ -485,8 +481,6 @@ class BaseListBox {
         } else {
             this.selectedDataItems.splice(0, this.selectedDataItems.length);
         }
-
-        this._target.dispatchEvent(new Event("change"));
     }
 
 

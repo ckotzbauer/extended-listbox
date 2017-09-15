@@ -142,31 +142,6 @@ QUnit.test('multiple clicks', (): void => {
     QUnit.assert.equal(selectedItems[0].textContent, 'C');
 });
 
-
-QUnit.test('change event', (): void => {
-    const { target } = TestHelper.generateSingleList({}, [
-        "A",
-        "B",
-        "C",
-        "D"
-    ]);
-
-    let receiveCounter: number = 0;
-    target.onchange = (): void => {
-        receiveCounter++;
-    };
-
-    const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
-
-    $(items[0]).click();
-    QUnit.assert.equal(receiveCounter, 1);
-
-    $(items[1]).click();
-    $(items[2]).click();
-
-    QUnit.assert.equal(receiveCounter, 3);
-});
-
 QUnit.test('onValueChanged callback', (): void => {
     let receiveCounter: number = 0;
     let lastValue: any = null;
