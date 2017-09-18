@@ -57,10 +57,16 @@ export class SingleSelectListbox extends BaseListBox {
      * @this {SingleSelectListbox}
      */
     public onFilterChange(): void {
-        if (!this._selectedDomItem || this._selectedDomItem.querySelectorAll(":visible").length > 0) {
-            const element: HTMLElement = this._list.querySelectorAll(':visible').item(0) as HTMLElement;
-            if (element && (element as any).length > 0) { // TODO
-                this.onItemClick(element);
+        if (!this._selectedDomItem || this._selectedDomItem.style.display === "none") {
+            const elements: NodeListOf<Element> = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
+            for (let i: number = 0; i < elements.length; i++) {
+                let element: HTMLElement = elements.item(i) as HTMLElement;
+                if (!element.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP) &&
+                    !element.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) &&
+                    element.style.display !== "none") {
+                    this.onItemClick(element);
+                    break;
+                }
             }
         }
 
