@@ -1,5 +1,6 @@
-$('#exampleSnippet2').listbox({
-    multiple: true,
+var target = document.getElementById("exampleSnippet2");
+
+new MultiSelectListbox(target, {
     getItems: function() {
         return [
             "Item #1",
