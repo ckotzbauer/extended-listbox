@@ -1,4 +1,4 @@
-import {ListBoxSearchBarButtonOptions} from "./ListboxSearchBarButtonOptions";
+import {ListBoxSearchBarButtonOptions} from "./ListBoxSearchBarButtonOptions";
 import {ListBoxEvent} from "../event/ListBoxEvent";
 import {ListBoxItem} from "./ListBoxItem";
 
