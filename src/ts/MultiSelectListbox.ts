@@ -15,24 +15,17 @@ export class MultiSelectListbox extends BaseListBox {
      * @param {object} options an object with Listbox settings
      */
     constructor(domElement: HTMLElement, options: ListboxSettings) {
-        super(domElement, options);
-        this.createListbox();
+        super(domElement, options, true);
+        this._createListbox();
     }
 
-    /**
-     * Toggle item status.
-     *
-     * @this {MultiSelectListbox}
-     * @param {object} domItem a DOM object
-     * @param {boolean} ctrl if control key is pressed
-     */
-    public onItemClick(domItem: HTMLElement, ctrl: boolean = false): void {
+    protected _itemClicked(domItem: HTMLElement, ctrl: boolean = false): void {
         if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
             domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
             return;
         }
 
-        let dataItem: ListboxItem = this.getDataItem(domItem.id);
+        let dataItem: ListboxItem = this._getDataItem(domItem.id);
 
         if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
             if (!ctrl) {
@@ -46,7 +39,7 @@ export class MultiSelectListbox extends BaseListBox {
                 domItem.classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
                 dataItem.selected = false;
                 const removeIndex: number = this.selectedDataItems.indexOf(
-                    this.getDataItem(domItem.id));
+                    this._getDataItem(domItem.id));
                 this.selectedDataItems.splice(removeIndex, 1);
             }
         } else {
@@ -60,15 +53,10 @@ export class MultiSelectListbox extends BaseListBox {
             this.selectedDataItems.push(dataItem);
         }
 
-        this.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, this.selectedDataItems);
+        this._fireEvent(BaseListBox.EVENT_VALUE_CHANGED, this.selectedDataItems);
     }
 
-    /**
-     * Select first visible item if none selected.
-     *
-     * @this {SingleSelectListbox}
-     */
-    public onFilterChange(): void {
-        this.fireEvent(BaseListBox.EVENT_FILTER_CHANGED, this._searchbar.value);
+    protected _filterChanged(): void {
+        this._fireEvent(BaseListBox.EVENT_FILTER_CHANGED, this._searchbar.value);
     }
 }

@@ -294,7 +294,7 @@ QUnit.test("check item additions objects", (): void => {
 QUnit.test("check item removal id", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
-    const { target, box } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { target, box } = TestHelper.generateMultipleList({}, items);
 
     box.removeItem("id02");
 
@@ -387,7 +387,7 @@ QUnit.test("check destroy", (): void => {
 QUnit.test("check clearSelection", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01", selected: true }, { text: "Item#2", id: "id02", selected: true }];
 
-    const { box, target } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { box, target } = TestHelper.generateMultipleList({}, items);
 
     box.clearSelection();
 
@@ -407,7 +407,7 @@ QUnit.test("check clearSelection", (): void => {
 QUnit.test("check getItem id", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
-    const { box } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { box } = TestHelper.generateMultipleList({}, items);
 
     const item: ListboxItem = box.getItem("id02");
 
@@ -419,7 +419,7 @@ QUnit.test("check getItem id", (): void => {
 QUnit.test("check getItem text", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
-    const { box } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { box } = TestHelper.generateMultipleList({}, items);
 
     const item: ListboxItem = box.getItem("Item#1");
 
@@ -431,7 +431,7 @@ QUnit.test("check getItem text", (): void => {
 QUnit.test("check getItems", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
-    const { box } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { box } = TestHelper.generateMultipleList({}, items);
 
     const listItems: ListboxItem[] = box.getItems();
 
@@ -441,7 +441,7 @@ QUnit.test("check getItems", (): void => {
 QUnit.test("check moveItemUp", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
-    const { box } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { box } = TestHelper.generateMultipleList({}, items);
 
     const originalIndex: number = box.getItem("id03").index;
     const newIndex: number = box.moveItemUp("id03");
@@ -454,7 +454,7 @@ QUnit.test("check moveItemUp (first item)", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01", index: 0 },
         { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
-    const { box } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { box } = TestHelper.generateMultipleList({}, items);
 
     const originalIndex: number = box.getItem("id01").index;
     const newIndex: number = box.moveItemUp("id01");
@@ -466,7 +466,7 @@ QUnit.test("check moveItemUp (first item)", (): void => {
 QUnit.test("check moveItemDown", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
-    const { box } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { box } = TestHelper.generateMultipleList({}, items);
 
     const originalIndex: number = box.getItem("id01").index;
     const newIndex: number = box.moveItemDown("id01");
@@ -479,7 +479,7 @@ QUnit.test("check moveItemDown (last item)", (): void => {
     const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" },
         { text: "Item#3", id: "id03", index: 2 }];
 
-    const { box } = TestHelper.generateSingleList({ multiple: true }, items);
+    const { box } = TestHelper.generateMultipleList({}, items);
 
     const originalIndex: number = box.getItem("id03").index;
     const newIndex: number = box.moveItemDown("id03");
@@ -646,8 +646,8 @@ QUnit.test("check valueChanged event", (): void => {
 
     const { target, box } = TestHelper.generateSingleList({ onValueChanged: delegate });
 
-    box.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
-    box.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
+    box._fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
+    box._fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
 });
 
 QUnit.test("check itemsChanged event", (): void => {
@@ -659,7 +659,7 @@ QUnit.test("check itemsChanged event", (): void => {
 
     const { target, box } = TestHelper.generateSingleList({ onItemsChanged: delegate });
 
-    box.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, "mySpecialValue");
+    box._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, "mySpecialValue");
 });
 
 QUnit.test("check filterChanged event", (): void => {
@@ -674,7 +674,7 @@ QUnit.test("check filterChanged event", (): void => {
     const { box, target } = TestHelper.generateSingleList({ onFilterChanged: delegate });
     t = target;
 
-    box.fireEvent(BaseListBox.EVENT_FILTER_CHANGED, "mySpecialValue");
+    box._fireEvent(BaseListBox.EVENT_FILTER_CHANGED, "mySpecialValue");
 });
 
 /* tslint:enable:no-string-literal */

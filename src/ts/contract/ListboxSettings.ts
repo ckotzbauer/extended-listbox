@@ -5,7 +5,6 @@ export interface ListboxSettings {
     searchBar?: boolean;
     searchBarWatermark?: string;
     searchBarButton?: ListboxSearchBarButtonOptions;
-    multiple?: boolean;
     getItems?: () => (string|ListboxItem)[];
     onValueChanged?: (value: ListboxEvent) => void;
     onFilterChanged?: (value: ListboxEvent) => void;

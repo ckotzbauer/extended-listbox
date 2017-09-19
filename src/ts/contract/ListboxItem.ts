@@ -7,5 +7,5 @@ export interface ListboxItem {
     selected?: boolean;
     groupHeader?: boolean;
     parentGroupId?: string;
-    childItems?: ListboxItem[];
+    childItems?: (string|ListboxItem)[];
 }

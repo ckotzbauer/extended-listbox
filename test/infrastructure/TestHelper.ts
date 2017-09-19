@@ -32,7 +32,6 @@ export class TestHelper {
     public static generateMultipleList(options: ListboxSettings = null,
                                        items: (string|ListboxItem)[] = null): { box: MultiSelectListbox, target: HTMLElement } {
         options = options || {};
-        options.multiple = options.multiple || true;
         if (!options.getItems) {
             options.getItems = (): (string|ListboxItem)[] => items;
         }
