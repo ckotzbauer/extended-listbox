@@ -283,7 +283,6 @@ export abstract class BaseListBox {
         item.innerText = dataItem.text;
         item.id = dataItem.id;
         item.title = dataItem.text;
-        item.tabIndex = 1;
         item.onkeydown = (e: KeyboardEvent): void => {
             if (!(<HTMLElement>e.target).classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
                 if (e.which === 13) {
