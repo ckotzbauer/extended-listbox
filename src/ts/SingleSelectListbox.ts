@@ -27,8 +27,9 @@ export class SingleSelectListbox extends BaseListBox {
      *
      * @this {SingleSelectListbox}
      * @param {object} domItem a DOM object
+     * @param {boolean} ctrl if control key is pressed
      */
-    public onItemClick(domItem: HTMLElement): void {
+    public onItemClick(domItem: HTMLElement, ctrl: boolean = false): void {
         if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
             domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
             return;

@@ -49,7 +49,7 @@ export class TestHelper {
     }
 
     public static elementEquals(dataItems: ListboxItem[], elements: string[]): boolean {
-        return JSON.stringify(dataItems.map((d: ListboxItem) => d.id)) === JSON.stringify(elements);
+        return JSON.stringify(dataItems.map((d: ListboxItem) => d.id).sort()) === JSON.stringify(elements.sort());
     }
 
     public static itemEquals(items: NodeListOf<Element>, dataItems: ListboxItem[]): boolean {
@@ -73,8 +73,12 @@ export class TestHelper {
         e.parentElement.removeChild(e);
     }
 
-    public static click(element: Element): void {
-        (element as HTMLButtonElement).click();
+    public static click(element: Element, ctrl: boolean = false): void {
+        const e: any = document.createEvent("Event");
+        e.initEvent("click", true, false);
+        e.ctrlKey = ctrl;
+        element.dispatchEvent(e);
+        //(element as HTMLButtonElement).click();
     }
 }
 

@@ -24,27 +24,39 @@ export class MultiSelectListbox extends BaseListBox {
      *
      * @this {MultiSelectListbox}
      * @param {object} domItem a DOM object
+     * @param {boolean} ctrl if control key is pressed
      */
-    public onItemClick(domItem: HTMLElement): void {
+    public onItemClick(domItem: HTMLElement, ctrl: boolean = false): void {
         if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
             domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
             return;
         }
 
+        let dataItem: ListboxItem = this.getDataItem(domItem.id);
+
         if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
-            domItem.classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-
-            const removeIndex: number = this.selectedDataItems.indexOf(
-                this.getDataItem(domItem.id));
-            this.selectedDataItems.splice(removeIndex, 1);
-
-            this.getDataItem(domItem.id).selected = false;
+            if (!ctrl) {
+                // deselect all except this
+                this.clearSelection();
+                domItem.classList.add(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+                dataItem.selected = true;
+                this.selectedDataItems.push(dataItem);
+            } else {
+                // deselect only this
+                domItem.classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+                dataItem.selected = false;
+                const removeIndex: number = this.selectedDataItems.indexOf(
+                    this.getDataItem(domItem.id));
+                this.selectedDataItems.splice(removeIndex, 1);
+            }
         } else {
+            if (!ctrl) {
+                // deselect all others
+                this.clearSelection();
+            }
+
             domItem.classList.add(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-
-            let dataItem: ListboxItem = this.getDataItem(domItem.id);
             dataItem.selected = true;
-
             this.selectedDataItems.push(dataItem);
         }
 

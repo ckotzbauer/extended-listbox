@@ -59,8 +59,9 @@ export abstract class BaseListBox {
      *
      * @this {BaseListBox}
      * @param {object} domItem a DOM object
+     * @param {boolean} ctrl if control key is pressed
      */
-    protected abstract onItemClick(domItem: HTMLElement): void;
+    protected abstract onItemClick(domItem: HTMLElement, ctrl?: boolean): void;
 
     /**
      * Select first visible item if none selected.
@@ -301,7 +302,7 @@ export abstract class BaseListBox {
         };
 
         item.onclick = (e: MouseEvent): void => {
-            this.onItemClick(e.target as HTMLElement);
+            this.onItemClick(e.target as HTMLElement, e.ctrlKey);
         };
 
         item.ondblclick = (e: MouseEvent): void => {
@@ -319,7 +320,7 @@ export abstract class BaseListBox {
         }
 
         if (dataItem.selected) {
-            this.onItemClick(item);
+            this.onItemClick(item, true);
         }
 
         if (dataItem.parentGroupId) {
@@ -465,6 +466,8 @@ export abstract class BaseListBox {
             (<HTMLElement>allItems[index]).classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
             this.getDataItem((allItems[index] as Element).id).selected = false;
         }
+
+        this.selectedDataItems = [];
     }
 
 
