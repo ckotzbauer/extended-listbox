@@ -118,7 +118,7 @@ export class BaseListBox {
                     const thisItem: HTMLDivElement = items.item(i);
 
                     if (thisItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                        return;
+                        continue;
                     }
 
                     const text: string = thisItem.innerText.toLowerCase();
@@ -132,12 +132,21 @@ export class BaseListBox {
                 }
 
                 // hide group item only, if all childs are hidden
-                const groups: NodeListOf<HTMLDivElement> =
-                    this._list.querySelectorAll<any>("." + BaseListBox.LIST_ITEM_CLASS_GROUP);
+                const groups: NodeListOf<Element> =
+                    this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS_GROUP);
                 for (let i: number = 0; i < groups.length; i++) {
-                    const thisItem: HTMLDivElement = items.item(i);
+                    const thisItem: HTMLElement = groups.item(i) as HTMLElement;
+                    const childs: NodeListOf<Element> = thisItem.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
+                    let index: number = -1;
 
-                    if (thisItem.querySelectorAll(':visible').length === 0) {
+                    for (let j: number = 0; j < childs.length; j++) {
+                        if ((childs.item(j) as HTMLElement).style.display !== "none") {
+                            index = j;
+                            break;
+                        }
+                    }
+
+                    if (index === -1) {
                         thisItem.style.display = "none";
                     } else {
                         thisItem.style.display = "block";
@@ -145,9 +154,9 @@ export class BaseListBox {
                 }
             } else {
                 // make visible all list items
-                const items: NodeListOf<HTMLDivElement> = this._list.querySelectorAll<any>("." + BaseListBox.LIST_ITEM_CLASS);
+                const items: NodeListOf<Element> = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
                 for (let i: number = 0; i < items.length; i++) {
-                    const thisItem: HTMLDivElement = items.item(i);
+                    const thisItem: HTMLElement = items.item(i) as HTMLElement;
                     thisItem.style.display = "block";
                 }
             }
