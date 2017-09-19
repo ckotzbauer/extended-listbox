@@ -2,10 +2,11 @@
 /// <amd-module name="build/out/test/test/BaseListBoxTest"/>
 
 import {TestHelper} from "./infrastructure/TestHelper";
-import {ListboxSettings} from "../src/ts/contract/ListboxSettings";
+import {ListBoxSettings} from "../src/ts/contract/ListBoxSettings";
+import {ListBoxItem} from "../src/ts/contract/ListBoxItem";
 import {BaseListBox} from "../src/ts/BaseListBox";
-import {ListboxEvent} from "../src/ts/event/ListboxEvent";
-import {ListboxSearchBarButtonOptions} from "../src/ts/contract/ListboxSearchBarButtonOptions";
+import {ListBoxEvent} from "../src/ts/event/ListBoxEvent";
+import {ListBoxSearchBarButtonOptions} from "../src/ts/contract/ListBoxSearchBarButtonOptions";
 
 /* tslint:disable:no-string-literal */
 
@@ -29,8 +30,8 @@ QUnit.test("check root css class", (): void => {
 QUnit.test("check list css class", (): void => {
     const { target } = TestHelper.generateSingleList();
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    QUnit.assert.ok(listbox.classList.contains("listbox"));
+    const listBox: HTMLElement = TestHelper.child(target);
+    QUnit.assert.ok(listBox.classList.contains("listbox"));
 });
 
 
@@ -83,7 +84,7 @@ QUnit.test("check non existent searchbar button", (): void => {
 });
 
 QUnit.test("check existent searchbar button with icon", (): void => {
-    const { target } = TestHelper.generateSingleList(<ListboxSettings>{ searchBar: true,
+    const { target } = TestHelper.generateSingleList(<ListBoxSettings>{ searchBar: true,
         searchBarButton: { visible: true, icon: "testIcon" } });
     const button: Element = target.querySelector('.listbox-searchbar-button');
     const icon: Element = TestHelper.child(button as HTMLElement);
@@ -97,9 +98,9 @@ QUnit.test("check searchbar button callback", (): void => {
         count++;
     };
 
-    const options: ListboxSettings = <ListboxSettings> {};
+    const options: ListBoxSettings = <ListBoxSettings> {};
     options.searchBar = true;
-    options.searchBarButton = <ListboxSearchBarButtonOptions> {};
+    options.searchBarButton = <ListBoxSearchBarButtonOptions> {};
     options.searchBarButton.visible = true;
     options.searchBarButton.onClick = callback;
 
@@ -117,8 +118,8 @@ QUnit.test("check simple items", (): void => {
     const items: string[] = ["Item#1", "Item#2", "Item#3"];
 
     const { target } = TestHelper.generateSingleList({}, items);
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 3);
 
@@ -129,116 +130,116 @@ QUnit.test("check simple items", (): void => {
         QUnit.assert.ok(element.classList.contains("listbox-item"));
         QUnit.assert.equal(element.innerText, item);
         QUnit.assert.equal(element.title, item);
-        QUnit.assert.ok(TestHelper.startsWith(element.id, "listboxitem"));
+        QUnit.assert.ok(TestHelper.startsWith(element.id, "listBoxItem"));
     }
 });
 
 QUnit.test("check disabled items", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", disabled: true },
+    const items: ListBoxItem[] = [{ text: "Item#1", disabled: true },
         { text: "Item#2", disabled: true }, { text: "Item#3", disabled: true }];
 
     const { target } = TestHelper.generateSingleList({}, items);
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 3);
 
     for (let i: number = 0; i < itemElements.length; i++) {
         const element: HTMLElement = itemElements[i];
-        const item: ListboxItem = items[i];
+        const item: ListBoxItem = items[i];
 
         QUnit.assert.ok(element.classList.contains("listbox-item") && element.classList.contains("listbox-item-disabled"));
         QUnit.assert.equal(element.innerText, item.text);
         QUnit.assert.equal(element.title, item.text);
-        QUnit.assert.ok(TestHelper.startsWith(element.id, "listboxitem"));
+        QUnit.assert.ok(TestHelper.startsWith(element.id, "listBoxItem"));
     }
 });
 
 QUnit.test("check selected item", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", selected: true }];
+    const items: ListBoxItem[] = [{ text: "Item#1", selected: true }];
 
     const { target } = TestHelper.generateSingleList({}, items);
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 1);
 
     for (let i: number = 0; i < itemElements.length; i++) {
         const element: HTMLElement = itemElements[i];
-        const item: ListboxItem = items[i];
+        const item: ListBoxItem = items[i];
 
         QUnit.assert.ok(element.classList.contains("listbox-item") && element.classList.contains("listbox-item-selected"));
         QUnit.assert.equal(element.innerText, item.text);
         QUnit.assert.equal(element.title, item.text);
-        QUnit.assert.ok(TestHelper.startsWith(element.id, "listboxitem"));
+        QUnit.assert.ok(TestHelper.startsWith(element.id, "listBoxItem"));
     }
 });
 
 QUnit.test("check header item", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", groupHeader: true }];
+    const items: ListBoxItem[] = [{ text: "Item#1", groupHeader: true }];
 
     const { target } = TestHelper.generateSingleList({}, items);
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 1);
 
     for (let i: number = 0; i < itemElements.length; i++) {
         const element: HTMLElement = itemElements[i];
-        const item: ListboxItem = items[i];
+        const item: ListBoxItem = items[i];
 
         QUnit.assert.ok(element.classList.contains("listbox-item") && element.classList.contains("listbox-item-group"));
         QUnit.assert.equal(element.innerText, item.text);
         QUnit.assert.equal(element.title, item.text);
-        QUnit.assert.ok(TestHelper.startsWith(element.id, "listboxitem"));
+        QUnit.assert.ok(TestHelper.startsWith(element.id, "listBoxItem"));
     }
 });
 
 QUnit.test("check item with id", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { target } = TestHelper.generateSingleList({}, items);
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 3);
 
     for (let i: number = 0; i < itemElements.length; i++) {
         const element: HTMLElement = itemElements[i];
-        const item: ListboxItem = items[i];
+        const item: ListBoxItem = items[i];
 
         QUnit.assert.equal(element.id, item.id);
     }
 });
 
 QUnit.test("check item with childs", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
+    const items: ListBoxItem[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
 
     const { target } = TestHelper.generateSingleList({}, items);
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 1);
 
     for (let i: number = 0; i < itemElements.length; i++) {
         const element: HTMLElement = itemElements[i];
-        const item: ListboxItem = items[i];
+        const item: ListBoxItem = items[i];
 
         QUnit.assert.ok(element.classList.contains("listbox-item") && element.classList.contains("listbox-item-group"));
         QUnit.assert.equal(element.title, item.text);
-        QUnit.assert.ok(TestHelper.startsWith(element.id, "listboxitem"));
+        QUnit.assert.ok(TestHelper.startsWith(element.id, "listBoxItem"));
 
         const childElements: HTMLElement[] = TestHelper.children(element);
         QUnit.assert.equal(childElements.length, 2);
         for (let j: number = 0; j < childElements.length; j++) {
             const childElement: HTMLElement = childElements[j];
-            const childItem: string|ListboxItem = items[0].childItems[j];
+            const childItem: string|ListBoxItem = items[0].childItems[j];
 
             QUnit.assert.ok(childElement.classList.contains("listbox-item") &&
                 childElement.classList.contains("listbox-item-child"));
             QUnit.assert.equal(childElement.innerText, childItem);
             QUnit.assert.equal(childElement.title, childItem);
-            QUnit.assert.ok(TestHelper.startsWith(childElement.id, "listboxitem"));
+            QUnit.assert.ok(TestHelper.startsWith(childElement.id, "listBoxItem"));
         }
     }
 });
@@ -250,13 +251,13 @@ QUnit.test("check item addition text", (): void => {
     const { target, box } = TestHelper.generateSingleList();
     box.addItem("Item #1");
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 1);
 
     itemElements.forEach(($elem: HTMLElement): void => {
-        QUnit.assert.equal(TestHelper.startsWith($elem.id, "listboxitem"), true);
+        QUnit.assert.equal(TestHelper.startsWith($elem.id, "listBoxItem"), true);
         QUnit.assert.equal($elem.innerText, "Item #1");
     });
 });
@@ -265,8 +266,8 @@ QUnit.test("check item addition object", (): void => {
     const { target, box } = TestHelper.generateSingleList();
     box.addItem({ text: "Item #1", id: "id01" });
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 1);
 
@@ -280,8 +281,8 @@ QUnit.test("check item additions objects", (): void => {
     const { target, box } = TestHelper.generateSingleList();
     box.addItems([{ text: "Item #1", id: "id01" }, { text: "Item #2", id: "id02" }]);
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 2);
 
@@ -292,14 +293,14 @@ QUnit.test("check item additions objects", (): void => {
 });
 
 QUnit.test("check item removal id", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { target, box } = TestHelper.generateMultipleList({}, items);
 
     box.removeItem("id02");
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 2);
 
@@ -315,14 +316,14 @@ QUnit.test("check item removal id", (): void => {
 });
 
 QUnit.test("check item removal text", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { target, box } = TestHelper.generateSingleList({}, items);
 
     box.removeItem("Item#3");
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 2);
 
@@ -338,14 +339,14 @@ QUnit.test("check item removal text", (): void => {
 });
 
 QUnit.test("check items removals text", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { target, box } = TestHelper.generateSingleList({}, items);
 
     box.removeItems(["Item#3", "Item#1"]);
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 1);
 
@@ -361,20 +362,20 @@ QUnit.test("check items removals text", (): void => {
 });
 
 QUnit.test("check parent item removal", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
+    const items: ListBoxItem[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
 
     const { target, box } = TestHelper.generateSingleList({}, items);
 
     box.removeItem("Item#1");
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     QUnit.assert.equal(itemElements.length, 0);
 });
 
 QUnit.test("check destroy", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { target, box } = TestHelper.generateSingleList({ searchBar: true }, items);
 
@@ -385,14 +386,14 @@ QUnit.test("check destroy", (): void => {
 });
 
 QUnit.test("check clearSelection", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01", selected: true }, { text: "Item#2", id: "id02", selected: true }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01", selected: true }, { text: "Item#2", id: "id02", selected: true }];
 
     const { box, target } = TestHelper.generateMultipleList({}, items);
 
     box.clearSelection();
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const itemElements: HTMLElement[] = TestHelper.children(listbox);
+    const listBox: HTMLElement = TestHelper.child(target);
+    const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
     let found: boolean = false;
     itemElements.forEach(($elem: HTMLElement): void => {
@@ -405,11 +406,11 @@ QUnit.test("check clearSelection", (): void => {
 });
 
 QUnit.test("check getItem id", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { box } = TestHelper.generateMultipleList({}, items);
 
-    const item: ListboxItem = box.getItem("id02");
+    const item: ListBoxItem = box.getItem("id02");
 
     QUnit.assert.ok(item !== null);
     QUnit.assert.equal(item.id, "id02");
@@ -417,11 +418,11 @@ QUnit.test("check getItem id", (): void => {
 });
 
 QUnit.test("check getItem text", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { box } = TestHelper.generateMultipleList({}, items);
 
-    const item: ListboxItem = box.getItem("Item#1");
+    const item: ListBoxItem = box.getItem("Item#1");
 
     QUnit.assert.ok(item !== null);
     QUnit.assert.equal(item.id, "id01");
@@ -429,17 +430,17 @@ QUnit.test("check getItem text", (): void => {
 });
 
 QUnit.test("check getItems", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { box } = TestHelper.generateMultipleList({}, items);
 
-    const listItems: ListboxItem[] = box.getItems();
+    const listItems: ListBoxItem[] = box.getItems();
 
     QUnit.assert.equal(listItems.length, 3);
 });
 
 QUnit.test("check moveItemUp", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { box } = TestHelper.generateMultipleList({}, items);
 
@@ -451,7 +452,7 @@ QUnit.test("check moveItemUp", (): void => {
 });
 
 QUnit.test("check moveItemUp (first item)", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01", index: 0 },
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01", index: 0 },
         { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { box } = TestHelper.generateMultipleList({}, items);
@@ -464,7 +465,7 @@ QUnit.test("check moveItemUp (first item)", (): void => {
 });
 
 QUnit.test("check moveItemDown", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { box } = TestHelper.generateMultipleList({}, items);
 
@@ -476,7 +477,7 @@ QUnit.test("check moveItemDown", (): void => {
 });
 
 QUnit.test("check moveItemDown (last item)", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" },
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" },
         { text: "Item#3", id: "id03", index: 2 }];
 
     const { box } = TestHelper.generateMultipleList({}, items);
@@ -505,7 +506,7 @@ QUnit.test("check disable", (): void => {
 });
 
 QUnit.test("check moveItemToBottom", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { box } = TestHelper.generateSingleList({}, items);
 
@@ -517,7 +518,7 @@ QUnit.test("check moveItemToBottom", (): void => {
 });
 
 QUnit.test("check moveItemToTop", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     const { box } = TestHelper.generateSingleList({}, items);
 
@@ -529,7 +530,7 @@ QUnit.test("check moveItemToTop", (): void => {
 });
 
 QUnit.test("check getSelection", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" },
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" },
     { text: "Item#2", id: "id02", selected: true }, {
         text: "Item#3", id: "id03", childItems: [
             { text: "SubItem#1", id: "subid01", selected: true }, { text: "SubItem#2", id: "subid02" }
@@ -538,7 +539,7 @@ QUnit.test("check getSelection", (): void => {
 
     const { box } = TestHelper.generateMultipleList({}, items);
 
-    const selection: ListboxItem[] = box.getSelection();
+    const selection: ListBoxItem[] = box.getSelection();
 
     QUnit.assert.equal(selection.length, 2);
     QUnit.assert.equal(selection[0].id, "id02");
@@ -549,11 +550,11 @@ QUnit.test("check getSelection", (): void => {
 // ********************** EVENTS **********************
 
 QUnit.test("check itemEnterPressed event", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     let count: number = 0;
 
-    const callback: (e: ListboxEvent) => void = (event: ListboxEvent): void => {
+    const callback: (e: ListBoxEvent) => void = (event: ListBoxEvent): void => {
         count++;
         QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEM_ENTER_PRESSED);
         QUnit.assert.equal(event.target, target);
@@ -561,8 +562,8 @@ QUnit.test("check itemEnterPressed event", (): void => {
 
     const { target } = TestHelper.generateSingleList({ onItemEnterPressed: callback }, items);
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const item: HTMLElement = TestHelper.child(listbox, 1); // id02
+    const listBox: HTMLElement = TestHelper.child(target);
+    const item: HTMLElement = TestHelper.child(listBox, 1); // id02
 
     const e: any = document.createEvent("Event");
     e.initEvent("keydown", true, false);
@@ -573,11 +574,11 @@ QUnit.test("check itemEnterPressed event", (): void => {
 });
 
 QUnit.test("check itemDoubleClicked event", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
 
     let count: number = 0;
 
-    const callback: (e: ListboxEvent) => void = (event: ListboxEvent): void => {
+    const callback: (e: ListBoxEvent) => void = (event: ListBoxEvent): void => {
         count++;
         QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEM_DOUBLE_CLICKED);
         QUnit.assert.equal(event.target, target);
@@ -585,8 +586,8 @@ QUnit.test("check itemDoubleClicked event", (): void => {
 
     const { target } = TestHelper.generateSingleList({ onItemDoubleClicked: callback }, items);
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const item: HTMLElement = TestHelper.child(listbox, 1); // id02
+    const listBox: HTMLElement = TestHelper.child(target);
+    const item: HTMLElement = TestHelper.child(listBox, 1); // id02
 
     item.click();
     item.click();
@@ -596,13 +597,13 @@ QUnit.test("check itemDoubleClicked event", (): void => {
 });
 
 QUnit.test("check itemArrowUp event", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" },
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" },
         { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
 
     const { box, target } = TestHelper.generateSingleList({}, items);
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const item: HTMLElement = TestHelper.child(listbox, 1); // id02
+    const listBox: HTMLElement = TestHelper.child(target);
+    const item: HTMLElement = TestHelper.child(listBox, 1); // id02
 
     QUnit.assert.equal(box.getItem("id01").selected, false);
     QUnit.assert.equal(box.getItem("id02").selected, true);
@@ -617,13 +618,13 @@ QUnit.test("check itemArrowUp event", (): void => {
 });
 
 QUnit.test("check itemArrowDown event", (): void => {
-    const items: ListboxItem[] = [{ text: "Item#1", id: "id01" },
+    const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" },
         { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
 
     const { target, box } = TestHelper.generateSingleList({}, items);
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    const item: HTMLElement = TestHelper.child(listbox, 1); // id02
+    const listBox: HTMLElement = TestHelper.child(target);
+    const item: HTMLElement = TestHelper.child(listBox, 1); // id02
 
     QUnit.assert.equal(box.getItem("id02").selected, true);
     QUnit.assert.equal(box.getItem("id03").selected, false);
@@ -638,7 +639,7 @@ QUnit.test("check itemArrowDown event", (): void => {
 });
 
 QUnit.test("check valueChanged event", (): void => {
-    const delegate: (event: ListboxEvent) => void = (event: ListboxEvent) => {
+    const delegate: (event: ListBoxEvent) => void = (event: ListBoxEvent) => {
         QUnit.assert.equal(event.eventName, BaseListBox.EVENT_VALUE_CHANGED);
         QUnit.assert.equal(event.target, target);
         QUnit.assert.equal(event.args, "mySpecialValue");
@@ -651,7 +652,7 @@ QUnit.test("check valueChanged event", (): void => {
 });
 
 QUnit.test("check itemsChanged event", (): void => {
-    const delegate: (event: ListboxEvent) => void = (event: ListboxEvent) => {
+    const delegate: (event: ListBoxEvent) => void = (event: ListBoxEvent) => {
         QUnit.assert.equal(event.eventName, BaseListBox.EVENT_ITEMS_CHANGED);
         QUnit.assert.equal(event.target, target);
         QUnit.assert.equal(event.args, "mySpecialValue");
@@ -665,7 +666,7 @@ QUnit.test("check itemsChanged event", (): void => {
 QUnit.test("check filterChanged event", (): void => {
     let t: HTMLElement = null;
 
-    const delegate: (event: ListboxEvent) => void = (event: ListboxEvent) => {
+    const delegate: (event: ListBoxEvent) => void = (event: ListBoxEvent) => {
         QUnit.assert.equal(event.eventName, BaseListBox.EVENT_FILTER_CHANGED);
         QUnit.assert.equal(event.target, t);
         QUnit.assert.equal(event.args, "mySpecialValue");

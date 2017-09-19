@@ -1,9 +1,10 @@
 /// <reference path="../test-typings.d.ts" />
 /// <amd-module name="build/out/test/test/infrastructure/TestHelper"/>
 
-import {ListboxSettings} from "../../src/ts/contract/ListboxSettings";
-import {SingleSelectListbox} from "../../src/ts/SingleSelectListbox";
-import {MultiSelectListbox} from "../../src/ts/MultiSelectListbox";
+import {ListBoxSettings} from "../../src/ts/contract/ListBoxSettings";
+import {ListBoxItem} from "../../src/ts/contract/ListBoxItem";
+import {SingleSelectListBox} from "../../src/ts/SingleSelectListBox";
+import {MultiSelectListBox} from "../../src/ts/MultiSelectListBox";
 
 export class TestHelper {
 
@@ -15,43 +16,43 @@ export class TestHelper {
         return Array.prototype.slice.call(element.children);
     }
 
-    public static generateSingleList(options: ListboxSettings = null,
-                                     items: (string|ListboxItem)[] = null): { box: SingleSelectListbox, target: HTMLElement } {
+    public static generateSingleList(options: ListBoxSettings = null,
+                                     items: (string|ListBoxItem)[] = null): { box: SingleSelectListBox, target: HTMLElement } {
         options = options || {};
         if (!options.getItems) {
-            options.getItems = (): (string|ListboxItem)[] => items;
+            options.getItems = (): (string|ListBoxItem)[] => items;
         }
 
         const test: HTMLElement = document.createElement("div");
         test.id = "test";
         document.getElementById("qunit-fixture").appendChild(test);
 
-        return { box: new SingleSelectListbox(test, options), target: test };
+        return { box: new SingleSelectListBox(test, options), target: test };
     }
 
-    public static generateMultipleList(options: ListboxSettings = null,
-                                       items: (string|ListboxItem)[] = null): { box: MultiSelectListbox, target: HTMLElement } {
+    public static generateMultipleList(options: ListBoxSettings = null,
+                                       items: (string|ListBoxItem)[] = null): { box: MultiSelectListBox, target: HTMLElement } {
         options = options || {};
         if (!options.getItems) {
-            options.getItems = (): (string|ListboxItem)[] => items;
+            options.getItems = (): (string|ListBoxItem)[] => items;
         }
 
         const test: HTMLElement = document.createElement("div");
         test.id = "test";
         document.getElementById("qunit-fixture").appendChild(test);
 
-        return { box: new MultiSelectListbox(test, options), target: test };
+        return { box: new MultiSelectListBox(test, options), target: test };
     }
 
     public static startsWith(s: string, check: string): boolean {
         return s.indexOf(check) === 0;
     }
 
-    public static elementEquals(dataItems: ListboxItem[], elements: string[]): boolean {
-        return JSON.stringify(dataItems.map((d: ListboxItem) => d.id).sort()) === JSON.stringify(elements.sort());
+    public static elementEquals(dataItems: ListBoxItem[], elements: string[]): boolean {
+        return JSON.stringify(dataItems.map((d: ListBoxItem) => d.id).sort()) === JSON.stringify(elements.sort());
     }
 
-    public static itemEquals(items: NodeListOf<Element>, dataItems: ListboxItem[]): boolean {
+    public static itemEquals(items: NodeListOf<Element>, dataItems: ListBoxItem[]): boolean {
         let ids: string[] = [];
 
         for (let i: number = 0; i < items.length; i++) {
@@ -77,7 +78,6 @@ export class TestHelper {
         e.initEvent("click", true, false);
         e.ctrlKey = ctrl;
         element.dispatchEvent(e);
-        //(element as HTMLButtonElement).click();
     }
 }
 

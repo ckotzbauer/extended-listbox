@@ -1,5 +1,5 @@
-import {SingleSelectListbox} from "./SingleSelectListbox";
-import {MultiSelectListbox} from "./MultiSelectListbox";
+import {SingleSelectListBox} from "./SingleSelectListBox";
+import {MultiSelectListBox} from "./MultiSelectListBox";
 
-(window as any).SingleSelectListbox = SingleSelectListbox;
-(window as any).MultiSelectListbox = MultiSelectListbox;
+(window as any).SingleSelectListBox = SingleSelectListBox;
+(window as any).MultiSelectListBox = MultiSelectListBox;

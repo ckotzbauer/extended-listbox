@@ -1,5 +1,5 @@
 
-export interface ListboxItem {
+export interface ListBoxItem {
     text: string;
     id?: string;
     index?: number;
@@ -7,5 +7,5 @@ export interface ListboxItem {
     selected?: boolean;
     groupHeader?: boolean;
     parentGroupId?: string;
-    childItems?: (string|ListboxItem)[];
+    childItems?: (string|ListBoxItem)[];
 }

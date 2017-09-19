@@ -2,10 +2,10 @@
 /// <amd-module name="build/out/test/test/MultiSelectListboxTest"/>
 
 import {TestHelper} from "./infrastructure/TestHelper";
-import {ListboxSettings} from "../src/ts/contract/ListboxSettings";
-import {ListboxEvent} from "../src/ts/event/ListboxEvent";
+import {ListBoxSettings} from "../src/ts/contract/ListBoxSettings";
+import {ListBoxEvent} from "../src/ts/event/ListBoxEvent";
 
-QUnit.module("MultiSelectListboxTest", {
+QUnit.module("MultiSelectListBoxTest", {
     beforeEach: (): void => {
         TestHelper.beforeEach();
     },
@@ -19,10 +19,10 @@ QUnit.test('construct default', (): void => {
 
     QUnit.assert.ok(target.classList.contains("listbox-root"));
 
-    const listbox: HTMLElement = TestHelper.child(target);
-    QUnit.assert.ok(listbox.classList.contains("listbox"));
+    const listBox: HTMLElement = TestHelper.child(target);
+    QUnit.assert.ok(listBox.classList.contains("listbox"));
 
-    const searchbar: Element = listbox.querySelector('.listbox-searchbar');
+    const searchbar: Element = listBox.querySelector('.listbox-searchbar');
     QUnit.assert.ok(!searchbar);
 });
 
@@ -34,8 +34,8 @@ QUnit.test('construct with searchbar', (): void => {
     QUnit.assert.ok(searchbar.classList.contains("listbox-searchbar-wrapper"));
     QUnit.assert.equal(TestHelper.child(searchbar).getAttribute("placeholder"), 'Search...');
 
-    const listbox: HTMLElement = TestHelper.child(target, 1);
-    QUnit.assert.ok(listbox.classList.contains("listbox"));
+    const listBox: HTMLElement = TestHelper.child(target, 1);
+    QUnit.assert.ok(listBox.classList.contains("listbox"));
 });
 
 QUnit.test('construct with searchbar watermark', (): void => {
@@ -248,8 +248,8 @@ QUnit.test('onValueChanged callback', (): void => {
     let receiveCounter: number = 0;
     let lastValue: any = null;
 
-    const options: ListboxSettings = <ListboxSettings> {};
-    options.onValueChanged = (newValue: ListboxEvent): void => {
+    const options: ListBoxSettings = <ListBoxSettings> {};
+    options.onValueChanged = (newValue: ListBoxEvent): void => {
         receiveCounter++;
         lastValue = newValue.args;
     };

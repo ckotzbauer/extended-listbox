@@ -1,20 +1,20 @@
 import {BaseListBox} from "./BaseListBox";
-import {ListboxSettings} from "./contract/ListboxSettings";
-import {ListboxItem} from "./contract/ListboxItem";
+import {ListBoxSettings} from "./contract/ListBoxSettings";
+import {ListBoxItem} from "./contract/ListBoxItem";
 
-export class MultiSelectListbox extends BaseListBox {
+export class MultiSelectListBox extends BaseListBox {
 
     /**
-     * Create an instance of MultiSelectListbox.
+     * Create an instance of MultiSelectListBox.
      *
      * Inherit a {Listbox} class.
      *
      * @constructor
-     * @this {MultiSelectListbox}
-     * @param {object} domElement DOM element to be converted to the Listbox
-     * @param {object} options an object with Listbox settings
+     * @this {MultiSelectListBox}
+     * @param {object} domElement DOM element to be converted to the ListBox
+     * @param {object} options an object with ListBox settings
      */
-    constructor(domElement: HTMLElement, options: ListboxSettings) {
+    constructor(domElement: HTMLElement, options: ListBoxSettings) {
         super(domElement, options, true);
         this._createListbox();
     }
@@ -25,7 +25,7 @@ export class MultiSelectListbox extends BaseListBox {
             return;
         }
 
-        let dataItem: ListboxItem = this._getDataItem(domItem.id);
+        let dataItem: ListBoxItem = this._getDataItem(domItem.id);
 
         if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
             if (!ctrl) {
