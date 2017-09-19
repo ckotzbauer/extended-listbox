@@ -1,4 +1,4 @@
-// Type definitions for extended-listbox 3.0.x
+// Type definitions for extended-listbox 4.0.x
 // Project: https://github.com/code-chris/extended-listbox
 // Definitions by: Christian Kotzbauer <https://github.com/code-chris>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -80,7 +80,7 @@ interface ListBoxEvent {
     args: any;
 }
 
-interface ExtendedListBoxInstance {
+interface BaseListBox {
     /** Adds a new item to the list */
     addItem(item: string|ListBoxItem): string;
 
@@ -123,3 +123,19 @@ interface ExtendedListBoxInstance {
     /** Returns all ListBoxItem's which are selected */
     getSelection(): ListBoxItem[];
 }
+
+interface SingleSelectListBox extends BaseListBox {
+}
+
+interface MultiSelectListBox extends BaseListBox {
+}
+
+declare var SingleSelectListBox: {
+    prototype: SingleSelectListBox;
+    new (domElement: HTMLElement, options: ListBoxSettings): SingleSelectListBox;
+};
+
+declare var MultiSelectListBox: {
+    prototype: MultiSelectListBox;
+    new (domElement: HTMLElement, options: ListBoxSettings): MultiSelectListBox;
+};
