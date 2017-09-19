@@ -2,7 +2,7 @@ import {ListboxSettings} from "./contract/ListboxSettings";
 import {ListboxEvent} from "./event/ListboxEvent";
 import {ListboxItem} from "./contract/ListboxItem";
 
-export class BaseListBox {
+export abstract class BaseListBox {
 
     public static MAIN_CLASS: string = 'listbox-root';
     public static MAIN_DISABLED_CLASS: string = 'listbox-disabled';
@@ -60,16 +60,14 @@ export class BaseListBox {
      * @this {BaseListBox}
      * @param {object} domItem a DOM object
      */
-    protected onItemClick(domItem: HTMLElement): void {
-    }
+    protected abstract onItemClick(domItem: HTMLElement): void;
 
     /**
      * Select first visible item if none selected.
      *
      * @this {BaseListBox}
      */
-    protected onFilterChange(): void {
-    }
+    protected abstract onFilterChange(): void;
 
 
     /**
@@ -79,7 +77,7 @@ export class BaseListBox {
      * @private
      * @this {BaseListBox}
      */
-    public createListbox(): void {
+    protected createListbox(): void {
         this._target.classList.add(BaseListBox.MAIN_CLASS);
 
         if (this._settings.searchBar) {
