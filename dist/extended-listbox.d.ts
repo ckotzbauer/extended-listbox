@@ -50,9 +50,6 @@ interface ListboxSettings {
     /** settings for the searchBar button */
     searchBarButton?: ListboxSearchBarButtonOptions;
 
-    /** determines if multiple items can be selected */
-    multiple?: boolean;
-
     /** function which returns a array of items */
     getItems?: () => (string|ListboxItem)[];
 
@@ -77,21 +74,18 @@ interface ListboxEvent {
     eventName: string;
 
     /** target object for which event is triggered */
-    target: JQuery;
+    target: Element;
 
     /** any object */
     args: any;
 }
 
 interface ExtendedListboxInstance {
-    /** DOM element of the listbox root */
-    target: JQuery;
-
     /** Adds a new item to the list */
     addItem(item: string|ListboxItem): string;
 
     /** Adds new items to the list */
-    addItems(item: (string|ListboxItem)[]): string[];
+    addItems(items: (string|ListboxItem)[]): string[];
 
     /** Removes a item from the list */
     removeItem(identifier: string): void;
@@ -111,9 +105,6 @@ interface ExtendedListboxInstance {
     /** Returns all item objects */
     getItems(): ListboxItem[];
 
-    /** Returns all ListboxItem's which are selected */
-    getSelection(): ListboxItem[];
-
     /** Decreases the index of the matching item by one */
     moveItemUp(identifier: string): number;
 
@@ -129,26 +120,6 @@ interface ExtendedListboxInstance {
     /** Enables or disables the whole list and all childs */
     enable(state: boolean): void;
 
-    /** callback for selection changes */
-    onValueChanged(callback: (event: ListboxEvent) => void): void;
-
-    /** callback for item changes (item added, item removed, item order) */
-    onItemsChanged(callback: (event: ListboxEvent) => void): void;
-
-    /** callback for searchBar text changes */
-    onFilterChanged(callback: (event: ListboxEvent) => void): void;
-
-    /** callback for enter keyPress event on an item */
-    onItemEnterPressed(callback: (event: ListboxEvent) => void): void;
-
-    /** callback for doubleClick event on an item */
-    onItemDoubleClicked(callback: (event: ListboxEvent) => void): void;
-}
-
-interface JQuery {
-    /** constructs a new instance of Listbox on the given DOM item or returns existing */
-    listbox(): ExtendedListboxInstance|ExtendedListboxInstance[];
-
-    /** constructs a new instance of Listbox on the given DOM item */
-    listbox(options: ListboxSettings): ExtendedListboxInstance|ExtendedListboxInstance[];
+    /** Returns all ListboxItem's which are selected */
+    getSelection(): ListboxItem[];
 }
