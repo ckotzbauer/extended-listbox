@@ -50,4 +50,13 @@ export class MultiSelectListbox extends BaseListBox {
 
         this.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, this.selectedDataItems);
     }
+
+    /**
+     * Select first visible item if none selected.
+     *
+     * @this {SingleSelectListbox}
+     */
+    public onFilterChange(): void {
+        this.fireEvent(BaseListBox.EVENT_FILTER_CHANGED, this._searchbar.value);
+    }
 }
