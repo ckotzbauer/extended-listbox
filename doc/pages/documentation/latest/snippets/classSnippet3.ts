@@ -1,25 +1,25 @@
-class ListboxItem {
-    /* Displayable item text */
-    text: string = null;
+interface ListBoxItem {
+    /** display text */
+    text?: string;
 
-    /* Unique element id, if null it will be generated like listboxitem8294854 */
-    id: string = null;
+    /** unique identifier, if not set it will be generated */
+    id?: string;
 
-    /* Index position of item in the list; only used for addItem api calls. */
-    index: number = null;
+    /** index position from the item in the list; only used for manual addItem api calls */
+    index?: number;
 
-    /* true if the item should not be selectable */
-    disabled: boolean = false;
+    /** determines if the item should be clickable */
+    disabled?: boolean;
 
-    /* true if the item is selected */
-    selected: boolean = false;
+    /** determines if the item is selected */
+    selected?: boolean;
 
-    /* true if the item has childs */
-    groupHeader: boolean = false;
+    /** determines if the item has childItems */
+    groupHeader?: boolean;
 
-    /* ID or display text for parent; only used for addItem api calls. */
-    parentGroupId: string = null;
+    /** display text or id of the parent; only used for manual addItem api calls */
+    parentGroupId?: string;
 
-    /* list of child items */
-    childItems: ListboxItem[] = [];
+    /** list of childItems */
+    childItems?: (string|ListBoxItem)[];
 }
