@@ -16,7 +16,7 @@ export class SingleSelectListBox extends BaseListBox {
      * @param {object} domElement DOM element to be converted to the ListBox
      * @param {object} options an object with ListBox settings
      */
-    constructor(domElement: HTMLElement, options: ListBoxSettings) {
+    constructor(domElement: HTMLElement, options?: ListBoxSettings) {
         super(domElement, options, false);
         this._selectedDomItem = null;
         this._createListbox();

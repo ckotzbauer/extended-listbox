@@ -132,10 +132,10 @@ interface MultiSelectListBox extends BaseListBox {
 
 declare var SingleSelectListBox: {
     prototype: SingleSelectListBox;
-    new (domElement: HTMLElement, options: ListBoxSettings): SingleSelectListBox;
+    new (domElement: HTMLElement, options?: ListBoxSettings): SingleSelectListBox;
 };
 
 declare var MultiSelectListBox: {
     prototype: MultiSelectListBox;
-    new (domElement: HTMLElement, options: ListBoxSettings): MultiSelectListBox;
+    new (domElement: HTMLElement, options?: ListBoxSettings): MultiSelectListBox;
 };
