@@ -1,9 +1,8 @@
-import ListboxSettings = require("./contract/ListboxSettings");
-import ListboxEvent = require("./event/ListboxEvent");
-import ListboxItem = require("./contract/ListboxItem");
-import Listbox = require("./Listbox");
+import {ListBoxSettings} from "./contract/ListBoxSettings";
+import {ListBoxEvent} from "./event/ListBoxEvent";
+import {ListBoxItem} from "./contract/ListBoxItem";
 
-class BaseListBox {
+export abstract class BaseListBox {
 
     public static MAIN_CLASS: string = 'listbox-root';
     public static MAIN_DISABLED_CLASS: string = 'listbox-disabled';
@@ -22,62 +21,33 @@ class BaseListBox {
     public static EVENT_ITEM_ENTER_PRESSED: string = "itemEnterPressed";
     public static EVENT_ITEM_DOUBLE_CLICKED: string = "itemDoubleClicked";
 
-    public _target: JQuery;
-    public _list: JQuery;
-    private _searchbarWrapper: JQuery;
-    public _searchbar: JQuery;
+    public _target: HTMLElement;
+    public _list: HTMLDivElement;
+    private _searchbarWrapper: HTMLDivElement;
+    public _searchbar: HTMLInputElement;
 
-    public _settings: ListboxSettings;
-    private _box: Listbox;
+    public _settings: ListBoxSettings;
+    private multiple: boolean;
 
+    private dataItems: ListBoxItem[] = [];
+    public selectedDataItems: ListBoxItem[] = [];
 
-    /**
-     * Create an instance of Listbox. The constructor creates div-based
-     * listbox under the given root domelement. It applies the given
-     * configuration.
-     *
-     * @constructor
-     * @this {BaseListBox}
-     * @param {object} domelement DOM element to be converted to the Listbox
-     * @param {object} options an object with Listbox settings
-     * @param {Listbox} boxInstance of specific implementation
-     */
-    constructor(domelement: JQuery, options: ListboxSettings, boxInstance: Listbox) {
+    protected constructor(domelement: HTMLElement, options: ListBoxSettings, multiple: boolean) {
+        options = options || {};
+        options.searchBar = options.searchBar || false;
+        options.searchBarWatermark = options.searchBarWatermark || "Search...";
+        options.searchBarButton = options.searchBarButton || { visible: false };
+
         this._target = domelement;
-        this._box = boxInstance;
         this._settings = options;
+        this.multiple = multiple;
     }
 
+    protected abstract _itemClicked(domItem: HTMLElement, ctrl?: boolean): void;
+    protected abstract _filterChanged(): void;
 
-    /**
-     * Click handling and triggering from other delegates and events.
-     *
-     * @this {BaseListBox}
-     * @param {object} domItem a DOM object
-     */
-    protected onItemClick(domItem: JQuery): void {
-        this._box.onItemClick(domItem);
-    }
-
-    /**
-     * Select first visible item if none selected.
-     *
-     * @this {BaseListBox}
-     */
-    protected onFilterChange(): void {
-        this._box.onFilterChange();
-    }
-
-
-    /**
-     * Creates a `div`-based listbox, which includes such things as
-     * container, listbox itself and searchbar as an optional element.
-     *
-     * @private
-     * @this {BaseListBox}
-     */
-    public createListbox(): void {
-        this._target.addClass(BaseListBox.MAIN_CLASS);
+    protected _createListbox(): void {
+        this._target.classList.add(BaseListBox.MAIN_CLASS);
 
         if (this._settings.searchBar) {
             this._createSearchbar();
@@ -86,113 +56,109 @@ class BaseListBox {
         this._createList();
     }
 
-    /**
-     * Creates a Listbox's searchbar.
-     *
-     * @private
-     * @this {BaseListBox}
-     * @TODO: critical to rewrite this piece of shit
-     */
     private _createSearchbar(): void {
         // searchbar wrapper is needed for properly stretch
         // the searchbar over the listbox width
-        var searchbarWrapper: JQuery = $('<div>')
-            .addClass(BaseListBox.SEARCHBAR_CLASS + '-wrapper')
-            .appendTo(this._target);
+        const searchbarWrapper: HTMLDivElement = document.createElement("div");
+        searchbarWrapper.classList.add(BaseListBox.SEARCHBAR_CLASS + '-wrapper');
+        this._target.appendChild(searchbarWrapper);
 
-        var searchbar: JQuery = $('<input>')
-            .addClass(BaseListBox.SEARCHBAR_CLASS)
-            .appendTo(searchbarWrapper)
-            .attr('placeholder', this._settings.searchBarWatermark);
+        const searchbar: HTMLInputElement = document.createElement("input");
+        searchbar.classList.add(BaseListBox.SEARCHBAR_CLASS);
+        searchbar.setAttribute("placeholder", this._settings.searchBarWatermark);
+        searchbarWrapper.appendChild(searchbar);
 
         // set filter handler
-        var self: BaseListBox = this;
-        searchbar.keyup(function (): void {
-            var searchQuery: string = (<string>$(this).val()).toLowerCase();
+        searchbar.onkeyup = (): void => {
+            const searchQuery: string = searchbar.value.toLowerCase();
 
             if (searchQuery !== '') {
                 // hide list items which are not matched search query
-                self._list.find("." + BaseListBox.LIST_ITEM_CLASS).each(function (): void {
-                    var $this: JQuery = $(this);
+                const items: NodeListOf<HTMLDivElement> = this._list.querySelectorAll<any>("." + BaseListBox.LIST_ITEM_CLASS);
+                for (let i: number = 0; i < items.length; i++) {
+                    const thisItem: HTMLDivElement = items.item(i);
 
-                    if ($this.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                        return;
+                    if (thisItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                        continue;
                     }
 
-                    var text: string = $this.text().toLowerCase();
+                    const text: string = thisItem.innerText.toLowerCase();
 
-                    if (text.search('^' + searchQuery) !== -1) {
-                        $this.css('display', 'block');
-                        $this.parent().css('display', 'block');
+                    if (text.search(searchQuery) !== -1) {
+                        thisItem.style.display = "block";
+                        thisItem.parentElement.style.display = "block";
                     } else {
-                        $this.css('display', 'none');
+                        thisItem.style.display = "none";
                     }
-                });
+                }
 
                 // hide group item only, if all childs are hidden
-                self._list.find("." + BaseListBox.LIST_ITEM_CLASS_GROUP).each(function (): void {
-                    var $this: JQuery = $(this);
-                    if ($this.children(':visible').length === 0) {
-                        $this.css('display', 'none');
-                    } else {
-                        $this.css('display', 'block');
+                const groups: NodeListOf<Element> =
+                    this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS_GROUP);
+                for (let i: number = 0; i < groups.length; i++) {
+                    const thisItem: HTMLElement = groups.item(i) as HTMLElement;
+                    const childs: NodeListOf<Element> = thisItem.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
+                    let index: number = -1;
+
+                    for (let j: number = 0; j < childs.length; j++) {
+                        if ((childs.item(j) as HTMLElement).style.display !== "none") {
+                            index = j;
+                            break;
+                        }
                     }
-                });
+
+                    if (index === -1) {
+                        thisItem.style.display = "none";
+                    } else {
+                        thisItem.style.display = "block";
+                    }
+                }
             } else {
                 // make visible all list items
-                self._list.find("." + BaseListBox.LIST_ITEM_CLASS).each(function (): void {
-                    $(this).css('display', 'block');
-                });
+                const items: NodeListOf<Element> = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
+                for (let i: number = 0; i < items.length; i++) {
+                    const thisItem: HTMLElement = items.item(i) as HTMLElement;
+                    thisItem.style.display = "block";
+                }
             }
 
-            // @hack: call special handler which is used only for SingleSelectListbox
-            //        to prevent situation when none of items are selected
-            if (self.onFilterChange) {
-                self.onFilterChange();
-            }
-        });
+            this._filterChanged();
+        };
 
         if (this._settings.searchBarButton.visible) {
             // create button in search field
-            var button: JQuery = $('<button>')
-                .attr('id', 'searchBarButton')
-                .attr('tabindex', '-1')
-                .addClass(BaseListBox.SEARCHBAR_BUTTON_CLASS)
-                .appendTo(searchbarWrapper);
+            const button: HTMLButtonElement = document.createElement("button");
+            button.id = "searchBarButton";
+            button.setAttribute("tabindex", "-1");
+            button.classList.add(BaseListBox.SEARCHBAR_BUTTON_CLASS);
+            searchbarWrapper.appendChild(button);
 
             if (this._settings.searchBarButton.onClick) {
-                button.click(this._settings.searchBarButton.onClick);
+                button.onclick = this._settings.searchBarButton.onClick;
             }
 
             // icon for search button
-            $('<i>')
-                .addClass(this._settings.searchBarButton.icon)
-                .appendTo(button);
+            const icon: HTMLElement = document.createElement("i");
+            icon.classList.add(this._settings.searchBarButton.icon);
+            button.appendChild(icon);
         }
 
-        // save for using in _resizeListToListbox()
+        // save for using in _resizeListToListBox()
         this._searchbarWrapper = searchbarWrapper;
         this._searchbar = searchbar;
     }
 
-
-    /**
-     * Creates a listbox itself.
-     *
-     * @private
-     * @this {BaseListBox}
-     */
     private _createList(): void {
         // create container
-        this._list = $('<div>')
-            .addClass(BaseListBox.LIST_CLASS)
-            .appendTo(this._target);
+        this._list = document.createElement("div");
+        this._list.classList.add(BaseListBox.LIST_CLASS);
+        this._target.appendChild(this._list);
 
-        this._resizeListToListbox();
+        this._resizeListToListBox();
 
         // create items
         if (this._settings.getItems) {
-            var items: (string|ListboxItem)[] = <(string|ListboxItem)[]>this._settings.getItems();
+            const items: (string|ListBoxItem)[] = <(string|ListBoxItem)[]>this._settings.getItems();
             if (items) {
                 for (let index in items) {
                     this.addItem(this._prepareDataItem(items[index]), true);
@@ -201,47 +167,36 @@ class BaseListBox {
         }
     }
 
-    /**
-     * Generates a new ID for a item.
-     *
-     * @this {BaseListBox}
-     */
-    protected _generateItemId(): string {
-        var num: number = parseInt("" + (Math.random() * 10000000), 10);
-        return "listboxitem" + num;
+    private _generateItemId(): string {
+        const num: number = parseInt("" + (Math.random() * 10000000), 10);
+        return "listBoxItem" + num;
     }
 
-    /**
-     * Prepares the dataobject for one item.
-     *
-     * @this {BaseListBox}
-     * @param {object} dataItem object returned from getItems
-     */
-    protected _prepareDataItem(dataItem: ListboxItem|string): ListboxItem {
-        var item: ListboxItem = {
+    private _prepareDataItem(dataItem: ListBoxItem|string): ListBoxItem {
+        /* tslint:disable:no-string-literal */
+        let item: ListBoxItem = {
             childItems: [],
             disabled: false,
             groupHeader: null,
-            id: null,
+            id: this._generateItemId(),
             parentGroupId: null,
             selected: false,
             text: null,
             index: null
         };
-
-        /* tslint:disable:no-string-literal */
-        if (!dataItem["id"]) {
-            item.id = this._generateItemId();
-        }
         /* tslint:enable:no-string-literal */
 
         if (typeof dataItem === "string" || typeof dataItem === "number") {
             item.text = <string> dataItem;
             return item;
         } else {
-            item = $.extend(item, dataItem);
+            for (let i in dataItem) {
+                if (dataItem.hasOwnProperty(i)) {
+                    item[i] = dataItem[i];
+                }
+            }
 
-            var childs: ListboxItem[] = [];
+            const childs: ListBoxItem[] = [];
 
             for (let index in item.childItems) {
                 childs.push(this._prepareDataItem(item.childItems[index]));
@@ -252,92 +207,81 @@ class BaseListBox {
         }
     }
 
+    private _addItem(dataItem: ListBoxItem, internal: boolean, parent: HTMLElement): string {
+        this.dataItems.push(dataItem);
 
-    /**
-     * Add item to the listbox.
-     *
-     * @this {BaseListBox}
-     * @param {object} dataItem display data for item
-     * @param {object} internal: true if this function is not called directly as api function.
-     * * @param {object} $parent: the DOM parent element
-     */
-    protected _addItem(dataItem: ListboxItem, internal: boolean, $parent: JQuery): string {
-        var self: BaseListBox = this;
-        var item: JQuery = $('<div>')
-            .addClass(BaseListBox.LIST_ITEM_CLASS)
-            .text(dataItem.text)
-            .attr("id", dataItem.id)
-            .attr("title", dataItem.text)
-            .attr("tabindex", "1")
-            .data("dataItem", dataItem)
-            .keydown(function (e: any): void {// TODO: remove this any cast in upcoming major release if this project
-                var $t: JQuery = $(e.target); // TODO does not depend on jquery anymore
-                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
-                    if (e.which === 13) {
-                        // Enter
-                        self.onItemEnterPressed($t);
-                    } else if (e.which === 38) {
-                        // Arrow up
-                        e.preventDefault();
-                        self.onItemArrowUp($t);
-                    } else if (e.which === 40) {
-                        // Arrow down
-                        e.preventDefault();
-                        self.onItemArrowDown($t);
-                    }
+        const item: HTMLDivElement = document.createElement("div");
+        item.classList.add(BaseListBox.LIST_ITEM_CLASS);
+        item.innerText = dataItem.text;
+        item.id = dataItem.id;
+        item.tabIndex = 1;
+        item.title = dataItem.text;
+        item.onkeydown = (e: KeyboardEvent): void => {
+            if (!(<HTMLElement>e.target).classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
+                if (e.which === 13) {
+                    // Enter
+                    this._fireEvent(BaseListBox.EVENT_ITEM_ENTER_PRESSED, this._getDataItem((e.target as HTMLElement).id));
+                } else if (e.which === 38) {
+                    // Arrow up
+                    e.preventDefault();
+                    this._itemArrowUp(e.target as HTMLElement);
+                } else if (e.which === 40) {
+                    // Arrow down
+                    e.preventDefault();
+                    this._itemArrowDown(e.target as HTMLElement);
                 }
-            })
-            .click(function (): void {
-                self.onItemClick($(this));
-            })
-            .dblclick(function (): void {
-                var $t: JQuery = $(this);
-                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                    self.onItemDoubleClicked($t);
-                }
-            });
+            }
+        };
+
+        item.onclick = (e: MouseEvent): void => {
+            this._itemClicked(e.target as HTMLElement, e.ctrlKey);
+        };
+
+        item.ondblclick = (e: MouseEvent): void => {
+            if (!(<HTMLElement>e.target).classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                this._fireEvent(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED, this._getDataItem((e.target as HTMLElement).id));
+            }
+        };
 
         if (dataItem.disabled) {
-            item.addClass(BaseListBox.LIST_ITEM_CLASS_DISABLED);
+            item.classList.add(BaseListBox.LIST_ITEM_CLASS_DISABLED);
         }
 
         if (dataItem.groupHeader) {
-            item.addClass(BaseListBox.LIST_ITEM_CLASS_GROUP);
+            item.classList.add(BaseListBox.LIST_ITEM_CLASS_GROUP);
         }
 
         if (dataItem.selected) {
-            this.onItemClick(item);
+            this._itemClicked(item, true);
         }
 
         if (dataItem.parentGroupId) {
-            var $possibleParent: JQuery = this.locateItem(dataItem.parentGroupId);
+            const possibleParent: HTMLElement = this._locateItem(dataItem.parentGroupId);
 
-            if ($possibleParent) {
-                $parent = $possibleParent;
+            if (possibleParent) {
+                parent = possibleParent;
             }
         }
 
-        if ($parent) {
-            item.addClass(BaseListBox.LIST_ITEM_CLASS_CHILD);
+        if (parent) {
+            item.classList.add(BaseListBox.LIST_ITEM_CLASS_CHILD);
         }
 
-        var $target: JQuery = $parent ? $parent : this._list;
+        let target: HTMLElement = parent ? parent : this._list;
         if (dataItem.index !== undefined && dataItem.index !== null && !internal) {
-            $target = $target.children().eq(dataItem.index);
-            item.insertBefore($target);
+            target = <HTMLElement>target.children.item(dataItem.index);
+            target.parentElement.insertBefore(item, target);
         } else {
-            item.appendTo($target);
+            target.appendChild(item);
         }
 
         if (dataItem.childItems && dataItem.childItems.length > 0) {
-            if (!item.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                item.addClass(BaseListBox.LIST_ITEM_CLASS_GROUP);
+            if (!item.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                item.classList.add(BaseListBox.LIST_ITEM_CLASS_GROUP);
             }
 
-            var index: number;
-            for (index = 0; index < dataItem.childItems.length; index++) {
-                var child: ListboxItem = dataItem.childItems[index];
-                this._addItem(child, internal, item);
+            for (let index: number = 0; index < dataItem.childItems.length; index++) {
+                this._addItem(this._prepareDataItem(dataItem.childItems[index]), internal, item);
             }
         }
 
@@ -345,57 +289,181 @@ class BaseListBox {
         return dataItem.id;
     }
 
+    protected _resizeListToListBox(): void {
+        let listHeight: number = this._target.clientHeight;
+
+        if (this._settings.searchBar) {
+            listHeight -= this._searchbarWrapper.offsetHeight;
+        }
+
+        this._list.style.height = listHeight + "px";
+    }
+
+    protected _clearItemSelection(domItem: HTMLElement): void {
+        domItem.classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+        this._getDataItem(domItem.id).selected = false;
+
+        if (this.multiple) {
+            const currentItem: ListBoxItem = this._getDataItem(domItem.id);
+            const removeIndex: number = this.selectedDataItems.indexOf(currentItem);
+            this.selectedDataItems.splice(removeIndex, 1);
+        } else {
+            this.selectedDataItems.splice(0, this.selectedDataItems.length);
+        }
+    }
+
+    protected _locateItem(id: string): HTMLElement {
+        let item: HTMLElement = document.getElementById(id);
+        if (!item) {
+            const titleItems: NodeListOf<Element> = document.querySelectorAll('div[title="' + id + '"]');
+
+            if (titleItems.length > 0) {
+                return titleItems[0] as HTMLElement;
+            }
+        }
+
+        return item;
+    }
+
+    private _findNextItem(current: HTMLElement, direction: string): HTMLElement {
+        let potentialNext: Element = current;
+
+        do {
+            potentialNext = potentialNext[direction + "ElementSibling"];
+
+            if (!potentialNext) {
+                const parent: HTMLElement = current.parentElement;
+                if (parent) {
+                    const sibling: Element = parent[direction + "ElementSibling"];
+                    if (!sibling) {
+                        return null;
+                    }
+
+                    const nextChildren: NodeListOf<Element> = sibling.children;
+                    if (nextChildren.length > 0) {
+                        potentialNext = direction === "next"
+                            ? nextChildren[0].firstElementChild
+                            : nextChildren[0].lastElementChild;
+                    } else {
+                        potentialNext = parent;
+                    }
+                } else {
+                    return null;
+                }
+            }
+
+            if (potentialNext && potentialNext.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
+                continue;
+            }
+
+            return potentialNext as HTMLElement;
+        } while (true);
+    }
+
+    public _fireEvent(name: string, args: any): void {
+        let delegate: (e: ListBoxEvent) => void = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
+
+        if (delegate) {
+            delegate({ eventName: name, target: this._target, args: args });
+        }
+    }
+
+    private _elementIndex(element: Element): number {
+        const childs: Element[] = Array.prototype.slice.call(element.parentElement.children);
+        return childs.indexOf(element);
+    }
+
+    protected _getDataItem(id: string): ListBoxItem {
+        for (let i: number = 0; i < this.dataItems.length; i++) {
+            if (this.dataItems[i].id === id) {
+                return this.dataItems[i];
+            }
+        }
+
+        return null;
+    }
+
+    private _itemArrowUp(domItem: HTMLElement): void {
+        const prev: HTMLElement = this._findNextItem(domItem, "previous");
+
+        if (prev) {
+            this._clearItemSelection(domItem);
+            this._itemClicked(prev);
+        }
+    }
+
+    private _itemArrowDown(domItem: HTMLElement): void {
+        const next: HTMLElement = this._findNextItem(domItem, "next");
+
+        if (next) {
+            this._clearItemSelection(domItem);
+            this._itemClicked(next);
+        }
+    }
+
+
+
+    /*******************************  PUBLIC API  ******************************* */
+
     /**
-     * Add item to the listbox.
+     * Add item to the listBox.
      *
      * @this {BaseListBox}
      * @param {object} dataItem display data for item
      * @param {object} internal: true if this function is not called directly as api function.
      */
-    public addItem(dataItem: ListboxItem|string, internal: boolean = false): string {
+    public addItem(dataItem: ListBoxItem|string, internal: boolean = false): string {
         /* tslint:disable:no-string-literal */
-        if (!internal && !this._settings.multiple && dataItem["selected"]) {
-            this.clearSelection(internal);
+        if (!internal && !this.multiple && dataItem["selected"]) {
+            this.clearSelection();
         }
         /* tslint:enable:no-string-literal */
 
-        var id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
+        const id: string = this._addItem(this._prepareDataItem(dataItem), internal, null);
 
         if (!internal) {
-            this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+            this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
         }
 
         return id;
     }
 
     /**
-     * Add multiple item to the listbox.
+     * Add multiple item to the listBox.
      *
      * @this {BaseListBox}
-     * @param {object} dataItems display data of items
+     * @param {object} items display data of items
      */
-    public addItems(dataItems: (string|ListboxItem)[]): string[] {
-        return dataItems.map((item: string|ListboxItem) => this.addItem(item));
+    public addItems(items: (string|ListBoxItem)[]): string[] {
+        return items.map((item: string|ListBoxItem) => this.addItem(item));
     }
 
     /**
-     * Remove first matching item from the listbox.
+     * Remove first matching item from the listBox.
      *
      * @this {BaseListBox}
      * @param {string} item: display text or id from item to remove
      */
     public removeItem(item: string): void {
-        var uiItem: JQuery = this.locateItem(item);
+        const uiItem: HTMLElement = this._locateItem(item);
         if (uiItem) {
             this._clearItemSelection(uiItem);
-            uiItem.remove();
+            uiItem.parentElement.removeChild(uiItem);
 
-            this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+            const dataItem: ListBoxItem = this._getDataItem(uiItem.id);
+            this.dataItems.splice(this.dataItems.indexOf(dataItem), 1);
+
+            const selectedIndex: number = this.selectedDataItems.indexOf(dataItem);
+            if (selectedIndex !== -1) {
+                this.selectedDataItems.splice(selectedIndex, 1);
+            }
+
+            this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
         }
     }
 
     /**
-     * Remove all matching items of array from the listbox.
+     * Remove all matching items of array from the listBox.
      *
      * @this {BaseListBox}
      * @param {string[]} items: display text or id from items to remove
@@ -411,72 +479,26 @@ class BaseListBox {
      * @this {BaseListBox}
      */
     public destroy(): void {
-        this._target.children().remove();
-        this._target.removeClass(BaseListBox.MAIN_CLASS);
-    }
-
-
-    /**
-     * Resize list to listbox. It's a small hack since I can't
-     * do it with CSS.
-     */
-    protected _resizeListToListbox(): void {
-        var listHeight: number = this._target.height();
-
-        if (this._settings.searchBar) {
-            listHeight -= this._searchbarWrapper.outerHeight(true);
+        while (this._target.firstChild) {
+            this._target.removeChild(this._target.firstChild);
         }
 
-        this._list.height(listHeight);
+        this._target.classList.remove(BaseListBox.MAIN_CLASS);
     }
-
 
     /**
      * Clears all selected items.
      */
-    public clearSelection(internal: boolean): void {
+    public clearSelection(): void {
         // Remove selected class from all other items
-        var allItems: JQuery = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
+        const allItems: NodeList = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
 
-        allItems.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-        var index: number;
-        for (index = 0; index < allItems.length; index++) {
-            $(allItems[index]).data("dataItem").selected = false;
+        for (let index: number = 0; index < allItems.length; index++) {
+            (<HTMLElement>allItems[index]).classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            this._getDataItem((allItems[index] as Element).id).selected = false;
         }
 
-        if (this._settings.multiple) {
-            this._target.val([]);
-        } else {
-            this._target.val(null);
-        }
-
-        if (!internal) {
-            this._target.trigger('change');
-        }
-    }
-
-
-    /**
-     * Clears selection of given items.
-     *
-     * @param {object} domItem DOM item
-     */
-    protected _clearItemSelection(domItem: JQuery): void {
-        domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-        domItem.data("dataItem").selected = false;
-
-        if (this._settings.multiple) {
-            var parentValues: any[] = <any[]>this._target.val();
-            if (parentValues) {
-                var removeIndex: number = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
-                parentValues.splice(removeIndex, 1);
-                this._target.val(parentValues);
-            }
-        } else {
-            this._target.val(null);
-        }
-
-        this._target.trigger('change');
+        this.selectedDataItems = [];
     }
 
 
@@ -485,13 +507,13 @@ class BaseListBox {
      *
      * @param {object} id unique id or text from listItem
      */
-    public getItem(id: string): ListboxItem {
-        var data: ListboxItem = null;
+    public getItem(id: string): ListBoxItem {
+        let data: ListBoxItem = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const item: HTMLElement = this._locateItem(id);
 
-        if ($item) {
-            data = $item.data("dataItem");
+        if (item) {
+            data = this._getDataItem(item.id);
         }
 
         return data;
@@ -501,16 +523,15 @@ class BaseListBox {
     /**
      * Returns all dataItems.
      */
-    public getItems(): ListboxItem[] {
-        var dataItems: ListboxItem[] = [];
+    public getItems(): ListBoxItem[] {
+        const items: ListBoxItem[] = [];
 
-        var childs: JQuery = this._list.children();
-        var index: number;
-        for (index = 0; index < childs.length; index++) {
-            dataItems.push($(childs[index]).data("dataItem"));
+        const childs: NodeList = this._list.children;
+        for (let index: number = 0; index < childs.length; index++) {
+            items.push(this._getDataItem((childs[index] as Element).id));
         }
 
-        return dataItems;
+        return items;
     }
 
 
@@ -520,17 +541,18 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public moveItemUp(id: string): number {
-        var newIndex: number = null;
+        let newIndex: number = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const item: HTMLElement = this._locateItem(id);
 
-        if ($item) {
-            $item.insertBefore($item.prev());
-            newIndex = $item.index();
-            $item.data("dataItem").index = newIndex;
+        if (item && item.previousElementSibling) {
+            item.parentElement.insertBefore(item, item.previousElementSibling);
+            newIndex = this._elementIndex(item);
+            this._getDataItem(item.id).index = newIndex;
+            this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+        } else if (item) {
+            newIndex = this._elementIndex(item);
         }
-
-        this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -541,17 +563,18 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public moveItemDown(id: string): number {
-        var newIndex: number = null;
+        let newIndex: number = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const item: HTMLElement = this._locateItem(id);
 
-        if ($item) {
-            $item.insertAfter($item.next());
-            newIndex = $item.index();
-            $item.data("dataItem").index = newIndex;
+        if (item && item.nextElementSibling) {
+            item.parentNode.insertBefore(item.nextElementSibling, item);
+            newIndex = this._elementIndex(item);
+            this._getDataItem(item.id).index = newIndex;
+            this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+        } else if (item) {
+            newIndex = this._elementIndex(item);
         }
-
-        this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -562,17 +585,16 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public moveItemToTop(id: string): number {
-        var newIndex: number = null;
+        let newIndex: number = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const item: HTMLElement = this._locateItem(id);
 
-        if ($item) {
-            $item.parent().prepend($item);
-            newIndex = $item.index();
-            $item.data("dataItem").index = newIndex;
+        if (item) {
+            item.parentElement.insertBefore(item, item.parentElement.firstElementChild);
+            newIndex = this._elementIndex(item);
+            this._getDataItem(item.id).index = newIndex;
+            this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
         }
-
-        this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -583,17 +605,17 @@ class BaseListBox {
      * @param {object} id unique id or text from listItem
      */
     public moveItemToBottom(id: string): number {
-        var newIndex: number = null;
+        let newIndex: number = null;
 
-        var $item: JQuery = this.locateItem(id);
+        const item: HTMLElement = this._locateItem(id);
 
-        if ($item) {
-            $item.parent().append($item);
-            newIndex = $item.index();
-            $item.data("dataItem").index = newIndex;
+        if (item) {
+            item.parentElement.appendChild(item);
+            newIndex = this._elementIndex(item);
+            this._getDataItem(item.id).index = newIndex;
         }
 
-        this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+        this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
 
         return newIndex;
     }
@@ -606,120 +628,16 @@ class BaseListBox {
      */
     public enable(enable: boolean): void {
         if (enable) {
-            this._target.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
-        } else if (!this._target.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
-            this._target.addClass(BaseListBox.MAIN_DISABLED_CLASS);
+            this._target.classList.remove(BaseListBox.MAIN_DISABLED_CLASS);
+        } else if (!this._target.classList.contains(BaseListBox.MAIN_DISABLED_CLASS)) {
+            this._target.classList.add(BaseListBox.MAIN_DISABLED_CLASS);
         }
-    }
-
-    protected locateItem(id: string): JQuery {
-        var $item: JQuery = $("#" + id, this._list);
-        if ($item.length === 0) {
-            $item = $('div[title="' + id + '"]');
-        }
-
-        if ($item.length === 0) {
-            $item = null;
-        }
-
-        return $item;
-    }
-
-    /**
-     * Called for a keyPressed event with the enter key for a item.
-     *
-     * @param {JQuery} domItem: the domItem.
-     */
-    protected onItemEnterPressed(domItem: JQuery): void {
-        this.fireEvent(BaseListBox.EVENT_ITEM_ENTER_PRESSED, domItem.data("dataItem"));
-    }
-
-    /**
-     * Called for a doubleClick on a item.
-     *
-     * @param {JQuery} domItem: the domItem.
-     */
-    protected onItemDoubleClicked(domItem: JQuery): void {
-        this.fireEvent(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
-    }
-
-    /**
-     * Called for a keyPressed event with the arrow up key for a item.
-     *
-     * @param {JQuery} domItem: the domItem.
-     */
-    protected onItemArrowUp(domItem: JQuery): void {
-        var prev: JQuery = this.findNextItem(domItem, "prev");
-
-        if (prev) {
-            this._clearItemSelection(domItem);
-            this.onItemClick(prev);
-        }
-    }
-
-    /**
-     * Called for a keyPressed event with the arrow down key for a item.
-     *
-     * @param {JQuery} domItem: the domItem.
-     */
-    protected onItemArrowDown(domItem: JQuery): void {
-        var next: JQuery = this.findNextItem(domItem, "next");
-
-        if (next) {
-            this._clearItemSelection(domItem);
-            this.onItemClick(next);
-        }
-    }
-
-    private findNextItem(current: JQuery, direction: string): JQuery {
-        var potentialNext: JQuery = current;
-
-        do {
-            potentialNext = potentialNext[direction]();
-
-            if (potentialNext.length === 0) {
-                var parent: JQuery = current.parent();
-                if (parent.length === 1) {
-                    var nextChildren: JQuery = parent[direction]().children();
-                    if (nextChildren.length > 0) {
-                        potentialNext = direction === "next" ? nextChildren.first() : nextChildren.last();
-                    } else {
-                        potentialNext = parent;
-                    }
-                } else {
-                    return null;
-                }
-            }
-
-            if (potentialNext.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
-                continue;
-            }
-
-            return potentialNext;
-        } while (true);
     }
 
     /**
      * Returns all dataItems which are selected.
      */
-    public getSelection(): ListboxItem[] {
-        var topLevelItems: ListboxItem[] = this.getItems();
-        var allItems: ListboxItem[] = [].concat(topLevelItems);
-
-        topLevelItems.forEach((item: ListboxItem) => {
-            allItems = allItems.concat(item.childItems);
-        });
-
-        return allItems.filter((item: ListboxItem) => item.selected);
-    }
-
-    public fireEvent(name: string, args: any): void {
-        let delegate: (e: ListboxEvent) => void = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
-
-        if (delegate) {
-            delegate({ eventName: name, target: this._target, args: args });
-        }
+    public getSelection(): ListBoxItem[] {
+        return this.selectedDataItems;
     }
 }
-
-export = BaseListBox;

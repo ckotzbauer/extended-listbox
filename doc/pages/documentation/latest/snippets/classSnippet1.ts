@@ -1,31 +1,28 @@
-class ListBoxOptions {
-    /* If the searchBar is visible */
-    searchBar: boolean = false;
+interface ListBoxSettings {
+    /** determines if the searchBar is visible */
+    searchBar?: boolean;
 
-    /* Watermark text for search input */
-    searchBarWatermark: string = "Search...";
+    /** watermark (placeholder) for the searchBar */
+    searchBarWatermark?: string;
 
-    /* Button configuration */
-    searchBarButton: ListboxSearchBarOptions = new ListboxSearchBarOptions();
+    /** settings for the searchBar button */
+    searchBarButton?: ListBoxSearchBarButtonOptions;
 
-    /* If multi selection is enabled */
-    multiple: boolean = false;
+    /** function which returns a array of items */
+    getItems?: () => (string|ListBoxItem)[];
 
-    /* Function which should return a array of items (see below) */
-    getItems: () => ListboxItem[] = null;
+    /** callback for selection changes */
+    onValueChanged?: (event: ListBoxEvent) => void;
 
-    /* Delegate which is called on selection changes */
-    onValueChanged: (event: ListboxEvent) => void = null;
+    /** callback for searchBar text changes */
+    onFilterChanged?: (event: ListBoxEvent) => void;
 
-    /* Delegate which is called on search query changes */
-    onFilterChanged: (event: ListboxEvent) => void = null;
+    /** callback for item changes (item added, item removed, item order) */
+    onItemsChanged?: (event: ListBoxEvent) => void;
 
-    /* Called if items where added, removed or their position changed */
-    onItemsChanged: (event: ListboxEvent) => void = null;
+    /** callback for enter keyPress event on an item */
+    onItemEnterPressed?: (event: ListBoxEvent) => void;
 
-    /* callback for enter keyPress event on an item */
-    onItemEnterPressed: (event: ListboxEvent) => void = null;
-
-    /* callback for doubleClick event on an item */
-    onItemDoubleClicked: (event: ListboxEvent) => void = null;
+    /** callback for doubleClick event on an item */
+    onItemDoubleClicked?: (event: ListBoxEvent) => void;
 }

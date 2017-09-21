@@ -2,8 +2,8 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     4.0.0-beta.1
- * Released    2017-09-06T20:31:52.267Z
+ * Version     4.0.0-beta.2
+ * Released    2017-09-21T17:31:36.657Z
  * License     MIT
  * Copyright   (c) 2017
  */
@@ -79,91 +79,102 @@ var extendedlistbox =
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     var BaseListBox = (function () {
-        function BaseListBox(domelement, options, boxInstance) {
+        function BaseListBox(domelement, options, multiple) {
+            this.dataItems = [];
+            this.selectedDataItems = [];
+            options = options || {};
+            options.searchBar = options.searchBar || false;
+            options.searchBarWatermark = options.searchBarWatermark || "Search...";
+            options.searchBarButton = options.searchBarButton || { visible: false };
             this._target = domelement;
-            this._box = boxInstance;
             this._settings = options;
+            this.multiple = multiple;
         }
-        BaseListBox.prototype.onItemClick = function (domItem) {
-            this._box.onItemClick(domItem);
-        };
-        BaseListBox.prototype.onFilterChange = function () {
-            this._box.onFilterChange();
-        };
-        BaseListBox.prototype.createListbox = function () {
-            this._target.addClass(BaseListBox.MAIN_CLASS);
+        BaseListBox.prototype._createListbox = function () {
+            this._target.classList.add(BaseListBox.MAIN_CLASS);
             if (this._settings.searchBar) {
                 this._createSearchbar();
             }
             this._createList();
         };
         BaseListBox.prototype._createSearchbar = function () {
-            var searchbarWrapper = $('<div>')
-                .addClass(BaseListBox.SEARCHBAR_CLASS + '-wrapper')
-                .appendTo(this._target);
-            var searchbar = $('<input>')
-                .addClass(BaseListBox.SEARCHBAR_CLASS)
-                .appendTo(searchbarWrapper)
-                .attr('placeholder', this._settings.searchBarWatermark);
-            var self = this;
-            searchbar.keyup(function () {
-                var searchQuery = $(this).val().toLowerCase();
+            var _this = this;
+            var searchbarWrapper = document.createElement("div");
+            searchbarWrapper.classList.add(BaseListBox.SEARCHBAR_CLASS + '-wrapper');
+            this._target.appendChild(searchbarWrapper);
+            var searchbar = document.createElement("input");
+            searchbar.classList.add(BaseListBox.SEARCHBAR_CLASS);
+            searchbar.setAttribute("placeholder", this._settings.searchBarWatermark);
+            searchbarWrapper.appendChild(searchbar);
+            searchbar.onkeyup = function () {
+                var searchQuery = searchbar.value.toLowerCase();
                 if (searchQuery !== '') {
-                    self._list.find("." + BaseListBox.LIST_ITEM_CLASS).each(function () {
-                        var $this = $(this);
-                        if ($this.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                            return;
+                    var items = _this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
+                    for (var i = 0; i < items.length; i++) {
+                        var thisItem = items.item(i);
+                        if (thisItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                            continue;
                         }
-                        var text = $this.text().toLowerCase();
-                        if (text.search('^' + searchQuery) !== -1) {
-                            $this.css('display', 'block');
-                            $this.parent().css('display', 'block');
-                        }
-                        else {
-                            $this.css('display', 'none');
-                        }
-                    });
-                    self._list.find("." + BaseListBox.LIST_ITEM_CLASS_GROUP).each(function () {
-                        var $this = $(this);
-                        if ($this.children(':visible').length === 0) {
-                            $this.css('display', 'none');
+                        var text = thisItem.innerText.toLowerCase();
+                        if (text.search(searchQuery) !== -1) {
+                            thisItem.style.display = "block";
+                            thisItem.parentElement.style.display = "block";
                         }
                         else {
-                            $this.css('display', 'block');
+                            thisItem.style.display = "none";
                         }
-                    });
+                    }
+                    var groups = _this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS_GROUP);
+                    for (var i = 0; i < groups.length; i++) {
+                        var thisItem = groups.item(i);
+                        var childs = thisItem.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
+                        var index = -1;
+                        for (var j = 0; j < childs.length; j++) {
+                            if (childs.item(j).style.display !== "none") {
+                                index = j;
+                                break;
+                            }
+                        }
+                        if (index === -1) {
+                            thisItem.style.display = "none";
+                        }
+                        else {
+                            thisItem.style.display = "block";
+                        }
+                    }
                 }
                 else {
-                    self._list.find("." + BaseListBox.LIST_ITEM_CLASS).each(function () {
-                        $(this).css('display', 'block');
-                    });
+                    var items = _this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
+                    for (var i = 0; i < items.length; i++) {
+                        var thisItem = items.item(i);
+                        thisItem.style.display = "block";
+                    }
                 }
-                if (self.onFilterChange) {
-                    self.onFilterChange();
-                }
-            });
+                _this._filterChanged();
+            };
             if (this._settings.searchBarButton.visible) {
-                var button = $('<button>')
-                    .attr('id', 'searchBarButton')
-                    .attr('tabindex', '-1')
-                    .addClass(BaseListBox.SEARCHBAR_BUTTON_CLASS)
-                    .appendTo(searchbarWrapper);
+                var button = document.createElement("button");
+                button.id = "searchBarButton";
+                button.setAttribute("tabindex", "-1");
+                button.classList.add(BaseListBox.SEARCHBAR_BUTTON_CLASS);
+                searchbarWrapper.appendChild(button);
                 if (this._settings.searchBarButton.onClick) {
-                    button.click(this._settings.searchBarButton.onClick);
+                    button.onclick = this._settings.searchBarButton.onClick;
                 }
-                $('<i>')
-                    .addClass(this._settings.searchBarButton.icon)
-                    .appendTo(button);
+                var icon = document.createElement("i");
+                icon.classList.add(this._settings.searchBarButton.icon);
+                button.appendChild(icon);
             }
             this._searchbarWrapper = searchbarWrapper;
             this._searchbar = searchbar;
         };
         BaseListBox.prototype._createList = function () {
-            this._list = $('<div>')
-                .addClass(BaseListBox.LIST_CLASS)
-                .appendTo(this._target);
-            this._resizeListToListbox();
+            this._list = document.createElement("div");
+            this._list.classList.add(BaseListBox.LIST_CLASS);
+            this._target.appendChild(this._list);
+            this._resizeListToListBox();
             if (this._settings.getItems) {
                 var items = this._settings.getItems();
                 if (items) {
@@ -175,28 +186,29 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         };
         BaseListBox.prototype._generateItemId = function () {
             var num = parseInt("" + (Math.random() * 10000000), 10);
-            return "listboxitem" + num;
+            return "listBoxItem" + num;
         };
         BaseListBox.prototype._prepareDataItem = function (dataItem) {
             var item = {
                 childItems: [],
                 disabled: false,
                 groupHeader: null,
-                id: null,
+                id: this._generateItemId(),
                 parentGroupId: null,
                 selected: false,
                 text: null,
                 index: null
             };
-            if (!dataItem["id"]) {
-                item.id = this._generateItemId();
-            }
             if (typeof dataItem === "string" || typeof dataItem === "number") {
                 item.text = dataItem;
                 return item;
             }
             else {
-                item = $.extend(item, dataItem);
+                for (var i in dataItem) {
+                    if (dataItem.hasOwnProperty(i)) {
+                        item[i] = dataItem[i];
+                    }
+                }
                 var childs = [];
                 for (var index in item.childItems) {
                     childs.push(this._prepareDataItem(item.childItems[index]));
@@ -205,99 +217,193 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 return item;
             }
         };
-        BaseListBox.prototype._addItem = function (dataItem, internal, $parent) {
-            var self = this;
-            var item = $('<div>')
-                .addClass(BaseListBox.LIST_ITEM_CLASS)
-                .text(dataItem.text)
-                .attr("id", dataItem.id)
-                .attr("title", dataItem.text)
-                .attr("tabindex", "1")
-                .data("dataItem", dataItem)
-                .keydown(function (e) {
-                var $t = $(e.target);
-                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
+        BaseListBox.prototype._addItem = function (dataItem, internal, parent) {
+            var _this = this;
+            this.dataItems.push(dataItem);
+            var item = document.createElement("div");
+            item.classList.add(BaseListBox.LIST_ITEM_CLASS);
+            item.innerText = dataItem.text;
+            item.id = dataItem.id;
+            item.tabIndex = 1;
+            item.title = dataItem.text;
+            item.onkeydown = function (e) {
+                if (!e.target.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
                     if (e.which === 13) {
-                        self.onItemEnterPressed($t);
+                        _this._fireEvent(BaseListBox.EVENT_ITEM_ENTER_PRESSED, _this._getDataItem(e.target.id));
                     }
                     else if (e.which === 38) {
                         e.preventDefault();
-                        self.onItemArrowUp($t);
+                        _this._itemArrowUp(e.target);
                     }
                     else if (e.which === 40) {
                         e.preventDefault();
-                        self.onItemArrowDown($t);
+                        _this._itemArrowDown(e.target);
                     }
                 }
-            })
-                .click(function () {
-                self.onItemClick($(this));
-            })
-                .dblclick(function () {
-                var $t = $(this);
-                if (!$t.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                    self.onItemDoubleClicked($t);
+            };
+            item.onclick = function (e) {
+                _this._itemClicked(e.target, e.ctrlKey);
+            };
+            item.ondblclick = function (e) {
+                if (!e.target.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                    _this._fireEvent(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED, _this._getDataItem(e.target.id));
                 }
-            });
+            };
             if (dataItem.disabled) {
-                item.addClass(BaseListBox.LIST_ITEM_CLASS_DISABLED);
+                item.classList.add(BaseListBox.LIST_ITEM_CLASS_DISABLED);
             }
             if (dataItem.groupHeader) {
-                item.addClass(BaseListBox.LIST_ITEM_CLASS_GROUP);
+                item.classList.add(BaseListBox.LIST_ITEM_CLASS_GROUP);
             }
             if (dataItem.selected) {
-                this.onItemClick(item);
+                this._itemClicked(item, true);
             }
             if (dataItem.parentGroupId) {
-                var $possibleParent = this.locateItem(dataItem.parentGroupId);
-                if ($possibleParent) {
-                    $parent = $possibleParent;
+                var possibleParent = this._locateItem(dataItem.parentGroupId);
+                if (possibleParent) {
+                    parent = possibleParent;
                 }
             }
-            if ($parent) {
-                item.addClass(BaseListBox.LIST_ITEM_CLASS_CHILD);
+            if (parent) {
+                item.classList.add(BaseListBox.LIST_ITEM_CLASS_CHILD);
             }
-            var $target = $parent ? $parent : this._list;
+            var target = parent ? parent : this._list;
             if (dataItem.index !== undefined && dataItem.index !== null && !internal) {
-                $target = $target.children().eq(dataItem.index);
-                item.insertBefore($target);
+                target = target.children.item(dataItem.index);
+                target.parentElement.insertBefore(item, target);
             }
             else {
-                item.appendTo($target);
+                target.appendChild(item);
             }
             if (dataItem.childItems && dataItem.childItems.length > 0) {
-                if (!item.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
-                    item.addClass(BaseListBox.LIST_ITEM_CLASS_GROUP);
+                if (!item.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+                    item.classList.add(BaseListBox.LIST_ITEM_CLASS_GROUP);
                 }
-                var index;
-                for (index = 0; index < dataItem.childItems.length; index++) {
-                    var child = dataItem.childItems[index];
-                    this._addItem(child, internal, item);
+                for (var index = 0; index < dataItem.childItems.length; index++) {
+                    this._addItem(this._prepareDataItem(dataItem.childItems[index]), internal, item);
                 }
             }
             return dataItem.id;
         };
+        BaseListBox.prototype._resizeListToListBox = function () {
+            var listHeight = this._target.clientHeight;
+            if (this._settings.searchBar) {
+                listHeight -= this._searchbarWrapper.offsetHeight;
+            }
+            this._list.style.height = listHeight + "px";
+        };
+        BaseListBox.prototype._clearItemSelection = function (domItem) {
+            domItem.classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            this._getDataItem(domItem.id).selected = false;
+            if (this.multiple) {
+                var currentItem = this._getDataItem(domItem.id);
+                var removeIndex = this.selectedDataItems.indexOf(currentItem);
+                this.selectedDataItems.splice(removeIndex, 1);
+            }
+            else {
+                this.selectedDataItems.splice(0, this.selectedDataItems.length);
+            }
+        };
+        BaseListBox.prototype._locateItem = function (id) {
+            var item = document.getElementById(id);
+            if (!item) {
+                var titleItems = document.querySelectorAll('div[title="' + id + '"]');
+                if (titleItems.length > 0) {
+                    return titleItems[0];
+                }
+            }
+            return item;
+        };
+        BaseListBox.prototype._findNextItem = function (current, direction) {
+            var potentialNext = current;
+            do {
+                potentialNext = potentialNext[direction + "ElementSibling"];
+                if (!potentialNext) {
+                    var parent_1 = current.parentElement;
+                    if (parent_1) {
+                        var sibling = parent_1[direction + "ElementSibling"];
+                        if (!sibling) {
+                            return null;
+                        }
+                        var nextChildren = sibling.children;
+                        if (nextChildren.length > 0) {
+                            potentialNext = direction === "next"
+                                ? nextChildren[0].firstElementChild
+                                : nextChildren[0].lastElementChild;
+                        }
+                        else {
+                            potentialNext = parent_1;
+                        }
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                if (potentialNext && potentialNext.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
+                    continue;
+                }
+                return potentialNext;
+            } while (true);
+        };
+        BaseListBox.prototype._fireEvent = function (name, args) {
+            var delegate = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
+            if (delegate) {
+                delegate({ eventName: name, target: this._target, args: args });
+            }
+        };
+        BaseListBox.prototype._elementIndex = function (element) {
+            var childs = Array.prototype.slice.call(element.parentElement.children);
+            return childs.indexOf(element);
+        };
+        BaseListBox.prototype._getDataItem = function (id) {
+            for (var i = 0; i < this.dataItems.length; i++) {
+                if (this.dataItems[i].id === id) {
+                    return this.dataItems[i];
+                }
+            }
+            return null;
+        };
+        BaseListBox.prototype._itemArrowUp = function (domItem) {
+            var prev = this._findNextItem(domItem, "previous");
+            if (prev) {
+                this._clearItemSelection(domItem);
+                this._itemClicked(prev);
+            }
+        };
+        BaseListBox.prototype._itemArrowDown = function (domItem) {
+            var next = this._findNextItem(domItem, "next");
+            if (next) {
+                this._clearItemSelection(domItem);
+                this._itemClicked(next);
+            }
+        };
         BaseListBox.prototype.addItem = function (dataItem, internal) {
             if (internal === void 0) { internal = false; }
-            if (!internal && !this._settings.multiple && dataItem["selected"]) {
-                this.clearSelection(internal);
+            if (!internal && !this.multiple && dataItem["selected"]) {
+                this.clearSelection();
             }
             var id = this._addItem(this._prepareDataItem(dataItem), internal, null);
             if (!internal) {
-                this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+                this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
             }
             return id;
         };
-        BaseListBox.prototype.addItems = function (dataItems) {
+        BaseListBox.prototype.addItems = function (items) {
             var _this = this;
-            return dataItems.map(function (item) { return _this.addItem(item); });
+            return items.map(function (item) { return _this.addItem(item); });
         };
         BaseListBox.prototype.removeItem = function (item) {
-            var uiItem = this.locateItem(item);
+            var uiItem = this._locateItem(item);
             if (uiItem) {
                 this._clearItemSelection(uiItem);
-                uiItem.remove();
-                this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+                uiItem.parentElement.removeChild(uiItem);
+                var dataItem = this._getDataItem(uiItem.id);
+                this.dataItems.splice(this.dataItems.indexOf(dataItem), 1);
+                var selectedIndex = this.selectedDataItems.indexOf(dataItem);
+                if (selectedIndex !== -1) {
+                    this.selectedDataItems.splice(selectedIndex, 1);
+                }
+                this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
             }
         };
         BaseListBox.prototype.removeItems = function (items) {
@@ -305,205 +411,114 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
             items.forEach(function (item) { return _this.removeItem(item); });
         };
         BaseListBox.prototype.destroy = function () {
-            this._target.children().remove();
-            this._target.removeClass(BaseListBox.MAIN_CLASS);
+            while (this._target.firstChild) {
+                this._target.removeChild(this._target.firstChild);
+            }
+            this._target.classList.remove(BaseListBox.MAIN_CLASS);
         };
-        BaseListBox.prototype._resizeListToListbox = function () {
-            var listHeight = this._target.height();
-            if (this._settings.searchBar) {
-                listHeight -= this._searchbarWrapper.outerHeight(true);
+        BaseListBox.prototype.clearSelection = function () {
+            var allItems = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
+            for (var index = 0; index < allItems.length; index++) {
+                allItems[index].classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
+                this._getDataItem(allItems[index].id).selected = false;
             }
-            this._list.height(listHeight);
-        };
-        BaseListBox.prototype.clearSelection = function (internal) {
-            var allItems = this._list.find("." + BaseListBox.LIST_ITEM_CLASS);
-            allItems.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-            var index;
-            for (index = 0; index < allItems.length; index++) {
-                $(allItems[index]).data("dataItem").selected = false;
-            }
-            if (this._settings.multiple) {
-                this._target.val([]);
-            }
-            else {
-                this._target.val(null);
-            }
-            if (!internal) {
-                this._target.trigger('change');
-            }
-        };
-        BaseListBox.prototype._clearItemSelection = function (domItem) {
-            domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-            domItem.data("dataItem").selected = false;
-            if (this._settings.multiple) {
-                var parentValues = this._target.val();
-                if (parentValues) {
-                    var removeIndex = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
-                    parentValues.splice(removeIndex, 1);
-                    this._target.val(parentValues);
-                }
-            }
-            else {
-                this._target.val(null);
-            }
-            this._target.trigger('change');
+            this.selectedDataItems = [];
         };
         BaseListBox.prototype.getItem = function (id) {
             var data = null;
-            var $item = this.locateItem(id);
-            if ($item) {
-                data = $item.data("dataItem");
+            var item = this._locateItem(id);
+            if (item) {
+                data = this._getDataItem(item.id);
             }
             return data;
         };
         BaseListBox.prototype.getItems = function () {
-            var dataItems = [];
-            var childs = this._list.children();
-            var index;
-            for (index = 0; index < childs.length; index++) {
-                dataItems.push($(childs[index]).data("dataItem"));
+            var items = [];
+            var childs = this._list.children;
+            for (var index = 0; index < childs.length; index++) {
+                items.push(this._getDataItem(childs[index].id));
             }
-            return dataItems;
+            return items;
         };
         BaseListBox.prototype.moveItemUp = function (id) {
             var newIndex = null;
-            var $item = this.locateItem(id);
-            if ($item) {
-                $item.insertBefore($item.prev());
-                newIndex = $item.index();
-                $item.data("dataItem").index = newIndex;
+            var item = this._locateItem(id);
+            if (item && item.previousElementSibling) {
+                item.parentElement.insertBefore(item, item.previousElementSibling);
+                newIndex = this._elementIndex(item);
+                this._getDataItem(item.id).index = newIndex;
+                this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
             }
-            this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+            else if (item) {
+                newIndex = this._elementIndex(item);
+            }
             return newIndex;
         };
         BaseListBox.prototype.moveItemDown = function (id) {
             var newIndex = null;
-            var $item = this.locateItem(id);
-            if ($item) {
-                $item.insertAfter($item.next());
-                newIndex = $item.index();
-                $item.data("dataItem").index = newIndex;
+            var item = this._locateItem(id);
+            if (item && item.nextElementSibling) {
+                item.parentNode.insertBefore(item.nextElementSibling, item);
+                newIndex = this._elementIndex(item);
+                this._getDataItem(item.id).index = newIndex;
+                this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
             }
-            this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+            else if (item) {
+                newIndex = this._elementIndex(item);
+            }
             return newIndex;
         };
         BaseListBox.prototype.moveItemToTop = function (id) {
             var newIndex = null;
-            var $item = this.locateItem(id);
-            if ($item) {
-                $item.parent().prepend($item);
-                newIndex = $item.index();
-                $item.data("dataItem").index = newIndex;
+            var item = this._locateItem(id);
+            if (item) {
+                item.parentElement.insertBefore(item, item.parentElement.firstElementChild);
+                newIndex = this._elementIndex(item);
+                this._getDataItem(item.id).index = newIndex;
+                this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
             }
-            this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
             return newIndex;
         };
         BaseListBox.prototype.moveItemToBottom = function (id) {
             var newIndex = null;
-            var $item = this.locateItem(id);
-            if ($item) {
-                $item.parent().append($item);
-                newIndex = $item.index();
-                $item.data("dataItem").index = newIndex;
+            var item = this._locateItem(id);
+            if (item) {
+                item.parentElement.appendChild(item);
+                newIndex = this._elementIndex(item);
+                this._getDataItem(item.id).index = newIndex;
             }
-            this.fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
+            this._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, this.getItems());
             return newIndex;
         };
         BaseListBox.prototype.enable = function (enable) {
             if (enable) {
-                this._target.removeClass(BaseListBox.MAIN_DISABLED_CLASS);
+                this._target.classList.remove(BaseListBox.MAIN_DISABLED_CLASS);
             }
-            else if (!this._target.hasClass(BaseListBox.MAIN_DISABLED_CLASS)) {
-                this._target.addClass(BaseListBox.MAIN_DISABLED_CLASS);
+            else if (!this._target.classList.contains(BaseListBox.MAIN_DISABLED_CLASS)) {
+                this._target.classList.add(BaseListBox.MAIN_DISABLED_CLASS);
             }
-        };
-        BaseListBox.prototype.locateItem = function (id) {
-            var $item = $("#" + id, this._list);
-            if ($item.length === 0) {
-                $item = $('div[title="' + id + '"]');
-            }
-            if ($item.length === 0) {
-                $item = null;
-            }
-            return $item;
-        };
-        BaseListBox.prototype.onItemEnterPressed = function (domItem) {
-            this.fireEvent(BaseListBox.EVENT_ITEM_ENTER_PRESSED, domItem.data("dataItem"));
-        };
-        BaseListBox.prototype.onItemDoubleClicked = function (domItem) {
-            this.fireEvent(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED, domItem.data("dataItem"));
-        };
-        BaseListBox.prototype.onItemArrowUp = function (domItem) {
-            var prev = this.findNextItem(domItem, "prev");
-            if (prev) {
-                this._clearItemSelection(domItem);
-                this.onItemClick(prev);
-            }
-        };
-        BaseListBox.prototype.onItemArrowDown = function (domItem) {
-            var next = this.findNextItem(domItem, "next");
-            if (next) {
-                this._clearItemSelection(domItem);
-                this.onItemClick(next);
-            }
-        };
-        BaseListBox.prototype.findNextItem = function (current, direction) {
-            var potentialNext = current;
-            do {
-                potentialNext = potentialNext[direction]();
-                if (potentialNext.length === 0) {
-                    var parent = current.parent();
-                    if (parent.length === 1) {
-                        var nextChildren = parent[direction]().children();
-                        if (nextChildren.length > 0) {
-                            potentialNext = direction === "next" ? nextChildren.first() : nextChildren.last();
-                        }
-                        else {
-                            potentialNext = parent;
-                        }
-                    }
-                    else {
-                        return null;
-                    }
-                }
-                if (potentialNext.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
-                    continue;
-                }
-                return potentialNext;
-            } while (true);
         };
         BaseListBox.prototype.getSelection = function () {
-            var topLevelItems = this.getItems();
-            var allItems = [].concat(topLevelItems);
-            topLevelItems.forEach(function (item) {
-                allItems = allItems.concat(item.childItems);
-            });
-            return allItems.filter(function (item) { return item.selected; });
+            return this.selectedDataItems;
         };
-        BaseListBox.prototype.fireEvent = function (name, args) {
-            var delegate = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
-            if (delegate) {
-                delegate({ eventName: name, target: this._target, args: args });
-            }
-        };
+        BaseListBox.MAIN_CLASS = 'listbox-root';
+        BaseListBox.MAIN_DISABLED_CLASS = 'listbox-disabled';
+        BaseListBox.LIST_CLASS = 'listbox';
+        BaseListBox.LIST_ITEM_CLASS = 'listbox-item';
+        BaseListBox.LIST_ITEM_CLASS_DISABLED = 'listbox-item-disabled';
+        BaseListBox.LIST_ITEM_CLASS_SELECTED = 'listbox-item-selected';
+        BaseListBox.LIST_ITEM_CLASS_GROUP = 'listbox-item-group';
+        BaseListBox.LIST_ITEM_CLASS_CHILD = 'listbox-item-child';
+        BaseListBox.SEARCHBAR_CLASS = 'listbox-searchbar';
+        BaseListBox.SEARCHBAR_BUTTON_CLASS = 'listbox-searchbar-button';
+        BaseListBox.EVENT_VALUE_CHANGED = "valueChanged";
+        BaseListBox.EVENT_FILTER_CHANGED = "filterChanged";
+        BaseListBox.EVENT_ITEMS_CHANGED = "itemsChanged";
+        BaseListBox.EVENT_ITEM_ENTER_PRESSED = "itemEnterPressed";
+        BaseListBox.EVENT_ITEM_DOUBLE_CLICKED = "itemDoubleClicked";
         return BaseListBox;
     }());
-    BaseListBox.MAIN_CLASS = 'listbox-root';
-    BaseListBox.MAIN_DISABLED_CLASS = 'listbox-disabled';
-    BaseListBox.LIST_CLASS = 'listbox';
-    BaseListBox.LIST_ITEM_CLASS = 'listbox-item';
-    BaseListBox.LIST_ITEM_CLASS_DISABLED = 'listbox-item-disabled';
-    BaseListBox.LIST_ITEM_CLASS_SELECTED = 'listbox-item-selected';
-    BaseListBox.LIST_ITEM_CLASS_GROUP = 'listbox-item-group';
-    BaseListBox.LIST_ITEM_CLASS_CHILD = 'listbox-item-child';
-    BaseListBox.SEARCHBAR_CLASS = 'listbox-searchbar';
-    BaseListBox.SEARCHBAR_BUTTON_CLASS = 'listbox-searchbar-button';
-    BaseListBox.EVENT_VALUE_CHANGED = "valueChanged";
-    BaseListBox.EVENT_FILTER_CHANGED = "filterChanged";
-    BaseListBox.EVENT_ITEMS_CHANGED = "itemsChanged";
-    BaseListBox.EVENT_ITEM_ENTER_PRESSED = "itemEnterPressed";
-    BaseListBox.EVENT_ITEM_DOUBLE_CLICKED = "itemDoubleClicked";
-    return BaseListBox;
+    exports.BaseListBox = BaseListBox;
 }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -513,62 +528,18 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
-module.exports = __webpack_require__(6);
+module.exports = __webpack_require__(5);
 
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(3), __webpack_require__(4), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, MultiSelectListbox, SingleSelectListbox, ExtendedListboxInstance) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(3), __webpack_require__(4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, SingleSelectListBox_1, MultiSelectListBox_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    function initializeListBoxFromOptions(options) {
-        "use strict";
-        var settings = $.extend({
-            searchBar: false,
-            searchBarWatermark: "Search...",
-            searchBarButton: { visible: false },
-            multiple: false
-        }, options);
-        var multipleInstances = [];
-        var singleInstance = null;
-        var multipleElements = this.length > 1;
-        var setInstance = function (instance) {
-            if (multipleElements) {
-                multipleInstances.push(instance);
-            }
-            else {
-                singleInstance = instance;
-            }
-        };
-        this.each(function () {
-            var listbox;
-            var instance;
-            var $this = $(this);
-            if ($this.data('listbox-instance')) {
-                setInstance($this.data('listbox-instance'));
-                return;
-            }
-            if (settings.multiple) {
-                listbox = new MultiSelectListbox($this, settings);
-            }
-            else {
-                listbox = new SingleSelectListbox($this, settings);
-            }
-            instance = new ExtendedListboxInstance(listbox, $this);
-            $this.data('listbox', listbox);
-            $this.data('listbox-instance', instance);
-            setInstance(instance);
-        });
-        return multipleElements ? multipleInstances : singleInstance;
-    }
-    $.fn.listbox = function (options) {
-        if (typeof options === 'object' || !options) {
-            return initializeListBoxFromOptions.call(this, options);
-        }
-        return null;
-    };
+    window.SingleSelectListBox = SingleSelectListBox_1.SingleSelectListBox;
+    window.MultiSelectListBox = MultiSelectListBox_1.MultiSelectListBox;
 }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -577,43 +548,63 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox_1) {
     "use strict";
-    var MultiSelectListbox = (function () {
-        function MultiSelectListbox(domelement, options) {
-            this.baseListBox = new BaseListBox(domelement, options, this);
-            this.baseListBox.createListbox();
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var SingleSelectListBox = (function (_super) {
+        __extends(SingleSelectListBox, _super);
+        function SingleSelectListBox(domElement, options) {
+            var _this = _super.call(this, domElement, options, false) || this;
+            _this._selectedDomItem = null;
+            _this._createListbox();
+            return _this;
         }
-        MultiSelectListbox.prototype.onItemClick = function (domItem) {
-            if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-                domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+        SingleSelectListBox.prototype._itemClicked = function (domItem, ctrl) {
+            if (ctrl === void 0) { ctrl = false; }
+            if (domItem.classList.contains(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+                domItem.classList.contains(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_GROUP)) {
                 return;
             }
-            var parentValues = this.baseListBox._target.val();
-            if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
-                domItem.removeClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-                var removeIndex = parentValues.indexOf(JSON.stringify(domItem.data("dataItem")));
-                parentValues.splice(removeIndex, 1);
-                domItem.data("dataItem").selected = false;
+            if (this._selectedDomItem) {
+                this.clearSelection();
+                this._selectedDomItem = null;
             }
-            else {
-                domItem.addClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-                domItem.data("dataItem").selected = true;
-                if (!parentValues) {
-                    parentValues = [];
+            domItem.classList.toggle(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_SELECTED);
+            domItem.focus();
+            this._selectedDomItem = domItem;
+            var dataItem = this._getDataItem(domItem.id);
+            dataItem.selected = true;
+            this.selectedDataItems.push(dataItem);
+            this._fireEvent(BaseListBox_1.BaseListBox.EVENT_VALUE_CHANGED, this._getDataItem(domItem.id));
+        };
+        SingleSelectListBox.prototype._filterChanged = function () {
+            if (!this._selectedDomItem || this._selectedDomItem.style.display === "none") {
+                var elements = this._list.querySelectorAll("." + BaseListBox_1.BaseListBox.LIST_ITEM_CLASS);
+                for (var i = 0; i < elements.length; i++) {
+                    var element = elements.item(i);
+                    if (!element.classList.contains(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_GROUP) &&
+                        !element.classList.contains(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_DISABLED) &&
+                        element.style.display !== "none") {
+                        this._itemClicked(element);
+                        break;
+                    }
                 }
-                parentValues.push(JSON.stringify(domItem.data("dataItem")));
             }
-            this.baseListBox._target.val(parentValues);
-            this.baseListBox._target.trigger('change');
-            this.baseListBox.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, parentValues);
+            this._fireEvent(BaseListBox_1.BaseListBox.EVENT_FILTER_CHANGED, this._searchbar.value);
         };
-        MultiSelectListbox.prototype.onFilterChange = function () {
-            return undefined;
-        };
-        return MultiSelectListbox;
-    }());
-    return MultiSelectListbox;
+        return SingleSelectListBox;
+    }(BaseListBox_1.BaseListBox));
+    exports.SingleSelectListBox = SingleSelectListBox;
 }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -622,83 +613,70 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BaseListBox_1) {
     "use strict";
-    var SingleSelectListbox = (function () {
-        function SingleSelectListbox(domelement, options) {
-            this._selectedDomItem = null;
-            this.baseListBox = new BaseListBox(domelement, options, this);
-            this.baseListBox.createListbox();
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var MultiSelectListBox = (function (_super) {
+        __extends(MultiSelectListBox, _super);
+        function MultiSelectListBox(domElement, options) {
+            var _this = _super.call(this, domElement, options, true) || this;
+            _this._createListbox();
+            return _this;
         }
-        SingleSelectListbox.prototype.onItemClick = function (domItem) {
-            if (domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-                domItem.hasClass(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+        MultiSelectListBox.prototype._itemClicked = function (domItem, ctrl) {
+            if (ctrl === void 0) { ctrl = false; }
+            if (domItem.classList.contains(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+                domItem.classList.contains(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_GROUP)) {
                 return;
             }
-            if (this._selectedDomItem) {
-                this.baseListBox.clearSelection(true);
-                this._selectedDomItem = null;
-            }
-            domItem.toggleClass(BaseListBox.LIST_ITEM_CLASS_SELECTED);
-            domItem.focus();
-            this._selectedDomItem = domItem;
-            domItem.data("dataItem").selected = true;
-            this.baseListBox._target.val(domItem.data("dataItem"));
-            this.baseListBox._target.trigger('change');
-            this.baseListBox.fireEvent(BaseListBox.EVENT_VALUE_CHANGED, domItem.data("dataItem"));
-        };
-        SingleSelectListbox.prototype.onFilterChange = function () {
-            if (!this._selectedDomItem || !this._selectedDomItem.is(':visible')) {
-                var element = this.baseListBox._list.children(':visible').first();
-                if (element && element.length > 0) {
-                    this.onItemClick(element);
+            var dataItem = this._getDataItem(domItem.id);
+            if (domItem.classList.contains(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
+                if (!ctrl) {
+                    this.clearSelection();
+                    domItem.classList.add(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_SELECTED);
+                    dataItem.selected = true;
+                    this.selectedDataItems.push(dataItem);
+                }
+                else {
+                    domItem.classList.remove(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_SELECTED);
+                    dataItem.selected = false;
+                    var removeIndex = this.selectedDataItems.indexOf(this._getDataItem(domItem.id));
+                    this.selectedDataItems.splice(removeIndex, 1);
                 }
             }
-            this.baseListBox.fireEvent(BaseListBox.EVENT_FILTER_CHANGED, this.baseListBox._searchbar.val());
+            else {
+                if (!ctrl) {
+                    this.clearSelection();
+                }
+                domItem.focus();
+                domItem.classList.add(BaseListBox_1.BaseListBox.LIST_ITEM_CLASS_SELECTED);
+                dataItem.selected = true;
+                this.selectedDataItems.push(dataItem);
+            }
+            this._fireEvent(BaseListBox_1.BaseListBox.EVENT_VALUE_CHANGED, this.selectedDataItems);
         };
-        return SingleSelectListbox;
-    }());
-    return SingleSelectListbox;
+        MultiSelectListBox.prototype._filterChanged = function () {
+            this._fireEvent(BaseListBox_1.BaseListBox.EVENT_FILTER_CHANGED, this._searchbar.value);
+        };
+        return MultiSelectListBox;
+    }(BaseListBox_1.BaseListBox));
+    exports.MultiSelectListBox = MultiSelectListBox;
 }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-    "use strict";
-    var ExtendedListboxInstance = (function () {
-        function ExtendedListboxInstance(listbox, target) {
-            this.listbox = listbox;
-            this.target = target;
-            var lb = this.listbox.baseListBox;
-            var methods = ["addItem", "addItems", "removeItem", "removeItems", "destroy", "clearSelection",
-                "getItem", "getItems", "getSelection", "moveItemUp", "moveItemDown", "moveItemToTop", "moveItemToBottom", "enable"];
-            for (var i = 0; i < methods.length; i++) {
-                var name_1 = methods[i];
-                this[name_1] = lb[name_1].bind(lb);
-            }
-            methods = ["onValueChanged", "onItemsChanged", "onFilterChanged", "onItemEnterPressed", "onItemDoubleClicked"];
-            var _loop_1 = function (i) {
-                var name_2 = methods[i];
-                this_1[name_2] = function (e) { lb._settings[name_2] = e; };
-            };
-            var this_1 = this;
-            for (var i = 0; i < methods.length; i++) {
-                _loop_1(i);
-            }
-        }
-        return ExtendedListboxInstance;
-    }());
-    return ExtendedListboxInstance;
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

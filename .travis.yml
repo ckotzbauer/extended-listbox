@@ -20,8 +20,6 @@ before_script:
   - greenkeeper-lockfile-update
 
 script:
-  - npm i -g typings
-  - typings install
   - npm run test:ci
 
 after_script:
