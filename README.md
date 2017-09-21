@@ -12,7 +12,7 @@ alternative to the HTML `<select>` tag. The main problem of
 `<select>` tag is that last one isn’t flexible for customization with
 *CSS*. Extended Listbox solves this problem. This component creates a list
 structure based on `<div>` tags. The configuration is completely in
-JavaScript. It opens up great possibilities for customization. No jquery is needed.
+JavaScript. It opens up great possibilities for customization. **No jquery is needed**.
 
 In addition, this component provides other useful features like a search
 bar or grouped items.
@@ -34,7 +34,7 @@ npm install extended-listbox
 ```
 Install TypeScript Definitions:
 ```
-npm install @typings/extended-listbox
+npm install @types/extended-listbox
 ```
 
 
@@ -53,10 +53,10 @@ Link the component and a stylesheet from your page.
 
 | Type                             | Size     |
 |----------------------------------|----------|
-| Uncompressed, not minified       | 30,2 KB  |
-| Uncompressed, minified           | 12,0 KB  |
-| Compressed (gzip), not minified  | 5,2 KB   |
-| Compressed (gzip), minified      | 3,4 KB   |
+| Uncompressed, not minified       | 31,3 KB  |
+| Uncompressed, minified           | 13,5 KB  |
+| Compressed (gzip), not minified  | 5,3 KB   |
+| Compressed (gzip), minified      | 3,5 KB   |
 
 
 [Documentation](http://code-chris.github.io/extended-listbox/documentation/latest/)
