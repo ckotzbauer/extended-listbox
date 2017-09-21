@@ -1,6 +1,6 @@
 var target = document.getElementById("exampleSnippet4");
 
-new SingleSelectListbox(target, {
+new SingleSelectListBox(target, {
     searchBar: true,
     getItems: function() {
         return [

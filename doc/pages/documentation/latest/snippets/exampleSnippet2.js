@@ -1,6 +1,6 @@
 var target = document.getElementById("exampleSnippet2");
 
-new MultiSelectListbox(target, {
+new MultiSelectListBox(target, {
     getItems: function() {
         return [
             "Item #1",

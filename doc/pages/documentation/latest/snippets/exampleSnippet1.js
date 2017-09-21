@@ -1,6 +1,6 @@
 var target = document.getElementById("exampleSnippet1");
 
-new SingleSelectListbox(target, {
+new SingleSelectListBox(target, {
     getItems: function() {
         return [
             "Item #1",
