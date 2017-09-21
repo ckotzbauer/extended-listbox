@@ -214,6 +214,7 @@ export abstract class BaseListBox {
         item.classList.add(BaseListBox.LIST_ITEM_CLASS);
         item.innerText = dataItem.text;
         item.id = dataItem.id;
+        item.tabIndex = 1;
         item.title = dataItem.text;
         item.onkeydown = (e: KeyboardEvent): void => {
             if (!(<HTMLElement>e.target).classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP) && e.eventPhase === 2) {
@@ -333,7 +334,12 @@ export abstract class BaseListBox {
             if (!potentialNext) {
                 const parent: HTMLElement = current.parentElement;
                 if (parent) {
-                    const nextChildren: NodeListOf<Element> = parent[direction + "ElementSibling"].children;
+                    const sibling: Element = parent[direction + "ElementSibling"];
+                    if (!sibling) {
+                        return null;
+                    }
+
+                    const nextChildren: NodeListOf<Element> = sibling.children;
                     if (nextChildren.length > 0) {
                         potentialNext = direction === "next"
                             ? nextChildren[0].firstElementChild
@@ -346,7 +352,7 @@ export abstract class BaseListBox {
                 }
             }
 
-            if (potentialNext.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
+            if (potentialNext && potentialNext.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED)) {
                 continue;
             }
 

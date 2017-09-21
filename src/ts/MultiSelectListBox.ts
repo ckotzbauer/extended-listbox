@@ -48,6 +48,7 @@ export class MultiSelectListBox extends BaseListBox {
                 this.clearSelection();
             }
 
+            domItem.focus();
             domItem.classList.add(BaseListBox.LIST_ITEM_CLASS_SELECTED);
             dataItem.selected = true;
             this.selectedDataItems.push(dataItem);
