@@ -2,8 +2,8 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     4.0.0-beta.2
- * Released    2017-09-21T17:31:36.657Z
+ * Version     4.0.0-beta.3
+ * Released    2017-09-22T06:16:59.182Z
  * License     MIT
  * Copyright   (c) 2017
  */
@@ -163,9 +163,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 if (this._settings.searchBarButton.onClick) {
                     button.onclick = this._settings.searchBarButton.onClick;
                 }
-                var icon = document.createElement("i");
-                icon.classList.add(this._settings.searchBarButton.icon);
-                button.appendChild(icon);
+                if (this._settings.searchBarButton.icon) {
+                    var icon_1 = document.createElement("i");
+                    var parts = this._settings.searchBarButton.icon.split(" ");
+                    parts.forEach(function (p) { return icon_1.classList.add(p); });
+                    button.appendChild(icon_1);
+                }
             }
             this._searchbarWrapper = searchbarWrapper;
             this._searchbar = searchbar;

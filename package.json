@@ -1,6 +1,6 @@
 {
   "name": "extended-listbox",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.3",
   "description": "A simple to use javascript component as powerful alternative to the HTML <select> tag",
   "main": "dist/js/extended-listbox.js",
   "typings": "dist/extended-listbox.d.ts",

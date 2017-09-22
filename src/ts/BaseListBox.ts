@@ -138,9 +138,12 @@ export abstract class BaseListBox {
             }
 
             // icon for search button
-            const icon: HTMLElement = document.createElement("i");
-            icon.classList.add(this._settings.searchBarButton.icon);
-            button.appendChild(icon);
+            if (this._settings.searchBarButton.icon) {
+                const icon: HTMLElement = document.createElement("i");
+                const parts: string[] = this._settings.searchBarButton.icon.split(" ");
+                parts.forEach((p: string) => icon.classList.add(p));
+                button.appendChild(icon);
+            }
         }
 
         // save for using in _resizeListToListBox()
