@@ -2,8 +2,8 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     4.0.0-beta.3
- * Released    2017-09-22T06:16:59.182Z
+ * Version     4.0.0-beta.4
+ * Released    2017-09-22T06:47:41.168Z
  * License     MIT
  * Copyright   (c) 2017
  */
@@ -245,7 +245,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 }
             };
             item.onclick = function (e) {
-                _this._itemClicked(e.target, e.ctrlKey);
+                if (e.eventPhase === 2) {
+                    _this._itemClicked(e.target, e.ctrlKey);
+                }
             };
             item.ondblclick = function (e) {
                 if (!e.target.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
@@ -307,10 +309,17 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
                 this.selectedDataItems.splice(0, this.selectedDataItems.length);
             }
         };
-        BaseListBox.prototype._locateItem = function (id) {
-            var item = document.getElementById(id);
+        BaseListBox.prototype._locateItem = function (name) {
+            var id = null;
+            for (var i = 0; i < this.dataItems.length; i++) {
+                if (this.dataItems[i].id === name || this.dataItems[i].text === name) {
+                    id = this.dataItems[i].id;
+                    break;
+                }
+            }
+            var item = this._target.querySelector("#" + id);
             if (!item) {
-                var titleItems = document.querySelectorAll('div[title="' + id + '"]');
+                var titleItems = this._target.querySelectorAll('div[title="' + id + '"]');
                 if (titleItems.length > 0) {
                     return titleItems[0];
                 }

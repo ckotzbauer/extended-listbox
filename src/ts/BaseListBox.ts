@@ -237,7 +237,9 @@ export abstract class BaseListBox {
         };
 
         item.onclick = (e: MouseEvent): void => {
-            this._itemClicked(e.target as HTMLElement, e.ctrlKey);
+            if (e.eventPhase === 2) {
+                this._itemClicked(e.target as HTMLElement, e.ctrlKey);
+            }
         };
 
         item.ondblclick = (e: MouseEvent): void => {
@@ -315,10 +317,18 @@ export abstract class BaseListBox {
         }
     }
 
-    protected _locateItem(id: string): HTMLElement {
-        let item: HTMLElement = document.getElementById(id);
+    protected _locateItem(name: string): HTMLElement {
+        let id: string = null;
+        for (let i: number = 0; i < this.dataItems.length; i++) {
+            if (this.dataItems[i].id === name || this.dataItems[i].text === name) {
+                id = this.dataItems[i].id;
+                break;
+            }
+        }
+
+        let item: HTMLElement = this._target.querySelector("#" + id) as HTMLElement;
         if (!item) {
-            const titleItems: NodeListOf<Element> = document.querySelectorAll('div[title="' + id + '"]');
+            const titleItems: NodeListOf<Element> = this._target.querySelectorAll('div[title="' + id + '"]');
 
             if (titleItems.length > 0) {
                 return titleItems[0] as HTMLElement;
