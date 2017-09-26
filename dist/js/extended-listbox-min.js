@@ -2,8 +2,8 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     4.0.0-beta.4
- * Released    2017-09-22T06:47:44.697Z
+ * Version     4.0.0
+ * Released    2017-09-26T16:30:04.213Z
  * License     MIT
  * Copyright   (c) 2017
  */

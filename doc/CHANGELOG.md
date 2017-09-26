@@ -6,7 +6,7 @@ release.
 
 ## Version 4.0.0
 
-Not released yet.
+Released on September 26, 2017.
 
 - Removed jquery
 - Change behavior of multiselect mode [(#82)](https://github.com/code-chris/extended-listbox/issues/82)
