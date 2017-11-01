@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@types/qunit": "~2.0.31",
-    "awesome-typescript-loader": "~3.2.3",
+    "awesome-typescript-loader": "~3.3.0",
     "css-loader": "~0.28.7",
     "extract-text-webpack-plugin": "~3.0.0",
     "globby": "~6.1.0",
