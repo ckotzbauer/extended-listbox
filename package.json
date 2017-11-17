@@ -45,7 +45,7 @@
     "css-loader": "~0.28.7",
     "extract-text-webpack-plugin": "~3.0.0",
     "globby": "~7.0.0",
-    "node-sass": "~4.6.0",
+    "node-sass": "~4.7.1",
     "qunitjs": "~2.4.0",
     "requirejs": "~2.3.5",
     "rimraf": "~2.6.2",
