@@ -295,7 +295,8 @@ export abstract class BaseListBox {
     }
 
     protected _resizeListToListBox(): void {
-        let listHeight: number = this._target.clientHeight;
+        let heightStr: string = window.getComputedStyle(this._target, null).getPropertyValue("height");
+        let listHeight: number = parseInt(heightStr, 10);
 
         if (this._settings.searchBar) {
             listHeight -= this._searchbarWrapper.offsetHeight;
