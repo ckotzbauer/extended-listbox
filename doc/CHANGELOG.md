@@ -4,9 +4,22 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 4.0.0
+
+Released on September 26, 2017.
+
+- Removed jquery
+- Change behavior of multiselect mode [(#82)](https://github.com/code-chris/extended-listbox/issues/82)
+- Emit `filterChanged` event on MultiSelectListBoxes
+- Find items too if item text does not start with entered search query
+- Wrong items moved with arrow up and down in MultiSelect [(#84)](https://github.com/code-chris/extended-listbox/issues/84)
+- Fix several typing mismatches
+- Remove `change` event on Element target
+
+
 ## Version 3.0.0
 
-Unreleased
+Released on May 29, 2017.
 
 - Dropped Support for JQuery 2.x
 - New API-Method `addItems` added

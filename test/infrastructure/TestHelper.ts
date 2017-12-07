@@ -1,92 +1,83 @@
 /// <reference path="../test-typings.d.ts" />
 /// <amd-module name="build/out/test/test/infrastructure/TestHelper"/>
 
-import "../../src/ts/JQueryExtendedListbox";
-//import ExtendedListboxInstance = require("../../src/ts/ExtendedListboxInstance");
+import {ListBoxSettings} from "../../src/ts/contract/ListBoxSettings";
+import {ListBoxItem} from "../../src/ts/contract/ListBoxItem";
+import {SingleSelectListBox} from "../../src/ts/SingleSelectListBox";
+import {MultiSelectListBox} from "../../src/ts/MultiSelectListBox";
 
-class TestHelper {
+export class TestHelper {
 
-    public static child(element: JQuery, index: number = null): JQuery {
-        if (!index) {
-            index = 0;
+    public static child(element: HTMLElement, index: number = null): HTMLElement {
+        return element.children[index || 0] as HTMLElement;
+    }
+
+    public static children(element: HTMLElement): HTMLElement[] {
+        return Array.prototype.slice.call(element.children);
+    }
+
+    public static generateSingleList(options: ListBoxSettings = null,
+                                     items: (string|ListBoxItem)[] = null): { box: SingleSelectListBox, target: HTMLElement } {
+        options = options || {};
+        if (!options.getItems) {
+            options.getItems = (): (string|ListBoxItem)[] => items;
         }
 
-        return $(element.children()[index]);
+        const test: HTMLElement = document.createElement("div");
+        test.id = "test";
+        document.getElementById("qunit-fixture").appendChild(test);
+
+        return { box: new SingleSelectListBox(test, options), target: test };
     }
 
-    public static children(element: JQuery): JQuery[] {
-        var childs: JQuery[] = [];
-
-        for (var i: number = 0; i < element.children().length; i++) {
-            var c: Element = element.children()[i];
-            childs.push($(c));
+    public static generateMultipleList(options: ListBoxSettings = null,
+                                       items: (string|ListBoxItem)[] = null): { box: MultiSelectListBox, target: HTMLElement } {
+        options = options || {};
+        if (!options.getItems) {
+            options.getItems = (): (string|ListBoxItem)[] => items;
         }
 
-        return childs;
-    }
+        const test: HTMLElement = document.createElement("div");
+        test.id = "test";
+        document.getElementById("qunit-fixture").appendChild(test);
 
-    public static generateSingleList(options: ListboxSettings = null, items: ListboxItem[] = null): ExtendedListboxInstance {
-        options = $.extend({
-            getItems: (): ListboxItem[] => {
-                return items;
-            }
-        }, options);
-
-        $('#qunit-fixture').append('<div id="test">');
-        let $test: JQuery = $('#test');
-
-        return <ExtendedListboxInstance>$test.listbox(options);
-    }
-
-    public static generateMultipleList(options: ListboxSettings = null, items: ListboxItem[] = null): ExtendedListboxInstance {
-        options = $.extend({
-            multiple: true,
-            getItems: (): ListboxItem[] => {
-                return items;
-            }
-        }, options);
-
-        $('#qunit-fixture').append('<div id="test">');
-        let $test: JQuery = $('#test');
-
-        return <ExtendedListboxInstance>$('#test').listbox(options);
-    }
-
-    public static itemsToVal(items: JQuery): string {
-        var result: string = '';
-        for (var i: number = 0; i < items.length; ++i) {
-            if (i !== 0) {
-                result += ',';
-            }
-
-            result += $(items[i]).data("dataItem").text;
-        }
-        return result;
-    }
-
-    public static jsonToVal(items: string[]): string {
-        var result: string = '';
-        for (var i: number = 0; i < items.length; ++i) {
-            if (i !== 0) {
-                result += ',';
-            }
-
-            result += JSON.parse(items[i]).text;
-        }
-        return result;
+        return { box: new MultiSelectListBox(test, options), target: test };
     }
 
     public static startsWith(s: string, check: string): boolean {
         return s.indexOf(check) === 0;
     }
 
+    public static elementEquals(dataItems: ListBoxItem[], elements: string[]): boolean {
+        return JSON.stringify(dataItems.map((d: ListBoxItem) => d.id).sort()) === JSON.stringify(elements.sort());
+    }
+
+    public static itemEquals(items: NodeListOf<Element>, dataItems: ListBoxItem[]): boolean {
+        let ids: string[] = [];
+
+        for (let i: number = 0; i < items.length; i++) {
+            ids.push(items.item(i).id);
+        }
+
+        return TestHelper.elementEquals(dataItems, ids);
+    }
+
     public static beforeEach(): void {
-        $('body').append('<div id="qunit-fixture"></div>');
+        const div: HTMLElement = document.createElement("div");
+        div.id = "qunit-fixture";
+        document.body.appendChild(div);
     }
 
     public static afterEach(): void {
-        $('#qunit-fixture').remove();
+        const e: Element = document.getElementById("qunit-fixture");
+        e.parentElement.removeChild(e);
+    }
+
+    public static click(element: Element, ctrl: boolean = false): void {
+        const e: any = document.createEvent("Event");
+        e.initEvent("click", true, false);
+        e.ctrlKey = ctrl;
+        element.dispatchEvent(e);
     }
 }
 
-export = TestHelper;

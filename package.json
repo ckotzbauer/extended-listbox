@@ -1,7 +1,7 @@
 {
   "name": "extended-listbox",
-  "version": "3.0.0",
-  "description": "A simple to use jQuery plugin as powerful alternative to the HTML <select> tag",
+  "version": "4.0.0",
+  "description": "A simple to use javascript component as powerful alternative to the HTML <select> tag",
   "main": "dist/js/extended-listbox.js",
   "typings": "dist/extended-listbox.d.ts",
   "repository": {
@@ -14,9 +14,7 @@
     "multiselect",
     "form",
     "input",
-    "ui",
-    "jquery-plugin",
-    "ecosystem:jquery"
+    "ui"
   ],
   "author": "Christian Kotzbauer",
   "license": "MIT",
@@ -42,25 +40,22 @@
     "dist": "npm run compile && node build/scripts/prepublish.js"
   },
   "devDependencies": {
-    "@types/jquery": "~2.0.45",
     "@types/qunit": "~2.0.31",
-    "awesome-typescript-loader": "~3.2.1",
-    "css-loader": "~0.28.3",
+    "awesome-typescript-loader": "~3.4.0",
+    "css-loader": "~0.28.7",
     "extract-text-webpack-plugin": "~3.0.0",
-    "globby": "~6.1.0",
-    "node-sass": "~4.5.3",
+    "globby": "~7.1.1",
+    "node-sass": "~4.7.1",
     "qunitjs": "~2.4.0",
-    "requirejs": "~2.3.3",
-    "rimraf": "~2.6.0",
-    "sass-loader": "~6.0.5",
+    "requirejs": "~2.3.5",
+    "rimraf": "~2.6.2",
+    "sass-loader": "~6.0.6",
     "saucie": "~3.3.0",
-    "testem": "~1.18.0",
+    "testem": "~1.18.4",
     "tslint": "~5.7.0",
-    "typescript": "~2.3.3",
-    "webpack": "~3.5.1",
-    "yargs": "~8.0.2"
+    "typescript": "~2.6.1",
+    "webpack": "~3.10.0",
+    "yargs": "~10.0.3"
   },
-  "dependencies": {
-    "jquery": ">=3.x"
-  }
+  "dependencies": {}
 }

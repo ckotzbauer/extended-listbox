@@ -6,7 +6,7 @@
   "port": 7000,
   "browser_start_timeout": 90,
   "src_files": [
-    "node_modules/requirejs/require.js", "node_modules/jquery/dist/jquery.js", "build/out/js/extended-listbox.js", "test/TestMain.js"
+    "node_modules/requirejs/require.js", "build/out/js/extended-listbox.js", "test/TestMain.js"
   ],
   "launchers": {
     "SL_Chrome_Current": {
@@ -23,24 +23,12 @@
       "exe": "node_modules/.bin/saucie",
       "args": ["-b", "internet explorer", "-v", "11", "--no-connect", "--attach", "-u"],
       "protocol": "browser"
-    },
-    "SL_IE_10": {
-      "exe": "node_modules/.bin/saucie",
-      "args": ["-b", "internet explorer", "-v", "10", "--no-connect", "--attach", "-u"],
-      "protocol": "browser"
-    },
-    "SL_IE_9": {
-      "exe": "node_modules/.bin/saucie",
-      "args": ["-b", "internet explorer", "-v", "9", "--no-connect", "--attach", "-u"],
-      "protocol": "browser"
     }
   },
   "launch_in_dev": ["chrome"],
   "launch_in_ci": [
     "SL_Chrome_Current",
     "SL_Firefox_Current",
-    "SL_IE_11",
-    "SL_IE_10",
-    "SL_IE_9"
+    "SL_IE_11"
   ]
 }

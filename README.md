@@ -7,15 +7,15 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/code-chris/extended-listbox.svg)](https://greenkeeper.io/)
 
 
-**Extended Listbox** is a simple to use jQuery plugin as powerful
+**Extended Listbox** is a simple to use javascript component as powerful
 alternative to the HTML `<select>` tag. The main problem of
 `<select>` tag is that last one isn’t flexible for customization with
 *CSS*. Extended Listbox solves this problem. This component creates a list
 structure based on `<div>` tags. The configuration is completely in
-JavaScript. It opens up great possibilities for customization.
+JavaScript. It opens up great possibilities for customization. **No jquery is needed**.
 
 In addition, this component provides other useful features like a search
-bar or group items.
+bar or grouped items.
 
 
 ## Supported Browsers
@@ -34,7 +34,7 @@ npm install extended-listbox
 ```
 Install TypeScript Definitions:
 ```
-typings install github:code-chris/extended-listbox --global
+npm install @types/extended-listbox
 ```
 
 
@@ -43,10 +43,8 @@ typings install github:code-chris/extended-listbox --global
 Link the component and a stylesheet from your page.
 
 ```html
-<!-- make sure that jQuery is already included -->
-<script src="/path/to/jquery.js"></script>
 
-<!-- include listbox plugin and default stylesheet -->
+<!-- include javascript and stylesheet -->
 <link href="/path/to/extended-listbox.css" rel="stylesheet">
 <script src="/path/to/extended-listbox.js"></script>
 ```
@@ -55,10 +53,10 @@ Link the component and a stylesheet from your page.
 
 | Type                             | Size     |
 |----------------------------------|----------|
-| Uncompressed, not minified       | 30,2 KB  |
-| Uncompressed, minified           | 12,0 KB  |
-| Compressed (gzip), not minified  | 5,2 KB   |
-| Compressed (gzip), minified      | 3,4 KB   |
+| Uncompressed, not minified       | 31,3 KB  |
+| Uncompressed, minified           | 13,5 KB  |
+| Compressed (gzip), not minified  | 5,3 KB   |
+| Compressed (gzip), minified      | 3,5 KB   |
 
 
 [Documentation](http://code-chris.github.io/extended-listbox/documentation/latest/)

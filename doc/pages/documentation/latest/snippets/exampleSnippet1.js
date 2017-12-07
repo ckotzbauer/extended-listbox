@@ -1,4 +1,6 @@
-$('#exampleSnippet1').listbox({
+var target = document.getElementById("exampleSnippet1");
+
+new SingleSelectListBox(target, {
     getItems: function() {
         return [
             "Item #1",
