@@ -4,6 +4,13 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 4.0.1
+
+Released on December 10, 2017.
+
+- Fixed calculation of list height. [(#102)](https://github.com/code-chris/extended-listbox/pull/102)
+
+
 ## Version 4.0.0
 
 Released on September 26, 2017.
@@ -174,7 +181,7 @@ Released on December 16, 2015.
 -   Fixed: JavaScript error occurs, if no items where found for given
     search query.
 
-	
+
 ## Version 1.0.0
 
 Released on December 15, 2015.
