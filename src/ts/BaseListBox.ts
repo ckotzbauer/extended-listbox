@@ -295,8 +295,10 @@ export abstract class BaseListBox {
     }
 
     protected _resizeListToListBox(): void {
-        let heightStr: string = window.getComputedStyle(this._target, null).getPropertyValue("height");
-        let listHeight: number = parseInt(heightStr, 10);
+        const computed: CSSStyleDeclaration = window.getComputedStyle(this._target, null);
+        const containerPadding: number = parseInt(computed.getPropertyValue("padding-top"), 10) +
+            parseInt(computed.getPropertyValue("padding-bottom"), 10);
+        let listHeight: number = parseInt(computed.getPropertyValue("height"), 10) - containerPadding;
 
         if (this._settings.searchBar) {
             listHeight -= this._searchbarWrapper.offsetHeight;
