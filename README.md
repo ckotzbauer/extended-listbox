@@ -32,10 +32,7 @@ Install with NPM:
 ```
 npm install extended-listbox
 ```
-Install TypeScript Definitions:
-```
-npm install @types/extended-listbox
-```
+TypeScript definitions are included in the npm package.
 
 
 ## Usage
