@@ -2,10 +2,10 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     4.0.1
- * Released    2017-12-10T13:22:04.532Z
+ * Version     4.0.2
+ * Released    2018-01-05T17:02:45.039Z
  * License     MIT
- * Copyright   (c) 2017
+ * Copyright   (c) 2018
  */
 var extendedlistbox =
 /******/ (function(modules) { // webpackBootstrap

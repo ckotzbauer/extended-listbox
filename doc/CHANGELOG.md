@@ -4,6 +4,13 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 4.0.2
+
+Released on January 5, 2018.
+
+- Fixed width of searchbar (100% now). [(#103)](https://github.com/code-chris/extended-listbox/pull/103)
+
+
 ## Version 4.0.1
 
 Released on December 10, 2017.
