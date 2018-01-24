@@ -55,7 +55,7 @@
     "tslint": "~5.9.1",
     "typescript": "~2.6.1",
     "webpack": "~3.10.0",
-    "yargs": "~10.0.3"
+    "yargs": "~11.0.0"
   },
   "dependencies": {}
 }
