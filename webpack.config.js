@@ -1,15 +1,14 @@
-var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var path = require('path');
-var fs = require('fs');
-var yargs = require('yargs');
+const webpack = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path = require('path');
+const fs = require('fs');
+const yargs = require('yargs');
 
-var libraryName = 'extended-listbox';
-var plugins = [];
-var outputFile;
+const libraryName = 'extended-listbox';
+const plugins = [];
+let outputFile;
 
 if (yargs.argv.p) {
-    plugins.push(new webpack.optimize.UglifyJsPlugin({ minimize: true }));
     plugins.push(new ExtractTextPlugin({ filename: libraryName + "-min.css", allChunks: true }));
     outputFile = libraryName + '-min.js';
 } else {
@@ -17,15 +16,15 @@ if (yargs.argv.p) {
     outputFile = libraryName + '.js';
 }
 
-var banner = fs.readFileSync('build/libheader.txt', 'utf8');
-var pkg = require("./package.json");
+let banner = fs.readFileSync('build/libheader.txt', 'utf8');
+const pkg = require("./package.json");
 banner = banner.replace("[VERSION]", pkg.version);
 banner = banner.replace("[DATE]", new Date().toISOString());
 banner = banner.replace("[LICENSE]", pkg.license);
 banner = banner.replace("[YEAR]", new Date().getFullYear());
 plugins.push(new webpack.BannerPlugin(banner));
 
-var config = {
+const config = {
     entry: [
         __dirname + '/src/ts/Index.ts',
         __dirname + '/src/styles/extended-listbox.scss'
@@ -47,7 +46,11 @@ var config = {
         //root: path.resolve('./src/ts'),
         extensions: ['.ts', '.scss']
     },
-    plugins: plugins
+    optimization: {
+        minimize: yargs.argv.p
+    },
+    plugins: plugins,
+    mode: yargs.argv.p ? "production" : "development"
 };
 
 module.exports = config;

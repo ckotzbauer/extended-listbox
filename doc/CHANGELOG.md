@@ -4,6 +4,14 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 5.0.0
+
+Released on May 1, 2018.
+
+- Dropped support for IE 11. Distributions are now on "esnext" language level.
+- Updated several devDependenies.
+
+
 ## Version 4.0.2
 
 Released on January 5, 2018.

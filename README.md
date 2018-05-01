@@ -20,7 +20,6 @@ bar or grouped items.
 
 ## Supported Browsers
 
-- IE 11
 - Edge latest
 - Chrome latest
 - Firefox latest
@@ -50,10 +49,10 @@ Link the component and a stylesheet from your page.
 
 | Type                             | Size     |
 |----------------------------------|----------|
-| Uncompressed, not minified       | 31,3 KB  |
-| Uncompressed, minified           | 13,5 KB  |
-| Compressed (gzip), not minified  | 5,3 KB   |
-| Compressed (gzip), minified      | 3,5 KB   |
+| Uncompressed, not minified       | 27,8 KB  |
+| Uncompressed, minified           | 11,3 KB  |
+| Compressed (gzip), not minified  | 5,1 KB   |
+| Compressed (gzip), minified      | 3,3 KB   |
 
 
 [Documentation](http://code-chris.github.io/extended-listbox/documentation/latest/)
