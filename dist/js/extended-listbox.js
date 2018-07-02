@@ -2,8 +2,8 @@
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
  * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
- * Version     5.0.0
- * Released    2018-05-01T15:39:36.032Z
+ * Version     5.0.1
+ * Released    2018-07-02T16:32:53.657Z
  * License     MIT
  * Copyright   (c) 2018
  */
@@ -46,17 +46,32 @@ var extendedlistbox =
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -139,7 +154,7 @@ class BaseListBox {
                         continue;
                     }
                     const text = thisItem.innerText.toLowerCase();
-                    if (text.search(searchQuery) !== -1) {
+                    if (text.indexOf(searchQuery) !== -1) {
                         thisItem.style.display = "block";
                         thisItem.parentElement.style.display = "block";
                     }
@@ -690,8 +705,8 @@ class SingleSelectListBox extends _BaseListBox__WEBPACK_IMPORTED_MODULE_0__["Bas
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! M:\github\extended-listbox/src/ts/Index.ts */"./src/ts/Index.ts");
-module.exports = __webpack_require__(/*! M:\github\extended-listbox/src/styles/extended-listbox.scss */"./src/styles/extended-listbox.scss");
+__webpack_require__(/*! /mnt/win-dev/github/extended-listbox/src/ts/Index.ts */"./src/ts/Index.ts");
+module.exports = __webpack_require__(/*! /mnt/win-dev/github/extended-listbox/src/styles/extended-listbox.scss */"./src/styles/extended-listbox.scss");
 
 
 /***/ })

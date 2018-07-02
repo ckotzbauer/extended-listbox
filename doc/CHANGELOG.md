@@ -4,6 +4,14 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+
+## Version 5.0.1
+
+Released on July 2, 2018.
+
+- Fixed console error if searching with regex special chars. [(#141)](https://github.com/code-chris/extended-listbox/issues/141)
+
+
 ## Version 5.0.0
 
 Released on May 1, 2018.
