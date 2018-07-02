@@ -84,7 +84,7 @@ export abstract class BaseListBox {
 
                     const text: string = thisItem.innerText.toLowerCase();
 
-                    if (text.search(searchQuery) !== -1) {
+                    if (text.indexOf(searchQuery) !== -1) {
                         thisItem.style.display = "block";
                         thisItem.parentElement.style.display = "block";
                     } else {
