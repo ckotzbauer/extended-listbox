@@ -49,7 +49,7 @@
     "qunitjs": "~2.4.0",
     "requirejs": "~2.3.5",
     "rimraf": "~2.6.2",
-    "sass-loader": "~7.0.3",
+    "sass-loader": "~7.1.0",
     "saucie": "~3.3.2",
     "testem": "~2.8.2",
     "tslint": "~5.10.0",
