@@ -48,7 +48,7 @@
     "node-sass": "4.14.0",
     "qunitjs": "2.4.1",
     "requirejs": "2.3.5",
-    "rimraf": "2.6.2",
+    "rimraf": "2.7.1",
     "sass-loader": "7.0.3",
     "saucie": "3.3.2",
     "testem": "2.8.2",
