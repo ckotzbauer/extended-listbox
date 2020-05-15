@@ -9,7 +9,7 @@ rm -rf public
 git config --global user.email "christian.kotzbauer@gmail.com"
 git config --global user.name "Christian Kotzbauer"
 
-git clone https://${GH_TOKEN}@github.com/code-chris/extended-listbox.git -b gh-pages public
+git clone https://${GH_TOKEN}@github.com/ckotzbauer/extended-listbox.git -b gh-pages public
 
 # build
 PKG_VERSION=`node -p "require('./package.json').version"`

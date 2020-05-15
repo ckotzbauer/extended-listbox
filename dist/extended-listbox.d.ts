@@ -1,6 +1,6 @@
 // Type definitions for extended-listbox 4.0.x
-// Project: https://github.com/code-chris/extended-listbox
-// Definitions by: Christian Kotzbauer <https://github.com/code-chris>
+// Project: https://github.com/ckotzbauer/extended-listbox
+// Definitions by: Christian Kotzbauer <https://github.com/ckotzbauer>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 interface ListBoxItem {

@@ -1,7 +1,7 @@
 /*!
  * Extended ListBox
  * Maintainer  Christian Kotzbauer <christian.kotzbauer@gmail.com>
- * Website     https://code-chris.github.io/extended-listbox/documentation/latest/
+ * Website     https://ckotzbauer.github.io/extended-listbox/documentation/latest/
  * Version     5.0.1
  * Released    2018-07-02T16:32:56.765Z
  * License     MIT

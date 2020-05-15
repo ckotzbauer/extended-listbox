@@ -6,7 +6,7 @@
   "typings": "dist/extended-listbox.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/code-chris/extended-listbox.git"
+    "url": "git+https://github.com/ckotzbauer/extended-listbox.git"
   },
   "keywords": [
     "listbox",
@@ -19,9 +19,9 @@
   "author": "Christian Kotzbauer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/code-chris/extended-listbox/issues"
+    "url": "https://github.com/ckotzbauer/extended-listbox/issues"
   },
-  "homepage": "https://github.com/code-chris/extended-listbox#readme",
+  "homepage": "https://github.com/ckotzbauer/extended-listbox#readme",
   "files": [
     "dist",
     "doc/pages",

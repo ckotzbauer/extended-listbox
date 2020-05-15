@@ -9,7 +9,7 @@ release.
 
 Released on July 2, 2018.
 
-- Fixed console error if searching with regex special chars. [(#141)](https://github.com/code-chris/extended-listbox/issues/141)
+- Fixed console error if searching with regex special chars. [(#141)](https://github.com/ckotzbauer/extended-listbox/issues/141)
 
 
 ## Version 5.0.0
@@ -24,14 +24,14 @@ Released on May 1, 2018.
 
 Released on January 5, 2018.
 
-- Fixed width of searchbar (100% now). [(#103)](https://github.com/code-chris/extended-listbox/pull/103)
+- Fixed width of searchbar (100% now). [(#103)](https://github.com/ckotzbauer/extended-listbox/pull/103)
 
 
 ## Version 4.0.1
 
 Released on December 10, 2017.
 
-- Fixed calculation of list height. [(#102)](https://github.com/code-chris/extended-listbox/pull/102)
+- Fixed calculation of list height. [(#102)](https://github.com/ckotzbauer/extended-listbox/pull/102)
 
 
 ## Version 4.0.0
@@ -39,10 +39,10 @@ Released on December 10, 2017.
 Released on September 26, 2017.
 
 - Removed jquery
-- Change behavior of multiselect mode [(#82)](https://github.com/code-chris/extended-listbox/issues/82)
+- Change behavior of multiselect mode [(#82)](https://github.com/ckotzbauer/extended-listbox/issues/82)
 - Emit `filterChanged` event on MultiSelectListBoxes
 - Find items too if item text does not start with entered search query
-- Wrong items moved with arrow up and down in MultiSelect [(#84)](https://github.com/code-chris/extended-listbox/issues/84)
+- Wrong items moved with arrow up and down in MultiSelect [(#84)](https://github.com/ckotzbauer/extended-listbox/issues/84)
 - Fix several typing mismatches
 - Remove `change` event on Element target
 
@@ -193,7 +193,7 @@ Released on December 20, 2015.
 
 Released on December 16, 2015.
 
--   Moved repository to <https://github.com/code-chris/extended-listbox>
+-   Moved repository to <https://github.com/ckotzbauer/extended-listbox>
 -   Replaced rst-files with markdown files
 
 

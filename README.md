@@ -1,10 +1,10 @@
 # Extended Listbox
 
-[![Travis](https://img.shields.io/travis/code-chris/extended-listbox.svg?branch=master)](https://travis-ci.org/code-chris/extended-listbox?branch=master)
+[![Travis](https://img.shields.io/travis/ckotzbauer/extended-listbox.svg?branch=master)](https://travis-ci.org/ckotzbauer/extended-listbox?branch=master)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
-[![David](https://img.shields.io/david/code-chris/extended-listbox.svg)](https://david-dm.org/code-chris/extended-listbox)
-[![David](https://img.shields.io/david/dev/code-chris/extended-listbox.svg)](https://david-dm.org/code-chris/extended-listbox)
-[![Greenkeeper badge](https://badges.greenkeeper.io/code-chris/extended-listbox.svg)](https://greenkeeper.io/)
+[![David](https://img.shields.io/david/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
+[![David](https://img.shields.io/david/dev/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
+[![Greenkeeper badge](https://badges.greenkeeper.io/ckotzbauer/extended-listbox.svg)](https://greenkeeper.io/)
 
 
 **Extended Listbox** is a simple to use javascript component as powerful
@@ -55,11 +55,11 @@ Link the component and a stylesheet from your page.
 | Compressed (gzip), minified      | 3,3 KB   |
 
 
-[Documentation](http://code-chris.github.io/extended-listbox/documentation/latest/)
+[Documentation](http://ckotzbauer.github.io/extended-listbox/documentation/latest/)
 --------------
-[License](https://github.com/code-chris/extended-listbox/blob/master/LICENSE)
+[License](https://github.com/ckotzbauer/extended-listbox/blob/master/LICENSE)
 --------
-[Changelog](https://github.com/code-chris/extended-listbox/blob/master/doc/CHANGELOG.md)
+[Changelog](https://github.com/ckotzbauer/extended-listbox/blob/master/doc/CHANGELOG.md)
 ----------
-[Roadmap](https://github.com/code-chris/extended-listbox/blob/master/doc/ROADMAP.md)
+[Roadmap](https://github.com/ckotzbauer/extended-listbox/blob/master/doc/ROADMAP.md)
 --------
