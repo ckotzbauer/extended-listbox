@@ -4,7 +4,6 @@
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
 [![David](https://img.shields.io/david/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
 [![David](https://img.shields.io/david/dev/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
-[![Greenkeeper badge](https://badges.greenkeeper.io/ckotzbauer/extended-listbox.svg)](https://greenkeeper.io/)
 
 
 **Extended Listbox** is a simple to use javascript component as powerful
