@@ -4,6 +4,12 @@
 Here you can see the full list of changes between each Extended Listbox
 release.
 
+## Version 5.0.2
+
+Released on May 16, 2020.
+
+- Updated several devDependencies.
+
 
 ## Version 5.0.1
 
