@@ -355,7 +355,7 @@ export abstract class BaseListBox {
                         return null;
                     }
 
-                    const nextChildren: NodeListOf<Element> = sibling.children;
+                    const nextChildren: HTMLCollection = sibling.children;
                     if (nextChildren.length > 0) {
                         potentialNext = direction === "next"
                             ? nextChildren[0].firstElementChild
@@ -542,7 +542,7 @@ export abstract class BaseListBox {
     public getItems(): ListBoxItem[] {
         const items: ListBoxItem[] = [];
 
-        const childs: NodeList = this._list.children;
+        const childs: HTMLCollection = this._list.children;
         for (let index: number = 0; index < childs.length; index++) {
             items.push(this._getDataItem((childs[index] as Element).id));
         }
