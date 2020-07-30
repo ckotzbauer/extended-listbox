@@ -54,7 +54,7 @@
     "testem": "3.2.0",
     "tslint": "5.20.1",
     "typescript": "3.9.7",
-    "webpack": "4.44.0",
+    "webpack": "4.44.1",
     "webpack-cli": "3.3.12",
     "yargs": "15.4.1"
   },
