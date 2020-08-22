@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require('path');
 const fs = require('fs');
 const yargs = require('yargs');
@@ -9,10 +9,10 @@ const plugins = [];
 let outputFile;
 
 if (yargs.argv.p) {
-    plugins.push(new ExtractTextPlugin({ filename: libraryName + "-min.css", allChunks: true }));
+    plugins.push(new MiniCssExtractPlugin({ filename: libraryName + "-min.css", allChunks: true }));
     outputFile = libraryName + '-min.js';
 } else {
-    plugins.push(new ExtractTextPlugin({ filename: libraryName + ".css", allChunks: true }));
+    plugins.push(new MiniCssExtractPlugin({ filename: libraryName + ".css", allChunks: true }));
     outputFile = libraryName + '.js';
 }
 
@@ -39,7 +39,7 @@ const config = {
     module: {
         rules: [
             { test: /\.ts?$/, loader: 'awesome-typescript-loader', exclude: /node_modules/ },
-            { test: /\.scss/, loader: ExtractTextPlugin.extract({ use: "css-loader!sass-loader" }) }
+            { test: /\.scss/, loader: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"] }
         ]
     },
     resolve: {
