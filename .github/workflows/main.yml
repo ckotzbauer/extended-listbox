@@ -15,14 +15,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "14"
-      - uses: saucelabs/sauce-connect-action@master
+      - uses: saucelabs/sauce-connect-action@v1
         with:
           username: ${{ secrets.SAUCE_USERNAME }}
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-          tunnelIdentifier: ${{ env.GITHUB_ACTION }}-${{ env.GITHUB_RUN_ID }}
+          tunnelIdentifier: $GITHUB_ACTION-$GITHUB_RUN_ID
       - name: Prepare
         run: npm ci
       - name: Test
         run: npm run test:ci
+        env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
       - name: Lint
         run: npm run lint
