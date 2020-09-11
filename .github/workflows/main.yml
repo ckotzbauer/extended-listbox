@@ -15,11 +15,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "14"
-      - uses: saucelabs/sauce-connect-action@master
-        with:
-          username: ${{ secrets.SAUCE_USERNAME }}
-          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-          #tunnelIdentifier: $GITHUB_ACTION-$GITHUB_RUN_ID
       - name: Prepare
         run: npm ci
       - name: Test

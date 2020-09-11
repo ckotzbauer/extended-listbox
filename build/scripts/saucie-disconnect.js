@@ -1,2 +1,2 @@
 const saucie = require('saucie');
-saucie.disconnect('sc_client.pid');
+saucie.disconnect("saucie.pid");
