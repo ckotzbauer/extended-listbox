@@ -1,0 +1,28 @@
+name: build
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+      - uses: saucelabs/sauce-connect-action@master
+        with:
+          username: ${{ secrets.SAUCE_USERNAME }}
+          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: ${{ env.GITHUB_ACTION }}-${{ env.GITHUB_RUN_ID }}
+      - name: Prepare
+        run: npm ci
+      - name: Test
+        run: npm run test:ci
+      - name: Lint
+        run: npm run lint
