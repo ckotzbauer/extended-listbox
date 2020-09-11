@@ -19,11 +19,14 @@ jobs:
         with:
           username: ${{ secrets.SAUCE_USERNAME }}
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-          tunnelIdentifier: $GITHUB_ACTION-$GITHUB_RUN_ID
+          #tunnelIdentifier: $GITHUB_ACTION-$GITHUB_RUN_ID
       - name: Prepare
         run: npm ci
       - name: Test
-        run: npm run test:ci
+        run: |
+          node build/scripts/saucie-connect.js
+          npm run test:ci
+          node build/scripts/saucie-disconnect.js
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
