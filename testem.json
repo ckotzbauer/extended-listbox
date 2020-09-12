@@ -3,7 +3,7 @@
   "timeout": 600,
   "parallel": 1,
   "disable_watching": true,
-  "port": 7000,
+  "port": 8080,
   "browser_start_timeout": 90,
   "src_files": [
     "node_modules/requirejs/require.js", "build/out/js/extended-listbox.js", "test/TestMain.js"
