@@ -1,10 +1,7 @@
-/// <reference path="../test-typings.d.ts" />
-/// <amd-module name="build/out/test/test/infrastructure/TestHelper"/>
-
-import {ListBoxSettings} from "../../src/ts/contract/ListBoxSettings";
-import {ListBoxItem} from "../../src/ts/contract/ListBoxItem";
-import {SingleSelectListBox} from "../../src/ts/SingleSelectListBox";
-import {MultiSelectListBox} from "../../src/ts/MultiSelectListBox";
+import {ListBoxSettings} from "./contract/ListBoxSettings";
+import {ListBoxItem} from "./contract/ListBoxItem";
+import {SingleSelectListBox} from "./SingleSelectListBox";
+import {MultiSelectListBox} from "./MultiSelectListBox";
 
 export class TestHelper {
 
@@ -24,8 +21,8 @@ export class TestHelper {
         }
 
         const test: HTMLElement = document.createElement("div");
-        test.id = "test";
-        document.getElementById("qunit-fixture").appendChild(test);
+        test.id = "test-single";
+        document.getElementById("fixture").appendChild(test);
 
         return { box: new SingleSelectListBox(test, options), target: test };
     }
@@ -38,8 +35,8 @@ export class TestHelper {
         }
 
         const test: HTMLElement = document.createElement("div");
-        test.id = "test";
-        document.getElementById("qunit-fixture").appendChild(test);
+        test.id = "test-multiple";
+        document.getElementById("fixture").appendChild(test);
 
         return { box: new MultiSelectListBox(test, options), target: test };
     }
@@ -64,12 +61,12 @@ export class TestHelper {
 
     public static beforeEach(): void {
         const div: HTMLElement = document.createElement("div");
-        div.id = "qunit-fixture";
+        div.id = "fixture";
         document.body.appendChild(div);
     }
 
     public static afterEach(): void {
-        const e: Element = document.getElementById("qunit-fixture");
+        const e: Element = document.getElementById("fixture");
         e.parentElement.removeChild(e);
     }
 

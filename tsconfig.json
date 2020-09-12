@@ -6,11 +6,13 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "outFile": "build/out/js/extended-listbox.js",
-    "lib": ["es2016", "dom"]
+    "lib": ["es2016", "dom"],
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
   "exclude": [
     "node_modules",
     "doc/pages",
-    "test"
+    "__tests__"
   ]
 }

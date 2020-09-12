@@ -17,15 +17,7 @@ jobs:
           node-version: "14"
       - name: Prepare
         run: npm ci
-      - uses: saucelabs/sauce-connect-action@master
-        with:
-          username: ${{ secrets.SAUCE_USERNAME }}
-          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-          tunnelIdentifier: $GITHUB_RUN_ID
       - name: Test
-        run: npm run test:ci
-        env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+        run: npm test
       - name: Lint
         run: npm run lint

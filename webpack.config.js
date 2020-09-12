@@ -26,7 +26,7 @@ plugins.push(new webpack.BannerPlugin(banner));
 
 const config = {
     entry: [
-        __dirname + '/src/ts/Index.ts',
+        __dirname + '/src/Index.ts',
         __dirname + '/src/styles/extended-listbox.scss'
     ],
     devtool: "source-map",
