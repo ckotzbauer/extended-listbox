@@ -23,9 +23,8 @@ jobs:
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
       - name: Test
         run: |
-          node build/scripts/saucie-connect.js
+          printenv
           npm run test:ci
-          node build/scripts/saucie-disconnect.js
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
