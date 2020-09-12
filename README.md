@@ -1,6 +1,6 @@
 # Extended Listbox
 
-[![Travis](https://img.shields.io/travis/ckotzbauer/extended-listbox.svg?branch=master)](https://travis-ci.org/ckotzbauer/extended-listbox?branch=master)
+![build](https://github.com/ckotzbauer/extended-listbox/workflows/build/badge.svg)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
 [![David](https://img.shields.io/david/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
 [![David](https://img.shields.io/david/dev/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)

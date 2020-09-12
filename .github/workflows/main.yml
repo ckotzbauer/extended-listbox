@@ -21,10 +21,9 @@ jobs:
         with:
           username: ${{ secrets.SAUCE_USERNAME }}
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: $GITHUB_RUN_ID
       - name: Test
-        run: |
-          printenv
-          npm run test:ci
+        run: npm run test:ci
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
