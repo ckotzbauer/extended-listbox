@@ -5,7 +5,7 @@ import {
     click,
     createItem,
     elementEquals,
-    generateMultipleList,
+    createInstance,
     itemEquals,
 } from "../test-utils";
 import { ListBoxOptions } from "../types/options";
@@ -15,7 +15,7 @@ describe("MultiSelectListBoxTest", () => {
     afterEach(() => afterEachTest());
 
     it("construct default", (): void => {
-        const { target } = generateMultipleList();
+        const { target } = createInstance("multi");
 
         expect(target.classList.contains("listbox-root")).toBeTruthy();
 
@@ -27,7 +27,7 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("construct with searchbar", (): void => {
-        const { target } = generateMultipleList({ searchBar: true });
+        const { target } = createInstance("multi", { searchBar: true });
 
         const searchbar: HTMLElement = child(target);
         expect(searchbar.classList.contains("listbox-searchbar-wrapper")).toBeTruthy();
@@ -38,14 +38,14 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("construct with searchbar watermark", (): void => {
-        const { target } = generateMultipleList({ searchBar: true, searchBarWatermark: "Suche..." });
+        const { target } = createInstance("multi", { searchBar: true, searchBarWatermark: "Suche..." });
 
         const searchbar: HTMLElement = child(target);
         expect(child(searchbar).getAttribute("placeholder")).toEqual("Suche...");
     });
 
     it("explicit default value", (): void => {
-        const { target, box } = generateMultipleList({}, ["A", "B", createItem("C", "C", true), "D"]);
+        const { target, box } = createInstance("multi", {}, ["A", "B", createItem("C", "C", true), "D"]);
 
         const selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
 
@@ -55,7 +55,7 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("two explicit default values", (): void => {
-        const { target, box } = generateMultipleList({}, ["A", createItem("B", "B", true), createItem("C", "C", true), "D"]);
+        const { target, box } = createInstance("multi", {}, ["A", createItem("B", "B", true), createItem("C", "C", true), "D"]);
 
         const selectedItems: NodeListOf<Element> = target.querySelectorAll(".listbox-item-selected");
 
@@ -65,7 +65,7 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("one click", (): void => {
-        const { target, box } = generateMultipleList({}, [
+        const { target, box } = createInstance("multi", {}, [
             createItem("A"),
             createItem("B", "B"),
             createItem("C"),
@@ -83,7 +83,7 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("two clicks", (): void => {
-        const { target } = generateMultipleList({}, [createItem("A"), createItem("B"), createItem("C"), createItem("D")]);
+        const { target } = createInstance("multi", {}, [createItem("A"), createItem("B"), createItem("C"), createItem("D")]);
 
         const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
@@ -95,7 +95,7 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("two clicks (control)", (): void => {
-        const { target } = generateMultipleList({}, [createItem("A"), createItem("B"), createItem("C"), createItem("D")]);
+        const { target } = createInstance("multi", {}, [createItem("A"), createItem("B"), createItem("C"), createItem("D")]);
 
         const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 
@@ -107,7 +107,7 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("two clicks on different items", (): void => {
-        const { target, box } = generateMultipleList({}, [
+        const { target, box } = createInstance("multi", {}, [
             createItem("A"),
             createItem("B"),
             createItem("C", "C"),
@@ -126,7 +126,7 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("two clicks on different items (control)", (): void => {
-        const { target, box } = generateMultipleList({}, [
+        const { target, box } = createInstance("multi", {}, [
             createItem("A", "A"),
             createItem("B"),
             createItem("C", "C"),
@@ -145,7 +145,7 @@ describe("MultiSelectListBoxTest", () => {
     });
 
     it("multiple clicks", (): void => {
-        const { target, box } = generateMultipleList({}, [
+        const { target, box } = createInstance("multi", {}, [
             createItem("A", "A"),
             createItem("B", "B"),
             createItem("C", "C"),
@@ -223,7 +223,7 @@ describe("MultiSelectListBoxTest", () => {
             receiveCounter++;
         };
 
-        const { target } = generateMultipleList(options, ["A", "B", "C", "D"]);
+        const { target } = createInstance("multi", options, ["A", "B", "C", "D"]);
 
         const items: NodeListOf<Element> = target.querySelectorAll(".listbox-item");
 

@@ -1,4 +1,4 @@
-import { afterEachTest, beforeEachTest, child, click, createItem, generateSingleList } from "../test-utils";
+import { afterEachTest, beforeEachTest, child, click, createItem, createInstance } from "../test-utils";
 import { ListBoxOptions } from "../types/options";
 import { ListBoxEvent } from "../types/list-box-event";
 
@@ -7,7 +7,7 @@ describe("SingleSelectListBoxTest", () => {
     afterEach(() => afterEachTest());
 
     it("construct default", (): void => {
-        const { target } = generateSingleList();
+        const { target } = createInstance("single");
 
         expect(target.classList.contains("listbox-root")).toBeTruthy();
 
@@ -19,7 +19,7 @@ describe("SingleSelectListBoxTest", () => {
     });
 
     it("construct with searchbar", (): void => {
-        const { target } = generateSingleList({ searchBar: true });
+        const { target } = createInstance("single", { searchBar: true });
 
         const searchbar: HTMLElement = child(target);
         expect(searchbar.classList.contains("listbox-searchbar-wrapper")).toBeTruthy();
@@ -30,14 +30,14 @@ describe("SingleSelectListBoxTest", () => {
     });
 
     it("construct with searchbar watermark", (): void => {
-        const { target } = generateSingleList({ searchBar: true, searchBarWatermark: "Suche..." });
+        const { target } = createInstance("single", { searchBar: true, searchBarWatermark: "Suche..." });
 
         const searchbar: HTMLElement = child(target);
         expect(child(searchbar).getAttribute("placeholder")).toEqual("Suche...");
     });
 
     it("explicit default value", (): void => {
-        const { target } = generateSingleList({}, ["A", "B", createItem("C", "C", true), "D"]);
+        const { target } = createInstance("single", {}, ["A", "B", createItem("C", "C", true), "D"]);
 
         const selectedItems: NodeListOf<HTMLElement> = target.querySelectorAll(".listbox-item-selected");
 
@@ -46,7 +46,7 @@ describe("SingleSelectListBoxTest", () => {
     });
 
     it("two explicit default values", (): void => {
-        const { target } = generateSingleList({}, ["A", createItem("B", "B", true), createItem("C", "C", true), "D"]);
+        const { target } = createInstance("single", {}, ["A", createItem("B", "B", true), createItem("C", "C", true), "D"]);
 
         const selectedItems: NodeListOf<HTMLElement> = target.querySelectorAll(".listbox-item-selected");
 
@@ -55,7 +55,7 @@ describe("SingleSelectListBoxTest", () => {
     });
 
     it("one click", (): void => {
-        const { target } = generateSingleList({}, ["A", createItem("B"), "C", "D"]);
+        const { target } = createInstance("single", {}, ["A", createItem("B"), "C", "D"]);
 
         const items: NodeListOf<HTMLElement> = target.querySelectorAll(".listbox-item");
 
@@ -67,7 +67,7 @@ describe("SingleSelectListBoxTest", () => {
     });
 
     it("multiple clicks", (): void => {
-        const { target } = generateSingleList({}, ["A", "B", "C", "D"]);
+        const { target } = createInstance("single", {}, ["A", "B", "C", "D"]);
 
         const items: NodeListOf<HTMLElement> = target.querySelectorAll(".listbox-item");
 
@@ -118,7 +118,7 @@ describe("SingleSelectListBoxTest", () => {
             lastValue = newValue.args.text;
         };
 
-        const { target } = generateSingleList(options, ["A", "B", "C", "D"]);
+        const { target } = createInstance("single", options, ["A", "B", "C", "D"]);
 
         const items: NodeListOf<HTMLElement> = target.querySelectorAll(".listbox-item");
 

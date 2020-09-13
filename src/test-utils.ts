@@ -1,38 +1,23 @@
-import { ListBoxOptions, Options } from "./types/options";
+import { Options } from "./types/options";
 import { ListBoxItem } from "./types/list-box-item";
-import { SingleSelectListBox } from "./single-select-list-box";
-import { MultiSelectListBox } from "./multi-select-list-box";
+import { Instance, ListBoxNameMap } from "types/instance";
+import listBox from "./index";
 
-export function generateSingleList(
+export function createInstance<K extends keyof ListBoxNameMap>(
+    mode: K,
     options?: Options,
     items: (string | Partial<ListBoxItem>)[] = []
-): { box: SingleSelectListBox; target: HTMLElement } {
+): { box: Instance<K>; target: HTMLElement } {
     options = options || {};
     if (!options.getItems) {
         options.getItems = (): (string | Partial<ListBoxItem>)[] => items;
     }
 
     const test: HTMLElement = document.createElement("div");
-    test.id = "test-single";
+    test.id = "test";
     document.getElementById("fixture")?.appendChild(test);
 
-    return { box: new SingleSelectListBox(test, options as ListBoxOptions), target: test };
-}
-
-export function generateMultipleList(
-    options?: Options,
-    items: (string | Partial<ListBoxItem>)[] = []
-): { box: MultiSelectListBox; target: HTMLElement } {
-    options = options || {};
-    if (!options.getItems) {
-        options.getItems = (): (string | Partial<ListBoxItem>)[] => items;
-    }
-
-    const test: HTMLElement = document.createElement("div");
-    test.id = "test-multiple";
-    document.getElementById("fixture")?.appendChild(test);
-
-    return { box: new MultiSelectListBox(test, options as ListBoxOptions), target: test };
+    return { box: listBox<K>(test, mode, options) as Instance<K>, target: test };
 }
 
 export function child(element: HTMLElement, index = 0): HTMLElement {

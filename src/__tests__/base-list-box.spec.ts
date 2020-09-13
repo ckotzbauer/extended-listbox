@@ -1,8 +1,9 @@
-import { afterEachTest, beforeEachTest, child, children, generateMultipleList, generateSingleList } from "../test-utils";
+import { afterEachTest, beforeEachTest, child, children, createInstance } from "../test-utils";
 import { ListBoxOptions } from "../types/options";
 import { ListBoxItem } from "../types/list-box-item";
 import { BaseListBox } from "../base-list-box";
 import { ListBoxEvent } from "../types/list-box-event";
+import { SingleSelectListBox } from "single-select-list-box";
 
 describe("BaseListBox", () => {
     beforeEach(() => beforeEachTest());
@@ -11,13 +12,13 @@ describe("BaseListBox", () => {
     // ********************** BASICS **********************
 
     it("check root css class", (): void => {
-        const { target } = generateSingleList();
+        const { target } = createInstance("single");
 
         expect(target.classList.contains("listbox-root")).toBeTruthy();
     });
 
     it("check list css class", (): void => {
-        const { target } = generateSingleList();
+        const { target } = createInstance("single");
 
         const listBox: HTMLElement = child(target);
         expect(listBox.classList.contains("listbox")).toBeTruthy();
@@ -26,21 +27,21 @@ describe("BaseListBox", () => {
     // ********************** SEARCHBAR **********************
 
     it("check non existent searchbar", (): void => {
-        const { target } = generateSingleList();
+        const { target } = createInstance("single");
         const searchbar: Element | null = target.querySelector(".listbox-searchbar");
 
         expect(searchbar).toBeNull();
     });
 
     it("check searchbarwrapper css class", (): void => {
-        const { target } = generateSingleList({ searchBar: true });
+        const { target } = createInstance("single", { searchBar: true });
         const searchbarWrapper: HTMLElement = child(target);
 
         expect(searchbarWrapper.classList.contains("listbox-searchbar-wrapper")).toBeTruthy();
     });
 
     it("check searchbar css class", (): void => {
-        const { target } = generateSingleList({ searchBar: true });
+        const { target } = createInstance("single", { searchBar: true });
         const searchbarWrapper: HTMLElement = child(target);
         const searchbar: HTMLElement = child(searchbarWrapper);
 
@@ -48,7 +49,7 @@ describe("BaseListBox", () => {
     });
 
     it("check default searchbar watermark", (): void => {
-        const { target } = generateSingleList({ searchBar: true });
+        const { target } = createInstance("single", { searchBar: true });
         const searchbarWrapper: HTMLElement = child(target);
         const searchbar: HTMLElement = child(searchbarWrapper);
 
@@ -56,7 +57,7 @@ describe("BaseListBox", () => {
     });
 
     it("check explicit searchbar watermark", (): void => {
-        const { target } = generateSingleList({ searchBar: true, searchBarWatermark: "Suche ..." });
+        const { target } = createInstance("single", { searchBar: true, searchBarWatermark: "Suche ..." });
         const searchbarWrapper: HTMLElement = child(target);
         const searchbar: HTMLElement = child(searchbarWrapper);
 
@@ -64,14 +65,14 @@ describe("BaseListBox", () => {
     });
 
     it("check non existent searchbar button", (): void => {
-        const { target } = generateSingleList({ searchBar: true });
+        const { target } = createInstance("single", { searchBar: true });
         const button: Element | null = target.querySelector(".listbox-searchbar-button");
 
         expect(button).toBeNull();
     });
 
     it("check existent searchbar button with icon", (): void => {
-        const { target } = generateSingleList(<ListBoxOptions>{
+        const { target } = createInstance("single", <ListBoxOptions>{
             searchBar: true,
             searchBarButton: { visible: true, icon: "testIcon" },
         });
@@ -91,7 +92,7 @@ describe("BaseListBox", () => {
         options.searchBar = true;
         options.searchBarButton = { visible: true, onClick: callback, icon: "" };
 
-        const { target } = generateSingleList(options);
+        const { target } = createInstance("single", options);
         const button: HTMLButtonElement = target.querySelector(".listbox-searchbar-button") as HTMLButtonElement;
         button.click();
 
@@ -103,7 +104,7 @@ describe("BaseListBox", () => {
     it("check simple items", (): void => {
         const items: string[] = ["Item#1", "Item#2", "Item#3"];
 
-        const { target } = generateSingleList({}, items);
+        const { target } = createInstance("single", {}, items);
         const listBox: HTMLElement = child(target);
         const itemElements: HTMLElement[] = children(listBox);
 
@@ -127,7 +128,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", disabled: true },
         ];
 
-        const { target } = generateSingleList({}, items);
+        const { target } = createInstance("single", {}, items);
         const listBox: HTMLElement = child(target);
         const itemElements: HTMLElement[] = children(listBox);
 
@@ -149,7 +150,7 @@ describe("BaseListBox", () => {
     it("check selected item", (): void => {
         const items: Partial<ListBoxItem>[] = [{ text: "Item#1", selected: true }];
 
-        const { target } = generateSingleList({}, items);
+        const { target } = createInstance("single", {}, items);
         const listBox: HTMLElement = child(target);
         const itemElements: HTMLElement[] = children(listBox);
 
@@ -171,7 +172,7 @@ describe("BaseListBox", () => {
     it("check header item", (): void => {
         const items: Partial<ListBoxItem>[] = [{ text: "Item#1", groupHeader: true }];
 
-        const { target } = generateSingleList({}, items);
+        const { target } = createInstance("single", {}, items);
         const listBox: HTMLElement = child(target);
         const itemElements: HTMLElement[] = children(listBox);
 
@@ -195,7 +196,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { target } = generateSingleList({}, items);
+        const { target } = createInstance("single", {}, items);
         const listBox: HTMLElement = child(target);
         const itemElements: HTMLElement[] = children(listBox);
 
@@ -212,7 +213,7 @@ describe("BaseListBox", () => {
     it("check item with childs", (): void => {
         const items: Partial<ListBoxItem>[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
 
-        const { target } = generateSingleList({}, items);
+        const { target } = createInstance("single", {}, items);
         const listBox: HTMLElement = child(target);
         const itemElements: HTMLElement[] = children(listBox);
 
@@ -245,7 +246,7 @@ describe("BaseListBox", () => {
     // ********************** METHODS **********************
 
     it("check item addition text", (): void => {
-        const { target, box } = generateSingleList();
+        const { target, box } = createInstance("single");
         box.addItem("Item #1");
 
         const listBox: HTMLElement = child(target);
@@ -260,7 +261,7 @@ describe("BaseListBox", () => {
     });
 
     it("check item addition object", (): void => {
-        const { target, box } = generateSingleList();
+        const { target, box } = createInstance("single");
         box.addItem({ text: "Item #1", id: "id01" });
 
         const listBox: HTMLElement = child(target);
@@ -275,7 +276,7 @@ describe("BaseListBox", () => {
     });
 
     it("check item additions objects", (): void => {
-        const { target, box } = generateSingleList();
+        const { target, box } = createInstance("single");
         box.addItems([
             { text: "Item #1", id: "id01" },
             { text: "Item #2", id: "id02" },
@@ -299,7 +300,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { target, box } = generateMultipleList({}, items);
+        const { target, box } = createInstance("single", {}, items);
 
         box.removeItem("id02");
 
@@ -326,7 +327,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { target, box } = generateSingleList({}, items);
+        const { target, box } = createInstance("single", {}, items);
 
         box.removeItem("Item#3");
 
@@ -353,7 +354,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { target, box } = generateSingleList({}, items);
+        const { target, box } = createInstance("single", {}, items);
 
         box.removeItems(["Item#3", "Item#1"]);
 
@@ -376,7 +377,7 @@ describe("BaseListBox", () => {
     it("check parent item removal", (): void => {
         const items: Partial<ListBoxItem>[] = [{ text: "Item#1", childItems: ["SubItem #1", "SubItem #2"] }];
 
-        const { target, box } = generateSingleList({}, items);
+        const { target, box } = createInstance("single", {}, items);
 
         box.removeItem("Item#1");
 
@@ -393,7 +394,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { target, box } = generateSingleList({ searchBar: true }, items);
+        const { target, box } = createInstance("single", { searchBar: true }, items);
 
         box.destroy();
 
@@ -407,7 +408,7 @@ describe("BaseListBox", () => {
             { text: "Item#2", id: "id02", selected: true },
         ];
 
-        const { box, target } = generateMultipleList({}, items);
+        const { box, target } = createInstance("multi", {}, items);
 
         box.clearSelection();
 
@@ -431,7 +432,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box } = generateMultipleList({}, items);
+        const { box } = createInstance("multi", {}, items);
 
         const item: ListBoxItem | null = box.getItem("id02");
 
@@ -447,7 +448,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box } = generateMultipleList({}, items);
+        const { box } = createInstance("multi", {}, items);
 
         const item: ListBoxItem | null = box.getItem("Item#1");
 
@@ -463,7 +464,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box } = generateMultipleList({}, items);
+        const { box } = createInstance("multi", {}, items);
 
         const listItems: ListBoxItem[] = box.getItems();
 
@@ -477,7 +478,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box } = generateMultipleList({}, items);
+        const { box } = createInstance("multi", {}, items);
 
         const originalIndex: number | undefined | null = box.getItem("id03")?.index;
         const newIndex: number | null = box.moveItemUp("id03");
@@ -493,7 +494,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box } = generateMultipleList({}, items);
+        const { box } = createInstance("multi", {}, items);
 
         const originalIndex: number | null | undefined = box.getItem("id01")?.index;
         const newIndex: number | null = box.moveItemUp("id01");
@@ -509,7 +510,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box } = generateMultipleList({}, items);
+        const { box } = createInstance("multi", {}, items);
 
         const originalIndex: number | null | undefined = box.getItem("id01")?.index;
         const newIndex: number | null = box.moveItemDown("id01");
@@ -525,7 +526,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03", index: 2 },
         ];
 
-        const { box } = generateMultipleList({}, items);
+        const { box } = createInstance("multi", {}, items);
 
         const originalIndex: number | null | undefined = box.getItem("id03")?.index;
         const newIndex: number | null = box.moveItemDown("id03");
@@ -535,7 +536,7 @@ describe("BaseListBox", () => {
     });
 
     it("check enable", (): void => {
-        const { target, box } = generateSingleList({});
+        const { target, box } = createInstance("single", {});
 
         box.enable(true);
 
@@ -543,7 +544,7 @@ describe("BaseListBox", () => {
     });
 
     it("check disable", (): void => {
-        const { target, box } = generateSingleList({});
+        const { target, box } = createInstance("single", {});
 
         box.enable(false);
 
@@ -557,7 +558,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box } = generateSingleList({}, items);
+        const { box } = createInstance("single", {}, items);
 
         const originalIndex: number | null | undefined = box.getItem("id01")?.index;
         const newIndex: number | null = box.moveItemToBottom("id01");
@@ -573,7 +574,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box } = generateSingleList({}, items);
+        const { box } = createInstance("single", {}, items);
 
         const originalIndex: number | null | undefined = box.getItem("id02")?.index;
         const newIndex: number | null = box.moveItemToTop("id02");
@@ -596,7 +597,7 @@ describe("BaseListBox", () => {
             },
         ];
 
-        const { box } = generateMultipleList({}, items);
+        const { box } = createInstance("multi", {}, items);
 
         const selection: ListBoxItem[] = box.getSelection();
 
@@ -622,7 +623,7 @@ describe("BaseListBox", () => {
             expect(event.target).toEqual(target);
         };
 
-        const { target } = generateSingleList({ onItemEnterPressed: callback }, items);
+        const { target } = createInstance("single", { onItemEnterPressed: callback }, items);
 
         const listBox: HTMLElement = child(target);
         const item: HTMLElement = child(listBox, 1); // id02
@@ -647,7 +648,7 @@ describe("BaseListBox", () => {
             expect(event.target).toEqual(target);
         };
 
-        const { target } = generateSingleList({ onItemDoubleClicked: callback }, items);
+        const { target } = createInstance("single", { onItemDoubleClicked: callback }, items);
 
         const listBox: HTMLElement = child(target);
         const item: HTMLElement = child(listBox, 1); // id02
@@ -666,7 +667,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { box, target } = generateSingleList({}, items);
+        const { box, target } = createInstance("single", {}, items);
 
         const listBox: HTMLElement = child(target);
         const item: HTMLElement = child(listBox, 1); // id02
@@ -690,7 +691,7 @@ describe("BaseListBox", () => {
             { text: "Item#3", id: "id03" },
         ];
 
-        const { target, box } = generateSingleList({}, items);
+        const { target, box } = createInstance("single", {}, items);
 
         const listBox: HTMLElement = child(target);
         const item: HTMLElement = child(listBox, 1); // id02
@@ -714,10 +715,10 @@ describe("BaseListBox", () => {
             expect(event.args).toEqual("mySpecialValue");
         };
 
-        const { target, box } = generateSingleList({ onValueChanged: delegate });
+        const { target, box } = createInstance("single", { onValueChanged: delegate });
 
-        box._fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
-        box._fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
+        (box as SingleSelectListBox)._fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
+        (box as SingleSelectListBox)._fireEvent(BaseListBox.EVENT_VALUE_CHANGED, "mySpecialValue");
     });
 
     it("check itemsChanged event", (): void => {
@@ -727,9 +728,9 @@ describe("BaseListBox", () => {
             expect(event.args).toEqual("mySpecialValue");
         };
 
-        const { target, box } = generateSingleList({ onItemsChanged: delegate });
+        const { target, box } = createInstance("single", { onItemsChanged: delegate });
 
-        box._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, "mySpecialValue");
+        (box as SingleSelectListBox)._fireEvent(BaseListBox.EVENT_ITEMS_CHANGED, "mySpecialValue");
     });
 
     it("check filterChanged event", (): void => {
@@ -741,9 +742,9 @@ describe("BaseListBox", () => {
             expect(event.args).toEqual("mySpecialValue");
         };
 
-        const { box, target } = generateSingleList({ onFilterChanged: delegate });
+        const { box, target } = createInstance("single", { onFilterChanged: delegate });
         t = target;
 
-        box._fireEvent(BaseListBox.EVENT_FILTER_CHANGED, "mySpecialValue");
+        (box as SingleSelectListBox)._fireEvent(BaseListBox.EVENT_FILTER_CHANGED, "mySpecialValue");
     });
 });
