@@ -1,9 +1,8 @@
-import {BaseListBox} from "./BaseListBox";
-import {ListBoxSettings} from "./contract/ListBoxSettings";
-import {ListBoxItem} from "./contract/ListBoxItem";
+import { BaseListBox } from "./BaseListBox";
+import { ListBoxSettings } from "./contract/ListBoxSettings";
+import { ListBoxItem } from "./contract/ListBoxItem";
 
 export class SingleSelectListBox extends BaseListBox {
-
     private _selectedDomItem: HTMLElement;
 
     /**
@@ -22,9 +21,12 @@ export class SingleSelectListBox extends BaseListBox {
         this._createListbox();
     }
 
-    protected _itemClicked(domItem: HTMLElement, ctrl: boolean = false): void {
-        if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected _itemClicked(domItem: HTMLElement, ctrl = false): void {
+        if (
+            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)
+        ) {
             return;
         }
 
@@ -47,11 +49,13 @@ export class SingleSelectListBox extends BaseListBox {
     protected _filterChanged(): void {
         if (!this._selectedDomItem || this._selectedDomItem.style.display === "none") {
             const elements: NodeListOf<Element> = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
-            for (let i: number = 0; i < elements.length; i++) {
-                let element: HTMLElement = elements.item(i) as HTMLElement;
-                if (!element.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP) &&
+            for (let i = 0; i < elements.length; i++) {
+                const element: HTMLElement = elements.item(i) as HTMLElement;
+                if (
+                    !element.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP) &&
                     !element.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) &&
-                    element.style.display !== "none") {
+                    element.style.display !== "none"
+                ) {
                     this._itemClicked(element);
                     break;
                 }

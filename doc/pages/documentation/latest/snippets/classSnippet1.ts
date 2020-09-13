@@ -9,7 +9,7 @@ interface ListBoxSettings {
     searchBarButton?: ListBoxSearchBarButtonOptions;
 
     /** function which returns a array of items */
-    getItems?: () => (string|ListBoxItem)[];
+    getItems?: () => (string | ListBoxItem)[];
 
     /** callback for selection changes */
     onValueChanged?: (event: ListBoxEvent) => void;

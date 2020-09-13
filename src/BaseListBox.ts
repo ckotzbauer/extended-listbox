@@ -1,25 +1,24 @@
-import {ListBoxSettings} from "./contract/ListBoxSettings";
-import {ListBoxEvent} from "./event/ListBoxEvent";
-import {ListBoxItem} from "./contract/ListBoxItem";
+import { ListBoxSettings } from "./contract/ListBoxSettings";
+import { ListBoxEvent } from "./event/ListBoxEvent";
+import { ListBoxItem } from "./contract/ListBoxItem";
 
 export abstract class BaseListBox {
+    public static MAIN_CLASS = "listbox-root";
+    public static MAIN_DISABLED_CLASS = "listbox-disabled";
+    public static LIST_CLASS = "listbox";
+    public static LIST_ITEM_CLASS = "listbox-item";
+    public static LIST_ITEM_CLASS_DISABLED = "listbox-item-disabled";
+    public static LIST_ITEM_CLASS_SELECTED = "listbox-item-selected";
+    public static LIST_ITEM_CLASS_GROUP = "listbox-item-group";
+    public static LIST_ITEM_CLASS_CHILD = "listbox-item-child";
+    public static SEARCHBAR_CLASS = "listbox-searchbar";
+    public static SEARCHBAR_BUTTON_CLASS = "listbox-searchbar-button";
 
-    public static MAIN_CLASS: string = 'listbox-root';
-    public static MAIN_DISABLED_CLASS: string = 'listbox-disabled';
-    public static LIST_CLASS: string = 'listbox';
-    public static LIST_ITEM_CLASS: string = 'listbox-item';
-    public static LIST_ITEM_CLASS_DISABLED: string = 'listbox-item-disabled';
-    public static LIST_ITEM_CLASS_SELECTED: string = 'listbox-item-selected';
-    public static LIST_ITEM_CLASS_GROUP: string = 'listbox-item-group';
-    public static LIST_ITEM_CLASS_CHILD: string = 'listbox-item-child';
-    public static SEARCHBAR_CLASS: string = 'listbox-searchbar';
-    public static SEARCHBAR_BUTTON_CLASS: string = 'listbox-searchbar-button';
-
-    public static EVENT_VALUE_CHANGED: string = "valueChanged";
-    public static EVENT_FILTER_CHANGED: string = "filterChanged";
-    public static EVENT_ITEMS_CHANGED: string = "itemsChanged";
-    public static EVENT_ITEM_ENTER_PRESSED: string = "itemEnterPressed";
-    public static EVENT_ITEM_DOUBLE_CLICKED: string = "itemDoubleClicked";
+    public static EVENT_VALUE_CHANGED = "valueChanged";
+    public static EVENT_FILTER_CHANGED = "filterChanged";
+    public static EVENT_ITEMS_CHANGED = "itemsChanged";
+    public static EVENT_ITEM_ENTER_PRESSED = "itemEnterPressed";
+    public static EVENT_ITEM_DOUBLE_CLICKED = "itemDoubleClicked";
 
     public _target: HTMLElement;
     public _list: HTMLDivElement;
@@ -60,7 +59,7 @@ export abstract class BaseListBox {
         // searchbar wrapper is needed for properly stretch
         // the searchbar over the listbox width
         const searchbarWrapper: HTMLDivElement = document.createElement("div");
-        searchbarWrapper.classList.add(BaseListBox.SEARCHBAR_CLASS + '-wrapper');
+        searchbarWrapper.classList.add(BaseListBox.SEARCHBAR_CLASS + "-wrapper");
         this._target.appendChild(searchbarWrapper);
 
         const searchbar: HTMLInputElement = document.createElement("input");
@@ -72,10 +71,10 @@ export abstract class BaseListBox {
         searchbar.onkeyup = (): void => {
             const searchQuery: string = searchbar.value.toLowerCase();
 
-            if (searchQuery !== '') {
+            if (searchQuery !== "") {
                 // hide list items which are not matched search query
                 const items: NodeListOf<HTMLDivElement> = this._list.querySelectorAll<any>("." + BaseListBox.LIST_ITEM_CLASS);
-                for (let i: number = 0; i < items.length; i++) {
+                for (let i = 0; i < items.length; i++) {
                     const thisItem: HTMLDivElement = items.item(i);
 
                     if (thisItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
@@ -93,14 +92,13 @@ export abstract class BaseListBox {
                 }
 
                 // hide group item only, if all childs are hidden
-                const groups: NodeListOf<Element> =
-                    this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS_GROUP);
-                for (let i: number = 0; i < groups.length; i++) {
+                const groups: NodeListOf<Element> = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS_GROUP);
+                for (let i = 0; i < groups.length; i++) {
                     const thisItem: HTMLElement = groups.item(i) as HTMLElement;
                     const childs: NodeListOf<Element> = thisItem.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
-                    let index: number = -1;
+                    let index = -1;
 
-                    for (let j: number = 0; j < childs.length; j++) {
+                    for (let j = 0; j < childs.length; j++) {
                         if ((childs.item(j) as HTMLElement).style.display !== "none") {
                             index = j;
                             break;
@@ -116,7 +114,7 @@ export abstract class BaseListBox {
             } else {
                 // make visible all list items
                 const items: NodeListOf<Element> = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
-                for (let i: number = 0; i < items.length; i++) {
+                for (let i = 0; i < items.length; i++) {
                     const thisItem: HTMLElement = items.item(i) as HTMLElement;
                     thisItem.style.display = "block";
                 }
@@ -161,9 +159,9 @@ export abstract class BaseListBox {
 
         // create items
         if (this._settings.getItems) {
-            const items: (string|ListBoxItem)[] = <(string|ListBoxItem)[]>this._settings.getItems();
+            const items: (string | ListBoxItem)[] = <(string | ListBoxItem)[]>this._settings.getItems();
             if (items) {
-                for (let index in items) {
+                for (const index in items) {
                     this.addItem(this._prepareDataItem(items[index]), true);
                 }
             }
@@ -171,13 +169,13 @@ export abstract class BaseListBox {
     }
 
     private _generateItemId(): string {
-        const num: number = parseInt("" + (Math.random() * 10000000), 10);
+        const num: number = parseInt("" + Math.random() * 10000000, 10);
         return "listBoxItem" + num;
     }
 
-    private _prepareDataItem(dataItem: ListBoxItem|string): ListBoxItem {
+    private _prepareDataItem(dataItem: ListBoxItem | string): ListBoxItem {
         /* tslint:disable:no-string-literal */
-        let item: ListBoxItem = {
+        const item: ListBoxItem = {
             childItems: [],
             disabled: false,
             groupHeader: null,
@@ -185,15 +183,15 @@ export abstract class BaseListBox {
             parentGroupId: null,
             selected: false,
             text: null,
-            index: null
+            index: null,
         };
         /* tslint:enable:no-string-literal */
 
         if (typeof dataItem === "string" || typeof dataItem === "number") {
-            item.text = <string> dataItem;
+            item.text = <string>dataItem;
             return item;
         } else {
-            for (let i in dataItem) {
+            for (const i in dataItem) {
                 if (dataItem.hasOwnProperty(i)) {
                     item[i] = dataItem[i];
                 }
@@ -201,7 +199,7 @@ export abstract class BaseListBox {
 
             const childs: ListBoxItem[] = [];
 
-            for (let index in item.childItems) {
+            for (const index in item.childItems) {
                 childs.push(this._prepareDataItem(item.childItems[index]));
             }
 
@@ -285,19 +283,18 @@ export abstract class BaseListBox {
                 item.classList.add(BaseListBox.LIST_ITEM_CLASS_GROUP);
             }
 
-            for (let index: number = 0; index < dataItem.childItems.length; index++) {
+            for (let index = 0; index < dataItem.childItems.length; index++) {
                 this._addItem(this._prepareDataItem(dataItem.childItems[index]), internal, item);
             }
         }
-
 
         return dataItem.id;
     }
 
     protected _resizeListToListBox(): void {
         const computed: CSSStyleDeclaration = window.getComputedStyle(this._target, null);
-        const containerPadding: number = parseInt(computed.getPropertyValue("padding-top"), 10) +
-            parseInt(computed.getPropertyValue("padding-bottom"), 10);
+        const containerPadding: number =
+            parseInt(computed.getPropertyValue("padding-top"), 10) + parseInt(computed.getPropertyValue("padding-bottom"), 10);
         let listHeight: number = parseInt(computed.getPropertyValue("height"), 10) - containerPadding;
 
         if (this._settings.searchBar) {
@@ -322,14 +319,14 @@ export abstract class BaseListBox {
 
     protected _locateItem(name: string): HTMLElement {
         let id: string = null;
-        for (let i: number = 0; i < this.dataItems.length; i++) {
+        for (let i = 0; i < this.dataItems.length; i++) {
             if (this.dataItems[i].id === name || this.dataItems[i].text === name) {
                 id = this.dataItems[i].id;
                 break;
             }
         }
 
-        let item: HTMLElement = this._target.querySelector("#" + id) as HTMLElement;
+        const item: HTMLElement = this._target.querySelector("#" + id) as HTMLElement;
         if (!item) {
             const titleItems: NodeListOf<Element> = this._target.querySelectorAll('div[title="' + id + '"]');
 
@@ -357,9 +354,8 @@ export abstract class BaseListBox {
 
                     const nextChildren: HTMLCollection = sibling.children;
                     if (nextChildren.length > 0) {
-                        potentialNext = direction === "next"
-                            ? nextChildren[0].firstElementChild
-                            : nextChildren[0].lastElementChild;
+                        potentialNext =
+                            direction === "next" ? nextChildren[0].firstElementChild : nextChildren[0].lastElementChild;
                     } else {
                         potentialNext = parent;
                     }
@@ -376,8 +372,9 @@ export abstract class BaseListBox {
         } while (true);
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public _fireEvent(name: string, args: any): void {
-        let delegate: (e: ListBoxEvent) => void = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
+        const delegate: (e: ListBoxEvent) => void = this._settings["on" + name[0].toUpperCase() + name.substr(1)];
 
         if (delegate) {
             delegate({ eventName: name, target: this._target, args: args });
@@ -390,7 +387,7 @@ export abstract class BaseListBox {
     }
 
     protected _getDataItem(id: string): ListBoxItem {
-        for (let i: number = 0; i < this.dataItems.length; i++) {
+        for (let i = 0; i < this.dataItems.length; i++) {
             if (this.dataItems[i].id === id) {
                 return this.dataItems[i];
             }
@@ -417,8 +414,6 @@ export abstract class BaseListBox {
         }
     }
 
-
-
     /*******************************  PUBLIC API  ******************************* */
 
     /**
@@ -428,7 +423,7 @@ export abstract class BaseListBox {
      * @param {object} dataItem display data for item
      * @param {object} internal: true if this function is not called directly as api function.
      */
-    public addItem(dataItem: ListBoxItem|string, internal: boolean = false): string {
+    public addItem(dataItem: ListBoxItem | string, internal = false): string {
         /* tslint:disable:no-string-literal */
         if (!internal && !this.multiple && dataItem["selected"]) {
             this.clearSelection();
@@ -450,8 +445,8 @@ export abstract class BaseListBox {
      * @this {BaseListBox}
      * @param {object} items display data of items
      */
-    public addItems(items: (string|ListBoxItem)[]): string[] {
-        return items.map((item: string|ListBoxItem) => this.addItem(item));
+    public addItems(items: (string | ListBoxItem)[]): string[] {
+        return items.map((item: string | ListBoxItem) => this.addItem(item));
     }
 
     /**
@@ -488,7 +483,6 @@ export abstract class BaseListBox {
         items.forEach((item: string) => this.removeItem(item));
     }
 
-
     /**
      * Reverts all changes on the DOM
      *
@@ -509,14 +503,13 @@ export abstract class BaseListBox {
         // Remove selected class from all other items
         const allItems: NodeList = this._list.querySelectorAll("." + BaseListBox.LIST_ITEM_CLASS);
 
-        for (let index: number = 0; index < allItems.length; index++) {
+        for (let index = 0; index < allItems.length; index++) {
             (<HTMLElement>allItems[index]).classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
             this._getDataItem((allItems[index] as Element).id).selected = false;
         }
 
         this.selectedDataItems = [];
     }
-
 
     /**
      * Returns the dataItem for a given id or text.
@@ -535,7 +528,6 @@ export abstract class BaseListBox {
         return data;
     }
 
-
     /**
      * Returns all dataItems.
      */
@@ -543,13 +535,12 @@ export abstract class BaseListBox {
         const items: ListBoxItem[] = [];
 
         const childs: HTMLCollection = this._list.children;
-        for (let index: number = 0; index < childs.length; index++) {
+        for (let index = 0; index < childs.length; index++) {
             items.push(this._getDataItem((childs[index] as Element).id));
         }
 
         return items;
     }
-
 
     /**
      * Decreases the index of the item by one.
@@ -635,7 +626,6 @@ export abstract class BaseListBox {
 
         return newIndex;
     }
-
 
     /**
      * Enables or disables the whole component.

@@ -1,9 +1,9 @@
 interface BaseListBox {
     /** Adds a new item to the list */
-    addItem(item: string|ListBoxItem): string;
+    addItem(item: string | ListBoxItem): string;
 
     /** Adds new items to the list */
-    addItems(items: (string|ListBoxItem)[]): string[];
+    addItems(items: (string | ListBoxItem)[]): string[];
 
     /** Removes a item from the list */
     removeItem(identifier: string): void;

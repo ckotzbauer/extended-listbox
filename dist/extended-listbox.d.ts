@@ -26,7 +26,7 @@ interface ListBoxItem {
     parentGroupId?: string;
 
     /** list of childItems */
-    childItems?: (string|ListBoxItem)[];
+    childItems?: (string | ListBoxItem)[];
 }
 
 interface ListBoxSearchBarButtonOptions {
@@ -51,7 +51,7 @@ interface ListBoxSettings {
     searchBarButton?: ListBoxSearchBarButtonOptions;
 
     /** function which returns a array of items */
-    getItems?: () => (string|ListBoxItem)[];
+    getItems?: () => (string | ListBoxItem)[];
 
     /** callback for selection changes */
     onValueChanged?: (event: ListBoxEvent) => void;
@@ -82,10 +82,10 @@ interface ListBoxEvent {
 
 interface BaseListBox {
     /** Adds a new item to the list */
-    addItem(item: string|ListBoxItem): string;
+    addItem(item: string | ListBoxItem): string;
 
     /** Adds new items to the list */
-    addItems(items: (string|ListBoxItem)[]): string[];
+    addItems(items: (string | ListBoxItem)[]): string[];
 
     /** Removes a item from the list */
     removeItem(identifier: string): void;
@@ -124,11 +124,9 @@ interface BaseListBox {
     getSelection(): ListBoxItem[];
 }
 
-interface SingleSelectListBox extends BaseListBox {
-}
+interface SingleSelectListBox extends BaseListBox {}
 
-interface MultiSelectListBox extends BaseListBox {
-}
+interface MultiSelectListBox extends BaseListBox {}
 
 declare var SingleSelectListBox: {
     prototype: SingleSelectListBox;

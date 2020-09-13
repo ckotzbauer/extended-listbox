@@ -1,9 +1,8 @@
-import {BaseListBox} from "./BaseListBox";
-import {ListBoxSettings} from "./contract/ListBoxSettings";
-import {ListBoxItem} from "./contract/ListBoxItem";
+import { BaseListBox } from "./BaseListBox";
+import { ListBoxSettings } from "./contract/ListBoxSettings";
+import { ListBoxItem } from "./contract/ListBoxItem";
 
 export class MultiSelectListBox extends BaseListBox {
-
     /**
      * Create an instance of MultiSelectListBox.
      *
@@ -19,13 +18,15 @@ export class MultiSelectListBox extends BaseListBox {
         this._createListbox();
     }
 
-    protected _itemClicked(domItem: HTMLElement, ctrl: boolean = false): void {
-        if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
-            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)) {
+    protected _itemClicked(domItem: HTMLElement, ctrl = false): void {
+        if (
+            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
+            domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)
+        ) {
             return;
         }
 
-        let dataItem: ListBoxItem = this._getDataItem(domItem.id);
+        const dataItem: ListBoxItem = this._getDataItem(domItem.id);
 
         if (domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_SELECTED)) {
             if (!ctrl) {
@@ -38,8 +39,7 @@ export class MultiSelectListBox extends BaseListBox {
                 // deselect only this
                 domItem.classList.remove(BaseListBox.LIST_ITEM_CLASS_SELECTED);
                 dataItem.selected = false;
-                const removeIndex: number = this.selectedDataItems.indexOf(
-                    this._getDataItem(domItem.id));
+                const removeIndex: number = this.selectedDataItems.indexOf(this._getDataItem(domItem.id));
                 this.selectedDataItems.splice(removeIndex, 1);
             }
         } else {

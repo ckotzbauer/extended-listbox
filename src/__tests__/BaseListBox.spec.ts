@@ -1,9 +1,9 @@
-import {TestHelper} from "../TestHelper";
-import {ListBoxSettings} from "../contract/ListBoxSettings";
-import {ListBoxItem} from "../contract/ListBoxItem";
-import {BaseListBox} from "../BaseListBox";
-import {ListBoxEvent} from "../event/ListBoxEvent";
-import {ListBoxSearchBarButtonOptions} from "../contract/ListBoxSearchBarButtonOptions";
+import { TestHelper } from "../TestHelper";
+import { ListBoxSettings } from "../contract/ListBoxSettings";
+import { ListBoxItem } from "../contract/ListBoxItem";
+import { BaseListBox } from "../BaseListBox";
+import { ListBoxEvent } from "../event/ListBoxEvent";
+import { ListBoxSearchBarButtonOptions } from "../contract/ListBoxSearchBarButtonOptions";
 
 /* tslint:disable:no-string-literal */
 
@@ -26,12 +26,11 @@ describe("BaseListBox", () => {
         expect(listBox.classList.contains("listbox")).toBeTruthy();
     });
 
-
     // ********************** SEARCHBAR **********************
 
     it("check non existent searchbar", (): void => {
         const { target } = TestHelper.generateSingleList();
-        const searchbar: Element = target.querySelector('.listbox-searchbar');
+        const searchbar: Element = target.querySelector(".listbox-searchbar");
 
         expect(searchbar).toBeNull();
     });
@@ -40,7 +39,7 @@ describe("BaseListBox", () => {
         const { target } = TestHelper.generateSingleList({ searchBar: true });
         const searchbarWrapper: HTMLElement = TestHelper.child(target);
 
-        expect(searchbarWrapper.classList.contains('listbox-searchbar-wrapper')).toBeTruthy();
+        expect(searchbarWrapper.classList.contains("listbox-searchbar-wrapper")).toBeTruthy();
     });
 
     it("check searchbar css class", (): void => {
@@ -48,7 +47,7 @@ describe("BaseListBox", () => {
         const searchbarWrapper: HTMLElement = TestHelper.child(target);
         const searchbar: HTMLElement = TestHelper.child(searchbarWrapper);
 
-        expect(searchbar.classList.contains('listbox-searchbar')).toBeTruthy();
+        expect(searchbar.classList.contains("listbox-searchbar")).toBeTruthy();
     });
 
     it("check default searchbar watermark", (): void => {
@@ -56,12 +55,11 @@ describe("BaseListBox", () => {
         const searchbarWrapper: HTMLElement = TestHelper.child(target);
         const searchbar: HTMLElement = TestHelper.child(searchbarWrapper);
 
-        expect(searchbar.getAttribute("placeholder")).toEqual('Search...');
+        expect(searchbar.getAttribute("placeholder")).toEqual("Search...");
     });
 
     it("check explicit searchbar watermark", (): void => {
-        const { target } = TestHelper.generateSingleList(
-            { searchBar: true, searchBarWatermark: "Suche ..." });
+        const { target } = TestHelper.generateSingleList({ searchBar: true, searchBarWatermark: "Suche ..." });
         const searchbarWrapper: HTMLElement = TestHelper.child(target);
         const searchbar: HTMLElement = TestHelper.child(searchbarWrapper);
 
@@ -70,39 +68,40 @@ describe("BaseListBox", () => {
 
     it("check non existent searchbar button", (): void => {
         const { target } = TestHelper.generateSingleList({ searchBar: true });
-        const button: Element = target.querySelector('.listbox-searchbar-button');
+        const button: Element = target.querySelector(".listbox-searchbar-button");
 
         expect(button).toBeNull();
     });
 
     it("check existent searchbar button with icon", (): void => {
-        const { target } = TestHelper.generateSingleList(<ListBoxSettings>{ searchBar: true,
-            searchBarButton: { visible: true, icon: "testIcon" } });
-        const button: Element = target.querySelector('.listbox-searchbar-button');
+        const { target } = TestHelper.generateSingleList(<ListBoxSettings>{
+            searchBar: true,
+            searchBarButton: { visible: true, icon: "testIcon" },
+        });
+        const button: Element = target.querySelector(".listbox-searchbar-button");
         const icon: Element = TestHelper.child(button as HTMLElement);
 
         expect(icon.classList.contains("testIcon")).toBeTruthy();
     });
 
     it("check searchbar button callback", (): void => {
-        let count: number = 0;
+        let count = 0;
         const callback: () => void = (): void => {
             count++;
         };
 
-        const options: ListBoxSettings = <ListBoxSettings> {};
+        const options: ListBoxSettings = <ListBoxSettings>{};
         options.searchBar = true;
-        options.searchBarButton = <ListBoxSearchBarButtonOptions> {};
+        options.searchBarButton = <ListBoxSearchBarButtonOptions>{};
         options.searchBarButton.visible = true;
         options.searchBarButton.onClick = callback;
 
         const { target } = TestHelper.generateSingleList(options);
-        const button: HTMLButtonElement = target.querySelector('.listbox-searchbar-button') as HTMLButtonElement;
+        const button: HTMLButtonElement = target.querySelector(".listbox-searchbar-button") as HTMLButtonElement;
         button.click();
 
         expect(count).toEqual(1);
     });
-
 
     // ********************** ITEMS **********************
 
@@ -115,7 +114,7 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(3);
 
-        for (let i: number = 0; i < itemElements.length; i++) {
+        for (let i = 0; i < itemElements.length; i++) {
             const element: HTMLElement = itemElements[i];
             const item: string = items[i];
 
@@ -127,8 +126,11 @@ describe("BaseListBox", () => {
     });
 
     it("check disabled items", (): void => {
-        const items: ListBoxItem[] = [{ text: "Item#1", disabled: true },
-            { text: "Item#2", disabled: true }, { text: "Item#3", disabled: true }];
+        const items: ListBoxItem[] = [
+            { text: "Item#1", disabled: true },
+            { text: "Item#2", disabled: true },
+            { text: "Item#3", disabled: true },
+        ];
 
         const { target } = TestHelper.generateSingleList({}, items);
         const listBox: HTMLElement = TestHelper.child(target);
@@ -136,12 +138,13 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(3);
 
-        for (let i: number = 0; i < itemElements.length; i++) {
+        for (let i = 0; i < itemElements.length; i++) {
             const element: HTMLElement = itemElements[i];
             const item: ListBoxItem = items[i];
 
-            expect(element.classList.contains("listbox-item") &&
-                element.classList.contains("listbox-item-disabled")).toBeTruthy();
+            expect(
+                element.classList.contains("listbox-item") && element.classList.contains("listbox-item-disabled")
+            ).toBeTruthy();
             expect(element.innerText).toEqual(item.text);
             expect(element.title).toEqual(item.text);
             expect(TestHelper.startsWith(element.id, "listBoxItem")).toBeTruthy();
@@ -157,12 +160,13 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(1);
 
-        for (let i: number = 0; i < itemElements.length; i++) {
+        for (let i = 0; i < itemElements.length; i++) {
             const element: HTMLElement = itemElements[i];
             const item: ListBoxItem = items[i];
 
-            expect(element.classList.contains("listbox-item") &&
-                element.classList.contains("listbox-item-selected")).toBeTruthy();
+            expect(
+                element.classList.contains("listbox-item") && element.classList.contains("listbox-item-selected")
+            ).toBeTruthy();
             expect(element.innerText).toEqual(item.text);
             expect(element.title).toEqual(item.text);
             expect(TestHelper.startsWith(element.id, "listBoxItem")).toBeTruthy();
@@ -178,7 +182,7 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(1);
 
-        for (let i: number = 0; i < itemElements.length; i++) {
+        for (let i = 0; i < itemElements.length; i++) {
             const element: HTMLElement = itemElements[i];
             const item: ListBoxItem = items[i];
 
@@ -191,7 +195,9 @@ describe("BaseListBox", () => {
 
     it("check item with id", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { target } = TestHelper.generateSingleList({}, items);
@@ -200,7 +206,7 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(3);
 
-        for (let i: number = 0; i < itemElements.length; i++) {
+        for (let i = 0; i < itemElements.length; i++) {
             const element: HTMLElement = itemElements[i];
             const item: ListBoxItem = items[i];
 
@@ -217,7 +223,7 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(1);
 
-        for (let i: number = 0; i < itemElements.length; i++) {
+        for (let i = 0; i < itemElements.length; i++) {
             const element: HTMLElement = itemElements[i];
             const item: ListBoxItem = items[i];
 
@@ -227,19 +233,19 @@ describe("BaseListBox", () => {
 
             const childElements: HTMLElement[] = TestHelper.children(element);
             expect(childElements.length).toEqual(2);
-            for (let j: number = 0; j < childElements.length; j++) {
+            for (let j = 0; j < childElements.length; j++) {
                 const childElement: HTMLElement = childElements[j];
-                const childItem: string|ListBoxItem = items[0].childItems[j];
+                const childItem: string | ListBoxItem = items[0].childItems[j];
 
-                expect(childElement.classList.contains("listbox-item") &&
-                    childElement.classList.contains("listbox-item-child")).toBeTruthy();
+                expect(
+                    childElement.classList.contains("listbox-item") && childElement.classList.contains("listbox-item-child")
+                ).toBeTruthy();
                 expect(childElement.innerText).toEqual(childItem);
                 expect(childElement.title).toEqual(childItem);
                 expect(TestHelper.startsWith(childElement.id, "listBoxItem")).toBeTruthy();
             }
         }
     });
-
 
     // ********************** METHODS **********************
 
@@ -275,7 +281,10 @@ describe("BaseListBox", () => {
 
     it("check item additions objects", (): void => {
         const { target, box } = TestHelper.generateSingleList();
-        box.addItems([{ text: "Item #1", id: "id01" }, { text: "Item #2", id: "id02" }]);
+        box.addItems([
+            { text: "Item #1", id: "id01" },
+            { text: "Item #2", id: "id02" },
+        ]);
 
         const listBox: HTMLElement = TestHelper.child(target);
         const itemElements: HTMLElement[] = TestHelper.children(listBox);
@@ -290,7 +299,9 @@ describe("BaseListBox", () => {
 
     it("check item removal id", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { target, box } = TestHelper.generateMultipleList({}, items);
@@ -302,7 +313,7 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(2);
 
-        let found: boolean = false;
+        let found = false;
         itemElements.forEach(($elem: HTMLElement): void => {
             const id: string = $elem.id;
             if (id === "id02") {
@@ -315,7 +326,9 @@ describe("BaseListBox", () => {
 
     it("check item removal text", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { target, box } = TestHelper.generateSingleList({}, items);
@@ -327,7 +340,7 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(2);
 
-        let found: boolean = false;
+        let found = false;
         itemElements.forEach(($elem: HTMLElement): void => {
             const text: string = $elem.textContent;
             if (text === "Item#3") {
@@ -340,7 +353,9 @@ describe("BaseListBox", () => {
 
     it("check items removals text", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { target, box } = TestHelper.generateSingleList({}, items);
@@ -352,7 +367,7 @@ describe("BaseListBox", () => {
 
         expect(itemElements.length).toEqual(1);
 
-        let found: boolean = false;
+        let found = false;
         itemElements.forEach(($elem: HTMLElement): void => {
             const text: string = $elem.title;
             if (text === "Item#2") {
@@ -378,7 +393,9 @@ describe("BaseListBox", () => {
 
     it("check destroy", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { target, box } = TestHelper.generateSingleList({ searchBar: true }, items);
@@ -391,7 +408,8 @@ describe("BaseListBox", () => {
 
     it("check clearSelection", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01", selected: true }, { text: "Item#2", id: "id02", selected: true }
+            { text: "Item#1", id: "id01", selected: true },
+            { text: "Item#2", id: "id02", selected: true },
         ];
 
         const { box, target } = TestHelper.generateMultipleList({}, items);
@@ -401,7 +419,7 @@ describe("BaseListBox", () => {
         const listBox: HTMLElement = TestHelper.child(target);
         const itemElements: HTMLElement[] = TestHelper.children(listBox);
 
-        let found: boolean = false;
+        let found = false;
         itemElements.forEach(($elem: HTMLElement): void => {
             if ($elem.classList.contains("listbox-item-selected")) {
                 found = true;
@@ -413,7 +431,9 @@ describe("BaseListBox", () => {
 
     it("check getItem id", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { box } = TestHelper.generateMultipleList({}, items);
@@ -427,7 +447,9 @@ describe("BaseListBox", () => {
 
     it("check getItem text", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { box } = TestHelper.generateMultipleList({}, items);
@@ -441,7 +463,9 @@ describe("BaseListBox", () => {
 
     it("check getItems", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { box } = TestHelper.generateMultipleList({}, items);
@@ -453,7 +477,9 @@ describe("BaseListBox", () => {
 
     it("check moveItemUp", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { box } = TestHelper.generateMultipleList({}, items);
@@ -466,8 +492,11 @@ describe("BaseListBox", () => {
     });
 
     it("check moveItemUp (first item)", (): void => {
-        const items: ListBoxItem[] = [{ text: "Item#1", id: "id01", index: 0 },
-            { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }];
+        const items: ListBoxItem[] = [
+            { text: "Item#1", id: "id01", index: 0 },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
+        ];
 
         const { box } = TestHelper.generateMultipleList({}, items);
 
@@ -480,7 +509,9 @@ describe("BaseListBox", () => {
 
     it("check moveItemDown", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { box } = TestHelper.generateMultipleList({}, items);
@@ -493,8 +524,11 @@ describe("BaseListBox", () => {
     });
 
     it("check moveItemDown (last item)", (): void => {
-        const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" },
-            { text: "Item#3", id: "id03", index: 2 }];
+        const items: ListBoxItem[] = [
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03", index: 2 },
+        ];
 
         const { box } = TestHelper.generateMultipleList({}, items);
 
@@ -506,7 +540,7 @@ describe("BaseListBox", () => {
     });
 
     it("check enable", (): void => {
-        const { target, box } = TestHelper.generateSingleList({ });
+        const { target, box } = TestHelper.generateSingleList({});
 
         box.enable(true);
 
@@ -514,7 +548,7 @@ describe("BaseListBox", () => {
     });
 
     it("check disable", (): void => {
-        const { target, box } = TestHelper.generateSingleList({ });
+        const { target, box } = TestHelper.generateSingleList({});
 
         box.enable(false);
 
@@ -523,7 +557,9 @@ describe("BaseListBox", () => {
 
     it("check moveItemToBottom", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { box } = TestHelper.generateSingleList({}, items);
@@ -537,7 +573,9 @@ describe("BaseListBox", () => {
 
     it("check moveItemToTop", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
         const { box } = TestHelper.generateSingleList({}, items);
@@ -550,12 +588,18 @@ describe("BaseListBox", () => {
     });
 
     it("check getSelection", (): void => {
-        const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" },
-        { text: "Item#2", id: "id02", selected: true }, {
-            text: "Item#3", id: "id03", childItems: [
-                { text: "SubItem#1", id: "subid01", selected: true }, { text: "SubItem#2", id: "subid02" }
-            ]
-        }];
+        const items: ListBoxItem[] = [
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02", selected: true },
+            {
+                text: "Item#3",
+                id: "id03",
+                childItems: [
+                    { text: "SubItem#1", id: "subid01", selected: true },
+                    { text: "SubItem#2", id: "subid02" },
+                ],
+            },
+        ];
 
         const { box } = TestHelper.generateMultipleList({}, items);
 
@@ -566,15 +610,16 @@ describe("BaseListBox", () => {
         expect(selection[1].id).toEqual("subid01");
     });
 
-
     // ********************** EVENTS **********************
 
     it("check itemEnterPressed event", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
-        let count: number = 0;
+        let count = 0;
 
         const callback: (e: ListBoxEvent) => void = (event: ListBoxEvent): void => {
             count++;
@@ -597,13 +642,12 @@ describe("BaseListBox", () => {
 
     it("check itemDoubleClicked event", (): void => {
         const items: ListBoxItem[] = [
-            { text: "Item#1", id: "id01" }, { text: "Item#2", id: "id02" }, { text: "Item#3", id: "id03" }
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02" },
+            { text: "Item#3", id: "id03" },
         ];
 
-        let count: number = 0;
-
         const callback: (e: ListBoxEvent) => void = (event: ListBoxEvent): void => {
-            count++;
             expect(event.eventName).toEqual(BaseListBox.EVENT_ITEM_DOUBLE_CLICKED);
             expect(event.target).toEqual(target);
         };
@@ -621,8 +665,11 @@ describe("BaseListBox", () => {
     });
 
     it("check itemArrowUp event", (): void => {
-        const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" },
-            { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
+        const items: ListBoxItem[] = [
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02", selected: true },
+            { text: "Item#3", id: "id03" },
+        ];
 
         const { box, target } = TestHelper.generateSingleList({}, items);
 
@@ -642,8 +689,11 @@ describe("BaseListBox", () => {
     });
 
     it("check itemArrowDown event", (): void => {
-        const items: ListBoxItem[] = [{ text: "Item#1", id: "id01" },
-            { text: "Item#2", id: "id02", selected: true }, { text: "Item#3", id: "id03" }];
+        const items: ListBoxItem[] = [
+            { text: "Item#1", id: "id01" },
+            { text: "Item#2", id: "id02", selected: true },
+            { text: "Item#3", id: "id03" },
+        ];
 
         const { target, box } = TestHelper.generateSingleList({}, items);
 
@@ -702,7 +752,5 @@ describe("BaseListBox", () => {
         box._fireEvent(BaseListBox.EVENT_FILTER_CHANGED, "mySpecialValue");
     });
 });
-
-
 
 /* tslint:enable:no-string-literal */

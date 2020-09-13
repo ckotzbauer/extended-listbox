@@ -1,10 +1,9 @@
-import {ListBoxSettings} from "./contract/ListBoxSettings";
-import {ListBoxItem} from "./contract/ListBoxItem";
-import {SingleSelectListBox} from "./SingleSelectListBox";
-import {MultiSelectListBox} from "./MultiSelectListBox";
+import { ListBoxSettings } from "./contract/ListBoxSettings";
+import { ListBoxItem } from "./contract/ListBoxItem";
+import { SingleSelectListBox } from "./SingleSelectListBox";
+import { MultiSelectListBox } from "./MultiSelectListBox";
 
 export class TestHelper {
-
     public static child(element: HTMLElement, index: number = null): HTMLElement {
         return element.children[index || 0] as HTMLElement;
     }
@@ -13,11 +12,13 @@ export class TestHelper {
         return Array.prototype.slice.call(element.children);
     }
 
-    public static generateSingleList(options: ListBoxSettings = null,
-                                     items: (string|ListBoxItem)[] = null): { box: SingleSelectListBox, target: HTMLElement } {
+    public static generateSingleList(
+        options: ListBoxSettings = null,
+        items: (string | ListBoxItem)[] = null
+    ): { box: SingleSelectListBox; target: HTMLElement } {
         options = options || {};
         if (!options.getItems) {
-            options.getItems = (): (string|ListBoxItem)[] => items;
+            options.getItems = (): (string | ListBoxItem)[] => items;
         }
 
         const test: HTMLElement = document.createElement("div");
@@ -27,11 +28,13 @@ export class TestHelper {
         return { box: new SingleSelectListBox(test, options), target: test };
     }
 
-    public static generateMultipleList(options: ListBoxSettings = null,
-                                       items: (string|ListBoxItem)[] = null): { box: MultiSelectListBox, target: HTMLElement } {
+    public static generateMultipleList(
+        options: ListBoxSettings = null,
+        items: (string | ListBoxItem)[] = null
+    ): { box: MultiSelectListBox; target: HTMLElement } {
         options = options || {};
         if (!options.getItems) {
-            options.getItems = (): (string|ListBoxItem)[] => items;
+            options.getItems = (): (string | ListBoxItem)[] => items;
         }
 
         const test: HTMLElement = document.createElement("div");
@@ -50,9 +53,9 @@ export class TestHelper {
     }
 
     public static itemEquals(items: NodeListOf<Element>, dataItems: ListBoxItem[]): boolean {
-        let ids: string[] = [];
+        const ids: string[] = [];
 
-        for (let i: number = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
             ids.push(items.item(i).id);
         }
 
@@ -70,11 +73,10 @@ export class TestHelper {
         e.parentElement.removeChild(e);
     }
 
-    public static click(element: Element, ctrl: boolean = false): void {
+    public static click(element: Element, ctrl = false): void {
         const e: any = document.createEvent("Event");
         e.initEvent("click", true, false);
         e.ctrlKey = ctrl;
         element.dispatchEvent(e);
     }
 }
-

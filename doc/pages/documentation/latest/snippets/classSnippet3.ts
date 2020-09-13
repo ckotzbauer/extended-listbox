@@ -21,5 +21,5 @@ interface ListBoxItem {
     parentGroupId?: string;
 
     /** list of childItems */
-    childItems?: (string|ListBoxItem)[];
+    childItems?: (string | ListBoxItem)[];
 }
