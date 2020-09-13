@@ -1,18 +1,23 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "target": "esnext",
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "outFile": "build/out/js/extended-listbox.js",
-    "lib": ["es2016", "dom"],
+    "strict": true,
+    "noImplicitAny": true,
+    "target": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "esModuleInterop": true
-  },
-  "exclude": [
-    "node_modules",
-    "doc/pages",
-    "__tests__"
-  ]
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "lib": [
+      "es2015",
+      "dom",
+      "es2017.object",
+      "esnext.asynciterable"
+    ],
+    "baseUrl": "src",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  }
 }

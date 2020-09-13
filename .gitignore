@@ -1,11 +1,5 @@
-.idea
 node_modules
-build/out/**
-build/coverage/**
-src/ts/**/*.js
-src/ts/**/*.map
-test/**/*.map
-test/**/*.js
+coverage
 doc/pages/documentation/**/snippets/*.map
 doc/pages/documentation/**/snippets/classSnippet*.js
 doc/demo/**

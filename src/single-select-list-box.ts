@@ -1,9 +1,9 @@
-import { BaseListBox } from "./BaseListBox";
-import { ListBoxSettings } from "./contract/ListBoxSettings";
-import { ListBoxItem } from "./contract/ListBoxItem";
+import { BaseListBox } from "./base-list-box";
+import { ListBoxOptions } from "./types/options";
+import { ListBoxItem } from "./types/list-box-item";
 
-export class SingleSelectListBox extends BaseListBox {
-    private _selectedDomItem: HTMLElement;
+export class SingleSelectListBox extends BaseListBox<"single"> {
+    private _selectedDomItem: HTMLElement | null;
 
     /**
      * Create an instance of SingleSelectListBox.
@@ -15,14 +15,15 @@ export class SingleSelectListBox extends BaseListBox {
      * @param {object} domElement DOM element to be converted to the ListBox
      * @param {object} options an object with ListBox settings
      */
-    constructor(domElement: HTMLElement, options?: ListBoxSettings) {
+    constructor(domElement: HTMLElement, options: ListBoxOptions) {
         super(domElement, options, false);
         this._selectedDomItem = null;
+        this.selected = null;
         this._createListbox();
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    protected _itemClicked(domItem: HTMLElement, ctrl = false): void {
+    protected _itemClicked(domItem: HTMLElement): void {
         if (
             domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_DISABLED) ||
             domItem.classList.contains(BaseListBox.LIST_ITEM_CLASS_GROUP)
@@ -39,9 +40,9 @@ export class SingleSelectListBox extends BaseListBox {
         domItem.focus();
         this._selectedDomItem = domItem;
 
-        const dataItem: ListBoxItem = this._getDataItem(domItem.id);
+        const dataItem: ListBoxItem = this._getDataItem(domItem.id) as ListBoxItem;
         dataItem.selected = true;
-        this.selectedDataItems.push(dataItem);
+        this.selected = dataItem;
 
         this._fireEvent(BaseListBox.EVENT_VALUE_CHANGED, this._getDataItem(domItem.id));
     }
@@ -63,5 +64,21 @@ export class SingleSelectListBox extends BaseListBox {
         }
 
         this._fireEvent(BaseListBox.EVENT_FILTER_CHANGED, this._searchbar.value);
+    }
+
+    public clearSelection(): void {
+        super.clearSelection();
+        this.selected = null;
+    }
+
+    protected onRemoveItem(item: ListBoxItem): void {
+        if (item.id === this.selected?.id) {
+            this.selected = null;
+        }
+    }
+
+    protected _clearItemSelection(domItem: HTMLElement): void {
+        super._clearItemSelection(domItem);
+        this.selected = null;
     }
 }

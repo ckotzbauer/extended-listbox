@@ -1,6 +1,7 @@
 # Extended Listbox
 
 ![build](https://github.com/ckotzbauer/extended-listbox/workflows/build/badge.svg)
+[![codecov](https://codecov.io/gh/ckotzbauer/extended-listbox/branch/master/graph/badge.svg?token=CDK8TH9DLZ)](https://codecov.io/gh/ckotzbauer/extended-listbox)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
 [![David](https://img.shields.io/david/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
 [![David](https://img.shields.io/david/dev/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
@@ -60,5 +61,3 @@ Link the component and a stylesheet from your page.
 --------
 [Changelog](https://github.com/ckotzbauer/extended-listbox/blob/master/doc/CHANGELOG.md)
 ----------
-[Roadmap](https://github.com/ckotzbauer/extended-listbox/blob/master/doc/ROADMAP.md)
---------

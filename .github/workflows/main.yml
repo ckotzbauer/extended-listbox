@@ -17,7 +17,11 @@ jobs:
           node-version: "14"
       - name: Prepare
         run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Type check
+        run: npm run test:typecheck
       - name: Test
-        run: npm test
+        run: npm run codecov -- -t ${{ secrets.CODECOV_KEY }}
       - name: Lint
         run: npm run lint
