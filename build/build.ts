@@ -4,7 +4,8 @@ import { promisify } from "util";
 import { ncp } from "ncp";
 import terser from "terser";
 import sass, { Result } from "node-sass";
-import { process as autoPrefixerProcess } from "autoprefixer";
+import autoprefixer from "autoprefixer";
+import postcss from "postcss";
 
 import * as rollup from "rollup";
 import rollupConfig from "./rollup";
@@ -64,8 +65,8 @@ async function transpileStyle(src: string, compress = false) {
                 file: src,
                 outputStyle: compress ? "compressed" : "expanded",
             },
-            (err: Error | undefined, result: Result) =>
-                !err ? resolve(autoPrefixerProcess(result.css.toString()).css) : reject(err)
+            async (err: Error | undefined, result: Result) =>
+                !err ? resolve((await postcss([autoprefixer]).process(result.css.toString())).css) : reject(err)
         );
     });
 }
