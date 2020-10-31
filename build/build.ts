@@ -3,7 +3,7 @@ import { promisify } from "util";
 
 import { ncp } from "ncp";
 import terser from "terser";
-import sass, { Result } from "node-sass";
+import sass, { Result } from "sass";
 import autoprefixer from "autoprefixer";
 import postcss from "postcss";
 
