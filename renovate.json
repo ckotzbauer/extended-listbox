@@ -8,5 +8,16 @@
   ],
   "reviewers": [
     "ckotzbauer"
+  ],
+  "packageRules": [
+    {
+      "updateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    }
   ]
 }
