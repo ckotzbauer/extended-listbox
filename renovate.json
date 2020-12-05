@@ -6,9 +6,6 @@
   "labels": [
     "kind/dependencies"
   ],
-  "reviewers": [
-    "ckotzbauer"
-  ],
   "packageRules": [
     {
       "updateTypes": [
@@ -17,7 +14,20 @@
         "pin",
         "digest"
       ],
-      "automerge": true
+      "addLabels": [
+        "approved"
+      ]
+    },
+    {
+      "updateTypes": [
+        "major",
+        "lockFileMaintenance",
+        "rollback",
+        "bump"
+      ],
+      "reviewers": [
+        "ckotzbauer"
+      ]
     }
   ]
 }
