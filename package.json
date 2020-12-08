@@ -44,7 +44,7 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "8.0.0",
     "@types/autoprefixer": "9.7.2",
-    "@types/jest": "26.0.16",
+    "@types/jest": "26.0.17",
     "@types/ncp": "2.0.4",
     "@types/node": "14.14.10",
     "@types/node-sass": "4.11.1",
