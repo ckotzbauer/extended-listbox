@@ -25,7 +25,7 @@
   "files": [
     "dist",
     "doc/pages",
-    "doc/CHANGELOG.md",
+    "CHANGELOG.md",
     "doc/ROADMAP.md"
   ],
   "scripts": {

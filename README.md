@@ -59,5 +59,5 @@ Link the component and a stylesheet from your page.
 --------------
 [License](https://github.com/ckotzbauer/extended-listbox/blob/master/LICENSE)
 --------
-[Changelog](https://github.com/ckotzbauer/extended-listbox/blob/master/doc/CHANGELOG.md)
+[Changelog](https://github.com/ckotzbauer/extended-listbox/blob/master/CHANGELOG.md)
 ----------
