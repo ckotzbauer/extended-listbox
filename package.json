@@ -56,7 +56,7 @@
     "eslint": "7.27.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "3.4.0",
-    "jest": "26.6.3",
+    "jest": "27.0.3",
     "ncp": "2.0.0",
     "npm-run-all": "4.1.5",
     "postcss": "8.3.0",
