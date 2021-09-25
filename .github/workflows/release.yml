@@ -52,14 +52,14 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.REPO_ACCESS }}
-          branch: master
+          branch: main
 
       - name: Create release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          commitish: master
+          commitish: main
           tag_name: ${{ github.event.inputs.version }}
           release_name: ${{ github.event.inputs.version }}
           body_path: commits.md
@@ -69,6 +69,6 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1.1
         with:
           workflow: deploy-docs
-          ref: master
+          ref: main
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
 

@@ -1,7 +1,7 @@
 # Extended Listbox
 
 ![build](https://github.com/ckotzbauer/extended-listbox/workflows/build/badge.svg)
-[![codecov](https://codecov.io/gh/ckotzbauer/extended-listbox/branch/master/graph/badge.svg?token=CDK8TH9DLZ)](https://codecov.io/gh/ckotzbauer/extended-listbox)
+[![codecov](https://codecov.io/gh/ckotzbauer/extended-listbox/branch/main/graph/badge.svg?token=CDK8TH9DLZ)](https://codecov.io/gh/ckotzbauer/extended-listbox)
 [![NPM](https://img.shields.io/npm/v/extended-listbox.svg)](https://www.npmjs.com/package/extended-listbox)
 [![David](https://img.shields.io/david/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
 [![David](https://img.shields.io/david/dev/ckotzbauer/extended-listbox.svg)](https://david-dm.org/ckotzbauer/extended-listbox)
@@ -57,7 +57,7 @@ Link the component and a stylesheet from your page.
 
 [Documentation](http://ckotzbauer.github.io/extended-listbox/documentation/latest/)
 --------------
-[License](https://github.com/ckotzbauer/extended-listbox/blob/master/LICENSE)
+[License](https://github.com/ckotzbauer/extended-listbox/blob/main/LICENSE)
 --------
-[Changelog](https://github.com/ckotzbauer/extended-listbox/blob/master/CHANGELOG.md)
+[Changelog](https://github.com/ckotzbauer/extended-listbox/blob/main/CHANGELOG.md)
 ----------
