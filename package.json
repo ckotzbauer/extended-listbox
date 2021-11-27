@@ -60,7 +60,7 @@
     "postcss": "8.3.11",
     "prettier": "2.5.0",
     "rimraf": "3.0.2",
-    "rollup": "2.60.0",
+    "rollup": "2.60.1",
     "sass": "1.43.5",
     "terser": "5.10.0",
     "ts-jest": "27.0.7",
