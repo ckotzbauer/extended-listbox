@@ -1,0 +1,13 @@
+.github
+.vscode
+build
+coverage
+src
+
+.editorconfig
+.eslintrc.js
+.prettierrc.js
+deploy-docs.sh
+jest.json
+renovate.json
+tsconfig.*
