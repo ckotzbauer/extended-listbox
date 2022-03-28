@@ -61,3 +61,15 @@ Link the component and a stylesheet from your page.
 --------
 [Changelog](https://github.com/ckotzbauer/extended-listbox/blob/main/CHANGELOG.md)
 ----------
+
+## Contributing
+
+Please refer to the [Contribution guildelines](https://github.com/ckotzbauer/.github/blob/main/CONTRIBUTING.md).
+
+## Code of conduct
+
+Please refer to the [Conduct guildelines](https://github.com/ckotzbauer/.github/blob/main/CODE_OF_CONDUCT.md).
+
+## Security
+
+Please refer to the [Security process](https://github.com/ckotzbauer/.github/blob/main/SECURITY.md).
