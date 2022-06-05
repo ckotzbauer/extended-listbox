@@ -41,9 +41,9 @@
     "lint": "eslint --ignore-path .gitignore --ignore-pattern dist/ --ignore-pattern doc/ \"**/*.ts\""
   },
   "devDependencies": {
-    "@jest/types": "28.1.0",
     "@rollup/plugin-typescript": "8.3.2",
     "@types/autoprefixer": "10.2.0",
+    "@types/jest": "28.1.1",
     "@types/ncp": "2.0.5",
     "@types/node": "16.11.38",
     "@types/node-sass": "4.11.2",
