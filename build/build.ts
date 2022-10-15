@@ -3,7 +3,7 @@ import { promisify } from "util";
 
 import { ncp } from "ncp";
 import terser from "terser";
-import sass, { Result } from "sass";
+import sass from "sass";
 import autoprefixer from "autoprefixer";
 import postcss from "postcss";
 
@@ -26,8 +26,8 @@ async function readFileAsync(path: string): Promise<string> {
         const buf = await promisify(readFile)(path);
         return buf.toString();
     } catch (e) {
-        logErr(e);
-        return e.toString();
+        logErr(e as Error);
+        return (e as Error).toString();
     }
 }
 
@@ -39,7 +39,7 @@ async function uglify(src: string) {
         },
     });
 
-    return minified.code;
+    return minified.code as string;
 }
 
 async function buildBundleJs() {
@@ -54,21 +54,14 @@ async function buildScripts() {
         const transpiled = await readFileAsync("./dist/extended-listbox.js");
         promisify(writeFile)("./dist/extended-listbox.min.js", await uglify(transpiled));
     } catch (e) {
-        logErr(e);
+        logErr(e as Error);
     }
 }
 
 async function transpileStyle(src: string, compress = false) {
-    return new Promise<string>((resolve, reject) => {
-        sass.render(
-            {
-                file: src,
-                outputStyle: compress ? "compressed" : "expanded",
-            },
-            async (err: Error | undefined, result: Result) =>
-                !err ? resolve((await postcss([autoprefixer]).process(result.css.toString())).css) : reject(err)
-        );
-    });
+    const sassResult = await sass.compileAsync(src, { style: compress ? "compressed" : "expanded" });
+    const postCssResult = await postcss([autoprefixer]).process(sassResult.css);
+    return postCssResult.css;
 }
 
 async function buildStyle() {
@@ -78,7 +71,7 @@ async function buildStyle() {
             promisify(writeFile)("./dist/extended-listbox.min.css", await transpileStyle(paths.style, true)),
         ]);
     } catch (e) {
-        logErr(e);
+        logErr(e as Error);
     }
 }
 
@@ -88,7 +81,7 @@ async function ensureDistFolder() {
             await promisify(mkdir)("./dist");
         }
     } catch (e) {
-        logErr(e);
+        logErr(e as Error);
     }
 }
 
